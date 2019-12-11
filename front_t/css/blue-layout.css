@@ -1,0 +1,66 @@
+a:hover,a:focus{color:#24a0de;}
+.btn-primary,
+.sppb-btn-primary{border-color:#1e8ec6;background-color:#24a0de;}
+.btn-primary:hover,
+.sppb-btn-primary:hover{border-color:#18719e;background-color:#1b81b4;}
+.sppb-btn-success{background:#24a0de none repeat scroll 0 0;border:2px solid #24a0de;}
+.main-heading .title::after{background:#24a0de none repeat scroll 0 0;}
+.js-rotating.morphext{color:#24a0de;}
+.overlay::before{background-color:#24a0de;}
+ul.corporate-social li a:hover{color:#2499C2;}
+.corporate-social > li:first-child{color:#2499C2;}
+.panel-heading .accordion-toggle{background-color:#24a0de;}
+#sp-top-bar ul.sp-contact-info a,
+#topbar ul.sp-contact-info a{color:#0894D8;}
+.sp-megamenu-parent > li.active > a, .sp-megamenu-parent > li:hover > a{color:#24a0de;}
+.sp-megamenu-parent.menu-slide-down .sp-has-child > .sp-dropdown{border-top:2px solid #24a0de;}
+.header-4 .sp-megamenu-parent > li.active > a,
+.header-4 .sp-megamenu-parent > li:hover > a,
+.header-five .sp-megamenu-parent > li.active > a,
+.header-five .sp-megamenu-parent > li:hover > a{color:#24a0de;}
+header.header-five .sp-megamenu-parent li.contact-here a{background:#24a0de none repeat scroll 0 0;}
+section#action{background-color:#24a0de;}
+#action.two .sppb-btn{color:#24A0DE;}
+#services-list .icon{color:#24a0de;}
+#about .about-block ul li i{color:#24a0de;}
+.feature-item i{color:#24a0de;border:1px solid #24a0de;}
+.feature-item:hover i{background-color:#24A0DE;color:#fff;}
+#list-feature .fec-item .icon{background-color:#24a0de;}
+.fec-block .nav-tabs a i{color:#24a0de;}
+#features-box .fb-block .inner{border:1px solid #24a0de;}
+#features .feature-item i{background-color:#24A0DE;}
+#medical-feature .mf-block{background-color:#24a0de;}
+#medical-feature .mf-block:nth-child(2){background-color:#088EDD;}
+#medical-feature .mf-block:nth-child(3){background-color:#1977CD;}
+#medical-feature .mf-block:nth-child(4){background-color:#1063AF;}
+.team-block .designation{color:#24a0de;}
+.team-block .team-image ul.social-two li i{background-color:#24a0de;}
+.sp-simpleportfolio .sp-simpleportfolio-item .sp-simpleportfolio-info, .sp-simpleportfolio .sp-simpleportfolio-item .sp-simpleportfolio-info:hover{background:#fff none repeat scroll 0 0;border-bottom:1px solid #ececec;}
+.sp-simpleportfolio .sp-simpleportfolio-item:hover .sp-simpleportfolio-info{border-color:#24a0de;}
+.sp-simpleportfolio .sp-simpleportfolio-item:hover .sp-simpleportfolio-info h3 > a{color:#24a0de;}
+.sp-simpleportfolio .sp-simpleportfolio-filter > ul > li.active > a, .sp-simpleportfolio .sp-simpleportfolio-filter > ul > li > a:hover{background:#24a0de none repeat scroll 0 0;}
+#price-plans .price-block.featured .inner{border:1px solid #24a0de;}
+#price-plans .price-block.featured .title::before{border-color:transparent transparent transparent #24a0de;}
+#price-plans .price-block.featured .title::after{border-color:transparent #24a0de transparent transparent;}
+.btn-pricing:hover{background:#24a0de none repeat scroll 0 0;border:1px solid #24a0de;}
+.featured .btn-pricing{border:1px solid #24a0de;color:#24a0de;}
+#price-plans .price-block.featured .title{background:#24a0de none repeat scroll 0 0;}
+.testi_slider .testi-block .pro-client-name{color:#24a0de;display:inline-block;font-size:16px;font-weight:700;margin-top:10px;text-transform:uppercase;}
+.testi_slider.owl-theme .owl-controls .owl-page span{border:1px solid #24A0DE;background-color:#24A0DE;}
+.testi_slider .testi-block p::before{color:#24a0de;}
+#partners{background-color:#24A0DE;}
+.blog-content .meta > li a{color:#24A0DE;}
+.blog-block .simple{color:#24A0DE;}
+footer p i{color:#24A0DE;}
+.footer-block .contact li i{color:#24a0de;}
+.newsletter .sppb-btn{background-color:#24a0de;}
+.newsletter .sppb-btn:hover{background-color:#1b81b4;}
+#events .nav-tabs > li > a{color:#428BCA;}
+#events .nav-tabs > li.active > a,
+#events .nav-tabs > li.active > a:hover,
+#events .nav-tabs > li.active > a:focus{background-color:#428bca;}
+.event-timetable li p.event-time{color:#24a0de;}
+.excerpt-big{color:#24a0de;}
+.excerpt-back span{color:#24a0de;}
+#breadcrumb{background:#0894D8 none repeat scroll 0 0;}
+.sp-megamenu-parent .sp-dropdown li.sp-menu-item > a:hover{background:#24a0de none repeat scroll 0 0;color:#fff;}
