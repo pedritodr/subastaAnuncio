@@ -18,7 +18,7 @@ class User extends CI_Controller
 
     public function index() //econtrando usuario
     {
-        if(!in_array($this->session->userdata('role_id'),[1,2,3,4])){
+        if (!in_array($this->session->userdata('role_id'), [1, 2, 3, 4])) {
 
             $this->log_out();
             redirect('login');
@@ -34,7 +34,7 @@ class User extends CI_Controller
 
     public function add_index()
     {
-        if (!in_array($this->session->userdata('role_id'), [1, 2,3,4])) {
+        if (!in_array($this->session->userdata('role_id'), [1, 2, 3, 4])) {
             $this->log_out();
             redirect('login');
         }
@@ -45,7 +45,7 @@ class User extends CI_Controller
 
     public function add()
     {
-        if (!in_array($this->session->userdata('role_id'), [1,2])) {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
             $this->log_out();
             redirect('login');
         }
@@ -56,11 +56,15 @@ class User extends CI_Controller
         $phone = $this->input->post('phone');
         $repeat_password = $this->input->post('repeat_password');
         $role = $this->input->post('role');
+        if ($password != $repeat_password) {
+            $this->response->set_message("Los campos contraseña y repetir contraseña no coinciden.", ResponseMessage::ERROR);
+            redirect("user/add_index");
+        }
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('fullname', translate('fullname_lang'), 'required');
         $this->form_validation->set_rules('email', translate('email_lang'), 'required|is_unique[user.email]');
-        $this->form_validation->set_rules('password', translate('password_lang'), 'required|matches[repeat_password]');
+        //  $this->form_validation->set_rules('password', translate('password_lang'), 'required|matches[repeat_password]');
         $this->form_validation->set_rules('role', "Seleccione un rol", 'required');
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
@@ -105,7 +109,7 @@ class User extends CI_Controller
             $this->log_out();
             redirect('login');
         }
-//los datos que se pueden actualizar
+        //los datos que se pueden actualizar
         $name = $this->input->post('fullname');
         $role = $this->input->post('role');
         $user_id = $this->input->post('user_id');
@@ -131,7 +135,7 @@ class User extends CI_Controller
 
     public function delete($user_id = 0)
     {
-        if (!in_array($this->session->userdata('role_id'), [1,2])) {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
             $this->log_out();
             redirect('login');
         }
@@ -146,6 +150,4 @@ class User extends CI_Controller
             show_404();
         }
     }
-
-
 }
