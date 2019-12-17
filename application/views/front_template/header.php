@@ -63,8 +63,7 @@
       <div class="loader-section section-left"></div>
       <div class="loader-section section-right"></div>
    </div>
-   <!-- =-=-=-=-=-=-= Color Switcher =-=-=-=-=-=-= -->
-
+   <!-- =-=-=-=-=-=-= end Preloader =-=-=-=-=-=-= -->
    <!-- =-=-=-=-=-=-= Light Header =-=-=-=-=-=-= -->
    <div class="transparent-header">
       <!-- Top Bar -->
