@@ -541,7 +541,11 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/about', $data_object);
     }
+    public function prueba()
+    {
 
+        $this->load_view_front('front/vacio');
+    }
     public function membresia()
     {
 
