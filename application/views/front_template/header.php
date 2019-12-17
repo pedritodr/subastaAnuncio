@@ -10,7 +10,7 @@
       <![endif]-->
    <meta name="description" content="">
    <meta name="author" content="ScriptsBundle">
-   <title>AdForest | Largest Classifieds Portal</title>
+   <title>Subastas | Anuncios</title>
    <!-- =-=-=-=-=-=-= Favicons Icon =-=-=-=-=-=-= -->
    <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" />
    <!-- =-=-=-=-=-=-= Mobile Specific =-=-=-=-=-=-= -->
