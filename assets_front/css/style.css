@@ -208,7 +208,7 @@ object {
 }
 
 .section-padding {
-	padding: 90px 0;
+	padding: 30px 0;
 }
 
 .section-padding-140 {
@@ -1012,7 +1012,7 @@ ul {
 }
 
 #search-section {
-	background: #80232b none repeat scroll 0 0;
+	background: #f9f9f9 none repeat scroll 0 0;
 	padding: 20px 0;
 }
 
@@ -1059,7 +1059,7 @@ ul {
 }
 
 .transparent-header .mega-menu.desktopTopFixed .menu-list-items {
-	background: rgba(0, 0, 0, 0.8) none repeat scroll 0 0;
+	background: rgba(114, 50, 56, 0.94) none repeat scroll 0 0;
 }
 
 /* =-=-=-=-=-=-=  Header Style 2  =-=-=-=-=-=-= */

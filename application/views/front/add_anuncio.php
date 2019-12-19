@@ -66,8 +66,8 @@
                             <select onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2">
 
                                <?php
-                                 if (isset($all_cate_anuncio))
-                                    foreach ($all_cate_anuncio as $item) { ?>
+                                                                           if (isset($all_cate_anuncio))
+                                                                              foreach ($all_cate_anuncio as $item) { ?>
                                   <option value="<?= $item->cate_anuncio_id; ?>"><?= $item->nombre; ?></option>
                                <?php } ?>
                             </select>
@@ -82,8 +82,8 @@
                             <select id="subcategoria" name="subcategoria" class="form-control select2">
 
                                <?php
-                                 if (isset($all_subcate))
-                                    foreach ($all_subcate as $item) { ?>
+                                                                           if (isset($all_subcate))
+                                                                              foreach ($all_subcate as $item) { ?>
                                   <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
                                <?php } ?>
                             </select>
@@ -149,8 +149,8 @@
                             <select onchange="change_pais();" id="pais" name="pais" class="form-control select2">
 
                                <?php
-                                 if (isset($all_pais))
-                                    foreach ($all_pais as $item) { ?>
+                                                                                                               if (isset($all_pais))
+                                                                                                                  foreach ($all_pais as $item) { ?>
                                   <option value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
                                <?php } ?>
                             </select>
@@ -165,8 +165,8 @@
                             <select onchange="cargar_city();" id="ciudad" name="ciudad" class="form-control select2">
 
                                <?php
-                                 if (isset($all_ciudad))
-                                    foreach ($all_ciudad as $item) { ?>
+                                                                                                               if (isset($all_ciudad))
+                                                                                                                  foreach ($all_ciudad as $item) { ?>
                                   <option value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
                                <?php } ?>
                             </select>
@@ -504,6 +504,7 @@
                       if (status == google.maps.GeocoderStatus.OK) {
 
                          var address = (results[0].formatted_address);
+
                          $('#pac-input').val(address);
 
                       }

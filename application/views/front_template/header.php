@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from templates.scriptsbundle.com/addforest/demos/adforest/index-transparent.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2019 00:03:54 GMT -->
+<!-- Mirrored from templates.scriptsbundle.com/addforest/demos/adforest/site-map.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2019 00:19:51 GMT -->
 
 <head>
    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -10,90 +10,50 @@
       <![endif]-->
    <meta name="description" content="">
    <meta name="author" content="ScriptsBundle">
-   <title>Anuncios | Subasta</title>
+   <title>Subastas | Anuncios</title>
    <!-- =-=-=-=-=-=-= Favicons Icon =-=-=-=-=-=-= -->
    <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" />
    <!-- =-=-=-=-=-=-= Mobile Specific =-=-=-=-=-=-= -->
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
    <!-- =-=-=-=-=-=-= Bootstrap CSS Style =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/bootstrap.css'); ?>">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/bootstrap.css') ?>">
    <!-- =-=-=-=-=-=-= Template CSS Style =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/style.css'); ?>">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/style.css') ?>">
    <!-- =-=-=-=-=-=-= Font Awesome =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/font-awesome.css'); ?>" type="text/css">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/font-awesome.css') ?>" type="text/css">
    <!-- =-=-=-=-=-=-= Flat Icon =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front//css/flaticon.css'); ?>" rel="stylesheet">
+   <link href="<?= base_url('assets_front/css/flaticon.css') ?>" rel="stylesheet">
    <!-- =-=-=-=-=-=-= Et Line Fonts =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/et-line-fonts.css'); ?>" type="text/css">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/et-line-fonts.css') ?>" type="text/css">
    <!-- =-=-=-=-=-=-= Menu Drop Down =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/forest-menu.css'); ?>" type="text/css">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/forest-menu.css') ?>" type="text/css">
    <!-- =-=-=-=-=-=-= Animation =-=-=-=-=-=-= -->
-   <link rel="stylesheet" href="<?= base_url('assets_front/css/animate.min.css'); ?>" type="text/css">
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/animate.min.css') ?>" type="text/css">
    <!-- =-=-=-=-=-=-= Select Options =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front/css/select2.min.css'); ?>" rel="stylesheet" />
+   <link href="<?= base_url('assets_front/css/select2.min.css') ?>" rel="stylesheet" />
    <!-- =-=-=-=-=-=-= noUiSlider =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front/css/nouislider.min.css'); ?>" rel="stylesheet">
+   <link href="<?= base_url('assets_front/css/nouislider.min.css') ?>" rel="stylesheet">
    <!-- =-=-=-=-=-=-= Listing Slider =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front/css/slider.css'); ?>" rel="stylesheet">
-   <!-- =-=-=-=-=-=-= Owl carousel =-=-=-=-=-=-= -->
-   <link rel="stylesheet" type="text/css" href="<?= base_url('assets_front/css/owl.carousel.css'); ?>">
-   <link rel="stylesheet" type="text/css" href="<?= base_url('assets_front/css/owl.theme.css'); ?>">
+   <link href="<?= base_url('assets_front/css/slider.css') ?>" rel="stylesheet">
+   <!-- =-=-=-=-=-=-= Owl carousel =-=-=-=-=-=-=  -->
+   <link rel="stylesheet" type="text/css" href="<?= base_url('assets_front/css/owl.carousel.css') ?>">
+   <link rel="stylesheet" type="text/css" href="<?= base_url('assets_front/css/owl.theme.css') ?>">
    <!-- =-=-=-=-=-=-= Check boxes =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front/skins/minimal/minimal.css'); ?>" rel="stylesheet">
+   <link href="<?= base_url('assets_front/skins/minimal/minimal.css') ?>" rel="stylesheet">
    <!-- =-=-=-=-=-=-= Responsive Media =-=-=-=-=-=-= -->
-   <link href="<?= base_url('assets_front/css/responsive-media.css'); ?>" rel="stylesheet">
+   <link href="<?= base_url('assets_front/css/responsive-media.css') ?>" rel="stylesheet">
    <!-- =-=-=-=-=-=-= Template Color =-=-=-=-=-=-= -->
-   <link rel="stylesheet" id="color" href="<?= base_url('assets_front/css/colors/defualt.css'); ?>">
-   <!-- =-=-=-=-=-=-= For Style Switcher =-=-=-=-=-=-=-->
-   <!--<link rel="stylesheet" id="theme-color" type="text/css" href="#" />-->
+   <link rel="stylesheet" id="color" href="<?= base_url('assets_front/css/colors/defualt.css') ?>">
+   <!-- =-=-=-=-=-=-= For Style Switcher =-=-=-=-=-=-= -->
+   <link rel="stylesheet" id="theme-color" type="text/css" href="#" />
    <!-- JavaScripts -->
-   <script src="<?= base_url('assets_front/js/modernizr.js'); ?>"></script>
-   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <script src="<?= base_url('assets_front/js/modernizr.js') ?>"></script>
+   <!-- HTML5 Shim and Respond.js IE8 support  of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
    <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
-   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
-   <!-- Bootstrap Core Css  -->
-   <script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
-   <!-- Jquery Easing -->
-   <script src="<?= base_url('assets_front/js/easing.js') ?>"></script>
-   <!-- Menu Hover  -->
-   <script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
-   <!-- Jquery Appear Plugin -->
-   <script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
-   <!-- Numbers Animation   -->
-   <script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
-   <!-- Jquery Parallex -->
-   <!--<script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>-->
-   <!-- Jquery Select Options  -->
-   <script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
-   <!-- noUiSlider -->
-   <script src="<?= base_url('assets_front/js/nouislider.all.min.js') ?>"></script>
-   <!-- Carousel Slider  -->
-   <script src="<?= base_url('assets_front/js/carousel.min.js') ?>"></script>
-   <script src="<?= base_url('assets_front/js/slide.js') ?>"></script>
-   <!-- Image Loaded  -->
-   <script src="<?= base_url('assets_front/js/imagesloaded.js') ?>"></script>
-   <script src="<?= base_url('assets_front/js/isotope.min.js') ?>"></script>
-   <!-- CheckBoxes  -->
-   <script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
-   <!-- Jquery Migration  -->
-   <script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
-   <!-- Sticky Bar  -->
-   <script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
-   <!-- Style Switcher -->
-   <script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
-   <!-- Template Core JS -->
-   <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
-
-   <!-- Select2 -->
-   <link rel="stylesheet" href="<?= base_url(); ?>admin_lte/plugins/select2/select2.min.css">
-
-   <!-- Select2 -->
-   <script src="<?= base_url(); ?>admin_lte/plugins/select2/select2.full.min.js"></script>
 </head>
 
 <body>
@@ -103,9 +63,8 @@
       <div class="loader-section section-left"></div>
       <div class="loader-section section-right"></div>
    </div>
-   <!-- =-=-=-=-=-=-= Color Switcher =-=-=-=-=-=-= -->
-
-   <!-- =-=-=-=-=-=-= Transparent Header =-=-=-=-=-=-= -->
+   <!-- =-=-=-=-=-=-= end Preloader =-=-=-=-=-=-= -->
+   <!-- =-=-=-=-=-=-= Light Header =-=-=-=-=-=-= -->
    <div class="transparent-header">
       <!-- Top Bar -->
       <div class="header-top">
@@ -211,5 +170,3 @@
          </section>
       </nav>
    </div>
-   <!-- Navigation Menu End -->
-   <!-- =-=-=-=-=-=-= Transparent Header End =-=-=-=-=-=-= -->

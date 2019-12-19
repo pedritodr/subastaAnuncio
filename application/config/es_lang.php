@@ -130,6 +130,8 @@ $config['message_lang'] = "Mensaje";
 $config['manage_mensajes_lang'] = "Gestionar mensajes";
 $config['listar_mensajes_lang'] = "Listar mensajes";
 $config['buscar_lang'] = "Buscar";
+$config['buscar_palabra_lang'] = "Qué estás buscando";
+
 $config['identificator_lang'] = "Tipo de caja";
 $config['tax_lang'] = "Tax_id";
 $config['identificacion_lang'] = "Identificación";
@@ -286,9 +288,9 @@ $config['listar_plan_lang'] = "Lista de planes";
 
 $config['name_plan_lang'] = "Plan para ti";
 $config['select_plan_lang'] = "Seleccionar plan";
-
+$config['select_category_lang'] = "Seleccionar una categoria";
 $config['membresia_act_lang'] = "Membresia actual";
-
+$config['n_resultados'] = "No se encontraron resultados";
 $config['tipo_lang'] = "Tipo";
 $config['descuento_lang'] = "Descuento";
 $config['asign_lang'] = "Asignación";

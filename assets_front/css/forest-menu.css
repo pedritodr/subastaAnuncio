@@ -470,7 +470,7 @@
   padding: 0;
   height: 50px;
   width: 70px;
-  background: #1a1a1a;
+  background: #ffffff;
   display: none;
   position: absolute;
   top: 0;
@@ -482,7 +482,7 @@
 }
 
 .mega-menu .menu-mobile-collapse-trigger:hover {
-  background: black;
+  background: #ffffff;
 }
 
 .mega-menu .menu-mobile-collapse-trigger:before,
@@ -492,7 +492,7 @@
   display: block;
   height: 4px;
   width: 40px;
-  background: #fff;
+  background: #723238;
   position: absolute;
   top: 13px;
   left: 0;
@@ -1542,7 +1542,7 @@
     background: #fff none repeat scroll 0 0;
     left: 0;
     max-width: 100%;
-    padding: 20px 0;
+    padding: 4px 0;
     position: fixed;
     right: 0;
     top: 0;

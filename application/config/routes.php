@@ -65,6 +65,7 @@ $route['listado-anuncio'] = 'front/Lista_anuncio';
 $route['perfil'] = 'front/perfil';
 $route['subastas'] = 'front/subasta';
 $route['anuncios'] = 'front/anuncios_index';
+$route['prueba'] = 'front/prueba';
 
 
 

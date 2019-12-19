@@ -309,6 +309,7 @@ class Front extends CI_Controller
         $lng = $this->input->post('lng');
         $ciudad = $this->input->post('ciudad');
         $user_id = $this->session->userdata('user_id');
+        $direccion = $this->input->post('pac-input');
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
@@ -326,7 +327,7 @@ class Front extends CI_Controller
             $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
             $allow_extension = in_array($ext, $allow_extension_array);
             if ($allow_extension) {
-                $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 422.56);
+                $result = save_image_from_post('archivo', './uploads/anuncio', time(), 800, 600);
                 if ($result[0]) {
                     $data = [
                         'titulo' => $titulo,
@@ -339,8 +340,8 @@ class Front extends CI_Controller
                         'lat' => $lat,
                         'lng' => $lng,
                         'ciudad_id' => $ciudad,
-                        'user_id' => $user_id
-
+                        'user_id' => $user_id,
+                        'direccion' => $direccion
                     ];
                     $this->anuncio->create($data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -363,10 +364,117 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/contact');
     }
+    public function buscar_subasta()
+    {
+
+        $this->load->model('Subasta_model', 'subasta');
+        $this->load->model('Categoria_model', 'category');
+        $categories = $this->category->get_all();
+        $data['categories'] = $categories;
+        $category = $this->input->post('category');
+
+        $subasta_palabra = $this->input->post('subasta_palabra');
+        $ok = false;
+        if ($category != '') {
+            $contador = count($this->subasta->get_subastas_category($category));
+            $ok = true;
+        } elseif ($subasta_palabra != '') {
+            $contador = count($this->subasta->get_subastas_palabra($subasta_palabra));
+            $ok = false;
+        }
+
+        /* URL a la que se desea agregar la paginación*/
+        $config['base_url'] = site_url('front/subasta/');
+
+        /*Obtiene el total de registros a paginar */
+
+        $config['total_rows'] = $contador;
+        $user_id = $this->session->userdata('user_id');
+
+        /*Obtiene el numero de registros a mostrar por pagina */
+        $config['per_page'] = '5';
+        $config['uri_segment'] = 3;
+        /*Se personaliza la paginación para que se adapte a bootstrap*/
+
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+
+        $config['cur_tag_close'] = '</a></li>';
+
+        $config['num_tag_open'] = '<li>';
+
+        $config['num_tag_close'] = '</li>';
+
+        $config['last_link'] = FALSE;
+
+        $config['first_link'] = FALSE;
+
+        $config['next_link'] = '&raquo;';
+
+        $config['next_tag_open'] = '<li>';
+
+        $config['next_tag_close'] = '</li>';
+
+        $config['prev_link'] = '&laquo;';
+
+        $config['prev_tag_open'] = '<li>';
+
+        $config['prev_tag_close'] = '</li>';
+
+
+        /* Se inicializa la paginacion*/
+
+        $this->pagination->initialize($config);
+        $page = $this->uri->segment(3);
+
+        $offset = !$page ? 0 : $page;
+        //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        if ($ok) {
+            $all_subastas = $this->subasta->get_all_by_subastas_with_pagination_categoria($config['per_page'], $offset, $category);
+        } else {
+            $all_subastas = $this->subasta->get_all_by_subastas_with_pagination_palabra($config['per_page'], $offset, $subasta_palabra);
+        }
+        foreach ($all_subastas as $item) {
+            $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
+
+            $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+
+            $item->puja =  $this->subasta->get_puja_alta($item->subasta_id);
+        }
+
+        $data['all_subastas'] = $all_subastas;
+        $data['resultados'] = $contador;
+        if ($offset == 0) {
+            if ($contador == 0) {
+                $data['inicio'] = 0;
+                $data['fin'] = 0;
+            } else {
+                $data['inicio'] = 1;
+                if ($contador >= 5) {
+                    $data['fin'] =  5;
+                } else {
+                    $data['fin'] = $contador;
+                }
+            }
+        } else {
+            $data['inicio'] = $offset + 1;
+            $intervalo = 5 + $offset;
+            if ($intervalo > $contador) {
+                $data['fin'] = $contador;
+            } else {
+                $data['fin'] = $intervalo;
+            }
+        }
+
+
+        $this->load_view_front('front/subastas', $data);
+    }
 
     public function subasta()
     {
         $this->load->model('Subasta_model', 'subasta');
+        $this->load->model('Categoria_model', 'category');
+        $categories = $this->category->get_all();
+        $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('front/subasta/');
 
@@ -415,6 +523,7 @@ class Front extends CI_Controller
         //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
         $all_subastas = $this->subasta->get_all_by_subastas_with_pagination($config['per_page'], $offset);
+
         foreach ($all_subastas as $item) {
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
 
@@ -441,19 +550,18 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/subastas', $data);
     }
-    public function anuncios_index($id = 0)
+    public function anuncios_index()
     {
         $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Cate_anuncio_model', 'category');
+        $categories = $this->category->get_all();
+        $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('front/anuncios_index/');
 
         /*Obtiene el total de registros a paginar */
-        if ($id > 0) {
-            $contador = count($this->anuncio->get_anuncios_by_category($id));
-        } else {
-            $contador = count($this->anuncio->get_anuncios());
-        }
 
+        $contador = count($this->anuncio->get_anuncios());
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
@@ -493,15 +601,18 @@ class Front extends CI_Controller
         $page = $this->uri->segment(3);
 
         $offset = !$page ? 0 : $page;
-        //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        if ($id > 0) {
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_category($config['per_page'], $offset, $id);
-        } else {
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
+
+        $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
+        foreach ($all_anuncios as $item) {
+            $long = strlen($item->descripcion);
+
+            if ($long > 400) {
+                $item->corta = substr($item->descripcion, 0, 400) . "...";
+            } else {
+
+                $item->corta = $item->descripcion;
+            }
         }
-
-
-
         $data['all_anuncios'] = $all_anuncios;
         $data['resultados'] = $contador;
         if ($offset == 0) {
@@ -541,7 +652,11 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/about', $data_object);
     }
+    public function prueba()
+    {
 
+        $this->load_view_front('front/vacio');
+    }
     public function membresia()
     {
 
