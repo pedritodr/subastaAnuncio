@@ -100,8 +100,9 @@ Designed and Development by: ScriptsBundle
     });
 
     /* ======= Jquery Select Dropdowns ======= */
+
     $("select").select2({
-        placeholder: "Select an option",
+        placeholder: 'Seleccionar una categoria',
         allowClear: true,
         width: '100%'
     });

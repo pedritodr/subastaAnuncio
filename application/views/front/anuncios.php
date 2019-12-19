@@ -10,6 +10,28 @@
         </div>
     </div>
 </section>
+<div id="search-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 col-md-12">
+                <!-- Form -->
+                <?= form_open_multipart("front/buscar_subasta", array('class' => 'search-form')); ?>
+
+                <!-- Search Field -->
+                <div class="col-md-9 col-xs-12 col-sm-4 no-padding">
+                    <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                </div>
+                <!-- Search Button -->
+                <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
+                    <button type="submit" class="btn btn-block btn-light"><?= translate("buscar_lang"); ?></button>
+                </div>
+
+                <?= form_close(); ?>
+                <!-- end .search-form -->
+            </div>
+        </div>
+    </div>
+</div>
 <!-- =-=-=-=-=-=-= Transparent Breadcrumb End =-=-=-=-=-=-= -->
 <!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
 <div class="main-content-area clearfix">
@@ -28,63 +50,117 @@
                             <!-- Sorting Filters Breadcrumb -->
                             <div class="filter-brudcrums">
                                 <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
-                                <div class="filter-brudcrums-sort">
-                                    <ul>
-                                        <li><span>Sort by:</span></li>
-                                        <li><a href="#">Updated date</a></li>
 
-                                    </ul>
-                                </div>
                             </div>
                             <!-- Sorting Filters Breadcrumb End -->
                         </div>
                         <!-- Sorting Filters End-->
                         <div class="clearfix"></div>
                         <!-- Ads Archive -->
-                        <div class="posts-masonry">
-                            <!-- Listing Ad Grid -->
-                            <?php foreach ($all_anuncios as $item) { ?>
-                                <div class="col-md-6 col-xs-12 col-sm-6">
-                                    <!-- Ad Box -->
-                                    <div class="category-grid-box">
-                                        <!-- Ad Img -->
-                                        <div class="category-grid-img">
-                                            <img class="img-responsive" alt="" src="<?= base_url($item->anuncio_photo) ?>">
-                                            <!-- Ad Status --><span class="ad-status"> Featured </span>
-                                            <!-- User Review -->
-                                            <div class="user-preview">
-                                                <a href="#"> <img src="images/users/1.jpg" class="avatar avatar-small" alt=""> </a>
-                                            </div>
-                                            <!-- View Details --><a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>" class="view-details"><?= translate("ver_info_lang"); ?></a>
-                                            <!-- Additional Info -->
-                                            <div class="additional-information">
-                                                <?= $item->descripcion ?>
-                                            </div>
-                                            <!-- Additional Info End-->
+                        <?php foreach ($all_anuncios as $item) { ?>
+
+
+
+
+                            <div class="ads-list-archive">
+                                <!-- Image Block -->
+                                <div class="col-lg-5 col-md-5 col-sm-5 no-padding">
+                                    <!-- Img Block -->
+                                    <div style="width:90%" class="ad-archive-img">
+                                        <a href="#">
+                                            <div class="ribbon popular"></div>
+
+
+                                            <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
+                                                <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                            <?php } else { ?>
+                                                <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
+
+                                            <?php } ?>
+
+                                        </a>
+
+                                    </div>
+                                    <!-- Img Block -->
+                                </div>
+                                <!-- Ads Listing -->
+                                <div class="clearfix visible-xs-block"></div>
+                                <!-- Content Block -->
+                                <div class="col-lg-7 col-md-7 col-sm-7 no-padding">
+                                    <!-- Ad Desc -->
+                                    <div class="ad-archive-desc">
+                                        <!-- Price -->
+                                        <div class="ad-price">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">$ <?= number_format($item->precio, 2) ?></font>
+                                            </font>
                                         </div>
-                                        <!-- Ad Img End -->
-                                        <div class="short-description">
-                                            <!-- Ad Category -->
-                                            <div class="category-title"> <span><a href="#"><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span> </div>
-                                            <!-- Ad Title -->
-                                            <h3><a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>"><?= $item->titulo ?></a></h3>
-                                            <!-- Price -->
-                                            <div class="price">$<?= number_format($item->precio, 2) ?></div>
-                                        </div>
-                                        <!-- Addition Info -->
-                                        <div class="ad-info">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i><?= $item->ciudad ?></li>
-                                                <!--<li><i class="fa fa-clock-o"></i> 15 minutes ago </li>-->
-                                            </ul>
+                                        <!-- Title -->
+                                        <h6>
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                            </font>
+                                        </h6>
+                                        <!-- Category -->
+                                        <div class="category-title"> <span><a href="#">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"><?= $item->categoria ?>/<?= $item->subcategoria ?></font>
+                                                    </font>
+                                                </a></span> </div>
+                                        <!-- Short Description -->
+                                        <div class="clearfix visible-xs-block"></div>
+                                        <p class="hidden-sm">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;"><?= $item->corta ?></font>
+                                            </font>
+                                        </p>
+                                        <!-- Ad Features -->
+                                        <ul class="add_info">
+                                            <!-- Contact Details -->
+                                            <li>
+                                                <div class="custom-tooltip tooltip-effect-4">
+                                                    <span class="tooltip-item"><i class="fa fa-phone"></i></span>
+                                                    <div class="tooltip-content">
+                                                        <span class="label label-success">
+                                                            <font style="vertical-align: inherit;">
+                                                                <font style="vertical-align: inherit;">+ <?= $item->whatsapp ?></font>
+                                                            </font>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <!-- Address -->
+                                            <li>
+                                                <div class="custom-tooltip tooltip-effect-4">
+                                                    <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
+                                                    <div class="tooltip-content">
+
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                                <?= $item->direccion ?>
+                                                            </font>
+                                                        </font>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+
+                                        </ul>
+                                        <!-- Ad History -->
+                                        <div class="clearfix archive-history">
+
+                                            <div class="ad-meta"> <a class="btn btn-success"><i class="fa fa-phone"></i>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
+                                                    </font>
+                                                </a> </div>
                                         </div>
                                     </div>
-                                    <!-- Ad Box End -->
+                                    <!-- Ad Desc End -->
                                 </div>
-                            <?php } ?>
-                            <!-- Listing Ad Grid -->
-
-                        </div>
+                                <!-- Content Block End -->
+                            </div>
+                        <?php } ?>
                         <!-- Ads Archive End -->
                         <div class="clearfix"></div>
                         <!-- Pagination -->
@@ -118,7 +194,7 @@
                                     <!-- Title End -->
                                 </div>
                                 <!-- Content -->
-                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body categories">
                                         <ul>
                                             <li><a href="#"><i class="flaticon-data"></i>Electronics & Gedget<span>(1029)</span></a></li>
@@ -200,51 +276,7 @@
                             </div>
                             <!-- Featured Ads Panel End -->
                             <!-- Latest Ads Panel -->
-                            <div class="panel panel-default">
-                                <!-- Heading -->
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a>
-                                            Recent Ads
-                                        </a>
-                                    </h4>
-                                </div>
-                                <!-- Content -->
-                                <div class="panel-collapse">
-                                    <div class="panel-body recent-ads">
-                                        <!-- Ads -->
-                                        <div class="recent-ads-list">
-                                            <div class="recent-ads-container">
-                                                <div class="recent-ads-list-image">
-                                                    <a href="#" class="recent-ads-list-image-inner">
-                                                        <img src="images/posting/thumb-1.jpg" alt="">
-                                                    </a><!-- /.recent-ads-list-image-inner -->
-                                                </div>
-                                                <!-- /.recent-ads-list-image -->
-                                                <div class="recent-ads-list-content">
-                                                    <h3 class="recent-ads-list-title">
-                                                        <a href="#">Sony Xperia Z1</a>
-                                                    </h3>
-                                                    <ul class="recent-ads-list-location">
-                                                        <li><a href="#">New York</a>,</li>
-                                                        <li><a href="#">Brooklyn</a></li>
-                                                    </ul>
-                                                    <div class="recent-ads-list-price">
-                                                        $ 17,000
-                                                    </div>
-                                                    <!-- /.recent-ads-list-price -->
-                                                </div>
-                                                <!-- /.recent-ads-list-content -->
-                                            </div>
-                                            <!-- /.recent-ads-container -->
-                                        </div>
-                                        <!-- Ads -->
 
-
-
-                                    </div>
-                                </div>
-                            </div>
                             <!-- Latest Ads Panel End -->
                         </div>
                         <!-- panel-group end -->
