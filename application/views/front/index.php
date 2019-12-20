@@ -202,7 +202,8 @@
             <div class="heading-panel">
                <div class="col-xs-12 col-md-12 col-sm-12">
                   <h3 class="main-title text-left">
-                     Categorias populares
+                     <?= translate('categorie_popular_lang') ?>
+
                   </h3>
                </div>
             </div>
@@ -211,7 +212,7 @@
                <ul class="popular-categories">
                   <?php foreach ($all_cate_anuncio as $item) {  ?>
                      <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                     <li><a href="<?= site_url('front/anuncios_index/' . $item->cate_anuncio_id) ?>"><i><img style="heigth:128px; width:128px; margin-left:38px;" class="img-responsive img-rounded" src="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>
+                     <li><a href="<?= site_url('front/buscar_anuncio/' . $item->cate_anuncio_id) ?>"><i><img style="heigth:128px; width:128px; margin-left:38px;" class="img-responsive img-rounded" src="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( <?= $item->count ?> )</span></a></li>
 
                   <?php } ?>
                </ul>

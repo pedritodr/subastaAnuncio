@@ -15,11 +15,11 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-md-12">
                 <!-- Form -->
-                <?= form_open_multipart("front/buscar_subasta", array('class' => 'search-form')); ?>
+                <?= form_open_multipart("front/buscar_anuncio", array('class' => 'search-form')); ?>
 
                 <!-- Search Field -->
                 <div class="col-md-9 col-xs-12 col-sm-4 no-padding">
-                    <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                    <input name="anuncio_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
                 </div>
                 <!-- Search Button -->
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
@@ -56,110 +56,109 @@
                         </div>
                         <!-- Sorting Filters End-->
                         <div class="clearfix"></div>
-                        <!-- Ads Archive -->
-                        <?php foreach ($all_anuncios as $item) { ?>
+                        <!-- Ads Archive --><?php if ($all_anuncios) { ?>
+                            <?php foreach ($all_anuncios as $item) { ?>
+                                <div class="ads-list-archive">
+                                    <!-- Image Block -->
+                                    <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
+                                        <!-- Img Block -->
+                                        <div class="ad-archive-img">
+                                            <a href="#">
+                                                <div class="ribbon popular"></div>
 
 
+                                                <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
+                                                    <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                                <?php } else { ?>
+                                                    <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
 
+                                                <?php } ?>
 
-                            <div class="ads-list-archive">
-                                <!-- Image Block -->
-                                <div class="col-lg-5 col-md-5 col-sm-5 no-padding">
-                                    <!-- Img Block -->
-                                    <div style="width:90%" class="ad-archive-img">
-                                        <a href="#">
-                                            <div class="ribbon popular"></div>
+                                            </a>
 
-
-                                            <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
-                                                <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
-                                            <?php } else { ?>
-                                                <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
-
-                                            <?php } ?>
-
-                                        </a>
-
-                                    </div>
-                                    <!-- Img Block -->
-                                </div>
-                                <!-- Ads Listing -->
-                                <div class="clearfix visible-xs-block"></div>
-                                <!-- Content Block -->
-                                <div class="col-lg-7 col-md-7 col-sm-7 no-padding">
-                                    <!-- Ad Desc -->
-                                    <div class="ad-archive-desc">
-                                        <!-- Price -->
-                                        <div class="ad-price">
-                                            <font style="vertical-align: inherit;">
-                                                <font style="vertical-align: inherit;">$ <?= number_format($item->precio, 2) ?></font>
-                                            </font>
                                         </div>
-                                        <!-- Title -->
-                                        <h6>
-                                            <font style="vertical-align: inherit;">
-                                                <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
-                                            </font>
-                                        </h6>
-                                        <!-- Category -->
-                                        <div class="category-title"> <span><a href="#">
-                                                    <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;"><?= $item->categoria ?>/<?= $item->subcategoria ?></font>
-                                                    </font>
-                                                </a></span> </div>
-                                        <!-- Short Description -->
-                                        <div class="clearfix visible-xs-block"></div>
-                                        <p class="hidden-sm">
-                                            <font style="vertical-align: inherit;">
-                                                <font style="vertical-align: inherit;"><?= $item->corta ?></font>
-                                            </font>
-                                        </p>
-                                        <!-- Ad Features -->
-                                        <ul class="add_info">
-                                            <!-- Contact Details -->
-                                            <li>
-                                                <div class="custom-tooltip tooltip-effect-4">
-                                                    <span class="tooltip-item"><i class="fa fa-phone"></i></span>
-                                                    <div class="tooltip-content">
-                                                        <span class="label label-success">
-                                                            <font style="vertical-align: inherit;">
-                                                                <font style="vertical-align: inherit;">+ <?= $item->whatsapp ?></font>
-                                                            </font>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <!-- Address -->
-                                            <li>
-                                                <div class="custom-tooltip tooltip-effect-4">
-                                                    <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
-                                                    <div class="tooltip-content">
-
+                                        <!-- Img Block -->
+                                    </div>
+                                    <!-- Ads Listing -->
+                                    <div class="clearfix visible-xs-block"></div>
+                                    <!-- Content Block -->
+                                    <div class="col-lg-8 col-md-8 col-sm-8 no-padding">
+                                        <!-- Ad Desc -->
+                                        <div class="ad-archive-desc">
+                                            <!-- Price -->
+                                            <div class="ad-price">
+                                                <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;">$ <?= number_format($item->precio, 2) ?></font>
+                                                </font>
+                                            </div>
+                                            <!-- Title -->
+                                            <h6>
+                                                <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                                </font>
+                                            </h6>
+                                            <!-- Category -->
+                                            <div class="category-title"> <span><a href="#">
                                                         <font style="vertical-align: inherit;">
-                                                            <font style="vertical-align: inherit;">
-                                                                <?= $item->direccion ?>
-                                                            </font>
+                                                            <font style="vertical-align: inherit;"><?= $item->categoria ?>/<?= $item->subcategoria ?></font>
                                                         </font>
+                                                    </a></span> </div>
+                                            <!-- Short Description -->
+                                            <div class="clearfix visible-xs-block"></div>
+                                            <p class="hidden-sm">
+                                                <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;"><?= $item->corta ?></font>
+                                                </font>
+                                            </p>
+                                            <!-- Ad Features -->
+                                            <ul class="add_info">
+                                                <!-- Contact Details -->
+                                                <li>
+                                                    <div class="custom-tooltip tooltip-effect-4">
+                                                        <span class="tooltip-item"><i class="fa fa-phone"></i></span>
+                                                        <div class="tooltip-content">
+                                                            <span class="label label-success">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">+ <?= $item->whatsapp ?></font>
+                                                                </font>
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                                <!-- Address -->
+                                                <li>
+                                                    <div class="custom-tooltip tooltip-effect-4">
+                                                        <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
+                                                        <div class="tooltip-content">
+
+                                                            <font style="vertical-align: inherit;">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <?= $item->direccion ?>
+                                                                </font>
+                                                            </font>
+                                                        </div>
+                                                    </div>
+                                                </li>
 
 
-                                        </ul>
-                                        <!-- Ad History -->
-                                        <div class="clearfix archive-history">
+                                            </ul>
+                                            <!-- Ad History -->
+                                            <div class="clearfix archive-history">
 
-                                            <div class="ad-meta"> <a class="btn btn-success"><i class="fa fa-phone"></i>
-                                                    <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
-                                                    </font>
-                                                </a> </div>
+                                                <div class="ad-meta"> <a class="btn btn-success"><i class="fa fa-phone"></i>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
+                                                        </font>
+                                                    </a> </div>
+                                            </div>
                                         </div>
+                                        <!-- Ad Desc End -->
                                     </div>
-                                    <!-- Ad Desc End -->
+                                    <!-- Content Block End -->
                                 </div>
-                                <!-- Content Block End -->
-                            </div>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <p class="text-center"><?= translate("n_resultados"); ?></p>
                         <?php } ?>
                         <!-- Ads Archive End -->
                         <div class="clearfix"></div>
@@ -188,7 +187,7 @@
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <i class="more-less glyphicon glyphicon-plus"></i>
-                                            Categories
+                                            <?= translate("categories_lang"); ?>
                                         </a>
                                     </h4>
                                     <!-- Title End -->
@@ -197,21 +196,13 @@
                                 <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body categories">
                                         <ul>
-                                            <li><a href="#"><i class="flaticon-data"></i>Electronics & Gedget<span>(1029)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-transport-6"></i>Cars & Vehicles<span>(1228)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-mortgage"></i>Property<span>(178)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-technology-8"></i>Mobile & Tablets<span>(2178)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-suitcase"></i>Jobs<span>(7178)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-search"></i>Home & Garden<span>(7163)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-dog"></i>Pets & Animals<span>(8709)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-science"></i>Health & Beauty<span>(3129)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-game"></i>Hobby, Sport & Kids<span>(2019)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-food"></i>Food & Agriculture<span>(323)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-blouse"></i>Women & Children Cloths<span>(425)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-technology-22"></i>Cameras & Security<span>(3223)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-technology-45"></i>Office Product<span>(3283)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-wrench"></i>Arts, Crafts & Sewing<span>(3221)</span></a></li>
-                                            <li><a href="#"><i class="flaticon-cogwheel-2"></i>Others<span>(3129)</span></a></li>
+                                            <?php if ($categories) { ?>
+                                                <?php foreach ($categories as $item) { ?>
+                                                    <li><a href="<?= site_url('front/buscar_anuncio') . "/" . $item->cate_anuncio_id ?>"><i><img style="width:5%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                <?php } ?>
+                                            <?php } ?>
+
+
                                         </ul>
                                     </div>
                                 </div>
@@ -221,8 +212,8 @@
 
 
                             <!-- Featured Ads Panel -->
-                            <div class="panel panel-default">
-                                <!-- Heading -->
+                            <!--  <div class="panel panel-default">
+
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a>
@@ -230,35 +221,34 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <!-- Content -->
+
                                 <div class="panel-collapse">
                                     <div class="panel-body recent-ads">
                                         <div class="featured-slider-3">
-                                            <!-- Featured Ads -->
+
                                             <div class="item">
                                                 <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
-                                                    <!-- Ad Box -->
+
                                                     <div class="category-grid-box">
-                                                        <!-- Ad Img -->
+
                                                         <div class="category-grid-img">
                                                             <img class="img-responsive" alt="" src="images/posting/car-3.jpg">
-                                                            <!-- Ad Status -->
-                                                            <!-- User Review -->
+
                                                             <div class="user-preview">
                                                                 <a href="#"> <img src="images/users/2.jpg" class="avatar avatar-small" alt=""> </a>
                                                             </div>
-                                                            <!-- View Details --><a href="#" class="view-details">View Details</a>
+                                                        <a href="#" class="view-details">View Details</a>
                                                         </div>
-                                                        <!-- Ad Img End -->
+
                                                         <div class="short-description">
-                                                            <!-- Ad Category -->
+
                                                             <div class="category-title"> <span><a href="#">Cars</a></span> </div>
-                                                            <!-- Ad Title -->
+
                                                             <h3><a title="" href="single-page-listing.html">2017 Honda Civic EX</a></h3>
-                                                            <!-- Price -->
+
                                                             <div class="price">$18,200 <span class="negotiable">(Negotiable)</span></div>
                                                         </div>
-                                                        <!-- Addition Info -->
+
                                                         <div class="ad-info">
                                                             <ul>
                                                                 <li><i class="fa fa-map-marker"></i>London</li>
@@ -266,14 +256,14 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <!-- Ad Box End -->
+
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Featured Ads Panel End -->
                             <!-- Latest Ads Panel -->
 
