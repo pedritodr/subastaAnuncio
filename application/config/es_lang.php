@@ -418,8 +418,9 @@ $config['phone_cel_lang'] = "Teléfono/Celular";
 $config['cedula_lang'] = "Cédula";
 $config['address_lang'] = "Dirección";
 $config['password_lang'] = "Contraseña";
-$config['subcategories_lang'] = "Categorias";
+$config['categories_lang'] = "Categorias";
 $config['categorie_lang'] = "Categoria";
+$config['categorie_popular_lang'] = "Categorias populares";
 
 $config['create_cuenta_lang'] = "Crea tu cuenta";
 

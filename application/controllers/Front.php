@@ -26,6 +26,7 @@ class Front extends CI_Controller
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Categoria_model', 'categoria');
         $this->load->model('Subasta_model', 'subasta');
+        $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Pais_model', 'pais');
 
 
@@ -36,9 +37,13 @@ class Front extends CI_Controller
 
 
         $all_cate_anuncio = $this->cate_anuncio->get_all();
+        foreach ($all_cate_anuncio as $item) {
+            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+        }
         $data['all_cate_anuncio'] = $all_cate_anuncio;
 
         $all_subcate = $this->cate_anuncio->get_all_subcate();
+
         $data['all_subcate'] = $all_subcate;
 
         $all_categorias = $this->categoria->get_all(['is_active' => 1]);
@@ -555,6 +560,9 @@ class Front extends CI_Controller
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
+        foreach ($categories as $item) {
+            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+        }
         $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('front/anuncios_index/');
@@ -606,8 +614,8 @@ class Front extends CI_Controller
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
 
-            if ($long > 400) {
-                $item->corta = substr($item->descripcion, 0, 400) . "...";
+            if ($long > 150) {
+                $item->corta = substr($item->descripcion, 0, 150) . "...";
             } else {
 
                 $item->corta = $item->descripcion;
@@ -630,6 +638,125 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/anuncios', $data);
     }
+
+    public function buscar_anuncio($category = 0)
+    {
+
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Cate_anuncio_model', 'category');
+        $categories = $this->category->get_all();
+
+        foreach ($categories as $item) {
+            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+        }
+        $data['categories'] = $categories;
+
+        $anuncio_palabra = $this->input->post('anuncio_palabra');
+        $ok = false;
+        if ($category != 0) {
+
+            $contador = count($this->anuncio->get_anuncios_by_category($category));
+
+            $ok = true;
+        } elseif ($anuncio_palabra != '') {
+            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra));
+            $ok = false;
+        }
+
+        /* URL a la que se desea agregar la paginación*/
+        $config['base_url'] = site_url('front/anuncios_index/');
+
+        /*Obtiene el total de registros a paginar */
+
+        $config['total_rows'] = $contador;
+        $user_id = $this->session->userdata('user_id');
+
+        /*Obtiene el numero de registros a mostrar por pagina */
+        $config['per_page'] = '5';
+        $config['uri_segment'] = 3;
+        /*Se personaliza la paginación para que se adapte a bootstrap*/
+
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+
+        $config['cur_tag_close'] = '</a></li>';
+
+        $config['num_tag_open'] = '<li>';
+
+        $config['num_tag_close'] = '</li>';
+
+        $config['last_link'] = FALSE;
+
+        $config['first_link'] = FALSE;
+
+        $config['next_link'] = '&raquo;';
+
+        $config['next_tag_open'] = '<li>';
+
+        $config['next_tag_close'] = '</li>';
+
+        $config['prev_link'] = '&laquo;';
+
+        $config['prev_tag_open'] = '<li>';
+
+        $config['prev_tag_close'] = '</li>';
+
+
+        /* Se inicializa la paginacion*/
+
+        $this->pagination->initialize($config);
+        $page = $this->uri->segment(3);
+        var_dump($page);
+        die();
+        $offset = !$page ? 0 : $page;
+
+        //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        if ($ok) {
+            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);
+            var_dump($all_anuncios);
+            die();
+        } else {
+            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra);
+        }
+
+
+        foreach ($all_anuncios as $item) {
+            $long = strlen($item->descripcion);
+
+            if ($long > 150) {
+                $item->corta = substr($item->descripcion, 0, 150) . "...";
+            } else {
+
+                $item->corta = $item->descripcion;
+            }
+        }
+
+        $data['all_anuncios'] = $all_anuncios;
+        $data['resultados'] = $contador;
+        if ($offset == 0) {
+            if ($contador == 0) {
+                $data['inicio'] = 0;
+                $data['fin'] = 0;
+            } else {
+                $data['inicio'] = 1;
+                if ($contador >= 5) {
+                    $data['fin'] =  5;
+                } else {
+                    $data['fin'] = $contador;
+                }
+            }
+        } else {
+            $data['inicio'] = $offset + 1;
+            $intervalo = 5 + $offset;
+            if ($intervalo > $contador) {
+                $data['fin'] = $contador;
+            } else {
+                $data['fin'] = $intervalo;
+            }
+        }
+
+        $this->load_view_front('front/anuncios', $data);
+    }
+
 
     public function about()
     {
