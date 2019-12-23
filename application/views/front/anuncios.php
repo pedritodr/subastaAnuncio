@@ -1,15 +1,48 @@
-<section class="breadcrumb-1 small-hero">
-    <div class="bg-overlay">
-        <div class="container">
-            <!-- Main Content -->
-            <div class="content-section">
-                <!-- Title -->
+<div id="carousel-example-generic" class="carousel slide banner2" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <?php if (count($all_banners) > 1) { ?>
 
+            <?php for ($i = 1; $i < count($all_banners); $i++) { ?>
+
+                <li data-target="#carousel-example-generic" data-slide-to="<?= $i ?>"></li>
+            <?php } ?>
+        <?php } ?>
+
+
+    </ol>
+    <div class="carousel-inner">
+        <?php if (count($all_banners) > 0) { ?>
+            <div class="item active">
+                <img style="width:100% !important" class="img-responsive" src="<?= base_url($all_banners[0]->foto) ?>" alt="First slide">
+                <!--   <div class="carousel-caption">
+               <h3>
+                  First slide</h3>
+               <p>
+                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div> -->
             </div>
-            <!-- Main Content End -->
-        </div>
+        <?php } ?>
+        <?php if (count($all_banners) > 1) { ?>
+            <?php for ($j = 1; $j < count($all_banners); $j++) { ?>
+                <div class="item">
+                    <img style="width:100% !important" src="<?= base_url($all_banners[$j]->foto) ?>" alt="Second slide">
+                    <!--  <div class="carousel-caption">
+               <h3>
+                  Second slide</h3>
+               <p>
+                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div> -->
+                </div>
+            <?php } ?>
+        <?php } ?>
+
+
     </div>
-</section>
+    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
+        </span></a>
+</div>
 <div id="search-section">
     <div class="container">
         <div class="row">
@@ -63,11 +96,12 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
-                                            <a href="#">
+                                            <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
                                                 <div class="ribbon popular"></div>
 
 
                                                 <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
+
                                                     <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
                                                 <?php } else { ?>
                                                     <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
@@ -92,11 +126,13 @@
                                                 </font>
                                             </div>
                                             <!-- Title -->
-                                            <h6>
-                                                <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
-                                                </font>
-                                            </h6>
+                                            <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
+                                                <h6>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                                    </font>
+                                                </h6>
+                                            </a>
                                             <!-- Category -->
                                             <div class="category-title"> <span><a href="#">
                                                         <font style="vertical-align: inherit;">
@@ -145,7 +181,7 @@
                                             <!-- Ad History -->
                                             <div class="clearfix archive-history">
 
-                                                <div class="ad-meta"> <a class="btn btn-success"><i class="fa fa-phone"></i>
+                                                <div class="ad-meta"> <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>" class="btn btn-success"><i class="fa fa-phone"></i>
                                                         <font style="vertical-align: inherit;">
                                                             <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
                                                         </font>
@@ -195,15 +231,17 @@
                                 <!-- Content -->
                                 <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body categories">
+                                        <?= form_open_multipart("front/buscar_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                         <ul>
                                             <?php if ($categories) { ?>
                                                 <?php foreach ($categories as $item) { ?>
-                                                    <li><a href="<?= site_url('front/buscar_anuncio') . "/" . $item->cate_anuncio_id ?>"><i><img style="width:5%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:5%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+
                                                 <?php } ?>
+                                                <input name="category" id="category" class="" type="hidden" value="">
                                             <?php } ?>
-
-
                                         </ul>
+                                        <?= form_close(); ?>
                                     </div>
                                 </div>
                             </div>
@@ -279,3 +317,76 @@
         </div>
         <!-- Main Container End -->
     </section>
+    <script>
+        function cargar_input(params) {
+            $('#category').val(params);
+            $("#buscar_categoria").submit();
+        }
+    </script>
+    <style>
+        /* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+        /* Carousel base class */
+        .carousel {
+            margin-bottom: 58px;
+        }
+
+        /* Since positioning the image, we need to help out the caption */
+        .carousel-caption {
+            z-index: 1;
+        }
+
+        /* Declare heights because of positioning of img element */
+        .carousel .item {
+            height: 500px;
+            background-color: #555;
+        }
+
+        .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 500px;
+        }
+
+        .banner2 {
+            padding-top: 107px !important
+        }
+
+        @media screen and (max-width: 992px) {
+            /*      .banner2 {
+            margin-top: 0
+         } */
+
+            .carousel .item {
+                height: 300px;
+                background-color: #555;
+            }
+
+            .carousel img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                min-height: 300px;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            /*   .banner2 {
+   margin-top: 29% !important
+} */
+
+            .carousel .item {
+                height: 300px;
+                background-color: #555;
+            }
+
+            .carousel img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                min-height: 300px;
+            }
+        }
+    </style>

@@ -49,10 +49,10 @@ class Banner extends CI_Controller
         $url = $this->input->post('url');
         $titulo = $this->input->post('titulo');
         $subtitulo = $this->input->post('subtitulo');
-
+        $menu = $this->input->post('menu');
 
         //establecer reglas de validacion
-        $this->form_validation->set_rules('url', translate('url_lang'), 'required');
+        $this->form_validation->set_rules('menu', translate('menu_lang'), 'required');
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
@@ -60,7 +60,7 @@ class Banner extends CI_Controller
         } else { //en caso de que todo este bien
             $name_file = $_FILES['archivo']['name'];
             $w = 1300;
-            $h = 721;
+            $h = 500;
 
             $separado = explode('.', $name_file);
             $ext = end($separado); // me quedo con la extension
@@ -75,6 +75,7 @@ class Banner extends CI_Controller
                         'url' => $url,
                         'titulo' => $titulo,
                         'subtitulo' => $subtitulo,
+                        'menu_id' => $menu,
                     ];
                     $this->banner->create($data_banner);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -118,19 +119,16 @@ class Banner extends CI_Controller
         $url = $this->input->post('url');
         $titulo = $this->input->post('titulo');
         $subtitulo = $this->input->post('subtitulo');
-
-
-        //establecer reglas de validacion
-        $this->form_validation->set_rules('url', translate('url_lang'), 'required');
+        $menu = $this->input->post('menu');
 
         $banner_id = $this->input->post('banner_id');
-
+        $this->form_validation->set_rules('menu', translate('menu_lang'), 'required');
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("banner/update_index/" . $banner_id);
         } else { //en caso de que todo este bien
             $w = 1300;
-            $h = 721;
+            $h = 500;
 
             $name_file = $_FILES['archivo']['name'];
             $separado = explode('.', $name_file);
@@ -144,6 +142,7 @@ class Banner extends CI_Controller
                         'url' => $url,
                         'titulo' => $titulo,
                         'subtitulo' => $subtitulo,
+                        'menu_id' => $menu
 
                     ];
                     $this->banner->update($banner_id, $data);
@@ -166,6 +165,7 @@ class Banner extends CI_Controller
                                 'url' => $url,
                                 'titulo' => $titulo,
                                 'subtitulo' => $subtitulo,
+                                'menu_id' => $menu
                             ];
                             $this->banner->update($banner_id, $data_banner);
                             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);

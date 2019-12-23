@@ -12,18 +12,7 @@
     </div>
  </div>
  <!-- Small Breadcrumb -->
- <div class="small-breadcrumb">
-    <div class="container">
-       <div class=" breadcrumb-link">
-          <ul>
-             <li><a href="<?= site_url('portada') ?>"><?= translate('inicio_lang') ?></a></li>
 
-             <li><a class="active" href="<?= site_url('contacto') ?>"><?= translate('contact_lang') ?></a></li>
-          </ul>
-       </div>
-    </div>
- </div>
- <!-- Small Breadcrumb -->
  <!-- =-=-=-=-=-=-= Transparent Breadcrumb End =-=-=-=-=-=-= -->
  <!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
  <div class="main-content-area clearfix">

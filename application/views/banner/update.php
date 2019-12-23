@@ -33,7 +33,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-3">
-                                        <label><?= translate("image_lang"); ?> (1300X721)</label>
+                                        <label><?= translate("image_lang"); ?> (1300X500)</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-image"></i></span>
                                             <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
@@ -70,7 +70,22 @@
 
                                     </div>
 
+                                    <div class="col-lg-3">
+                                        <label><?= translate("menu_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+                                            </span>
+                                            <select id="menu" name="menu" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
+
+                                                <option <?php if ($banner_object->menu_id == 1) { ?> selected <?php } ?> value="1">Portada</option>
+                                                <option <?php if ($banner_object->menu_id == 2) { ?> selected <?php } ?> value="2">Subasta</option>
+                                                <option <?php if ($banner_object->menu_id == 3) { ?> selected <?php } ?> value="3">Anuncio</option>
+
+
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <br>
                                 <div class="row">

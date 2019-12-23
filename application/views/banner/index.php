@@ -3,8 +3,8 @@
     <section class="content-header">
         <h1>
             <?= translate('manage_banners_lang'); ?>
-            <small><?= translate('listar_banner_lang'); ?></small>
-
+            <small><?= translate('listar_banner_lang'); ?></small>| <a href="<?= site_url('banner/add_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
+            </a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
@@ -54,7 +54,7 @@
                                         <td>
                                             <a href="<?= site_url('banner/update_index/' . $item->banner_id); ?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a>
 
-                                            <!-- eliminar  <a href="<?= site_url('banner/delete/' . $item->banner_id); ?>" class="btn btn-danger"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a>-->
+                                            <a href="<?= site_url('banner/delete/' . $item->banner_id); ?>" class="btn btn-danger btn-sm"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a>
 
                                         </td>
                                     </tr>
