@@ -1,21 +1,60 @@
-<section id="hero" class="hero bg-img">
-   <div class="content">
-      <p>
-         <font style="vertical-align: inherit;">
-            <font style="vertical-align: inherit;"><a href="<?= $all_banners[0]->url ?>"><?= $all_banners[0]->titulo ?></a></font>
-         </font>
-      </p>
+<div id="carousel-example-generic" class="carousel slide banner2" data-ride="carousel">
+   <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <?php if (count($all_banners) > 1) { ?>
 
-      <h1><?= $all_banners[0]->subtitulo ?></h1>
+         <?php for ($i = 1; $i < count($all_banners); $i++) { ?>
+
+            <li data-target="#carousel-example-generic" data-slide-to="<?= $i ?>"></li>
+         <?php } ?>
+      <?php } ?>
+
+
+   </ol>
+   <div class="carousel-inner">
+      <?php if (count($all_banners) > 0) { ?>
+         <div class="item active">
+            <img style="width:100% !important" class="img-responsive" src="<?= base_url($all_banners[0]->foto) ?>" alt="First slide">
+            <!--   <div class="carousel-caption">
+               <h3>
+                  First slide</h3>
+               <p>
+                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div> -->
+         </div>
+      <?php } ?>
+      <?php if (count($all_banners) > 1) { ?>
+         <?php for ($j = 1; $j < count($all_banners); $j++) { ?>
+            <div class="item">
+               <img style="width:100% !important" src="<?= base_url($all_banners[$j]->foto) ?>" alt="Second slide">
+               <!--  <div class="carousel-caption">
+               <h3>
+                  Second slide</h3>
+               <p>
+                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div> -->
+            </div>
+         <?php } ?>
+      <?php } ?>
+
 
    </div>
-   <!-- .content -->
-</section>
-<!-- Home Banner 1 End -->
-<!-- Main Content Area -->
+   <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
+      </span></a>
+</div>
+
 <div class="main-content-area clearfix">
+
+
+
+
    <!-- =-=-=-=-=-=-= Home Tabs =-=-=-=-=-=-= -->
    <section class="home-tabs">
+      <!-- Carousel
+================================================== -->
+
+      <!-- /.carousel -->
       <div class="container">
          <div class="row">
             <div class="col-md-12">
@@ -209,13 +248,16 @@
             </div>
             <!-- Middle Content Box -->
             <div class="col-md-12 category-blocks">
+               <?= form_open_multipart("front/buscar_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                <ul class="popular-categories">
                   <?php foreach ($all_cate_anuncio as $item) {  ?>
                      <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                     <li><a href="<?= site_url('front/buscar_anuncio/' . $item->cate_anuncio_id) ?>"><i><img style="heigth:128px; width:128px; margin-left:38px;" class="img-responsive img-rounded" src="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( <?= $item->count ?> )</span></a></li>
+                     <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="heigth:128px; width:128px; margin-left:38px;" class="img-responsive img-rounded" src="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( <?= $item->count ?> )</span></a></li>
 
                   <?php } ?>
                </ul>
+               <input name="category" id="category" class="" type="hidden" value="">
+               <?= form_close(); ?>
             </div>
             <!-- Middle Content Box End -->
          </div>
@@ -242,6 +284,72 @@
 
       p a {
          color: #fff !important;
+      }
+
+      /* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+      /* Carousel base class */
+      .carousel {
+         margin-bottom: 58px;
+      }
+
+      /* Since positioning the image, we need to help out the caption */
+      .carousel-caption {
+         z-index: 1;
+      }
+
+      /* Declare heights because of positioning of img element */
+      .carousel .item {
+         height: 500px;
+         background-color: #555;
+      }
+
+      .carousel img {
+         position: absolute;
+         top: 0;
+         left: 0;
+         min-height: 500px;
+      }
+
+      .banner2 {
+         padding-top: 107px !important
+      }
+
+      @media screen and (max-width: 992px) {
+         /*      .banner2 {
+            margin-top: 0
+         } */
+
+         .carousel .item {
+            height: 300px;
+            background-color: #555;
+         }
+
+         .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 300px;
+         }
+      }
+
+      @media screen and (max-width: 400px) {
+         /*   .banner2 {
+   margin-top: 29% !important
+} */
+
+         .carousel .item {
+            height: 300px;
+            background-color: #555;
+         }
+
+         .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 300px;
+         }
       }
    </style>
    <script>
@@ -277,5 +385,10 @@
          }, 1000);
 
 
+      }
+
+      function cargar_input(params) {
+         $('#category').val(params);
+         $("#buscar_categoria").submit();
       }
    </script>

@@ -1035,7 +1035,7 @@ ul {
 	top: 0;
 	width: 100%;
 	z-index: 999;
-	background: rgba(0, 0, 0, 0.46) none repeat scroll 0 0;
+	/* background: rgba(0, 0, 0, 0.46) none repeat scroll 0 0; */
 	font-family: 'Lato', sans-serif !important;
 }
 
@@ -4078,7 +4078,7 @@ ul.add_info li i {
 }
 
 .ad-listing-meta ul li span {
-	float: right;
+	float: initial;
 	font-weight: 600;
 }
 
@@ -5195,6 +5195,7 @@ ul.category-list-data li:hover a span {
 	background-repeat: no-repeat;
 	background-size: cover;
 	color: #fff;
+	margin-top: 6%;
 	position: relative;
 }
 

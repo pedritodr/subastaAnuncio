@@ -21,7 +21,7 @@ class Front extends CI_Controller
 
     public function index()
     {
-        $this->load->model('Banner_model', 'banner');
+
         $this->load->model('Empresa_model', 'empresa');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Categoria_model', 'categoria');
@@ -31,8 +31,8 @@ class Front extends CI_Controller
 
 
         $data['empresa_object'] = $this->empresa->get_by_id(1);
-
-        $all_banners = $this->banner->get_all(); //todos los banners
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
 
 
@@ -182,12 +182,21 @@ class Front extends CI_Controller
 
 
 
-        $all_anuncios = $this->anuncio->get_by_id($anuncio_id);
+        $all_anuncios = $this->anuncio->get_all_anuncios_id($anuncio_id);
+        $relacionados = $this->anuncio->get_relacionados($all_anuncios->cate_anuncio_id, $anuncio_id);
+        foreach ($relacionados as $item) {
+            $long = strlen($item->descripcion);
 
+            if ($long > 150) {
+                $item->corta = substr($item->descripcion, 0, 150) . "...";
+            } else {
 
+                $item->corta = $item->descripcion;
+            }
+        }
         $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
 
-
+        $data['relacionados'] =  $relacionados;
         $data['all_anuncios'] =  $all_anuncios;
         $data['fotos_object'] = $fotos_object;
 
@@ -346,7 +355,8 @@ class Front extends CI_Controller
                         'lng' => $lng,
                         'ciudad_id' => $ciudad,
                         'user_id' => $user_id,
-                        'direccion' => $direccion
+                        'direccion' => $direccion,
+                        'fecha' =>  date("Y-m-d")
                     ];
                     $this->anuncio->create($data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -374,6 +384,9 @@ class Front extends CI_Controller
 
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 2]); //todos los banners
+        $data['all_banners'] = $all_banners;
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
         $category = $this->input->post('category');
@@ -480,6 +493,9 @@ class Front extends CI_Controller
         $this->load->model('Categoria_model', 'category');
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 2]); //todos los banners
+        $data['all_banners'] = $all_banners;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('front/subasta/');
 
@@ -557,6 +573,9 @@ class Front extends CI_Controller
     }
     public function anuncios_index()
     {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
+        $data['all_banners'] = $all_banners;
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
@@ -639,12 +658,15 @@ class Front extends CI_Controller
         $this->load_view_front('front/anuncios', $data);
     }
 
-    public function buscar_anuncio($category = 0)
+    public function buscar_anuncio()
     {
 
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
+        $data['all_banners'] = $all_banners;
 
         foreach ($categories as $item) {
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
@@ -652,8 +674,10 @@ class Front extends CI_Controller
         $data['categories'] = $categories;
 
         $anuncio_palabra = $this->input->post('anuncio_palabra');
+        $category = $this->input->post('category');
+
         $ok = false;
-        if ($category != 0) {
+        if ($category != NULL) {
 
             $contador = count($this->anuncio->get_anuncios_by_category($category));
 
@@ -705,15 +729,13 @@ class Front extends CI_Controller
 
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
-        var_dump($page);
-        die();
+
         $offset = !$page ? 0 : $page;
 
-        //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        //
         if ($ok) {
+
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);
-            var_dump($all_anuncios);
-            die();
         } else {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra);
         }
@@ -763,7 +785,9 @@ class Front extends CI_Controller
 
         $this->load->model('Empresa_model', 'empresa');
         $this->load->model('Membresia_model', 'membresia');
-
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
+        $data_object['all_banners'] = $all_banners;
 
         $empresa_id = $this->input->post('empresa_id');
 

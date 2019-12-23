@@ -380,7 +380,7 @@ $config['name_publi_lang'] = "Publicar anuncio";
 $config['publi_lang'] = "Publique su anuncio";
 $config['publicar_lang'] = "Publicar";
 $config['publi_boton_ang'] = "Publicar mi anuncio";
-
+$config['publicado_lang'] = "Publicado el";
 $config['name_cliente_lang'] = "Tu Nombre";
 
 $config['buscando_lang'] = "Qué estás buscando...";
@@ -421,6 +421,8 @@ $config['password_lang'] = "Contraseña";
 $config['categories_lang'] = "Categorias";
 $config['categorie_lang'] = "Categoria";
 $config['categorie_popular_lang'] = "Categorias populares";
+$config['contactar_vendedor_lang'] = "Contactar al vendedor";
+$config['anuncio_relacionado_lang'] = "Anuncios relacionados";
 
 $config['create_cuenta_lang'] = "Crea tu cuenta";
 

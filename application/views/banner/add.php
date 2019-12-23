@@ -34,21 +34,21 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-3">
-                                        <label><?= translate("image_lang"); ?> (1300X721)</label>
+                                        <label><?= translate("image_lang"); ?> (1300X500)</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-image"></i></span>
-                                            <input type="file" class="form-control" name="archivo" required placeholder="<?= translate('image_lang'); ?>">
+                                            <input type="file" class="form-control input-sm" name="archivo" required placeholder="<?= translate('image_lang'); ?>">
                                         </div>
 
-                                     </div>
+                                    </div>
 
-                                        <div class="col-lg-3">
-                                            <label><?= translate("titulo_lang"); ?></label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                                <input type="text" class="form-control" name="titulo" placeholder="<?= translate('titulo_lang'); ?>">
-                                            </div>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("titulo_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
+                                            <input type="text" class="form-control input-sm" name="titulo" placeholder="<?= translate('titulo_lang'); ?>">
                                         </div>
+                                    </div>
 
 
 
@@ -56,7 +56,7 @@
                                         <label><?= translate("subtitulo_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                            <input type="text" class="form-control" name="subtitulo" placeholder="<?= translate('subtitulo_lang'); ?>">
+                                            <input type="text" class="form-control input-sm" name="subtitulo" placeholder="<?= translate('subtitulo_lang'); ?>">
                                         </div>
                                     </div>
 
@@ -67,31 +67,25 @@
                                         <label><?= translate("url_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                            <input type="url" class="form-control" name="url" placeholder="<?= translate('url_lang'); ?>">
+                                            <input type="url" class="form-control input-sm" name="url" placeholder="<?= translate('url_lang'); ?>">
                                         </div>
                                     </div>
-                              <!-- orden  <div class="col-lg-2">
-                                        <label><?= translate("orden_lang"); ?></label>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("menu_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
                                             </span>
-                                            <select id="orden" name="orden" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+                                            <select id="menu" name="menu" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
 
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
+                                                <option value="1">Portada</option>
+                                                <option value="2">Subasta</option>
+                                                <option value="3">Anuncio</option>
+
 
                                             </select>
                                         </div>
-                                    </div> --->
+                                    </div>
 
                                 </div>
                                 <br>
