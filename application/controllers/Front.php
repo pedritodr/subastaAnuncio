@@ -68,7 +68,11 @@ class Front extends CI_Controller
 
     public function llamar_login()
     {
-        $this->load_view_front('front/login');
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+
+        $this->load_view_front('front/login', $data);
     }
 
 
@@ -376,8 +380,11 @@ class Front extends CI_Controller
 
     public function contacto()
     {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data_object['all_banners'] = $all_banners;
 
-        $this->load_view_front('front/contact');
+        $this->load_view_front('front/contact', $data_object);
     }
     public function buscar_subasta()
     {
@@ -813,6 +820,9 @@ class Front extends CI_Controller
 
         $this->load->model('Empresa_model', 'empresa');
         $this->load->model('Membresia_model', 'membresia');
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
+        $data_object['all_banners'] = $all_banners;
 
         $user_id = $this->session->userdata('user_id');
         $empresa_id = $this->input->post('empresa_id');
@@ -836,7 +846,9 @@ class Front extends CI_Controller
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Membresia_model', 'membresia');
         $user_id = $this->session->userdata('user_id');
-
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
 
         $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id]);
 
