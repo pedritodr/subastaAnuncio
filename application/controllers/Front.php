@@ -78,9 +78,11 @@ class Front extends CI_Controller
 
     public function registrar()
     {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
 
-
-        $this->load_view_front('front/add_cliente');
+        $this->load_view_front('front/add_cliente', $data);
     }
 
 
@@ -106,7 +108,9 @@ class Front extends CI_Controller
         $data['all_ciudad'] = $all_ciudad;
 
         $data['all_subcate'] = $all_subcate;
-
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
 
 
 
@@ -249,7 +253,7 @@ class Front extends CI_Controller
         $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
         $allow_extension = in_array($ext, $allow_extension_array);
         if ($allow_extension) {
-            $result = save_image_from_post('archivo', './uploads/photo_anuncio', time(), 750, 422.56);
+            $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 750);
             if ($result[0]) {
                 $data = [
                     'photo_anuncio' => $result[1],
@@ -263,12 +267,12 @@ class Front extends CI_Controller
                 redirect("front/detalle_anuncio/" . $anuncio_id);
             } else {
                 $this->response->set_message($result[1], ResponseMessage::ERROR);
-                redirect("listado-anuncio");
+                redirect("perfil");
             }
         } else {
 
             $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-            redirect("listado-anuncio");
+            redirect("perfil");
         }
     }
 
@@ -283,14 +287,17 @@ class Front extends CI_Controller
         $password = $this->input->post('password');
         $phone = $this->input->post('phone');
         $repeat_password = $this->input->post('repeat_password');
-        $lat = $this->input->post('lat');
-        $lng = $this->input->post('lng');
+        //  $lat = $this->input->post('lat');
+        // $lng = $this->input->post('lng');
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('name', translate('nombre_lang'), 'required');
         $this->form_validation->set_rules('email', translate('email_lang'), 'required|is_unique[user.email]');
-        $this->form_validation->set_rules('password', translate('password_lang'), 'required|matches[repeat_password]');
-
+        //  $this->form_validation->set_rules('password', translate('password_lang'), 'required|matches[repeat_password]');
+        if ($password !=  $repeat_password) {
+            $this->response->set_message("El campo contraseña no coinciden con el repetir contraseña", ResponseMessage::SUCCESS);
+            redirect("registrarse");
+        }
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
@@ -302,13 +309,88 @@ class Front extends CI_Controller
                 'password' => md5($password),
                 'phone' => $phone,
                 'role_id' => 4,
-                'lat' => $lat,
-                'lng' => $lng
 
             ];
-            $this->user->create($data_user);
+            $user_id =  $this->user->create($data_user);
+            $user = $this->user->get_by_id($user_id);
+            $session_data = object_to_array($user);
+            $this->session->set_userdata($session_data);
             $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-            redirect("login");
+            redirect("perfil");
+        }
+    }
+
+    public function update_cliente()
+    {
+
+        $this->load->model('User_model', 'user');
+
+        $name = $this->input->post('name');
+
+        $phone = $this->input->post('phone');
+        $ciudad = $this->input->post('ciudad');
+        $direccion = $this->input->post('direccion');
+
+        $user_id = $this->session->userdata('user_id');
+        //establecer reglas de validacion
+        $this->form_validation->set_rules('name', translate('nombre_lang'), 'required');
+
+        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
+            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
+            redirect("perfil");
+        } else { //en caso de que todo este bien
+
+            $name_file = $_FILES['archivo']['name'];
+
+            if ($name_file != "") {
+
+                $separado = explode('.', $name_file);
+                $ext = end($separado); // me quedo con la extension
+                $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
+                $allow_extension = in_array($ext, $allow_extension_array);
+                if ($allow_extension) {
+                    $result = save_image_from_post('archivo', './uploads/Cliente', time(), 400, 400);
+                    if ($result[0]) {
+                        $data = [
+                            'name' => $name,
+                            'ciudad_id' => $ciudad,
+                            'direccion' => $direccion,
+                            'phone' => $phone,
+                            'photo' => $result[1]
+
+                        ];
+                        $this->user->update($user_id, $data);
+                        $user = $this->user->get_by_id($user_id);
+                        $session_data = object_to_array($user);
+                        $this->session->set_userdata($session_data);
+                        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+                        redirect("perfil");
+                    } else {
+                        $this->response->set_message($result[1], ResponseMessage::ERROR);
+                        redirect("perfil", "location", 301);
+                    }
+                } else {
+
+                    $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
+                    redirect("perfil", "location", 301);
+                }
+            } else {
+
+                $data_user = [
+                    'name' => $name,
+                    'ciudad_id' => $ciudad,
+                    'direccion' => $direccion,
+                    'phone' => $phone
+
+                ];
+                $this->user->update($user_id, $data_user);
+                $user = $this->user->get_by_id($user_id);
+                $session_data = object_to_array($user);
+                $this->session->set_userdata($session_data);
+                $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+                $this->session->set_userdata('validando', 1);
+                redirect("perfil");
+            }
         }
     }
 
@@ -345,7 +427,7 @@ class Front extends CI_Controller
             $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
             $allow_extension = in_array($ext, $allow_extension_array);
             if ($allow_extension) {
-                $result = save_image_from_post('archivo', './uploads/anuncio', time(), 800, 600);
+                $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 750);
                 if ($result[0]) {
                     $data = [
                         'titulo' => $titulo,
@@ -364,7 +446,8 @@ class Front extends CI_Controller
                     ];
                     $this->anuncio->create($data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                    redirect("listado-anuncio");
+                    $this->session->set_userdata('validando', 2);
+                    redirect("perfil");
                 } else {
                     $this->response->set_message($result[1], ResponseMessage::ERROR);
                     redirect("anuncios", "location", 301);
@@ -846,6 +929,7 @@ class Front extends CI_Controller
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Membresia_model', 'membresia');
         $user_id = $this->session->userdata('user_id');
+        $ciudad_id = $this->session->userdata('ciudad_id');
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
@@ -925,7 +1009,21 @@ class Front extends CI_Controller
 
         $all_membresia = $this->membresia->get_by_user_id($user_id);
 
+        $city = $this->pais->get_by_city_all($ciudad_id);
+        $all_pais = $this->pais->get_all();
+        $data['all_pais'] = $all_pais;
 
+        if ($city) {
+            $all_ciudad = $this->pais->get_by_pais_id_object($city->pais_id);
+        } else {
+            $all_ciudad = $this->pais->get_by_pais_id_object($all_pais[0]->pais_id);
+        }
+
+
+        $this->session->set_userdata('validando', 2);
+
+        $data['all_ciudad'] = $all_ciudad;
+        $data['city'] = $city;
         $data['all_membresia'] = $all_membresia;
 
         $this->load_view_front('front/perfil', $data);

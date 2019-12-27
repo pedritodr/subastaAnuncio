@@ -276,9 +276,9 @@ fieldset[disabled] .btn-theme.active {
 }
 
 .user-profile ul li.active a::before {
-	border-left: 9px solid #f58936;
+	border-left: 9px solid #8c1822;
 }
 
 .user-profile ul li.active a {
-	border-left: 3px solid #f58936;
+	border-left: 3px solid #8c1822;
 }

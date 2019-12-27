@@ -68,7 +68,7 @@ class Cate_anuncio extends CI_Controller
             $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
             $allow_extension = in_array($ext, $allow_extension_array);
             if ($allow_extension) {
-                $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 768, 768);
+                $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 128, 128);
                 if ($result[0]) {
                     $data = ['nombre' => $nombre, 'photo' => $result[1], 'is_active' => 1];
                     $this->cate_anuncio->create($data);
@@ -141,7 +141,7 @@ class Cate_anuncio extends CI_Controller
 
                     if ($cate_anuncio_object) { //modificando la foto
 
-                        $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 768, 768);
+                        $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 128, 128);
                         if ($result[0]) {
                             if (file_exists($cate_anuncio_object->photo))
                                 unlink($cate_anuncio_object->photo);
@@ -190,99 +190,95 @@ class Cate_anuncio extends CI_Controller
 
 
 
-function index_subcate($cate_anuncio_id = 0)
-{
-    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-        $this->log_out();
-        redirect('login');
+    function index_subcate($cate_anuncio_id = 0)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $all_subcate = $this->cate_anuncio->get_by_Cate_anuncio_id($cate_anuncio_id);
+
+        $data['all_subcate'] = $all_subcate;
+        $data['cate_anuncio_id'] = $cate_anuncio_id;
+
+        $this->load_view_admin_g('cate_anuncio/index_subcate', $data);
     }
 
-    $all_subcate = $this->cate_anuncio->get_by_Cate_anuncio_id($cate_anuncio_id);
-
-    $data['all_subcate'] = $all_subcate;
-    $data['cate_anuncio_id'] = $cate_anuncio_id;
-
-    $this->load_view_admin_g('cate_anuncio/index_subcate', $data);
-}
 
 
+    //crea el registro de las subcategorias
+    public function add_subcate()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+        //FK
+        $nombre = $this->input->post('nombre');
+        $cate_anuncio_id = $this->input->post('cate_anuncio_id');
 
-//crea el registro de las subcategorias
-public function add_subcate()
-{
-    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-        $this->log_out();
-        redirect('login');
-    }
-//FK
-    $nombre = $this->input->post('nombre');
-    $cate_anuncio_id = $this->input->post('cate_anuncio_id');
+        //establecer reglas de validacion
+        $this->form_validation->set_rules('nombre', translate('fullname_lang'), 'required');
 
-    //establecer reglas de validacion
-    $this->form_validation->set_rules('nombre', translate('fullname_lang'), 'required');
-
-    if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
-        $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-        redirect("cate_anuncio/index_subcate");
-    }
-
-    else { //en caso de que todo este bien
-        $data_subcate = [
-           'nombre' => $nombre,
-           'cate_anuncio_id' => $cate_anuncio_id,
+        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
+            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
+            redirect("cate_anuncio/index_subcate");
+        } else { //en caso de que todo este bien
+            $data_subcate = [
+                'nombre' => $nombre,
+                'cate_anuncio_id' => $cate_anuncio_id,
 
 
-        ];
-        $this->cate_anuncio->create_sub_cate($data_subcate);
-        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-        redirect("cate_anuncio/index_subcate/" .$cate_anuncio_id);
-    }
-}
-
-
-function update_subacate_index($subcate_id = 0)
-{
-    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-        $this->log_out();
-        redirect('login');
+            ];
+            $this->cate_anuncio->create_sub_cate($data_subcate);
+            $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+            redirect("cate_anuncio/index_subcate/" . $cate_anuncio_id);
+        }
     }
 
-    $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($subcate_id);
 
-    if ($subcate_object) {
-        $data['subcate_object'] = $subcate_object;
-        $this->load_view_admin_g('cate_anuncio/subcate_update', $data);
-    } else {
-        show_404();
+    function update_subacate_index($subcate_id = 0)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($subcate_id);
+
+        if ($subcate_object) {
+            $data['subcate_object'] = $subcate_object;
+            $this->load_view_admin_g('cate_anuncio/subcate_update', $data);
+        } else {
+            show_404();
+        }
     }
-}
-public function update_subcate()
-{
-    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-        $this->log_out();
-        redirect('login');
-    }
+    public function update_subcate()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
-    $subcate_id = $this->input->post('subcate_id');
-    $nombre = $this->input->post('nombre');
+        $subcate_id = $this->input->post('subcate_id');
+        $nombre = $this->input->post('nombre');
 
 
-    $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($subcate_id);
+        $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($subcate_id);
 
 
 
         if ($subcate_object) {
 
-                $data = ['nombre' => $nombre];
-                $this->cate_anuncio->update_subcate($subcate_id, $data);
-                $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                redirect("cate_anuncio/index_subcate/" . $subcate_object->cate_anuncio_id);
-
+            $data = ['nombre' => $nombre];
+            $this->cate_anuncio->update_subcate($subcate_id, $data);
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            redirect("cate_anuncio/index_subcate/" . $subcate_object->cate_anuncio_id);
         } else {
             show_404();
         }
-
-}
+    }
 
 
 
@@ -303,9 +299,4 @@ public function update_subcate()
             show_404();
         }
     }
-
-
-
-
-
 }

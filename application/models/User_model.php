@@ -13,7 +13,7 @@ class User_model  extends CI_Model
 
 
 
-    function create($data)
+    function    create($data)
     {
 
         $this->db->insert('user', $data);

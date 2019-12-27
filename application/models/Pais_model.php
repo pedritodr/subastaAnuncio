@@ -25,8 +25,8 @@ class Pais_model extends CI_Model
         return $id;
     }
 
-  
-   function get_by_id($id) //pais
+
+    function get_by_id($id) //pais
     {
         $this->db->where('pais_id', $id);
         $query = $this->db->get('pais');
@@ -35,38 +35,45 @@ class Pais_model extends CI_Model
     }
 
     function get_by_pais_id($id) //pais
-   {
+    {
 
-    $this->db->where('pais_id', $id);
-    $query = $this->db->get('pais');
+        $this->db->where('pais_id', $id);
+        $query = $this->db->get('pais');
 
-    return $query->result();
+        return $query->result();
+    }
 
-   }
+    function get_by_pais_id_object($id)
+    {
 
-   function get_by_pais_id_object($id)
-   {
+        $this->db->where('pais_id', $id);
+        $query = $this->db->get('ciudad');
 
-    $this->db->where('pais_id', $id);
-    $query = $this->db->get('ciudad');
+        return $query->result(); //retorna un listado
 
-    return $query->result(); //retorna un listado 
-
-   }
-   
+    }
 
 
-   function get_by_ciudad_id_object($id)
-   {
 
-       $this->db->where('ciudad_id', $id);
-       $query = $this->db->get('ciudad');
+    function get_by_ciudad_id_object($id)
+    {
 
-       return $query->row();
+        $this->db->where('ciudad_id', $id);
+        $query = $this->db->get('ciudad');
 
-   }
+        return $query->row();
+    }
 
+    function get_by_city_all($ciudad_id)
+    {
 
+        $this->db->select('*');
+        $this->db->from('ciudad');
+        $this->db->join('pais', 'pais.pais_id = ciudad.pais_id');
+        $this->db->where('ciudad_id', $ciudad_id);
+        $query = $this->db->get();
+        return $query->row();
+    }
 
     function get_all($conditions = [], $get_as_row = FALSE) //pais
     {
@@ -81,13 +88,12 @@ class Pais_model extends CI_Model
 
     function get_all_ciudad($conditions = [], $get_as_row = FALSE)
     {
-        foreach($conditions as $key => $value){
-          $this->db->where($key, $value);
-            
+        foreach ($conditions as $key => $value) {
+            $this->db->where($key, $value);
         }
 
         $query = $this->db->get('ciudad');
-        return($get_as_row) ? $query->row() : $query->result();
+        return ($get_as_row) ? $query->row() : $query->result();
     }
 
 
@@ -111,25 +117,25 @@ class Pais_model extends CI_Model
     }
 
 
-    function update_ciudad($id, $data){
+    function update_ciudad($id, $data)
+    {
 
         $old = $this->get_by_id($id);
-        $this->db->where('ciudad_id',$id);
+        $this->db->where('ciudad_id', $id);
         foreach ($data as $key => $value) {
-        
-        $this->db->set($key, $value);
+
+            $this->db->set($key, $value);
         }
 
         $this->db->update('ciudad');
         $afec = $this->db->affected_rows();
 
-        if($afec >0){
+        if ($afec > 0) {
 
             $new = $this->get_by_ciudad_id_object($id);
         }
 
         return $afec;
-
     }
 
 
@@ -163,7 +169,7 @@ class Pais_model extends CI_Model
 
 
 
-    
+
 
 
 

@@ -68,6 +68,40 @@
    <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('favicon/favicon-96x96.png') ?>">
    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon/favicon-16x16. png') ?>">
    <link rel=" manifest " href="<?= base_url('favicon/manifest.json') ?>">
+   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+   <!-- Bootstrap Core Css  -->
+   <script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
+   <!-- Jquery Easing -->
+   <script src="<?= base_url('assets_front/js/easing.js') ?>"></script>
+   <!-- Menu Hover  -->
+   <script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
+   <!-- Jquery Appear Plugin -->
+   <script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
+   <!-- Numbers Animation   -->
+   <script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
+   <!-- Jquery Smooth Scroll  -->
+   <script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>
+   <!-- Jquery Select Options  -->
+   <script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
+   <!-- noUiSlider -->
+   <script src="<?= base_url('assets_front/js/nouislider.all.min.js') ?>"></script>
+   <!-- Carousel Slider  -->
+   <script src="<?= base_url('assets_front/js/carousel.min.js') ?>"></script>
+   <script src="<?= base_url('assets_front/js/slide.js') ?>"></script>
+   <!-- Image Loaded  -->
+   <script src="<?= base_url('assets_front/js/imagesloaded.js') ?>"></script>
+   <script src="<?= base_url('assets_front/js/isotope.min.js') ?>"></script>
+   <!-- CheckBoxes  -->
+   <script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
+   <!-- Jquery Migration  -->
+   <script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
+   <!-- Sticky Bar  -->
+   <script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
+   <!-- Style Switcher -->
+   <script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
+   <!-- Template Core JS -->
+   <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 </head>
 
 <body>
@@ -181,7 +215,7 @@
                   </div>
                </div>
             </div>
-            
+
          </section>
       </nav>
    </div>
