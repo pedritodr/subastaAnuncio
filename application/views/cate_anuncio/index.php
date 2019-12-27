@@ -30,34 +30,34 @@
                             <thead>
                                 <tr>
                                     <th><?= translate("nombre_lang"); ?></th>
-                                    <th><?= translate("photos_lang"); ?></th>         
+                                    <th><?= translate("photos_lang"); ?></th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($all_cate_anuncio as $item) { ?>
-                                <tr>
+                                    <tr>
 
-                               
-                                    <td> <?= $item->nombre; ?></td>
-                                    <td><img style="width:350px;height:150px;" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>
 
-                                    <td>
-                                           <!-- Single button -->
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Acciones <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="<?= site_url('cate_anuncio/update_index/' . $item->cate_anuncio_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
-                                                <li><a href="<?= site_url('cate_anuncio/delete/' .$item->cate_anuncio_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
-                                                <li><a href="<?= site_url('cate_anuncio/index_subcate/' . $item->cate_anuncio_id); ?>"><i class="fa fa-folder-open-o" aria-hidden="true"></i> <?= translate("manage_subcate_lang"); ?></a></li>
-                                                
-                                            </ul>
-                                        </div>
-                                    </td>
-                                   
-                                </tr>
+                                        <td> <?= $item->nombre; ?></td>
+                                        <td><img style="width:20%" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>
+
+                                        <td>
+                                            <!-- Single button -->
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Acciones <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="<?= site_url('cate_anuncio/update_index/' . $item->cate_anuncio_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
+                                                    <li><a href="<?= site_url('cate_anuncio/delete/' . $item->cate_anuncio_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
+                                                    <li><a href="<?= site_url('cate_anuncio/index_subcate/' . $item->cate_anuncio_id); ?>"><i class="fa fa-folder-open-o" aria-hidden="true"></i> <?= translate("manage_subcate_lang"); ?></a></li>
+
+                                                </ul>
+                                            </div>
+                                        </td>
+
+                                    </tr>
 
                                 <?php } ?>
 

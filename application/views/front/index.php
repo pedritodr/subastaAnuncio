@@ -73,7 +73,7 @@
 
                   </ul>
                   <!-- Tab Content -->
-                  <div class="tab-content">
+                  <div class="tab-content ">
                      <div id="<?= strtolower(seo_url($all_categorias[0]->name_espa)) ?>" class="row tab-pane active in fade">
 
                         <?php for ($k = 0; $k < count($all_categorias[0]->all_subastas); $k++) { ?>
@@ -83,7 +83,7 @@
                                  <!-- Ad Img -->
                                  <div class="category-grid-img">
                                     <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
-                                    <!-- Ad Status --><span class="ad-status"> Destacado </span>
+                                    <!-- Ad Status <span class="ad-status"> Destacado </span>-->
                                     <!-- User Review -->
                                     <div class="user-preview">
                                        <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
@@ -101,35 +101,37 @@
                                     <h6><a title="" href="single-page-listing.html"><?= $all_categorias[0]->all_subastas[$k]->nombre_espa ?></a></h6>
                                     <!-- Price -->
                                     <div class="price"> $<?= number_format($all_categorias[0]->all_subastas[$k]->valor_inicial, 2) ?></div>
-                                    <div class="category-title"> <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
-                                    <div class="row">
-                                       <div class="col-md-12 col-sm-12 col-xs-12">
-                                          <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                             <div class="timer conte">
-                                                <span class="days" id="day<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                    <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
+                                    <?php if ($all_categorias[0]->all_subastas[0]->fecha_cierre >= date("Y-m-d H:i:s")) { ?>
+                                       <div class="row">
+                                          <div class="col-md-12 col-sm-12 col-xs-12">
+                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                <div class="timer conte">
+                                                   <span class="days" id="day<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                                </div>
+                                                <div class="smalltext"><?= translate("dias_lang"); ?></div>
                                              </div>
-                                             <div class="smalltext"><?= translate("dias_lang"); ?></div>
-                                          </div>
-                                          <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
-                                             <div class="timer conte">
-                                                <span class="hours" id="hour<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                                                <div class="timer conte">
+                                                   <span class="hours" id="hour<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                                </div>
+                                                <div class="smalltext"><?= translate("horas_lang"); ?></div>
                                              </div>
-                                             <div class="smalltext"><?= translate("horas_lang"); ?></div>
-                                          </div>
-                                          <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                             <div class="timer conte">
-                                                <span class="minutes" id="minute<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                <div class="timer conte">
+                                                   <span class="minutes" id="minute<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                                </div>
+                                                <div class="smalltext"><?= translate("minutos_lang"); ?></div>
                                              </div>
-                                             <div class="smalltext"><?= translate("minutos_lang"); ?></div>
-                                          </div>
-                                          <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                             <div class="timer conte">
-                                                <span class="seconds" id="second<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                <div class="timer conte">
+                                                   <span class="seconds" id="second<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>"></span>
+                                                </div>
+                                                <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                              </div>
-                                             <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                           </div>
                                        </div>
-                                    </div>
+                                    <?php } ?>
                                  </div>
                                  <!-- Addition Info -->
                                  <div class="ad-info">
@@ -145,6 +147,7 @@
 
 
                      </div>
+
                      <?php for ($i = 1; $i < count($all_categorias); $i++) { ?>
                         <!-- tab content -->
                         <div id="<?= strtolower(seo_url($all_categorias[$i]->name_espa)) ?>" class="row tab-pane fade ">
@@ -156,10 +159,10 @@
                                     <!-- Ad Img -->
                                     <div class="category-grid-img">
                                        <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
-                                       <!-- Ad Status --><span class="ad-status"> Destacado </span>
+                                       <!-- Ad Status <span class="ad-status"> Destacado </span>-->
                                        <!-- User Review -->
                                        <div class="user-preview">
-                                          <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>
+                                          <!--      <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a> -->
                                        </div>
                                        <div class="additional-information">
                                           <?= $all_categorias[$i]->all_subastas[$k]->descrip_espa ?>
@@ -173,35 +176,37 @@
                                        <h6><a title="" href=""><?= $all_categorias[$i]->all_subastas[$k]->nombre_espa ?></a></h6>
                                        <!-- Price -->
                                        <div class="price"> $<?= number_format($all_categorias[$i]->all_subastas[$k]->valor_inicial, 2) ?></div>
-                                       <div class="category-title"> <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
-                                       <div class="row">
-                                          <div class="col-md-12 col-sm-12 col-xs-12">
-                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                                <div class="timer conte">
-                                                   <span class="days" id="day<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                       <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
+                                       <?php if ($all_categorias[$i]->all_subastas[$k]->fecha_cierre >= date("Y-m-d H:i:s")) { ?>
+                                          <div class="row">
+                                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                   <div class="timer conte">
+                                                      <span class="days" id="day<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                   </div>
+                                                   <div class="smalltext"><?= translate("dias_lang"); ?></div>
                                                 </div>
-                                                <div class="smalltext"><?= translate("dias_lang"); ?></div>
-                                             </div>
-                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
-                                                <div class="timer conte">
-                                                   <span class="hours" id="hour<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                                                   <div class="timer conte">
+                                                      <span class="hours" id="hour<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                   </div>
+                                                   <div class="smalltext"><?= translate("horas_lang"); ?></div>
                                                 </div>
-                                                <div class="smalltext"><?= translate("horas_lang"); ?></div>
-                                             </div>
-                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                                <div class="timer conte">
-                                                   <span class="minutes" id="minute<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                   <div class="timer conte">
+                                                      <span class="minutes" id="minute<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                   </div>
+                                                   <div class="smalltext"><?= translate("minutos_lang"); ?></div>
                                                 </div>
-                                                <div class="smalltext"><?= translate("minutos_lang"); ?></div>
-                                             </div>
-                                             <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
-                                                <div class="timer conte">
-                                                   <span class="seconds" id="second<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
+                                                   <div class="timer conte">
+                                                      <span class="seconds" id="second<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>"></span>
+                                                   </div>
+                                                   <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                                 </div>
-                                                <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                              </div>
                                           </div>
-                                       </div>
+                                       <?php } ?>
                                     </div>
                                     <!-- Addition Info -->
                                     <div class="ad-info">

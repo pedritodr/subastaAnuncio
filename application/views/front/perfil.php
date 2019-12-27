@@ -56,12 +56,23 @@
                 <div class="col-md-4 col-sm-12 col-xs-12 leftbar-stick blog-sidebar">
                     <!-- Sidebar Widgets -->
                     <div class="user-profile">
-                        <a href="profile.html"><img src="<?= base_url('assets_front/images/users/9.jpg') ?>" alt=""></a>
+                        <div class="text-center">
+                            <?php if ($this->session->userdata('photo') == "") { ?>
+                                <img style="width:50%" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                            <?php } else { ?>
+                                <img style="width:50%" src="<?= base_url($this->session->userdata('photo')) ?>" alt="">
+                            <?php } ?>
+                        </div>
+
+
                         <div class="profile-detail">
-                            <h6><?= $this->session->userdata('name'); ?></h6>
+                            <h6 class="text-center"><?= $this->session->userdata('name'); ?></h6>
+
                             <ul class="contact-details">
                                 <li>
-                                    <i class="fa fa-map-marker"></i> UK London
+                                    <i class="fa fa-map-marker"></i> <?php if ($city) { ?>
+                                        <?= $city->name_ciudad ?>
+                                    <?php } ?>
                                 </li>
                                 <li>
                                     <i class="fa fa-envelope"></i> <?= $this->session->userdata('email'); ?>
@@ -74,7 +85,8 @@
                         </div>
                         <ul>
                             <li class="active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
-                            <li><a id="ads" style="cursor:pointer"><?= translate('mis_anuncios_lang') ?> <span class="badge"></span></a></li>
+                            <li class="" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($all_anuncios) { ?> <?= count($all_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
+
                             <li><a href="<?= site_url('login/logout') ?>"><?= translate('sign_out_lang') ?></a></li>
                         </ul>
                     </div>
@@ -88,75 +100,83 @@
                             <?= get_message_from_operation(); ?>
                         </div>
                     <?php } ?>
-                    <!-- lista de anuncios -->
-                    <div id="listado_anuncio" class="row">
-                        <!-- Sorting Filters -->
-                        <div class="col-md-12 col-xs-12 col-sm-12">
-                            <ul class="pagination pagination-lg">
-                                <?php echo $this->pagination->create_links(); ?>
-                            </ul>
-                        </div>
-                        <!-- Sorting Filters End-->
-                        <div class="clearfix"></div>
-                        <!-- Pagination -->
+                    <?php if ($all_anuncios) { ?>
+                        <!-- lista de anuncios -->
+                        <div id="listado_anuncio" class="row">
+                            <!-- Sorting Filters -->
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <ul class="pagination pagination-lg">
+                                    <?php echo $this->pagination->create_links(); ?>
+                                </ul>
+                            </div>
+                            <!-- Sorting Filters End-->
+                            <div class="clearfix"></div>
+                            <!-- Pagination -->
 
-                        <!-- mis anuncios -->
-                        <div class="posts-masonry">
-                            <!-- primer anuncio -->
-                            <?php $contador = 1;
-                                                                                        foreach ($all_anuncios as $item) { ?>
+                            <!-- mis anuncios -->
+                            <div class="posts-masonry">
+                                <!-- primer anuncio -->
+                                <?php $contador = 1;
+                                foreach ($all_anuncios as $item) { ?>
 
-                                <div style="height:640.7px; margin-top:5px;" class="col-md-6 col-lg-6 col-sm-6 col-xs-12  ">
-                                    <div class="white category-grid-box-1 ">
-                                        <!-- foto -->
-                                        <div class="image"> <img alt="Tour Package" src="<?= base_url($item->photo); ?>" class="img-responsive"> </div>
-                                        <!--descripcion -->
-                                        <div class="short-description-1 ">
-                                            <!-- subcategoria  -->
-                                            <div class="category-title"><?= $item->subcate->nombre; ?> </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12  ">
+                                        <div class="white category-grid-box-1 ">
+                                            <!-- foto -->
+                                            <div class="image"> <img alt="Tour Package" src="<?= base_url($item->photo); ?>" class="img-responsive"> </div>
+                                            <!--descripcion -->
+                                            <div class="short-description-1 ">
+                                                <!-- subcategoria  -->
+                                                <div class="category-title"><?= $item->subcate->nombre; ?> </div>
 
-                                            <!-- descripcion -->
-                                            <h6>
+                                                <!-- descripcion -->
+                                                <h6>
 
-                                                <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>"><?= $item->titulo; ?></a>
-                                            </h6>
-                                            <!-- Location -->
-                                            <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
-                                            <!-- Rating -->
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <span class="rating-count">(2)</span>
+                                                    <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>"><?= $item->titulo; ?></a>
+                                                </h6>
+                                                <!-- Location -->
+                                                <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
+                                                <!-- Rating -->
+                                                <div class="rating">
 
+
+                                                </div>
+                                                <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
                                             </div>
-                                            <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
-                                        </div>
-                                        <!-- Ad Meta Stats -->
-                                        <div class="ad-info-1">
-                                            <ul class="pull-left">
-                                                <li> <i class="fa fa-eye"></i><a href="#">445 Views</a> </li>
-                                                <li> <i class="fa fa-clock-o"></i>15 minutes ago </li>
-                                            </ul>
-                                            <ul class="pull-right">
-                                                <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit this Ad" href="#"><i class="fa fa-pencil edit"></i></a> </li>
-                                                <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Ad" href="#"><i class="fa fa-times delete"></i></a></li>
-                                                <button onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+                                            <!-- Ad Meta Stats -->
+                                            <div class="ad-info-1">
+                                                <ul class="pull-left">
+
+                                                </ul>
+                                                <ul class="pull-right">
+                                                    <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit this Ad" href="#"><i class="fa fa-pencil edit"></i></a> </li>
+                                                    <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Ad" href="#"><i class="fa fa-times delete"></i></a></li>
+                                                    <button onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
 
 
-                                            </ul>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            <?php } ?>
-                            <!--fin primer anuncio-->
+                                <?php } ?>
+                                <!--fin primer anuncio-->
 
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <ul class="pagination pagination-lg">
+                                    <?php echo $this->pagination->create_links(); ?>
+                                </ul>
+                            </div>
+                            <!-- Ads Archive End -->
+
+                            <!-- Pagination -->
+
+                            <!-- Pagination End -->
+                        </div><?php } else { ?>
+                        <div id="listado_anuncio" class="row">
+                            <h4 class="text-center">No tiene anuncios publicados</h4>
                         </div>
-
-                        <!-- Ads Archive End -->
-
-                        <!-- Pagination -->
-
-                        <!-- Pagination End -->
-                    </div>
+                    <?php } ?>
                     <!-- Row -->
 
                     <!--perfil-->
@@ -186,16 +206,20 @@
                                         </dd>
                                         <dt><strong> <?= translate('country_lang') ?> </strong></dt>
                                         <dd>
-                                            England
+                                            <?php if ($city) { ?>
+                                                <?= $city->name_pais ?>
+                                            <?php } ?>
                                         </dd>
                                         <dt><strong> <?= translate('name_city_lang') ?> </strong></dt>
                                         <dd>
-                                            London
+                                            <?php if ($city) { ?>
+                                                <?= $city->name_ciudad ?>
+                                            <?php } ?>
                                         </dd>
 
                                         <dt><strong> <?= translate('direccion_lang') ?> </strong></dt>
                                         <dd>
-                                            Lahore, PK
+                                            <?= $this->session->userdata('direccion'); ?>
                                         </dd>
                                     </dl>
                                 </div>
@@ -203,86 +227,93 @@
                                 <div class="profile-edit tab-pane fade" id="edit">
 
                                     <div class="clearfix"></div>
-                                    <form>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label><?= translate('name_cliente_lang') ?></label>
 
-                                                <input type="text" value="<?= $this->session->userdata('name'); ?>" class="form-control margin-bottom-20">
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label> <?= translate('email_lang') ?> <span class="color-red">*</span></label>
-                                                <input type="text" value="<?= $this->session->userdata('email'); ?>" class="form-control margin-bottom-20">
-                                            </div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <label> <?= translate('phone_user__lang') ?> <span class="color-red">*</span></label>
-                                                <input type="text" value="<?= $this->session->userdata('phone'); ?>" class="form-control margin-bottom-20">
-                                            </div>
+                                    <?php echo form_open_multipart("front/update_cliente") ?>
+                                    <?= get_message_from_operation(); ?>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label><?= translate('name_cliente_lang') ?></label>
 
-                                            <!--aqui va el pais-->
-                                            <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
-                                                <label> <?= translate('country_lang') ?> <span class="color-red">*</span></label>
-                                                <select class="form-control">
-                                                    <option value="0">SriLanka</option>
-                                                    <option value="1">Australia</option>
-                                                    <option value="2">Bahrain</option>
-                                                    <option value="3">Canada</option>
-                                                    <option value="4">Denmark</option>
-                                                    <option value="5">Germany</option>
-                                                </select>
-                                            </div>
-
-                                            <!--ciudades-->
-                                            <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
-                                                <label> <?= translate('name_city_lang') ?> <span class="color-red">*</span></label>
-                                                <select class="form-control">
-                                                    <option value="0">London</option>
-                                                    <option value="1">Edinburgh</option>
-                                                    <option value="2">Wales</option>
-                                                    <option value="3">Cardiff</option>
-                                                    <option value="4">Bradford</option>
-                                                    <option value="5">Cambridge</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <label> <?= translate('direccion_lang') ?> <span class="color-red">*</span></label>
-                                                <textarea class="form-control margin-bottom-20" rows="3"></textarea>
-                                            </div>
+                                            <input type="text" value="<?= $this->session->userdata('name'); ?>" name="name" class="form-control margin-bottom-20">
                                         </div>
-                                        <div class="row margin-bottom-20">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label> <?= translate('email_lang') ?> <span class="color-red">*</span></label>
+                                            <input disabled type="text" value="<?= $this->session->userdata('email'); ?>" class="form-control margin-bottom-20">
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label> <?= translate('phone_user__lang') ?> <span class="color-red">*</span></label>
+                                            <input type="text" value="<?= $this->session->userdata('phone'); ?>" name="phone" class="form-control margin-bottom-20">
+                                        </div>
+
+
+                                        <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
+                                            <label> <?= translate('country_lang') ?> <span class="color-red">*</span></label>
+                                            <select onchange="change_pais();" id="pais" name="pais" class="form-control select2">
+
+                                                <?php
+                                                if (isset($all_pais))
+                                                    foreach ($all_pais as $item) { ?>
+                                                    <?php if ($city) { ?>
+                                                        <option <?php if ($city->pais_id == $item->pais_id) { ?>selected <?php } ?> value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
+                                                    <?php } ?>
+
+                                                <?php } ?>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
+                                            <label> <?= translate('name_city_lang') ?> <span class="color-red">*</span></label>
+                                            <select id="ciudad" name="ciudad" class="form-control select2">
+
+                                                <?php
+                                                if (isset($all_ciudad))
+                                                    foreach ($all_ciudad as $item) { ?>
+                                                    <?php if ($city) { ?>
+                                                        <option <?php if ($city->ciudad_id == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
+
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label> <?= translate('direccion_lang') ?> <span class="color-red">*</span></label>
+                                            <textarea name="direccion" class="form-control margin-bottom-20" rows="2"><?= $this->session->userdata('direccion'); ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-20">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label> <?= translate('photo_lang') ?> (400x400)</label>
+                                                <input type="file" class="form-control" name="archivo" placeholder="<?= translate('photo_lang'); ?>">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
                                             <div class="form-group">
-                                                <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        <span class="input-group-btn">
-                                                            <span class="btn btn-default btn-file">
-                                                                <?= translate('photo_lang') ?> <input type="file" id="imgInp">
-                                                            </span>
-                                                        </span>
-                                                        <input type="text" class="form-control" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <img id="img-upload" class="img-responsive" src="images/users/2.jpg" alt="" />
+                                                <div class="skin-minimal">
+                                                    <ul class="list">
+
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="clearfix"></div>
-
-                                        <div class="row">
-                                            <div class="col-md-8 col-sm-8 col-xs-12">
-                                                <div class="form-group">
-                                                    <div class="skin-minimal">
-                                                        <ul class="list">
-
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-4 col-xs-12 text-right">
-                                                <button type="submit" class="btn btn-theme btn-sm"><?= translate('update_info_lang') ?></button>
-                                            </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+                                            <button type="submit" class="btn btn-theme btn-sm"><?= translate('update_info_lang') ?></button>
                                         </div>
-                                    </form>
+                                    </div>
+                                    <?= form_close(); ?>
                                 </div>
                                 <?php if ($all_membresia) { ?>
                                     <div class="profile-edit tab-pane fade" id="membresia">
@@ -309,7 +340,19 @@
                                         <!--End Checkout-Form-->
 
                                     </div>
+                                <?php } else { ?>
+                                    <div class="profile-edit tab-pane fade" id="membresia">
+
+                                        <br>
+                                        <!--Checkout-Form-->
+                                        <h4 class="text-center">No tiene membresia</h4>
+
+
+                                        <!--End Checkout-Form-->
+
+                                    </div>
                                 <?php } ?>
+
 
                             </div>
                         </div>
@@ -324,19 +367,73 @@
     </section>
     <!-- Mostrando y ocultando vistas-->
     <script type="text/javascript">
+        var validando = <?= $this->session->userdata('validando') ?>
+
         $(function() {
-            $("#listado_anuncio").hide();
-            $("#panel_perfil").show();
+            if (validando == 1) {
+                $("#listado_anuncio").hide();
+                $("#panel_perfil").show();
+            } else {
+                $("#listado_anuncio").show();
+                $("#panel_perfil").hide();
+                $("#perfil").removeClass('active');
+                $("#ads").addClass('active');
+            }
+
         });
 
         $("#perfil").click(function() {
             $("#listado_anuncio").hide();
             $("#panel_perfil").show();
+            $("#perfil").addClass('active');
+            $("#ads").removeClass('active');
         });
         $("#ads").click(function() {
+            $("#perfil").removeClass('active');
+            $("#ads").addClass('active');
+
             $("#listado_anuncio").show();
             $("#panel_perfil").hide();
         });
+
+
+        function change_pais() {
+
+            var nuevo = $("select[name=pais]").val();
+
+            $('#ciudad').empty();
+            $.ajax({
+
+                type: 'POST',
+                url: "<?= site_url('front/get_ciudad') ?>",
+                data: {
+
+                    pais_id: nuevo
+                },
+
+                success: function(result) {
+                    result = JSON.parse(result);
+
+                    var cadena = "";
+                    cadena = "<label><?= translate('listar_city_lang'); ?></label><div  class='input-group'><span class='input-group-addon'><i class='fa fa-globe></i></span><select id='ciudad' name='ciudad class='form-control select2'>";
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        cadena = cadena + "<option value ='" + result[i].ciudad_id + "'>" + result[i].name_ciudad + "</option>";
+
+                    }
+
+                    cadena = cadena + "</select></div>"
+
+                    $('#ciudad').html(cadena);
+
+
+
+                }
+
+            });
+
+        }
     </script>
     <style>
         h6 a:hover {

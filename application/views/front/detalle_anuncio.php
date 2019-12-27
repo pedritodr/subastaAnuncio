@@ -44,9 +44,9 @@
                         <ul class="slides slide-main">
                            <li class="flex-active-slide">
                               <?php if (strpos($all_anuncios->anuncio_photo, 'uploads') !== false) { ?>
-                                 <img draggable="false" src="<?= base_url($all_anuncios->anuncio_photo) ?>" alt="">
+                                 <img style="width:100%" draggable="false" src="<?= base_url($all_anuncios->anuncio_photo) ?>" alt="">
                               <?php } else { ?>
-                                 <img draggable="false" src="<?= $all_anuncios->anuncio_photo ?>" alt="">
+                                 <img style="width:100%" draggable="false" src="<?= $all_anuncios->anuncio_photo ?>" alt="">
 
                               <?php } ?>
 
@@ -54,9 +54,9 @@
                            <?php foreach ($fotos_object as $item) { ?>
                               <li>
                                  <?php if (strpos($item->photo_anuncio, 'uploads') !== false) { ?>
-                                    <img draggable="false" src="<?= base_url($item->photo_anuncio) ?>" alt="">
+                                    <img style="width:100%" draggable="false" src="<?= base_url($item->photo_anuncio) ?>" alt="">
                                  <?php } else { ?>
-                                    <img draggable="false" src="<?= $item->photo_anuncio ?>" alt="">
+                                    <img style="width:100%" draggable="false" src="<?= $item->photo_anuncio ?>" alt="">
 
                                  <?php } ?>
                               </li>
@@ -72,18 +72,18 @@
                            <li class="flex-active-slide">
 
                               <?php if (strpos($all_anuncios->anuncio_photo, 'uploads') !== false) { ?>
-                                 <img src="<?= base_url($all_anuncios->anuncio_photo) ?>" alt="">
+                                 <img style="width:150px; height:120px" src="<?= base_url($all_anuncios->anuncio_photo) ?>" alt="">
                               <?php } else { ?>
-                                 <img src="<?= $all_anuncios->anuncio_photo ?>" alt="">
+                                 <img style="width:150px; height:120px" src="<?= $all_anuncios->anuncio_photo ?>" alt="">
 
                               <?php } ?>
                            </li>
                            <?php foreach ($fotos_object as $item) { ?>
                               <li>
                                  <?php if (strpos($item->photo_anuncio, 'uploads') !== false) { ?>
-                                    <img draggable="false" src="<?= base_url($item->photo_anuncio) ?>" alt="">
+                                    <img style="width:150px; height:120px" draggable="false" src="<?= base_url($item->photo_anuncio) ?>" alt="">
                                  <?php } else { ?>
-                                    <img draggable="false" src="<?= $item->photo_anuncio ?>" alt="">
+                                    <img style="width:150px; height:120px" draggable="false" src="<?= $item->photo_anuncio ?>" alt="">
 
                                  <?php } ?>
                               </li>

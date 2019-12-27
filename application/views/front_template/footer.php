@@ -104,8 +104,13 @@
 
             <div class="row">
                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                  <label><?= translate("image_lang"); ?> (750x423)</label>
-                  <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
+                  <div id="alert-message" class="alert alert-danger alert-dismissable" style="display: none;">
+                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                     <h4><i class="icon fa fa-ban"></i> <?= translate('title_alert_message_lang'); ?></h4>
+                     <p></p>
+                  </div>
+                  <label><?= translate("image_lang"); ?> (750x750)</label>
+                  <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>" required>
                   <div id="dropzone" class="dropzone"></div>
                </div>
             </div>
@@ -292,6 +297,7 @@
    </div>
 </div>
 <script src="https://cdn.paymentez.com/checkout/1.0.1/paymentez-checkout.min.js"></script>
+
 <script type="text/javascript">
    var user_id = "<?= $this->session->userdata('user_id') ?>";
    $(function() {
@@ -574,12 +580,77 @@
    /* $(".modal-body").bind("click", function() {
 
     });*/
+   const FILETYPES = [
+      'image/jpeg',
+      'image/pjpeg',
+      'image/png',
+      'image/bmp',
+      'image/gif'
+   ];
+
+   const MESSAGES = [];
+   const MAX_FILE_SIZE = 5 * 1048576;
+
+   // Define text message
+   MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
+   MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
+
+   // action message validation
+   const input_image = $("#image_upload");
+   const alert_message = $("#alert-message");
+
+   input_image.on("change", (e) => {
+
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+
+         //get the file size and file type from file input field
+         let fileUpload = e.target.files[0];
+
+         // Validate type file
+         if (!validFileType(fileUpload)) {
+            // console.log("Tipo de archivo Incorrecto");
+            showMessage(MESSAGES['file_not_accept']);
+            resetForm();
+         }
+
+         // Valid max file size
+         if (fileUpload.size > MAX_FILE_SIZE) {
+            // console.log('Supera los 5 mb');
+            showMessage(MESSAGES['file_size_exceeded']);
+            resetForm();
+         }
+      }
+   });
+
+   function showMessage(message) {
+      alert_message.find('p').html(message);
+      alert_message.show(1);
+      setTimeout(() => {
+         alert_message.fadeOut(2000)
+      }, 5000);
+   }
+
+
+
+   function resetForm() {
+      input_image.val('');
+   }
+
+   function validFileType(file) {
+      console.log(FILETYPES);
+      for (let i = 0; i < FILETYPES.length; i++) {
+         if (file.type === FILETYPES[i]) {
+            return true;
+         }
+      }
+      return false;
+   }
 </script>
 <!-- =-=-=-=-=-=-= FOOTER END =-=-=-=-=-=-= -->
 </div>
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
-<a href="#" class="sticky-post-button hidden-xs">
+<a href="<?= site_url('crear-anuncio') ?>" class="sticky-post-button hidden-xs">
    <span class="sell-icons">
       <i class="flaticon-online-job-search-symbol"></i>
    </span>
@@ -588,40 +659,7 @@
 <!-- Back To Top -->
 <a href="#0" class="cd-top">Top</a>
 <!-- Back To Top -->
-<!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
-<!-- Bootstrap Core Css  -->
-<script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
-<!-- Jquery Easing -->
-<script src="<?= base_url('assets_front/js/easing.js') ?>"></script>
-<!-- Menu Hover  -->
-<script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
-<!-- Jquery Appear Plugin -->
-<script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
-<!-- Numbers Animation   -->
-<script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
-<!-- Jquery Smooth Scroll  -->
-<script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>
-<!-- Jquery Select Options  -->
-<script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
-<!-- noUiSlider -->
-<script src="<?= base_url('assets_front/js/nouislider.all.min.js') ?>"></script>
-<!-- Carousel Slider  -->
-<script src="<?= base_url('assets_front/js/carousel.min.js') ?>"></script>
-<script src="<?= base_url('assets_front/js/slide.js') ?>"></script>
-<!-- Image Loaded  -->
-<script src="<?= base_url('assets_front/js/imagesloaded.js') ?>"></script>
-<script src="<?= base_url('assets_front/js/isotope.min.js') ?>"></script>
-<!-- CheckBoxes  -->
-<script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
-<!-- Jquery Migration  -->
-<script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
-<!-- Sticky Bar  -->
-<script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
-<!-- Style Switcher -->
-<script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
-<!-- Template Core JS -->
-<script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
+
 </body>
 
 <!-- Mirrored from templates.scriptsbundle.com/addforest/demos/adforest/site-map.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2019 00:19:51 GMT -->

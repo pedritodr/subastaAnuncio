@@ -235,7 +235,7 @@
                                         <ul>
                                             <?php if ($categories) { ?>
                                                 <?php foreach ($categories as $item) { ?>
-                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:5%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
 
                                                 <?php } ?>
                                                 <input name="category" id="category" class="" type="hidden" value="">
