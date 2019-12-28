@@ -19,6 +19,14 @@ class Front extends CI_Controller
         $this->init_form_validation();
     }
 
+    public function show_404()
+    {
+        redirect('portada');
+        $this->load->model('Empresa_model', 'empresa');
+        $data['empresa'] = $this->empresa->get_by_id(1);
+        $this->load->view("404", $data);
+    }
+
     public function index()
     {
 
@@ -116,7 +124,142 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/add_anuncio', $data);
     }
+    public function update_anuncio_index($anuncio_id)
+    {
+        $this->load->model('Cate_anuncio_model', 'cate_anuncio');
+        $this->load->model('Pais_model', 'pais');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
 
+
+        $anuncio_object = $this->anuncio->get_by_id($anuncio_id);
+        if ($anuncio_object) {
+            $ciudad = $this->pais->get_by_city_all($anuncio_object->ciudad_id);
+            $categoria = $this->cate_anuncio->get_categoria_by_sub($anuncio_object->subcate_id);
+            $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
+            $data['categoria'] =  $categoria;
+            $data['ciudad'] =  $ciudad;
+            $data['anuncio_object'] =  $anuncio_object;
+            $data['fotos_object'] = $fotos_object;
+            $all_cate_anuncio = $this->cate_anuncio->get_all();
+            $data['all_cate_anuncio'] = $all_cate_anuncio;
+
+            if ($categoria) {
+                $all_subcate = $this->cate_anuncio->get_by_Cate_anuncio_id($categoria->cate_anuncio_id);
+            } else {
+                $all_subcate = $this->cate_anuncio->get_by_Cate_anuncio_id($all_cate_anuncio[0]->cate_anuncio_id);
+            }
+
+
+            $all_pais = $this->pais->get_all();
+            $data['all_pais'] = $all_pais;
+
+
+            if ($ciudad) {
+                $all_ciudad = $this->pais->get_by_pais_id_object($ciudad->pais_id);
+            } else {
+                $all_ciudad = $this->pais->get_by_pais_id_object($all_pais[0]->pais_id);
+            }
+
+            $data['all_ciudad'] = $all_ciudad;
+
+            $data['all_subcate'] = $all_subcate;
+            $this->load->model('Banner_model', 'banner');
+            $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+            $data['all_banners'] = $all_banners;
+
+
+
+            $this->load_view_front('front/update_anuncio', $data);
+        } else {
+            show_404();
+        }
+    }
+
+    public function update_anuncio()
+    {
+
+        $this->load->model('Anuncio_model', 'anuncio');
+
+        $titulo = $this->input->post('titulo');
+        $descripcion = $this->input->post('descripcion');
+        $precio = $this->input->post('precio');
+        $photo = $this->input->post('photo');
+        $whatsapp = $this->input->post('whatsapp');
+        $subcate_id = $this->input->post('subcategoria');
+        $lat = $this->input->post('lat');
+        $lng = $this->input->post('lng');
+        $ciudad = $this->input->post('ciudad');
+        $user_id = $this->session->userdata('user_id');
+        $direccion = $this->input->post('pac-input');
+        $anuncio_id = $this->input->post('anuncio_id');
+
+        //establecer reglas de validacion
+        $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
+
+        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
+            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
+            redirect("anuncios");
+        } else {
+
+            $name_file = $_FILES['archivo']['name'];
+            if ($name_file != "") {
+                $separado = explode('.', $name_file);
+                $ext = end($separado); // me quedo con la extension
+                $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
+                $allow_extension = in_array($ext, $allow_extension_array);
+                if ($allow_extension) {
+                    $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 750);
+                    if ($result[0]) {
+                        $data = [
+                            'titulo' => $titulo,
+                            'descripcion' => $descripcion,
+                            'precio' => $precio,
+                            'photo' => $result[1],
+                            'whatsapp' => $whatsapp,
+                            'subcate_id' => $subcate_id,
+                            'lat' => $lat,
+                            'lng' => $lng,
+                            'ciudad_id' => $ciudad,
+                            'user_id' => $user_id,
+                            'direccion' => $direccion,
+
+                        ];
+                        $this->anuncio->update($anuncio_id, $data);
+                        $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+                        $this->session->set_userdata('validando', 2);
+                        redirect("perfil");
+                    } else {
+                        $this->response->set_message($result[1], ResponseMessage::ERROR);
+                        redirect("anuncios", "location", 301);
+                    }
+                } else {
+
+                    $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
+                    redirect("anuncios", "location", 301);
+                }
+            } else {
+
+                $data = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'precio' => $precio,
+                    'whatsapp' => $whatsapp,
+                    'subcate_id' => $subcate_id,
+                    'lat' => $lat,
+                    'lng' => $lng,
+                    'ciudad_id' => $ciudad,
+                    'user_id' => $user_id,
+                    'direccion' => $direccion,
+
+                ];
+                $this->anuncio->update($anuncio_id, $data);
+                $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+                $this->session->set_userdata('validando', 2);
+                redirect("perfil");
+            }
+        }
+    }
 
 
     public function get_ciudad()
@@ -187,7 +330,9 @@ class Front extends CI_Controller
         $this->load->model('Photo_anuncio_model', 'photo_anuncio');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
-
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
 
 
         $all_anuncios = $this->anuncio->get_all_anuncios_id($anuncio_id);
@@ -237,7 +382,31 @@ class Front extends CI_Controller
         echo json_encode($data);
         exit();
     }
+    public function buscar_fotos()
+    {
 
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+        $id = $this->input->post('id');
+        $fotos_object = $this->photo_anuncio->get_by_anuncio_id($id);
+
+        echo json_encode($fotos_object);
+        exit();
+    }
+    public function delete_fotos()
+    {
+
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+        $id = $this->input->post('id');
+        $objeto = $this->photo_anuncio->get_by_id($id);
+        $fotos_object = $this->photo_anuncio->get_by_anuncio_id($objeto->anuncio_id);
+        unlink($fotos_object->photo_anuncio);
+        $this->photo_anuncio->delete($id);
+
+        echo json_encode($fotos_object);
+        exit();
+    }
     public function photo_anuncio()
     {
 
@@ -869,7 +1038,6 @@ class Front extends CI_Controller
         $this->load_view_front('front/anuncios', $data);
     }
 
-
     public function about()
     {
 
@@ -1137,5 +1305,23 @@ class Front extends CI_Controller
         $this->subasta->create_puja($data);
         $this->response->set_message(translate('pujar_valor_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
+    }
+    public function desactivar()
+    {
+
+        $anuncio_id = $this->input->post('anuncio_id2');
+
+        $this->load->model('Anuncio_model', 'anuncio');
+        $anuncio_object = $this->anuncio->get_by_id($anuncio_id);
+
+        if ($anuncio_object->is_active == 0) {
+            $this->anuncio->update($anuncio_id, ['is_active' => 1]);
+            $this->response->set_message(translate('activar_ads_noti_lang'), ResponseMessage::SUCCESS);
+            redirect("perfil");
+        } else {
+            $this->anuncio->update($anuncio_id, ['is_active' => 0]);
+            $this->response->set_message(translate('desactivar_ads_noti_lang'), ResponseMessage::SUCCESS);
+            redirect("perfil");
+        }
     }
 }

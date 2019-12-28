@@ -76,12 +76,14 @@
 </div>
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
-<a href="#" class="sticky-post-button hidden-xs">
-   <span class="sell-icons">
-      <i class="flaticon-online-job-search-symbol"></i>
-   </span>
-   <h4><?= translate("publicar_lang"); ?></h4>
-</a>
+<?php if ($this->session->userdata('user_id')) { ?>
+   <a href="#" class="sticky-post-button hidden-xs">
+      <span class="sell-icons">
+         <i class="flaticon-online-job-search-symbol"></i>
+      </span>
+      <h4><?= translate("publicar_lang"); ?></h4>
+   </a>
+<?php } ?>
 <!-- Back To Top -->
 <a href="#0" class="cd-top">Top</a>
 <!-- =-=-=-=-=-=-= Inicio Modal fotos =-=-=-=-=-=-= -->
@@ -111,6 +113,12 @@
                   </div>
                   <label><?= translate("image_lang"); ?> (750x750)</label>
                   <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>" required>
+                  <br>
+                  <div id="galeria">
+
+                  </div>
+
+
                   <div id="dropzone" class="dropzone"></div>
                </div>
             </div>
@@ -123,7 +131,45 @@
    </div>
 </div>
 <!-- =-=-=-=-=-=-= Inicio Modal detalles subasta =-=-=-=-=-=-= -->
+<div id="modal_desactivar" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <?php echo form_open_multipart("front/desactivar") ?>
 
+            <input type="hidden" id='anuncio_id2' name="anuncio_id2">
+
+
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="title_desactivar"><?= translate('desactivar_ads_lang') ?></h3>
+            <h3 class="modal-title text-center" id="title_activar"><?= translate('activar_ads_lang') ?></h3>
+
+
+         </div>
+         <div class="modal-body">
+            <!-- content goes here =-->
+
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                  <p class="text-center" id="mensaje_desactivar">
+                     <?= translate('confirmar_desactivar_ads_lang') ?>
+                  </p>
+                  <p class="text-center" id="mensaje_activar">
+                     <?= translate('confirmar_activar_ads_lang') ?>
+                  </p>
+
+                  <div id="dropzone" class="dropzone"></div>
+               </div>
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button id="btn_desactivar" type="submit" class="btn btn-theme btn-block"><?= translate('desactivar_ads_lang') ?></button>
+               <button id="btn_activar" type="submit" class="btn btn-theme btn-block"><?= translate('activar_ads_lang') ?></button>
+            </div>
+            <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
 <div class="quick-view-modal modalopen" id="modal_detalle" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog modal-lg ad-modal">
       <button class="close close-btn popup-cls" aria-label="Close" data-dismiss="modal" type="button"> <i class="fa-times fa"></i> </button>
@@ -350,6 +396,67 @@
    function cargar_modal_imagen(id) {
       $('#modal_imagen').modal("show");
       $('#anuncio_id').val(id);
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/buscar_fotos') ?>",
+
+         data: {
+            id: id
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+
+            if (result) {
+               for (let i = 0; i < result.length; i++) {
+                  $('#galeria').append("<div style='padding-left:0px; padding-right:0px;' class='col-lg-2' id='foto_" + result[i].photo_anuncio_id + "'><img style='width:80px; height:80px;' src='<?= base_url() ?>" + result[i].photo_anuncio + "'><a  style='position:absolute; top:-7;right:8px; width:20px; heigth:20px;'  title='<?= translate('delete_photo_lang') ?>'  style='cursor:pointer' onclick='delete_img(" + result[i].photo_anuncio_id + ")'><i style='color:#fff' class='fa fa-times delete'></i></a></div>");
+
+               }
+
+
+            }
+
+         }
+      });
+
+   }
+
+   function delete_img(id) {
+
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/delete_fotos') ?>",
+
+         data: {
+            id: id
+         },
+         success: function(result) {
+            $('#foto_' + id).empty();
+            result = JSON.parse(result);
+         }
+      });
+
+   }
+
+
+   function cargar_modal_desactivar(id, cod) {
+      if (cod == 1) {
+         $('#title_desactivar').show();
+         $('#title_activar').hide();
+         $('#mensaje_activar').hide();
+         $('mensaje_desactivar').show();
+         $('#btn_activar').hide();
+         $('#btn_desactivar').show();
+      } else {
+
+         $('#title_desactivar').hide();
+         $('#title_activar').show();
+         $('#mensaje_activar').show();
+         $('#mensaje_desactivar').hide();
+         $('#btn_activar').show();
+         $('#btn_desactivar').hide();
+      }
+      $('#modal_desactivar').modal("show");
+      $('#anuncio_id2').val(id);
    }
 
    function cargar_modal_membresia(id, nombre, precio, cantidad) {
