@@ -58,7 +58,7 @@
                <div class="post-ad-form postdetails">
                   <div class="heading-panel">
                      <h3 class="main-title text-left">
-                        <label><?= translate("publi_lang"); ?></label>
+                        <!--  <label><?= translate("publi_lang"); ?></label> -->
                      </h3>
                   </div>
                   <!-- <p class="lead">Posting an ad on <a href="#">AdForest</a> is free! However, all ads must follow our rules:</p> -->
@@ -66,7 +66,7 @@
                   <!-- Titulo anuncio  -->
                   <div class="row">
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                        <?php echo form_open_multipart("front/add_anuncio") ?>
+                        <?php echo form_open_multipart("front/update_anuncio") ?>
                         <div id="alert-message" class="alert alert-danger alert-dismissable" style="display: none;">
                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                            <h4><i class="icon fa fa-ban"></i> <?= translate('title_alert_message_lang'); ?></h4>
@@ -77,7 +77,7 @@
 
                         <div class="form-group">
                            <label><?= translate("titulo_anun_lang"); ?></label>
-                           <input required placeholder="<?= translate('titulo_anun_lang'); ?>" class="form-control" type="text" name="titulo">
+                           <input required placeholder="<?= translate('titulo_anun_lang'); ?>" class="form-control" type="text" name="titulo" value="<?= $anuncio_object->titulo ?>">
                         </div>
                      </div>
                   </div>
@@ -87,13 +87,13 @@
                         <label><?= translate("cate_list_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
-                              ></span>
+                           </span>
                            <select onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2">
 
                               <?php
                               if (isset($all_cate_anuncio))
                                  foreach ($all_cate_anuncio as $item) { ?>
-                                 <option value="<?= $item->cate_anuncio_id; ?>"><?= $item->nombre; ?></option>
+                                 <option <?php if ($categoria->cate_anuncio_id == $item->cate_anuncio_id) { ?> selected <?php } ?> value="<?= $item->cate_anuncio_id; ?>"><?= $item->nombre; ?></option>
                               <?php } ?>
                            </select>
 
@@ -110,7 +110,7 @@
                               <?php
                               if (isset($all_subcate))
                                  foreach ($all_subcate as $item) { ?>
-                                 <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
+                                 <option <?php if ($anuncio_object->subcate_id == $item->subcate_id) { ?> selected <?php } ?> value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
                               <?php } ?>
                            </select>
 
@@ -124,7 +124,7 @@
                         <label><?= translate("precios_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-                           <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" type="text" name="precio">
+                           <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" type="text" name="precio" value="<?= $anuncio_object->precio ?>">
                         </div>
 
                      </div>
@@ -134,15 +134,11 @@
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-whatsapp" aria-hidden="true"></i>
                            </span>
-                           <input placeholder="<?= translate("phone_person__lang"); ?>" class="form-control" type="text" name="whatsapp">
-
+                           <input placeholder="<?= translate("phone_person__lang"); ?>" class="form-control" type="text" name="whatsapp" value="<?= $anuncio_object->whatsapp ?>">
                         </div>
                      </div>
 
                   </div>
-
-
-
 
                   <!-- end row -->
                   <!-- Image Upload  -->
@@ -150,7 +146,9 @@
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                         <label><?= translate("image_lang"); ?> (750x750)</label>
                         <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>">
-                        <div id="dropzone" class="dropzone"></div>
+                        <div id="dropzone" class="dropzone">
+                           <img style="width:20%" src="<?= base_url($anuncio_object->photo) ?>" class="img-responsive" alt="">
+                        </div>
                      </div>
                   </div>
 
@@ -162,7 +160,7 @@
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                         <div class="form-group">
                            <label class="control-label"><?= translate('description_lang'); ?></label>
-                           <textarea name="descripcion" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>"></textarea>
+                           <textarea name="descripcion" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>"><?= $anuncio_object->descripcion ?></textarea>
                         </div>
                      </div>
                   </div>
@@ -180,7 +178,7 @@
                               <?php
                               if (isset($all_pais))
                                  foreach ($all_pais as $item) { ?>
-                                 <option value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
+                                 <option <?php if ($ciudad->pais_id == $item->pais_id) { ?> selected <?php } ?> value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
                               <?php } ?>
                            </select>
 
@@ -196,7 +194,7 @@
                               <?php
                               if (isset($all_ciudad))
                                  foreach ($all_ciudad as $item) { ?>
-                                 <option value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
+                                 <option <?php if ($ciudad->ciudad_id == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
                               <?php } ?>
                            </select>
 
@@ -213,7 +211,7 @@
                            <br><br>
                            <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui">
+                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" value="<?= $anuncio_object->direccion ?>" type="text" placeholder="Escribe la dirección aqui">
 
                            </div>
 
@@ -227,10 +225,10 @@
 
                      <br><br>
 
-
-                     <input type="hidden" id="lat" name="lat" />
-                     <input type="hidden" id="lng" name="lng" />
-                     <button type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
+                     <input type="hidden" id="anuncio_id" name="anuncio_id" value="<?= $anuncio_object->anuncio_id ?>" />
+                     <input type="hidden" id="lat" name="lat" value="<?= $anuncio_object->lat ?>" />
+                     <input type="hidden" id="lng" name="lng" value="<?= $anuncio_object->lng ?>" />
+                     <button type="submit" class="btn btn-theme pull-right"><?= translate('update_publi_lang') ?></button>
 
 
 
@@ -264,8 +262,10 @@
    <script type="text/javascript">
       $(document).ready(function() {
 
-         cargar_city(city = "");
 
+         var lat = '<?php echo $anuncio_object->lat; ?>';
+         var lng = '<?php echo $anuncio_object->lng; ?>';
+         cargar_city(city = "", lat, lng);
       });
 
       function change_categoria() {
@@ -326,7 +326,7 @@
 
                $('#ciudad').html(cadena);
 
-               cargar_city(result[0].name_ciudad.toUpperCase());
+               cargar_city(result[0].name_ciudad.toUpperCase(), 0, 0);
 
             }
 
@@ -334,33 +334,42 @@
 
       }
 
-      function cargar_city(city = "") {
+      function cargar_city(city = "", lat, lng) {
 
          if (city == "") {
             var ciudad = $('#ciudad option:selected').text().toUpperCase();
 
-            initMap(ciudad);
+            initMap(ciudad, lat, lng);
          } else {
-            initMap(city);
+            initMap(city, lat, lng);
          }
 
       }
 
       //Funcion principal
-      function initMap(city) {
+      function initMap(city, lat, lng) {
 
-         $('#pac-input').val("");
+         //      $('#pac-input').val("");
 
          $.ajax({
             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + city + ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
             dataType: 'json',
             success: function(response) {
+               if (lat != 0 && lng != 0) {
 
-               var pos = {
-                  lat: parseFloat(response.results[0].geometry.location.lat),
+                  var pos = {
+                     lat: parseFloat(lat),
 
-                  lng: parseFloat(response.results[0].geometry.location.lng)
-               };
+                     lng: parseFloat(lng)
+                  };
+               } else {
+                  var pos = {
+                     lat: parseFloat(response.results[0].geometry.location.lat),
+
+                     lng: parseFloat(response.results[0].geometry.location.lng)
+                  };
+               }
+
                var map = new google.maps.Map(document.getElementById('map'), {
                   center: pos,
                   scrollwheel: false,

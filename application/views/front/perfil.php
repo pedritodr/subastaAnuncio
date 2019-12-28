@@ -122,7 +122,17 @@
                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12  ">
                                         <div class="white category-grid-box-1 ">
                                             <!-- foto -->
-                                            <div class="image"> <img alt="Tour Package" src="<?= base_url($item->photo); ?>" class="img-responsive"> </div>
+                                            <div class="image"> <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
+
+                                                    <?php if (strpos($item->photo, 'uploads') !== false) { ?>
+
+                                                        <img class="img-responsive" src="<?= base_url($item->photo) ?>" alt="">
+                                                    <?php } else { ?>
+                                                        <img class="img-responsive" src="<?= $item->photo ?>" alt="">
+
+                                                    <?php } ?>
+
+                                                </a></div>
                                             <!--descripcion -->
                                             <div class="short-description-1 ">
                                                 <!-- subcategoria  -->
@@ -130,7 +140,6 @@
 
                                                 <!-- descripcion -->
                                                 <h6>
-
                                                     <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>"><?= $item->titulo; ?></a>
                                                 </h6>
                                                 <!-- Location -->
@@ -145,12 +154,24 @@
                                             <!-- Ad Meta Stats -->
                                             <div class="ad-info-1">
                                                 <ul class="pull-left">
-
+                                                    <?php if ($item->is_active == 1) { ?>
+                                                        <span class="badge"> Publicado</span>
+                                                    <?php } else { ?>
+                                                        <span class="badge"> Desactivado</span>
+                                                    <?php } ?>
                                                 </ul>
                                                 <ul class="pull-right">
-                                                    <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit this Ad" href="#"><i class="fa fa-pencil edit"></i></a> </li>
-                                                    <li> <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Ad" href="#"><i class="fa fa-times delete"></i></a></li>
-                                                    <button onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+                                                    <li> <a href=" <?= site_url('front/update_anuncio_index/' . $item->anuncio_id) ?>"><i class="fa fa-pencil edit"></i></a> </li>
+                                                    <?php if ($item->is_active == 1) { ?>
+                                                        <li> <a title="desactivar" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
+                                                    <?php } else { ?>
+                                                        <li>
+                                                            <a title="Activar" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
+                                                        </li>
+                                                    <?php } ?>
+                                                    <li>
+                                                        <a title='Subir imagenes' onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></a>
+                                                    </li>
 
 
                                                 </ul>
@@ -162,11 +183,7 @@
                                 <!--fin primer anuncio-->
 
                             </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                <ul class="pagination pagination-lg">
-                                    <?php echo $this->pagination->create_links(); ?>
-                                </ul>
-                            </div>
+
                             <!-- Ads Archive End -->
 
                             <!-- Pagination -->

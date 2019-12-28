@@ -97,7 +97,7 @@
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
                                             <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
-                                                <div class="ribbon popular"></div>
+                                                <!--   <div class="ribbon popular"></div> -->
 
 
                                                 <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
