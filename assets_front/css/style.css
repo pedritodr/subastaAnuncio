@@ -1054,9 +1054,9 @@ ul {
 	border-right: 1px solid #fff;
 }
 
-.transparent-header .mega-menu>section.menu-list-items .menu-links>li>a {
+/* .transparent-header .mega-menu>section.menu-list-items .menu-links>li>a {
 	color: #fff;
-}
+} */
 
 .transparent-header .mega-menu.desktopTopFixed .menu-list-items {
 	background: rgba(114, 50, 56, 0.94) none repeat scroll 0 0;

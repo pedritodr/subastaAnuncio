@@ -12,7 +12,7 @@
    <meta name="author" content="ScriptsBundle">
    <title>Subastas | Anuncios</title>
    <!-- =-=-=-=-=-=-= Favicons Icon =-=-=-=-=-=-= -->
-   <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" />
+   <!--    <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" /> -->
    <!-- =-=-=-=-=-=-= Mobile Specific =-=-=-=-=-=-= -->
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
    <!-- =-=-=-=-=-=-= Bootstrap CSS Style =-=-=-=-=-=-= -->
@@ -68,40 +68,7 @@
    <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('favicon/favicon-96x96.png') ?>">
    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon/favicon-16x16. png') ?>">
    <link rel=" manifest " href="<?= base_url('favicon/manifest.json') ?>">
-   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
-   <!-- Bootstrap Core Css  -->
-   <script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
-   <!-- Jquery Easing -->
-   <script src="<?= base_url('assets_front/js/easing.js') ?>"></script>
-   <!-- Menu Hover  -->
-   <script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
-   <!-- Jquery Appear Plugin -->
-   <script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
-   <!-- Numbers Animation   -->
-   <script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
-   <!-- Jquery Smooth Scroll  -->
-   <script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>
-   <!-- Jquery Select Options  -->
-   <script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
-   <!-- noUiSlider -->
-   <script src="<?= base_url('assets_front/js/nouislider.all.min.js') ?>"></script>
-   <!-- Carousel Slider  -->
-   <script src="<?= base_url('assets_front/js/carousel.min.js') ?>"></script>
-   <script src="<?= base_url('assets_front/js/slide.js') ?>"></script>
-   <!-- Image Loaded  -->
-   <script src="<?= base_url('assets_front/js/imagesloaded.js') ?>"></script>
-   <script src="<?= base_url('assets_front/js/isotope.min.js') ?>"></script>
-   <!-- CheckBoxes  -->
-   <script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
-   <!-- Jquery Migration  -->
-   <script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
-   <!-- Sticky Bar  -->
-   <script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
-   <!-- Style Switcher -->
-   <script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
-   <!-- Template Core JS -->
-   <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
+
 </head>
 
 <body>
@@ -180,7 +147,7 @@
                      <ul class="menu-links">
                         <!-- active class -->
                         <li>
-                           <a href="<?= site_url('portada') ?>"> <?= translate('inicio_lang') ?> <i></i></a>
+                           <a class="text-center" href="<?= site_url('portada') ?>"> <?= translate('inicio_lang') ?> <i></i></a>
                         </li>
                         <li>
                            <a href="<?= site_url('nosotros') ?>"> <?= translate('acerca_lang') ?> <i></i></a>

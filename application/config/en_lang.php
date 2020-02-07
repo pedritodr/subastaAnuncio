@@ -173,9 +173,8 @@ $config['update_subcate_lang'] = "Editar Subcategoria";
 $config['name_categoria_lang'] = "Categoria:";
 $config['cant_anuncios_lang'] = "Cantidad de anuncios:";
 $config['mis_anuncios_lang'] = "Mis anuncios";
-$config['cant_dias_lang'] = "Cantidad de dias";
-$config['qty_article_lang'] = "Cantidad de articulos";
-$config['intervalo_dias_lang'] = "Intervalo de dias";
+$config['cant_dias_lang'] = "Cantidad de dias:";
+$config['intervalo_dias_lang'] = "Intervalo de dias:";
 
 $config['manage_menu_lang'] = "Gestionar menú";
 $config['listar_menu_lang'] = "Lista de menú";

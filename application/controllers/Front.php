@@ -15,6 +15,7 @@ class Front extends CI_Controller
         $this->load->helper("mabuya");
 
         @session_start();
+        $this->session->set_userdata('lang_subasta', 'es');
         $this->load_language();
         $this->init_form_validation();
     }

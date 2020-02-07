@@ -32,173 +32,192 @@
                         <h3 class="box-title"><?= translate('update_subasta_lang'); ?></h3>
                     </div>
                     <div class="box-body">
-
-                        <?= get_message_from_operation(); ?>
-
-                        <?= form_open_multipart("subasta/update"); ?>
-
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
+                            <?= get_message_from_operation(); ?>
 
-                                    <div class="col-lg-3">
-                                        <label><?= translate("nombre_lang"); ?></label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                            <input type="text" class="form-control input-sm" name="nombre_espa" required value="<?= $subasta_object->nombre_espa; ?>" placeholder="<?= translate('nombre_lang'); ?>">
-                                            <input name="subasta_id" id="" class="btn btn-primary" type="hidden" value="<?= $subasta_object->subasta_id; ?>">
-                                        </div>
-                                    </div>
+                            <?= form_open_multipart("subasta/update"); ?>
+                            <div class="col-lg-3">
+                                <label><?= translate("tipo_subasta_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                    <select required id="tipo_subasta" name="tipo_subasta" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+                                        <option <?php if ($subasta_object->tipo_subasta == 1) { ?> selected <?php } ?> value="1">Directa</option>
+                                        <option <?php if ($subasta_object->tipo_subasta == 2) { ?> selected <?php } ?> value="2">Inversa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="nombre" style="display:none" class="col-lg-3">
+                                <label><?= translate("nombre_lang"); ?></label>
+                                <div class="input-group">
 
+                                    <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
+                                    <input type="text" class="form-control input-sm" name="nombre_espa" required value="<?= $subasta_object->nombre_espa; ?>" placeholder="<?= translate('nombre_lang'); ?>">
+                                    <input name="subasta_id" id="" class="btn btn-primary" type="hidden" value="<?= $subasta_object->subasta_id; ?>">
+                                </div>
 
-                                    <div class="col-lg-3">
-                                        <label><?= translate("valor_inical_lang"); ?></label>
-                                        <div class="input-group">
-
-                                            <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control input-sm" name="valor_inicial" required value="<?= $subasta_object->valor_inicial; ?>" placeholder="<?= translate('valor_inical_lang'); ?>">
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="col-lg-3">
-
-                                        <label><?= translate("cate_list_lang"); ?></label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <select id="name_espa" name="name_espa" class="form-control input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
-
-                                                <?php
-                                                if (isset($all_categoria))
-                                                    foreach ($all_categoria as $item) { ?>
-                                                    <option <?php if ($item->categoria_id == $subasta_object->categoria_id) { ?> selected <?php } ?> value="<?= $item->categoria_id; ?>"><?= $item->name_espa; ?></option>
-                                                <?php } ?>
-                                            </select>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-lg-3">
-
-                                        <label><?= translate("listar_city_lang"); ?></label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <select id="ciudad" name="ciudad" class="form-control input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
-
-                                                <?php
-                                                if (isset($all_ciudad))
-                                                    foreach ($all_ciudad as $item) { ?>
-                                                    <option <?php if ($item->ciudad_id == $subasta_object->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
-                                                <?php } ?>
-                                            </select>
-
-                                        </div>
-
-                                    </div>
-
-                                    <br>
-
-                                    <div class="col-lg-12">
-                                        <div class="row">
-
-                                            <div class="col-lg-3">
-                                                <label><?= translate("image_lang"); ?> (768x768)</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-image"></i></span>
-                                                    <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
-                                                </div>
-
-                                            </div>
+                            </div>
 
 
-                                            <div class="col-lg-3">
+                            <div id="categoria" style="display:none" class="col-lg-3">
+                                <label><?= translate("cate_list_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                    <select required id="name_espa" name="name_espa" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
-                                                <label><?= translate("date_cierre_lang"); ?></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                                    <input type="date" class="form-control input-sm" name="fecha_cierre" required value="<?= $subasta_object->fecha_cierre; ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                        <?php
+                                        if (isset($all_categoria))
+                                            foreach ($all_categoria as $item) { ?>
+                                            <option <?php if ($item->categoria_id == $subasta_object->categoria_id) { ?> selected <?php } ?> value="<?= $item->categoria_id; ?>"><?= $item->name_espa; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                                                </div>
+                            <div id="city" style="display:none" class="col-lg-3">
 
-                                            </div>
+                                <label><?= translate("listar_city_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    </span>
+                                    <select required id="ciudad" name="ciudad" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
-                                            <div class="col-lg-3">
-                                                <label><?= translate("valor_pagado_lang"); ?></label>
-                                                <div class="input-group">
+                                        <?php
+                                        if (isset($all_ciudad))
+                                            foreach ($all_ciudad as $item) { ?>
+                                            <option <?php if ($item->ciudad_id == $subasta_object->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
+                                        <?php } ?>
+                                    </select>
 
-                                                    <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-                                                    <input type="text" class="form-control input-sm" name="valor_pago" requiered value="<?= $subasta_object->valor_pago; ?>" placeholder="<?= translate('valor_pagado_lang'); ?>">
-                                                </div>
+                                </div>
 
-                                            </div>
+                            </div>
+                            <div id="estado" style="display:none" class="col-lg-3">
+                                <label><?= translate("state_subasta"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                    <select required id="is_open" name="is_open" required class="form-control select2 input-sm" placeholder="<?= translate('state_subasta'); ?>" style="width: 100%">
+
+                                        <option <?php if ($subasta_object->is_open == 1) { ?> selected <?php } ?> value="1">Abierta</option>
+                                        <option <?php if ($subasta_object->is_open == 0) { ?> selected <?php } ?> value="0">Cerrada</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="imagen" style="display:none" class="col-lg-3">
+                                <label><?= translate("image_lang"); ?> (768x768)</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-image"></i></span>
+                                    <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
+                                </div>
+                            </div>
+
+                            <div id="inicial" style="display:none" class="col-lg-3">
+                                <label><?= translate("valor_inical_lang"); ?></label>
+                                <div class="input-group">
+
+                                    <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" name="valor_inicial" value="<?= $subasta_object->valor_inicial; ?>" placeholder="<?= translate('valor_inical_lang'); ?>">
+                                </div>
+
+                            </div>
+                            <div id="fecha" style="display:none" class="col-lg-3">
+
+                                <label><?= translate("date_cierre_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+
+                                    <?php $date = new DateTime($subasta_object->fecha_cierre); ?>
+                                    <input type="datetime-local" class="form-control input-sm" name="fecha_cierre" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                </div>
+
+                            </div>
+
+                            <div id="entrada" style="display:none" class="col-lg-3">
+                                <label><?= translate("valor_pagado_lang"); ?></label>
+                                <div class="input-group">
+
+                                    <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" name="valor_pago" placeholder="<?= translate('valor_pagado_lang'); ?>" value="<?= $subasta_object->valor_pago; ?>">
+                                </div>
+
+                            </div>
+
+                            <div id="cantidad" style="display:none" class="col-lg-3">
+                                <label><?= translate("cant_dias_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="cantidad_dias" placeholder="<?= translate('cant_dias_lang'); ?>" value="<?= $subasta_object->cantidad_dias; ?>">
+                                </div>
+                            </div>
+                            <div id="intervalo" style="display:none" class="col-lg-3">
+                                <label><?= translate("intervalo_dias_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="intervalo_dias" placeholder="<?= translate('intervalo_dias_lang'); ?>" value="<?= $subasta_object->intervalo; ?>">
+                                </div>
+                            </div>
+                            <div id="maximo" style="display:none" class="col-lg-3">
+                                <label><?= translate("valor_maximo_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="valor_maximo" placeholder="<?= translate('valor_maximo_lang'); ?>" value="<?= $subasta_object->valor_maximo; ?>">
+                                </div>
+                            </div>
+                            <div id="minimo" style="display:none" class="col-lg-3">
+                                <label><?= translate("valor_minimo_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="valor_minimo" placeholder="<?= translate('valor_minimo_lang'); ?>" value="<?= $subasta_object->valor_minimo; ?>">
+                                </div>
+                            </div>
+                            <div id="porcentaje" style="display:none" class="col-lg-3">
+                                <label><?= translate("porcentaje_deducion_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="porcentaje_dias" placeholder="<?= translate('porcentaje_deducion_lang'); ?>" value="<?= $subasta_object->porcentaje; ?>">
+                                </div>
+                            </div>
+                            <div id="articulos" style="display:none" class="col-lg-3">
+                                <label><?= translate("qty_article_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                                    <input type="number" class="form-control input-sm" min="1" name="qty_articles" placeholder="<?= translate('qty_article_lang'); ?>" value="<?= $subasta_object->qty_articles; ?>">
+                                </div>
+                            </div>
+
+                            <div id="descripcion" style="display:none" class="col-lg-12">
+
+                                <div class="form-group">
+                                    <label class="control-label"><?= translate('description_lang'); ?></label>
+                                    <textarea name="descrip_espa" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>">
+                                <?= $subasta_object->descrip_espa; ?>
+                            </textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!--cierre del col 12-->
+                    </div>
+                    <!--cierre del ro-->
+
+
+                    <div class="col-lg-12" style="text-align: right;">
+                        <br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                    </div>
 
 
 
 
-                                            <div class="col-lg-3">
-                                                <label><?= translate("state_subasta"); ?></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                                    <select id="is_open" name="is_open" class="form-control  input-sm" placeholder="<?= translate('state_subasta'); ?>" style="width: 100%">
 
-                                                        <option <?php if ($subasta_object->is_open == 1) { ?> selected <?php } ?> value="1">Abierta</option>
-                                                        <option <?php if ($subasta_object->is_open == 0) { ?> selected <?php } ?> value="0">Cerrada</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                    <?= form_close(); ?>
 
 
 
 
-
-                                        </div>
-
-                                        <br>
-
-
-                                        <div class="col-lg-12">
-                                            <div class="row">
-
-                                                <div class="form-group">
-                                                    <label class="control-label">Descripción</label>
-                                                    <textarea name="descrip_espa" class="form-control textarea" placeholder="Descripcion">
-                                   <?= $subasta_object->descrip_espa; ?>
-                                </textarea>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-
-
-
-
-
-
-
-
-                                        <div class="col-lg-12" style="text-align: right;">
-                                            <br>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <?= form_close(); ?>
-
-
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
-
-
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
@@ -206,14 +225,58 @@
     $(function() {
         $("#example1").DataTable();
         $(".textarea").wysihtml5();
-        $(".select2").select2();
-        $('#reservation').daterangepicker({
-            timePicker: true,
-            timePickerIncrement: 30,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+        var tipo_subasta = "<?= $subasta_object->tipo_subasta ?>";
+        if (tipo_subasta == 1) {
+            $('#inicial').show();
+            $('#fecha').show();
+            $('#entrada').show();
+        } else {
+            $('#cantidad').show();
+            $('#intervalo').show();
+            $('#maximo').show();
+            $('#minimo').show();
+            $('#porcentaje').show();
+            $('#articulos').show();
+        }
+        $('#nombre').show();
+        $('#categoria').show();
+        $('#city').show();
+        $('#estado').show();
+        $('#imagen').show();
+        $('#fecha').show();
+        $('#entrada').show();
+        $('#descripcion').show();
+    });
+
+    $('#tipo_subasta').change(function(e) {
+        var tipo = $('#tipo_subasta').val();
+        if (tipo == 1) {
+            $('#nombre').show();
+            $('#categoria').show();
+            $('#city').show();
+            $('#estado').show();
+            $('#imagen').show();
+            $('#inicial').show();
+            $('#fecha').show();
+            $('#entrada').show();
+            $('#descripcion').show();
+            $('#cantidad').hide();
+            $('#intervalo').hide();
+            $('#maximo').hide();
+            $('#minimo').hide();
+            $('#porcentaje').hide();
+        } else {
+            $('#inicial').hide();
+            $('#fecha').hide();
+            $('#entrada').hide();
+            $('#cantidad').show();
+            $('#intervalo').show();
+            $('#maximo').show();
+            $('#minimo').show();
+            $('#porcentaje').show();
+            $('#articulos').show();
+        }
+
     });
 </script>
 <!-- Select2 -->
