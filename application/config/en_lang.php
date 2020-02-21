@@ -29,10 +29,7 @@ $config['minutos_lang'] = "Minutos";
 $config['segundos_lang'] = "Segundos";
 $config['mostrando_lang'] = "Mostrando";
 $config['resultados_lang'] = "Resultados";
-$config['subastas_directas_lang'] = "Subastas directas";
-$config['subastas_inversas_lang'] = "Subastas inversas";
-$config['mensaje_directa_lang'] = "No hay subastas directas disponibles";
-$config['mensaje_inversa_lang'] = "No hay  subastas inversas disponibles";
+
 $config['acerca_lang'] = "Acerca de";
 $config['subasta_lang'] = "Subastas";
 $config['Anuncios_lang'] = "Anuncios";
@@ -176,9 +173,8 @@ $config['update_subcate_lang'] = "Editar Subcategoria";
 $config['name_categoria_lang'] = "Categoria:";
 $config['cant_anuncios_lang'] = "Cantidad de anuncios:";
 $config['mis_anuncios_lang'] = "Mis anuncios";
-$config['cant_dias_lang'] = "Cantidad de dias";
-$config['qty_article_lang'] = "Cantidad de articulos";
-$config['intervalo_dias_lang'] = "Intervalo de dias";
+$config['cant_dias_lang'] = "Cantidad de dias:";
+$config['intervalo_dias_lang'] = "Intervalo de dias:";
 
 $config['manage_menu_lang'] = "Gestionar menú";
 $config['listar_menu_lang'] = "Lista de menú";

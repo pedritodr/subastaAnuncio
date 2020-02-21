@@ -230,13 +230,15 @@ class CI_Controller
 
     protected function load_language()
     {
-        if (isset($_SESSION['lang'])) {
-            switch ($_SESSION['lang']) {
+        if (isset($_SESSION['lang_subasta'])) {
+            switch ($_SESSION['lang_subasta']) {
                 case "es": {
+
                         $this->config->load('es_lang'); // cargo el idioma espanniol
                         break;
                     }
                 case "en": {
+
                         $this->config->load('en_lang');   // cargo el idioma ingles
                         break;
                     }
@@ -245,10 +247,12 @@ class CI_Controller
                         break;
                     }
                 default: {
+
                         $this->config->load('es_lang'); // si me pasan otro que no sean los predefinidos, escojo espanniol por defecto
                     }
             }
         } else {
+
             $this->config->load('es_lang'); // si no hay ninguno seteado, tomo espanniol por defecto
         }
     }

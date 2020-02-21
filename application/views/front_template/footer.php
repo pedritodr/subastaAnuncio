@@ -225,7 +225,7 @@
                      <p id="descripcion"></p>
 
                      <ul class="ad-preview-info col-md-12 col-sm-12">
-                        <li>
+                        <li id="li_valor_entrada">
                            <span><?= translate('valor_pagado_lang') ?></span>
                            <p id="valor_entrada"></p>
                         </li>
@@ -342,7 +342,40 @@
       </div>
    </div>
 </div>
-<script src="https://cdn.paymentez.com/checkout/1.0.1/paymentez-checkout.min.js"></script>
+<!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+<!-- Bootstrap Core Css  -->
+<script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
+<!-- Jquery Easing -->
+<script src="<?= base_url('assets_front/js/easing.js') ?>"></script>
+<!-- Menu Hover  -->
+<script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
+<!-- Jquery Appear Plugin -->
+<script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
+<!-- Numbers Animation   -->
+<script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
+<!-- Jquery Smooth Scroll  -->
+<script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>
+<!-- Jquery Select Options  -->
+<script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
+<!-- noUiSlider -->
+<script src="<?= base_url('assets_front/js/nouislider.all.min.js') ?>"></script>
+<!-- Carousel Slider  -->
+<script src="<?= base_url('assets_front/js/carousel.min.js') ?>"></script>
+<script src="<?= base_url('assets_front/js/slide.js') ?>"></script>
+<!-- Image Loaded  -->
+<script src="<?= base_url('assets_front/js/imagesloaded.js') ?>"></script>
+<script src="<?= base_url('assets_front/js/isotope.min.js') ?>"></script>
+<!-- CheckBoxes  -->
+<script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
+<!-- Jquery Migration  -->
+<script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
+<!-- Sticky Bar  -->
+<script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
+<!-- Style Switcher -->
+<script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
+<!-- Template Core JS -->
+<script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 
 <script type="text/javascript">
    var user_id = "<?= $this->session->userdata('user_id') ?>";
@@ -492,125 +525,194 @@
       $("#modal_detalle").modal("hide");
    }
 
-   function cargarmodal_subasta(id) {
-      $("#body_valor_alto").show();
-      $("#body_entrar_subasta").hide();
-      $("#body_pujar").hide();
-      $('#galeria_main').empty();
-      $('.carousel-indicators').empty();
-      $('.a').attr("id", "day-" + id);
-      $('.b').attr("id", "hour-" + id);
-      $('.c').attr("id", "minute-" + id);
-      $('.d').attr("id", "second-" + id);
-      $('#day-' + id).html("0");
-      $('#hour-' + id).html("0");
-      $('#minute-' + id).html("0");
-      $('#second-' + id).html("0");
-      var cadena_1 = "";
-      var cadena_2 = "";
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/detalle_subasta') ?>",
+   function cargarmodal_subasta(id, object) {
+      if (object != "") {
+         object = atob(object);
+         object = JSON.parse(object);
+      }
 
-         data: {
-            id: id
-         },
-         success: function(result) {
-            result = JSON.parse(result);
-            if (result) {
-               console.log(result);
-               var fecha = result.all_detalle.fecha_cierre;
-               var date = new Date(fecha);
-               var hoy = new Date();
+      console.log(object);
+      if (object != "") {
+         //  $("#body_valor_alto").show();
+         //  $("#body_entrar_subasta").hide();
+         $("#body_pujar").hide();
+         $('#galeria_main').empty();
+         $('.carousel-indicators').empty();
 
-               // console.log(hoy + " inter " + date);
-               if (date >= hoy) {
+         var cadena_1 = "";
+         var cadena_2 = "";
+         $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/detalle_subasta') ?>",
 
-                  var x = setInterval(function() {
+            data: {
+               id: id
+            },
+            success: function(result) {
+               result = JSON.parse(result);
+               if (result) {
 
-                     var deadline = new Date(fecha).getTime();
-                     var currentTime = new Date().getTime();
-                     var t = deadline - currentTime;
-                     var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                     var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                     var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                     var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                     $('#day-' + id).html(days);
-                     $('#hour-' + id).html(hours);
-                     $('#minute-' + id).html(minutes);
-                     $('#second-' + id).html(seconds);
 
-                     if (t < 0) {
+                  cadena_1 = "<div class='item active'><img  src='<?= base_url() ?>" + result.all_detalle.photo + "'></div>"
+                  // $('#imagen_main').attr("src", "<?= base_url() ?>" + result.all_detalle.photo)
+                  for (let i = 0; i < result.foto_object.length; i++) {
+                     cadena_1 = cadena_1 + "<div class='item'><img  src='<?= base_url() ?>" + result.foto_object[i].url_photo + "'></div>"
 
-                        clearInterval(x);
+                  }
+                  cont = 0;
+                  cadena_2 = "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
+                  for (let k = 0; k < result.foto_object.length; k++) {
+                     cont++;
+                     //  cadena_2 = "<li style='width:106px !important' class='flex-active-slide'><img draggable='false'  src='<?= base_url() ?>" + result.all_detalle.photo + "'></li>";
 
-                        $('#day-' + id).html(0);
-                        $('#hour-' + id).html(0);
-                        $('#minute-' + id).html(0);
-                        $('#second-' + id).html(0);
+                     cadena_2 = cadena_2 + "<li data-target='#myCarousel' data-slide-to='" + cont + "'></li>";
 
-                     }
+                  }
+                  var count_intervalo = object.intervalo.length;
 
-                  }, 1000);
-               } else {
+                  $('#galeria_main').html(cadena_1);
+                  $('.carousel-indicators').html(cadena_2);
+                  if (count_intervalo >= 2) {
 
-                  $('#day-' + id).html(0);
-                  $('#hour-' + id).html(0);
-                  $('#minute-' + id).html(0);
-                  $('#second-' + id).html(0);
-               }
+                     $('#precio').html("<b class='strikethrough' style='font-size:16px !important; color:#2a3681 !important'>$" + parseFloat(object.intervalo[count_intervalo - 2].valor).toFixed(2) + "</b> $" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
+                  } else {
+                     $('#precio').html("$" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
 
-               cadena_1 = "<div class='item active'><img  src='<?= base_url() ?>" + result.all_detalle.photo + "'></div>"
-               // $('#imagen_main').attr("src", "<?= base_url() ?>" + result.all_detalle.photo)
-               for (let i = 0; i < result.foto_object.length; i++) {
-                  cadena_1 = cadena_1 + "<div class='item'><img  src='<?= base_url() ?>" + result.foto_object[i].url_photo + "'></div>"
+                  }
 
-               }
-               cont = 0;
-               cadena_2 = "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
-               for (let k = 0; k < result.foto_object.length; k++) {
-                  cont++;
-                  //  cadena_2 = "<li style='width:106px !important' class='flex-active-slide'><img draggable='false'  src='<?= base_url() ?>" + result.all_detalle.photo + "'></li>";
-
-                  cadena_2 = cadena_2 + "<li data-target='#myCarousel' data-slide-to='" + cont + "'></li>";
-
-               }
-
-               $('#galeria_main').html(cadena_1);
-               $('.carousel-indicators').html(cadena_2);
-               $('#precio').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
-               $('#titulo').text(result.all_detalle.nombre_espa);
-               $('#descripcion').html(result.all_detalle.descrip_espa);
-               $('#valor_entrada').text("$" + parseFloat(result.all_detalle.valor_pago).toFixed(2));
-               $('#fecha_cierre').text(result.all_detalle.fecha_cierre);
-               if (result.puja != null) {
-                  $("#valor_alto_modal").text("$" + parseFloat(result.puja.valor).toFixed(2));
-               }
-
-               if (result.subasta_user && result.puja.valor == null) {
-                  $('#valor_alto_modal').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
-               }
-               if (result.subasta_user == null && result.puja.valor == null) {
+                  $('#titulo').text(result.all_detalle.nombre_espa);
+                  $('#descripcion').html(result.all_detalle.descrip_espa);
                   $('#body_valor_alto').hide();
-               }
+                  $('#li_valor_entrada').hide();
 
 
-               if (result.subasta_user == null && user_id) {
-                  $("#body_entrar_subasta").show();
-                  $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_inicial + '")');
-
-               } else {
-                  $("#body_pujar").show();
-                  $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                  $('#fecha_cierre').text(object.intervalo[count_intervalo - 1].fecha);
 
                }
-
-
 
             }
+         });
+      } else {
+         $("#body_valor_alto").show();
+         $("#body_entrar_subasta").hide();
+         $("#body_pujar").hide();
+         $('#galeria_main').empty();
+         $('.carousel-indicators').empty();
+         $('.a').attr("id", "day-" + id);
+         $('.b').attr("id", "hour-" + id);
+         $('.c').attr("id", "minute-" + id);
+         $('.d').attr("id", "second-" + id);
+         $('#day-' + id).html("0");
+         $('#hour-' + id).html("0");
+         $('#minute-' + id).html("0");
+         $('#second-' + id).html("0");
+         var cadena_1 = "";
+         var cadena_2 = "";
+         $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/detalle_subasta') ?>",
 
-         }
-      });
+            data: {
+               id: id
+            },
+            success: function(result) {
+               result = JSON.parse(result);
+               if (result) {
+                  console.log(result);
+                  var fecha = result.all_detalle.fecha_cierre;
+                  var date = new Date(fecha);
+                  var hoy = new Date();
+
+                  // console.log(hoy + " inter " + date);
+                  if (date >= hoy) {
+
+                     var x = setInterval(function() {
+
+                        var deadline = new Date(fecha).getTime();
+                        var currentTime = new Date().getTime();
+                        var t = deadline - currentTime;
+                        var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                        $('#day-' + id).html(days);
+                        $('#hour-' + id).html(hours);
+                        $('#minute-' + id).html(minutes);
+                        $('#second-' + id).html(seconds);
+
+                        if (t < 0) {
+
+                           clearInterval(x);
+
+                           $('#day-' + id).html(0);
+                           $('#hour-' + id).html(0);
+                           $('#minute-' + id).html(0);
+                           $('#second-' + id).html(0);
+
+                        }
+
+                     }, 1000);
+                  } else {
+
+                     $('#day-' + id).html(0);
+                     $('#hour-' + id).html(0);
+                     $('#minute-' + id).html(0);
+                     $('#second-' + id).html(0);
+                  }
+
+                  cadena_1 = "<div class='item active'><img  src='<?= base_url() ?>" + result.all_detalle.photo + "'></div>"
+                  // $('#imagen_main').attr("src", "<?= base_url() ?>" + result.all_detalle.photo)
+                  for (let i = 0; i < result.foto_object.length; i++) {
+                     cadena_1 = cadena_1 + "<div class='item'><img  src='<?= base_url() ?>" + result.foto_object[i].url_photo + "'></div>"
+
+                  }
+                  cont = 0;
+                  cadena_2 = "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
+                  for (let k = 0; k < result.foto_object.length; k++) {
+                     cont++;
+                     //  cadena_2 = "<li style='width:106px !important' class='flex-active-slide'><img draggable='false'  src='<?= base_url() ?>" + result.all_detalle.photo + "'></li>";
+
+                     cadena_2 = cadena_2 + "<li data-target='#myCarousel' data-slide-to='" + cont + "'></li>";
+
+                  }
+
+                  $('#galeria_main').html(cadena_1);
+                  $('.carousel-indicators').html(cadena_2);
+                  $('#precio').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
+                  $('#titulo').text(result.all_detalle.nombre_espa);
+                  $('#descripcion').html(result.all_detalle.descrip_espa);
+                  $('#valor_entrada').text("$" + parseFloat(result.all_detalle.valor_pago).toFixed(2));
+                  $('#fecha_cierre').text(result.all_detalle.fecha_cierre);
+                  if (result.puja != null) {
+                     $("#valor_alto_modal").text("$" + parseFloat(result.puja.valor).toFixed(2));
+                  }
+
+                  if (result.subasta_user && result.puja.valor == null) {
+                     $('#valor_alto_modal').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
+                  }
+                  if (result.subasta_user == null && result.puja.valor == null) {
+                     $('#body_valor_alto').hide();
+                  }
+
+
+                  if (result.subasta_user == null && user_id) {
+                     $("#body_entrar_subasta").show();
+                     $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_inicial + '")');
+
+                  } else {
+                     $("#body_pujar").show();
+                     $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+
+                  }
+
+
+
+               }
+
+            }
+         });
+      }
+
       $("#modal_detalle").modal("show");
 
    }
@@ -751,6 +853,59 @@
          }
       }
       return false;
+   }
+
+   function cambio_btn_directa() {
+      $('.mensaje_directa').hide();
+      $('.mensaje_inversa').hide();
+      $('#btn_subasta_directa').addClass('active');
+      $('#btn_subasta_inversa').removeClass('active');
+      $('.inverse').hide();
+      $('.direct').show();
+      $('.mensaje_directa').hide();
+      valida = $('.direct').is(":visible");
+
+      if (!valida) {
+         $('.mensaje_directa').show();
+         $('.mensaje_inversa').hide();
+      }
+      //  valida = $('.subastas').hasClass("inverse");
+
+
+   }
+
+   function cambio_btn_inversa() {
+      $('.mensaje_directa').hide();
+      $('.mensaje_inversa').hide();
+      $('#btn_subasta_directa').removeClass('active');
+      $('#btn_subasta_inversa').addClass('active');
+      $('.direct').hide();
+      $('.inverse').show();
+      $('.mensaje_inversa').hide();
+      valida = $('.inverse').is(":visible");
+
+      if (!valida) {
+         $('.mensaje_directa').hide();
+         $('.mensaje_inversa').show();
+      }
+      //valida = $('.subastas').hasClass("inverse");
+
+   }
+
+   function detalle_categoria(inversa, directa) {
+      $('.mensaje_directa').hide();
+      $('.mensaje_inversa').hide();
+      valida_directa = $('#btn_subasta_directa').hasClass('active');
+      valida_inversa = $('#btn_subasta_inversa').hasClass('active');
+      if (inversa == 0 && valida_inversa) {
+         $('.mensaje_directa').hide();
+         $('.mensaje_inversa').show();
+      }
+      if (directa == 0 && valida_directa) {
+         $('.mensaje_directa').show();
+         $('.mensaje_inversa').hide();
+      }
+
    }
 </script>
 <!-- =-=-=-=-=-=-= FOOTER END =-=-=-=-=-=-= -->

@@ -203,6 +203,12 @@
   .mega-menu .menu-links>li.activeTrigger {
     background-color: #f58936;
   }
+
+  .mega-menu img {
+    margin: -11px;
+    padding: 12px 0;
+  }
+
 }
 
 
@@ -213,7 +219,7 @@
   display: inline-block;
   float: none;
   width: 100%;
-  color: #232323;
+  color: #fff;
   font-size: 14px;
   font-weight: 600;
   line-height: 50px;
@@ -221,7 +227,21 @@
   /* text-transform: normal;*/
 }
 
+
+
+@media (min-width: 992px) {
+  .transparent-header .mega-menu>section.menu-list-items .menu-links>li>a {
+    color: #fff !important;
+  }
+
+  .mega-menu .menu-logo>li>a {
+
+    padding: 0 0px 0 0;
+  }
+}
+
 @media screen and (max-width: 992px) {
+
   .mega-menu .menu-links>li>a {
     width: auto;
     line-height: normal;
@@ -464,8 +484,8 @@
   /*------------------------------------------------------ MOBILE COLLAPSE TRIGGER BUTTON */
   margin: 0;
   padding: 0;
-  height: 50px;
-  width: 70px;
+  height: 38px;
+  width: 38px;
   background: #ffffff;
   display: none;
   position: absolute;
@@ -487,13 +507,13 @@
   content: "";
   display: block;
   height: 4px;
-  width: 40px;
+  width: 25px;
   background: #723238;
   position: absolute;
   top: 13px;
   left: 0;
   right: 0;
-  margin: 0 auto;
+  margin: -3px 7px;
   transition: opacity 400ms ease, -webkit-transform 400ms ease 0s;
   transition: transform 400ms ease 0s, opacity 400ms ease;
   transition: transform 400ms ease 0s, opacity 400ms ease, -webkit-transform 400ms ease 0s;
@@ -505,12 +525,15 @@
   transform-origin: 0px 50% 0px;
 }
 
+
+
 .mega-menu .menu-mobile-collapse-trigger:after {
-  top: 33px;
+  top: 28px;
 }
 
 .mega-menu .menu-mobile-collapse-trigger span {
-  top: 23px;
+  top: 21px;
+
 }
 
 .mega-menu .menu-mobile-collapse-trigger.active span {
@@ -520,13 +543,15 @@
 .mega-menu .menu-mobile-collapse-trigger.active:before {
   -webkit-transform: rotate(30deg);
   -ms-transform: rotate(30deg);
-  transform: rotate(30deg);
+  transform: rotate(31deg);
+  margin: -1px 8px;
+  top: 13px;
 }
 
 .mega-menu .menu-mobile-collapse-trigger.active:after {
   -webkit-transform: rotate(-30deg);
   -ms-transform: rotate(-30deg);
-  transform: rotate(-30deg);
+  transform: rotate(-31deg);
 }
 
 @media screen and (max-width: 992px) {

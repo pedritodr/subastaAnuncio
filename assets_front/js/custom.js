@@ -326,6 +326,7 @@ Designed and Development by: ScriptsBundle
 
     /* ======= Template MegaMenu  ======= */
     $('#menu-1').megaMenu({
+
         // DESKTOP MODE SETTINGS
         logo_align: 'left', // align the logo left or right. options (left) or (right)
         links_align: 'left', // align the links left or right. options (left) or (right)

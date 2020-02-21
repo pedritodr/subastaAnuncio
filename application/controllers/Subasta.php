@@ -76,14 +76,22 @@ class Subasta  extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $nombre_espa = $this->input->post('nombre_espa');
         $descrip_espa = $this->input->post('descrip_espa');
-        $valor_inicial = $this->input->post('valor_inicial');
         $name_espa = $this->input->post('name_espa'); //nombre categoria
-        //  $photo = $this->input->post('photo');
-        $fecha_cierre = $this->input->post('fecha_cierre');
-        //$name = $this->input->post('name'); nombre usuario
-        $valor_pago = $this->input->post('valor_pago');
         $is_open = $this->input->post('is_open');
         $ciudad = $this->input->post('ciudad');
+        $tipo = $this->input->post('tipo_subasta');
+        //directa
+        $valor_pago = $this->input->post('valor_pago');
+        $valor_inicial = $this->input->post('valor_inicial');
+        $fecha_cierre = $this->input->post('fecha_cierre');
+        //inversa
+        $cantidad_dias = $this->input->post('cantidad_dias');
+        $intervalo_dias = $this->input->post('intervalo_dias');
+        $valor_maximo = $this->input->post('valor_maximo');
+        $valor_minimo = $this->input->post('valor_minimo');
+        $porcentaje_dias = $this->input->post('porcentaje_dias');
+        $qty_articles = $this->input->post('qty_articles');
+
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre_espa', translate('nombre_lang'), 'required');
@@ -91,7 +99,7 @@ class Subasta  extends CI_Controller
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("subasta/add_index");
-        } else { // todo normal
+        } else {
             $name_file = $_FILES['archivo']['name'];
             $separado = explode('.', $name_file);
             $ext = end($separado); // me quedo con la extension
@@ -100,21 +108,56 @@ class Subasta  extends CI_Controller
             if ($allow_extension) {
                 $result = save_image_from_post('archivo', './uploads/subasta', time(), 768, 768);
                 if ($result[0]) {
+                    if ($tipo == 1) {
+                        $data_subasta = [
+                            'nombre_espa' => $nombre_espa,
+                            'descrip_espa' => $descrip_espa,
+                            'valor_inicial' => $valor_inicial,
+                            'categoria_id' => $name_espa,
+                            'photo' => $result[1],
+                            'fecha_cierre' => $fecha_cierre,
+                            'valor_pago' => $valor_pago,
+                            'is_open' => $is_open,
+                            'user_id' => $user_id,
+                            'ciudad_id' => $ciudad,
+                            'is_active' => 1,
+                            'tipo_subasta' => $tipo,
+                            'cantidad_dias' => null,
+                            'intervalo' => null,
+                            'porcentaje' => null,
+                            'valor_maximo' => null,
+                            'valor_minimo' => null
+                        ];
+                    } else {
+                        $data_subasta = [
+                            'nombre_espa' => $nombre_espa,
+                            'descrip_espa' => $descrip_espa,
+                            'valor_inicial' => null,
+                            'categoria_id' => $name_espa,
+                            'photo' => $result[1],
+                            'fecha_cierre' => null,
+                            'valor_pago' => null,
+                            'is_open' => $is_open,
+                            'user_id' => $user_id,
+                            'ciudad_id' => $ciudad,
+                            'is_active' => 1,
+                            'tipo_subasta' => $tipo,
+                            'cantidad_dias' => $cantidad_dias,
+                            'intervalo' => $intervalo_dias,
+                            'porcentaje' => $porcentaje_dias,
+                            'valor_maximo' => $valor_maximo,
+                            'valor_minimo' => $valor_minimo,
+                            'qty_articles' => $qty_articles
+                        ];
+                    }
 
-                    $data_subasta = [
-                        'nombre_espa' => $nombre_espa,
-                        'descrip_espa' => $descrip_espa,
-                        'valor_inicial' => $valor_inicial,
-                        'categoria_id' => $name_espa,
-                        'photo' => $result[1],
-                        'fecha_cierre' => $fecha_cierre,
-                        'valor_pago' => $valor_pago,
-                        'is_open' => $is_open,
-                        'user_id' => $user_id,
-                        'ciudad_id' => $ciudad,
-                        'is_active' => 1
-                    ];
-                    $this->subasta->create($data_subasta);
+                    $id =  $this->subasta->create($data_subasta);
+                    if ($id) {
+                        $fecha = date('Y-m-d');
+                        $nuevafecha = strtotime('+' . $intervalo_dias . ' day', strtotime($fecha));
+                        $nuevafecha = date('Y-m-d', $nuevafecha);
+                        $this->subasta->create_intervalo(['subasta_id' => $id, 'valor' => $valor_maximo, 'cantidad' => $qty_articles, 'fecha' => $nuevafecha]);
+                    }
 
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                     redirect("subasta/index", "location", 301);
@@ -172,12 +215,21 @@ class Subasta  extends CI_Controller
 
         $nombre_espa = $this->input->post('nombre_espa');
         $descrip_espa = $this->input->post('descrip_espa');
-        $valor_inicial = $this->input->post('valor_inicial');
         $name_espa = $this->input->post('name_espa'); //nombre categoria
-        $fecha_cierre = $this->input->post('fecha_cierre');
-        $valor_pago = $this->input->post('valor_pago');
         $ciudad = $this->input->post('ciudad');
         $is_open = $this->input->post('is_open');
+        $tipo = $this->input->post('tipo_subasta');
+        //directa
+        $valor_pago = $this->input->post('valor_pago');
+        $valor_inicial = $this->input->post('valor_inicial');
+        $fecha_cierre = $this->input->post('fecha_cierre');
+        //inversa
+        $cantidad_dias = $this->input->post('cantidad_dias');
+        $intervalo_dias = $this->input->post('intervalo_dias');
+        $valor_maximo = $this->input->post('valor_maximo');
+        $valor_minimo = $this->input->post('valor_minimo');
+        $porcentaje_dias = $this->input->post('porcentaje_dias');
+        $qty_articles = $this->input->post('qty_articles');
 
 
         //establecer reglas de validacion
@@ -197,16 +249,46 @@ class Subasta  extends CI_Controller
             if ($allow_extension || $_FILES['archivo']['error'] == 4) {
 
                 if ($_FILES['archivo']['error'] == 4) {
-                    $data = [
-                        'nombre_espa' => $nombre_espa,
-                        'descrip_espa' => $descrip_espa,
-                        'valor_inicial' => $valor_inicial,
-                        'categoria_id' => $name_espa,
-                        'fecha_cierre' => $fecha_cierre,
-                        'valor_pago' => $valor_pago,
-                        'ciudad_id' => $ciudad,
-                        'is_open' => $is_open
-                    ];
+                    if ($tipo == 1) {
+                        $data = [
+                            'nombre_espa' => $nombre_espa,
+                            'descrip_espa' => $descrip_espa,
+                            'valor_inicial' => $valor_inicial,
+                            'categoria_id' => $name_espa,
+                            'fecha_cierre' => $fecha_cierre,
+                            'valor_pago' => $valor_pago,
+                            'ciudad_id' => $ciudad,
+                            'is_open' => $is_open,
+                            'tipo_subasta' => $tipo,
+                            'cantidad_dias' => null,
+                            'intervalo' => null,
+                            'porcentaje' => null,
+                            'valor_maximo' => null,
+                            'valor_minimo' => null
+                        ];
+                    } else {
+                        $data = [
+                            'nombre_espa' => $nombre_espa,
+                            'descrip_espa' => $descrip_espa,
+                            'valor_inicial' => null,
+                            'categoria_id' => $name_espa,
+                            'fecha_cierre' => null,
+                            'valor_pago' => null,
+                            'is_open' => $is_open,
+                            'ciudad_id' => $ciudad,
+                            'is_active' => 1,
+                            'tipo_subasta' => $tipo,
+                            'cantidad_dias' => $cantidad_dias,
+                            'intervalo' => $intervalo_dias,
+                            'porcentaje' => $porcentaje_dias,
+                            'valor_maximo' => $valor_maximo,
+                            'valor_minimo' => $valor_minimo,
+                            'qty_articles' => $qty_articles
+                        ];
+                    }
+
+
+
                     $this->subasta->update($subasta_id, $data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                     redirect("subasta/index");
@@ -217,18 +299,37 @@ class Subasta  extends CI_Controller
                         if ($result[0]) {
                             if (file_exists($subasta_object->photo))
                                 unlink($subasta_object->photo);
+                            if ($tipo == 1) {
+                                $data = [
+                                    'nombre_espa' => $nombre_espa,
+                                    'is_open' => $is_open,
+                                    'descrip_espa' => $descrip_espa,
+                                    'valor_inicial' => $valor_inicial,
+                                    'categoria_id' => $name_espa,
+                                    'photo' => $result[1],
+                                    'fecha_cierre' => $fecha_cierre,
+                                    'valor_pago' => $valor_pago,
+                                    'ciudad_id' => $ciudad,
+                                    'tipo_subasta' => $tipo,
 
-                            $data = [
-                                'nombre_espa' => $nombre_espa,
-                                'is_open' => $is_open,
-                                'descrip_espa' => $descrip_espa,
-                                'valor_inicial' => $valor_inicial,
-                                'categoria_id' => $name_espa,
-                                'photo' => $result[1],
-                                'fecha_cierre' => $fecha_cierre,
-                                'valor_pago' => $valor_pago,
-                                'ciudad_id' => $ciudad
-                            ];
+                                ];
+                            } else {
+                                $data = [
+                                    'nombre_espa' => $nombre_espa,
+                                    'is_open' => $is_open,
+                                    'descrip_espa' => $descrip_espa,
+                                    'categoria_id' => $name_espa,
+                                    'photo' => $result[1],
+                                    'ciudad_id' => $ciudad,
+                                    'tipo_subasta' => $tipo,
+                                    'cantidad_dias' => $cantidad_dias,
+                                    'intervalo' => $intervalo_dias,
+                                    'porcentaje' => $porcentaje_dias,
+                                    'valor_maximo' => $valor_maximo,
+                                    'valor_minimo' => $valor_minimo
+                                ];
+                            }
+
                             $this->subasta->update($subasta_id, $data);
                             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                             redirect("subasta/index");

@@ -44,8 +44,32 @@
                             <tbody>
                                 <?php foreach ($all_subasta as $item) { ?>
                                     <tr>
-                                        <td> <?= $item->nombre_espa; ?></td>
-                                        <td> <?= $item->descrip_espa; ?></td>
+                                        <td>
+                                            <?php if ($item->tipo_subasta == 1) { ?>
+                                                <p><?= translate("tipo_subasta_lang") . ": "  ?> <label class="label label-success">Directa</label></p>
+                                            <?php } else { ?>
+                                                <p> <?= translate("tipo_subasta_lang") . ": "  ?> <label class="label label-info">Inversa </label></p>
+                                            <?php } ?>
+
+                                            <br>
+                                            <?= $item->nombre_espa; ?>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <?= $item->descrip_espa; ?>
+                                            </p>
+                                            <?php if ($item->tipo_subasta == 2) { ?>
+                                                <p><strong><?= translate("qty_article_lang"); ?> : </strong><label class="label label-danger"><?= $item->qty_articles ?></label></p>
+                                                <p><strong><?= translate("valor_maximo_lang"); ?> : </strong><label class="label label-danger">$<?= number_format($item->valor_maximo, 2) ?></label></p>
+                                                <p><strong><?= translate("valor_minimo_lang"); ?> : </strong><label class="label label-danger">$<?= number_format($item->valor_minimo, 2) ?></label></p>
+                                                <p><strong><?= translate("cant_dias_lang"); ?> : </strong><label class="label label-danger"><?= $item->cantidad_dias ?></label></p>
+                                                <p><strong><?= translate("intervalo_dias_lang"); ?> : </strong><label class="label label-danger"><?= $item->intervalo ?></label></p>
+                                                <p><strong><?= translate("porcentaje_deducion_lang"); ?> : </strong><label class="label label-danger">%<?= $item->porcentaje ?></label></p>
+
+                                            <?php } ?>
+
+
+                                        </td>
                                         <td> <label class="label label-info">$<?= number_format($item->valor_inicial, 2); ?></label></td>
                                         <td> <?= $item->categoria->name_espa; ?></td>
                                         <td style="width:20%"><img style="width:250px;height:100px;" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>

@@ -81,8 +81,10 @@
 
     <!-- CK Editor -->
     <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+
     <!-- Bootstrap WYSIHTML5 -->
     <script src="<?= base_url(); ?>admin_lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -127,7 +129,7 @@
                             $url = base_url('assets/juice.png');
                             if (file_exists($this->session->userdata('foto')))
                                 $url = base_url($this->session->userdata('foto'))
-                                ?>
+                            ?>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
                                 <img src="<?= $url; ?>" class="user-image" alt="User Image">
