@@ -71,8 +71,36 @@
                                         </div>
 
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?= translate('description_lang'); ?></label>
+                                            <textarea name="descripcion" rows="4" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>">
 
+                                    </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("descuento_lang"); ?></label>
+                                        <div class="input-group">
 
+                                            <span class="input-group-addon"><i><strong>%</strong></i></i></span>
+                                            <input type="text" class="form-control input-sm" name="descuento" value="0" placeholder="<?= translate('descuento_lang'); ?>">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("sorteo_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                            <select id="sorteo" name="sorteo" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+
+                                                <option value="1">SI</option>
+                                                <option value="2">NO</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
 
 
                                 </div>
@@ -105,9 +133,8 @@
 
 <script>
     $(function() {
-    $("#example1").DataTable();
+        $("#example1").DataTable();
+        $(".textarea").wysihtml5();
 
-
-    });
     });
 </script>

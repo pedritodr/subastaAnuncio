@@ -220,6 +220,7 @@ $config['send_menssage_lang'] = "Envie su mensaje";
 
 $config['state_lang'] = "Estado";
 $config['pujar_lang'] = "Pujar";
+$config['comprar_inversa_lang'] = "Comprar";
 $config['subir_puja_lang'] = "Subir puja";
 $config['valor_alto_lang'] = "Valor más alto";
 $config['featured_lang'] = "Destacado";
@@ -305,6 +306,7 @@ $config['membresia_act_lang'] = "Membresia actual";
 $config['n_resultados'] = "No se encontraron resultados";
 $config['tipo_lang'] = "Tipo";
 $config['descuento_lang'] = "Descuento";
+$config['sorteo_lang'] = "Sorteo";
 $config['asign_lang'] = "Asignación";
 $config['book_lang'] = "Libro";
 $config['books_lang'] = "Libros";

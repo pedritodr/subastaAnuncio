@@ -30,7 +30,10 @@
                             <thead>
                                 <tr>
                                     <th><?= translate("nombre_lang"); ?></th>
+                                    <th><?= translate("description_lang"); ?></th>
                                     <th><?= translate("precios_lang"); ?></th>
+                                    <th><?= translate("sorteo_lang"); ?></th>
+                                    <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
@@ -39,7 +42,16 @@
                                 <?php foreach ($all_membresia as $item) { ?>
                                     <tr>
                                         <td> <?= $item->nombre; ?></td>
+                                        <td> <?= $item->descripcion; ?></td>
                                         <td> <label class="label label-success">$<?= $item->precio; ?></label> </td>
+                                        <td>
+                                            <?php if ($item->sorteo == 1) { ?>
+                                                <label class="label label-primary">SI</label>
+                                            <?php } else { ?>
+                                                <label class="label label-primary">NO</label>
+                                            <?php } ?>
+                                        </td>
+                                        <td><label class="label label-info"><?= $item->descuento; ?></label></td>
                                         <td><label class="label label-primary"><?= $item->cant_anuncio; ?></label></td>
                                         <td>
                                             <!-- Single button -->
@@ -64,7 +76,11 @@
                             <tfoot>
                                 <tr>
                                     <th><?= translate("nombre_lang"); ?></th>
-                                    <th><?= translate("photos_lang"); ?></th>
+                                    <th><?= translate("description_lang"); ?></th>
+                                    <th><?= translate("precios_lang"); ?></th>
+                                    <th><?= translate("sorteo_lang"); ?></th>
+                                    <th><?= translate("descuento_lang"); ?></th>
+                                    <th><?= translate("cant_anuncios_lang") ?></th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </tfoot>

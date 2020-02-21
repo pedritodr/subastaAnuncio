@@ -1307,7 +1307,25 @@ class Front extends CI_Controller
         $this->response->set_message(translate('piso_pagado_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
     }
-
+    public function pagar_inversa()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $subasta_id = $this->input->post('invresa_subasta_id');
+        $this->load->model('Subasta_model', 'subasta');
+        $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+        $count = count($subasta);
+        $cantidad = (int) $subasta[$count - 1]->cantidad - 1;
+        $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]);
+        $data = [
+            'user_id' => $user_id,
+            'subasta_id' => $subasta_id,
+            'is_active' => 1,
+            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id
+        ];
+        $this->subasta->create_subasta_user($data);
+        $this->response->set_message(translate('compra_exitosa_lang'), ResponseMessage::SUCCESS);
+        redirect("perfil");
+    }
     public function pujar()
     {
 

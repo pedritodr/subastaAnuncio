@@ -51,9 +51,10 @@ class Membresia extends CI_Controller
 
         $nombre = $this->input->post('nombre');
         $precio = $this->input->post('precio');
-        $cant_anuncio= $this->input->post('cant_anuncio');
-
-
+        $cant_anuncio = $this->input->post('cant_anuncio');
+        $descuento = $this->input->post('descuento');
+        $sorteo = $this->input->post('sorteo');
+        $descripcion = $this->input->post('descripcion');
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
@@ -65,20 +66,22 @@ class Membresia extends CI_Controller
         } else { //en caso de que todo este bien
 
 
-                    $data = ['nombre' => $nombre,
-                             'precio' => $precio,
-                             'cant_anuncio' => $cant_anuncio,
-
-                    ];
-                    $this->membresia->create($data);
-                    $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                    redirect("membresia/index");
-
+            $data = [
+                'nombre' => $nombre,
+                'precio' => $precio,
+                'cant_anuncio' => $cant_anuncio,
+                'descuento' => $descuento,
+                'sorteo' => $sorteo,
+                'descripcion' => $descripcion
+            ];
+            $this->membresia->create($data);
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            redirect("membresia/index");
         }
     }
 
 
-    function update_index($membresia_id= 0)
+    function update_index($membresia_id = 0)
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2])) {
             $this->log_out();
@@ -108,30 +111,33 @@ class Membresia extends CI_Controller
         $nombre = $this->input->post('nombre');
         $precio = $this->input->post('precio');
         $cant_anuncio = $this->input->post('cant_anuncio');
-
-
+        $descuento = $this->input->post('descuento');
+        $sorteo = $this->input->post('sorteo');
+        $descripcion = $this->input->post('descripcion');
 
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
 
 
-            if ($membresia_object) {
+        if ($membresia_object) {
 
-                    $data_membresia = ['nombre' => $nombre,
-                             'precio' => $precio,
-                             'cant_anuncio' => $cant_anuncio,
-                             'membresia_id' => $membresia_id,
+            $data_membresia = [
+                'nombre' => $nombre,
+                'precio' => $precio,
+                'cant_anuncio' => $cant_anuncio,
+                'membresia_id' => $membresia_id,
+                'descuento' => $descuento,
+                'sorteo' => $sorteo,
+                'descripcion' => $descripcion
 
-
-                ];
-                    $this->membresia->update($membresia_id, $data_membresia);
-                    $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                    redirect("membresia/index");
-
-            } else {
-                show_404();
-            }
+            ];
+            $this->membresia->update($membresia_id, $data_membresia);
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            redirect("membresia/index");
+        } else {
+            show_404();
         }
+    }
 
     public function delete($membresia_id = 0)
     {
@@ -150,12 +156,4 @@ class Membresia extends CI_Controller
             show_404();
         }
     }
-
-
-
-
-
-
-
-
 }

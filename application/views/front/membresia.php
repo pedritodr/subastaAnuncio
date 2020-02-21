@@ -69,7 +69,10 @@
 
                                     <span class="price">$<?= number_format($item->precio, 2); ?></span>
                                     <span class="time"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
-
+                                    <span class="time"><?= translate('descripcion_lang') ?></span>
+                                    <div class="text-center">
+                                        <?= $item->descripcion; ?>
+                                    </div>
                                     <?php if ($this->session->userdata('user_id')) { ?>
                                         <a style="cursor:pointer" onclick="seleccionar_membresia('<?= $item->membresia_id; ?>','<?= $item->precio; ?>');" class="btn btn-theme"><?= translate('select_plan_lang') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                                     <?php } ?>

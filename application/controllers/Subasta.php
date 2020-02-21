@@ -129,13 +129,16 @@ class Subasta  extends CI_Controller
                             'valor_minimo' => null
                         ];
                     } else {
+                        $fecha = date('Y-m-d H:i:s');
+                        $nuevafecha = strtotime('+' . $cantidad_dias . ' day', strtotime($fecha));
+                        $nuevafecha = date('Y-m-d H:i:s', $nuevafecha);
                         $data_subasta = [
                             'nombre_espa' => $nombre_espa,
                             'descrip_espa' => $descrip_espa,
                             'valor_inicial' => null,
                             'categoria_id' => $name_espa,
                             'photo' => $result[1],
-                            'fecha_cierre' => null,
+                            'fecha_cierre' => $nuevafecha,
                             'valor_pago' => null,
                             'is_open' => $is_open,
                             'user_id' => $user_id,
