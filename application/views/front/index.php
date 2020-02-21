@@ -220,7 +220,7 @@
                                              </div>
                                           <?php } ?>
 
-                                          <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
+                                          <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                           <div class="category-title">Stock: <span> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
                                        </div>
                                        <!-- Addition Info -->
@@ -357,7 +357,7 @@
                                                    $<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
                                                 </div>
                                              <?php } ?>
-                                             <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
+                                             <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                              <div class="category-title">Stock: <span> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
                                           </div>
                                           <!-- Addition Info -->
