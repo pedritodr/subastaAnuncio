@@ -29,7 +29,10 @@ $config['minutos_lang'] = "Minutos";
 $config['segundos_lang'] = "Segundos";
 $config['mostrando_lang'] = "Mostrando";
 $config['resultados_lang'] = "Resultados";
-
+$config['subastas_directas_lang'] = "Subastas directas";
+$config['subastas_inversas_lang'] = "Subastas inversas";
+$config['mensaje_directa_lang'] = "No hay subastas directas disponibles";
+$config['mensaje_inversa_lang'] = "No hay  subastas inversas disponibles";
 $config['acerca_lang'] = "Acerca de";
 $config['subasta_lang'] = "Subastas";
 $config['Anuncios_lang'] = "Anuncios";

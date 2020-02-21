@@ -60,16 +60,32 @@ class Front extends CI_Controller
 
 
         foreach ($all_categorias as $item) {
-            $item->all_subastas = $this->subasta->get_by_categoria_id($item->categoria_id);
+            $contador_inversa = 0;
+            $contador_directa = 0;
+            $subastas  = $this->subasta->get_by_categoria_id($item->categoria_id);
+            foreach ($subastas as $subasta) {
+                if ($subasta->tipo_subasta == 1) {
+                    $contador_directa++;
+                    $subasta->intervalo = null;
+                } else {
+                    $subasta->intervalo = $this->subasta->get_intervalo_subasta($subasta->subasta_id);
+                    $contador_inversa++;
+                }
+            }
+            $item->count_inversa = $contador_inversa;
+            $item->count_directa = $contador_directa;
+            $item->all_subastas = $subastas;
         }
 
 
 
         $data['all_categorias'] = $all_categorias;
         $all_subastas = $this->subasta->get_subastas();
+
         $data['all_subastas'] = $all_subastas;
 
-        // var_dump($all_categorias);die();
+        /*  var_dump($all_categorias);
+        die();*/
         $this->load_view_front('front/index', $data);
     }
 

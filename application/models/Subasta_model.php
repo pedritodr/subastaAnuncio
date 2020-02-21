@@ -69,7 +69,7 @@ class Subasta_model extends CI_Model
 
     function get_by_categoria_id($id)
     {
-        $this->db->select('subasta.subasta_id,subasta.photo as photo_subasta, ciudad.name_ciudad,subasta.nombre_espa, subasta.valor_inicial, subasta.fecha_cierre, subasta.descrip_espa');
+        $this->db->select('subasta.subasta_id,subasta.photo as photo_subasta, ciudad.name_ciudad,subasta.nombre_espa, subasta.valor_inicial, subasta.fecha_cierre, subasta.descrip_espa,subasta.tipo_subasta,subasta.valor_maximo,subasta.valor_minimo,subasta.porcentaje,subasta.cantidad_dias,subasta.intervalo,subasta.qty_articles');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
@@ -78,7 +78,14 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    function get_intervalo_subasta($id) //foto subasta
+    {
 
+        $this->db->where('subasta_id', $id);
+        $query = $this->db->get('intervalo_subasta');
+
+        return $query->result();
+    }
 
     function get_by_foto_id_object($id) //foto subasta
     {
@@ -182,7 +189,7 @@ class Subasta_model extends CI_Model
 
     function get_subastas()
     {
-        $this->db->select('subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
+        $this->db->select('subasta.tipo_subasta,subasta.valor_maximo,subasta.valor_minimo,subasta.porcentaje,subasta.cantidad_dias,subasta.intervalo,subasta.qty_articles,subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
