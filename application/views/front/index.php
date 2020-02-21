@@ -183,56 +183,57 @@
                               </div>
 
                            <?php } else { ?>
+                              <?php $count_intervalo = count($all_categorias[0]->all_subastas[$k]->intervalo); ?>
+                              <?php if ($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad > 0) { ?>
+                                 <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
 
-                              <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
-
-                                 <!-- Ad Box -->
-                                 <div class="category-grid-box">
-                                    <!-- Ad Img -->
-                                    <div class="category-grid-img">
-                                       <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
-                                       <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                       <!-- User Review -->
-                                       <div class="user-preview">
-                                          <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
-                                       </div>
-                                       <div class="additional-information">
-                                          <?= $all_categorias[0]->all_subastas[$k]->descrip_espa ?>
-                                       </div>
-
-                                    </div>
-                                    <?php $count_intervalo = count($all_categorias[0]->all_subastas[$k]->intervalo); ?>
-                                    <!-- Ad Img End -->
-                                    <div class="short-description">
-                                       <!-- Ad Category -->
-                                       <div class="category-title"> <span><a href="#"><?= $all_categorias[0]->name_espa ?></a></span> </div>
-                                       <!-- Ad Title -->
-                                       <h6><a title="" href="single-page-listing.html"><?= $all_categorias[0]->all_subastas[$k]->nombre_espa ?></a></h6>
-                                       <!-- Price -->
-                                       <?php if ($count_intervalo >= 2) { ?>
-                                          <div class="price">
-                                             <b class="strikethrough" style=" font-size:16px !important; color:#2a3681 !important">$<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 2]->valor, 2) ?></b> $<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                    <!-- Ad Box -->
+                                    <div class="category-grid-box">
+                                       <!-- Ad Img -->
+                                       <div class="category-grid-img">
+                                          <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
+                                          <!-- Ad Status <span class="ad-status"> Destacado </span>-->
+                                          <!-- User Review -->
+                                          <div class="user-preview">
+                                             <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
                                           </div>
-                                       <?php } else { ?>
-                                          <div class="price">
-                                             $<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                          <div class="additional-information">
+                                             <?= $all_categorias[0]->all_subastas[$k]->descrip_espa ?>
                                           </div>
-                                       <?php } ?>
 
-                                       <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
-                                       <div class="category-title">Stock: <span> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
+                                       </div>
+
+                                       <!-- Ad Img End -->
+                                       <div class="short-description">
+                                          <!-- Ad Category -->
+                                          <div class="category-title"> <span><a href="#"><?= $all_categorias[0]->name_espa ?></a></span> </div>
+                                          <!-- Ad Title -->
+                                          <h6><a title="" href="single-page-listing.html"><?= $all_categorias[0]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                          <!-- Price -->
+                                          <?php if ($count_intervalo >= 2) { ?>
+                                             <div class="price">
+                                                <b class="strikethrough" style=" font-size:16px !important; color:#2a3681 !important">$<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 2]->valor, 2) ?></b> $<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                             </div>
+                                          <?php } else { ?>
+                                             <div class="price">
+                                                $<?= number_format($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                             </div>
+                                          <?php } ?>
+
+                                          <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
+                                          <div class="category-title">Stock: <span> <?= $all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
+                                       </div>
+                                       <!-- Addition Info -->
+                                       <div class="ad-info">
+                                          <ul>
+                                             <li><i class="fa fa-map-marker"></i> <?= $all_categorias[0]->all_subastas[$k]->name_ciudad ?></li>
+                                             <li><button onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[0]->all_subastas[$k])) ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
+                                          </ul>
+                                       </div>
                                     </div>
-                                    <!-- Addition Info -->
-                                    <div class="ad-info">
-                                       <ul>
-                                          <li><i class="fa fa-map-marker"></i> <?= $all_categorias[0]->all_subastas[$k]->name_ciudad ?></li>
-                                          <li><button onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[0]->all_subastas[$k])) ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
-                                       </ul>
-                                    </div>
+                                    <!-- Ad Box End -->
                                  </div>
-                                 <!-- Ad Box End -->
-                              </div>
-
+                              <?php } ?>
                            <?php } ?>
 
                         <?php } ?>
@@ -320,57 +321,59 @@
                                  </div>
 
                               <?php } else { ?>
-                                 <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
+                                 <?php $count_intervalo = count($all_categorias[$i]->all_subastas[$k]->intervalo); ?>
+                                 <?php if ($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad > 0) { ?>
+                                    <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
 
-                                    <!-- Ad Box -->
-                                    <div class="category-grid-box">
-                                       <!-- Ad Img -->
-                                       <div class="category-grid-img">
-                                          <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
-                                          <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                          <!-- User Review -->
-                                          <div class="user-preview">
-                                             <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
-                                          </div>
-                                          <div class="additional-information">
-                                             <?= $all_categorias[$i]->all_subastas[$k]->descrip_espa ?>
+                                       <!-- Ad Box -->
+                                       <div class="category-grid-box">
+                                          <!-- Ad Img -->
+                                          <div class="category-grid-img">
+                                             <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
+                                             <!-- Ad Status <span class="ad-status"> Destacado </span>-->
+                                             <!-- User Review -->
+                                             <div class="user-preview">
+                                                <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
+                                             </div>
+                                             <div class="additional-information">
+                                                <?= $all_categorias[$i]->all_subastas[$k]->descrip_espa ?>
+                                             </div>
+
                                           </div>
 
+                                          <!-- Ad Img End -->
+                                          <div class="short-description">
+                                             <!-- Ad Category -->
+                                             <div class="category-title"> <span><a href="#"><?= $all_categorias[$i]->name_espa ?></a></span> </div>
+                                             <!-- Ad Title -->
+                                             <h6><a title="" href="single-page-listing.html"><?= $all_categorias[$i]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                             <!-- Price -->
+                                             <?php if ($count_intervalo >= 2) { ?>
+                                                <div class="price">
+                                                   <b class="strikethrough" style=" font-size:16px !important; color:#2a3681 !important">$<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 2]->valor, 2) ?></b> $<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                                </div>
+                                             <?php } else { ?>
+                                                <div class="price">
+                                                   $<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
+                                                </div>
+                                             <?php } ?>
+                                             <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
+                                             <div class="category-title">Stock: <span> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
+                                          </div>
+                                          <!-- Addition Info -->
+                                          <div class="ad-info">
+                                             <ul>
+                                                <li><i class="fa fa-map-marker"></i> <?= $all_categorias[$i]->all_subastas[$k]->name_ciudad ?></li>
+                                                <li><button onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[$i]->all_subastas[$k])) ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
+                                             </ul>
+                                          </div>
                                        </div>
-                                       <?php $count_intervalo = count($all_categorias[$i]->all_subastas[$k]->intervalo); ?>
-                                       <!-- Ad Img End -->
-                                       <div class="short-description">
-                                          <!-- Ad Category -->
-                                          <div class="category-title"> <span><a href="#"><?= $all_categorias[$i]->name_espa ?></a></span> </div>
-                                          <!-- Ad Title -->
-                                          <h6><a title="" href="single-page-listing.html"><?= $all_categorias[$i]->all_subastas[$k]->nombre_espa ?></a></h6>
-                                          <!-- Price -->
-                                          <?php if ($count_intervalo >= 2) { ?>
-                                             <div class="price">
-                                                <b class="strikethrough" style=" font-size:16px !important; color:#2a3681 !important">$<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 2]->valor, 2) ?></b> $<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
-                                             </div>
-                                          <?php } else { ?>
-                                             <div class="price">
-                                                $<?= number_format($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->valor, 2) ?>
-                                             </div>
-                                          <?php } ?>
-                                          <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->fecha ?> </span> </div>
-                                          <div class="category-title">Stock: <span> <?= $all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
-                                       </div>
-                                       <!-- Addition Info -->
-                                       <div class="ad-info">
-                                          <ul>
-                                             <li><i class="fa fa-map-marker"></i> <?= $all_categorias[$i]->all_subastas[$k]->name_ciudad ?></li>
-                                             <li><button onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[$i]->all_subastas[$k])) ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
-                                          </ul>
-                                       </div>
+                                       <!-- Ad Box End -->
                                     </div>
-                                    <!-- Ad Box End -->
-                                 </div>
 
+                                 <?php } ?>
                               <?php } ?>
                            <?php } ?>
-
 
                         </div>
 

@@ -219,7 +219,7 @@ span.app-store-btn:hover,
 	/*border-color: #2a3681;*/
 }
 
-.btn-theme:hover,
+
 .btn-theme:focus,
 .btn-theme:active,
 .btn-theme.active,
@@ -228,6 +228,11 @@ span.app-store-btn:hover,
 	color: #8c1822;
 	background-color: #fff;
 	/*	border: 2px solid #8c1822;*/
+}
+
+.btn-theme:hover {
+	color: #fff;
+	background-color: #2a3681;
 }
 
 .btn-theme:active,

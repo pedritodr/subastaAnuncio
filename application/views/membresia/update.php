@@ -70,7 +70,36 @@
                                         </div>
 
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?= translate('description_lang'); ?></label>
+                                            <textarea name="descripcion" rows="4" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>">
+                                            <?= $membresia_object->descripcion; ?>
+                                    </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("descuento_lang"); ?></label>
+                                        <div class="input-group">
 
+                                            <span class="input-group-addon"><i><strong>%</strong></i></i></span>
+                                            <input type="text" class="form-control input-sm" name="descuento" placeholder="<?= translate('descuento_lang'); ?>" value="<?= $membresia_object->descuento; ?>">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label><?= translate("sorteo_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                            <select id="sorteo" name="sorteo" class="form-control  input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+
+                                                <option <?php if ($membresia_object->sorteo == 1) { ?> selected <?php } ?> value="1">SI</option>
+                                                <option <?php if ($membresia_object->sorteo == 2) { ?> selected <?php } ?> value="2">NO</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
 
 
 

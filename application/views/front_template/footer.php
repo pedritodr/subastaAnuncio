@@ -276,6 +276,9 @@
                            <div id="body_pujar" class="col-md-12">
                               <button id="btn_pujar" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
                            </div>
+                           <div id="body_comprar_inversa" class="col-md-12">
+                              <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
+                           </div>
 
                         </div>
                      <?php } ?>
@@ -303,6 +306,31 @@
             <h4 id="inicial" class="text-center"></h4>
 
             <input type="hidden" id='subasta_id' name="subasta_id">
+
+            <div class="clearfix"></div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button type="submit" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
+            </div>
+            <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade price-quote" id="modal_pagar_inversa" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("comprar_inversa_lang"); ?></h3>
+         </div>
+         <div class="modal-body">
+            <!-- content goes here -->
+            <?php echo form_open_multipart("front/pagar_inversa") ?>
+            <h5 class="text-center" id="name_subasta_inversa"></h5>
+            <h4 id="valor_inversa" class="text-center"></h4>
+
+            <input type="hidden" id='invresa_subasta_id' name="invresa_subasta_id">
 
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -585,8 +613,9 @@
                   $('#body_valor_alto').hide();
                   $('#li_valor_entrada').hide();
 
-
+                  $('#body_entrar_subasta').hide();
                   $('#fecha_cierre').text(object.intervalo[count_intervalo - 1].fecha);
+                  $('#btn_comprar_inversa').attr("onclick", "pagar_subasta_inversa('" + btoa(JSON.stringify(object)) + "')");
 
                }
 
@@ -746,46 +775,6 @@
    }
 
 
-   var paymentezCheckout = new PaymentezCheckout.modal({
-      client_app_code: 'MUSIC-EC-CLIENT', // Client Credentials Provied by Paymentez
-      client_app_key: 'Z7NE0mtkrrjxKCyp42FWdQ2FfKGbJl', // Client Credentials Provied by Paymentez
-      locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
-      env_mode: 'stg', // `prod`, `stg`, `dev`, `local` to change environment. Default is `stg`
-      onOpen: function() {
-         console.log('modal open');
-      },
-      onClose: function() {
-         console.log("Modal cerrado");
-      },
-      onResponse: function(response) { // The callback to invoke when the Checkout process is completed
-
-         console.log(response);
-         console.log(response.transaction["status_detail"]);
-
-         if (response.transaction["status_detail"] === 3) {
-            alert("todo bien");
-            // window.location.href = "<?= site_url('/front/change_status_order/') ?>" +"/"+order_id+"/"+ response.transaction.id + "/" + response.transaction.authorization_code;
-         } else {
-            $("#msg_error_pago").empty();
-            console.log(response.transaction.message);
-            $("#msg_error_pago").show();
-            $("#msg_error_pago").html("La compra no se ha podido procesar. Por favor, intente de nuevo.");
-            $('html,body').animate({
-               scrollTop: $("body").offset().top
-            }, 'slow');
-         }
-
-
-      }
-   });
-
-
-
-   // Close Checkout on page navigation:
-   window.addEventListener('popstate', function() {
-      paymentezCheckout.close();
-   });
-
    /* $(".modal-body").bind("click", function() {
 
     });*/
@@ -905,6 +894,17 @@
          $('.mensaje_directa').show();
          $('.mensaje_inversa').hide();
       }
+
+   }
+
+   function pagar_subasta_inversa(object) {
+      object = atob(object);
+      object = JSON.parse(object);
+      $('#name_subasta_inversa').text(object.nombre_espa);
+      $('#valor_inversa').text("$" + parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
+      $('#invresa_subasta_id').val(object.subasta_id);
+      $('#modal_pagar_inversa').modal("show");
+      $("#modal_detalle").modal("hide");
 
    }
 </script>
