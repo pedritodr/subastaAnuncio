@@ -63,16 +63,26 @@ $route['membresia'] = 'front/membresia';
 $route['registrarse'] = 'front/registrar';
 $route['listado-anuncio'] = 'front/Lista_anuncio';
 $route['perfil'] = 'front/perfil';
-$route['subastas'] = 'front/subasta';
+$route['subastas_inversas'] = 'front/subasta_inversa';
+$route['subastas_directas'] = 'front/subasta_directa';
 $route['anuncios'] = 'front/anuncios_index';
 $route['prueba'] = 'front/prueba';
-
+$route['search'] = 'front/buscar_subasta';
 
 
 
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();
-
+$page = 5;
+for ($i = 0; $i < 20; $i++) {
+    $route[strtolower('subastas_directas/page/' . $page)] = 'front/subasta_directa/' . $page;
+    $page += 5;
+}
+$page2 = 5;
+for ($i = 0; $i < 20; $i++) {
+    $route[strtolower('subastas_inversas/page/' . $page2)] = 'front/subasta_inversa/' . $page2;
+    $page2 += 5;
+}
 /*
 
 

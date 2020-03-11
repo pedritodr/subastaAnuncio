@@ -48,8 +48,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-md-12">
-
-                <?= form_open_multipart("search", array('class' => 'search-form', 'method' => 'post')); ?>
+                <!-- Form -->
+                <?= form_open_multipart("search", array('class' => 'search-form')); ?>
 
 
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
