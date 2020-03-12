@@ -67,7 +67,8 @@ $route['subastas_inversas'] = 'front/subasta_inversa';
 $route['subastas_directas'] = 'front/subasta_directa';
 $route['anuncios'] = 'front/anuncios_index';
 $route['prueba'] = 'front/prueba';
-$route['search'] = 'front/buscar_subasta';
+$route['search_subasta_directa'] = 'front/buscar_subasta_directa';
+$route['search_subasta_inversa'] = 'front/buscar_subasta_inversa';
 
 
 

@@ -579,6 +579,7 @@
             },
             success: function(result) {
                result = JSON.parse(result);
+               console.log(result);
                if (result) {
 
 

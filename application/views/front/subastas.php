@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-md-12">
 
-                <?= form_open_multipart("search", array('class' => 'search-form', 'method' => 'post')); ?>
+                <?= form_open_multipart("search_subasta_directa", array('class' => 'search-form', 'method' => 'post')); ?>
 
 
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
@@ -57,7 +57,12 @@
                         <option label="<?= translate("select_category_lang"); ?>"></option>
                         <?php if ($categories) { ?>
                             <?php foreach ($categories as $item) { ?>
-                                <option value="<?= $item->categoria_id ?>"><?= $item->name_espa ?></option>
+                                <?php if ($this->session->userdata('session_categoria')) { ?>
+                                    <option <?php if ($this->session->userdata('session_categoria') == $item->categoria_id) { ?> selected <?php } ?> value="<?= $item->categoria_id ?>"><?= $item->name_espa ?></option>
+                                <?php  } else { ?>
+                                    <option value="<?= $item->categoria_id ?>"><?= $item->name_espa ?></option>
+                                <?php } ?>
+
                             <?php } ?>
 
                         <?php } ?>
@@ -66,7 +71,11 @@
                 </div>
                 <!-- Search Field -->
                 <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
-                    <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                    <?php if ($this->session->userdata('session_palabra')) { ?>
+                        <input name="subasta_palabra" type="text" class="form-control" value="<?= $this->session->userdata('session_palabra') ?>" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                    <?php } else { ?>
+                        <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                    <?php  } ?>
                 </div>
                 <!-- Search Button -->
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
@@ -101,9 +110,10 @@
                                 <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
                                 <div style="margin-top:1%" class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="switcher pull-left">
-                                            <div style="margin-top:2%" class="col-lg-6 col-xs-12 text-center">
-                                                <a href="<?= site_url('subastas_directas') ?>" id="btn_subasta_directa_2" class="btn active btn-theme">
+
+                                        <div style="margin-top:2%" class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
+                                            <?php if ($this->session->userdata('session_palabra') || $this->session->userdata('session_categoria')) { ?>
+                                                <a href="<?= site_url('search_subasta_directa') ?>" id="btn_subasta_directa_2" class="btn btn-block active btn-theme">
                                                     <span><i style="color:#fff" class="fa fa-arrow-up"></i></span>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;">
@@ -111,9 +121,20 @@
                                                         </font>
                                                     </font>
                                                 </a>
-                                            </div>
-                                            <div style="margin-top:2%" class="col-lg-6 col-xs-12 text-center">
-                                                <a href="<?= site_url('subastas_inversas') ?>" id="btn_subasta_inversa_2" class="btn  btn-theme">
+                                            <?php } else { ?>
+                                                <a href="<?= site_url('subastas_directas') ?>" id="btn_subasta_directa_2" class="btn btn-block active btn-theme">
+                                                    <span><i style="color:#fff" class="fa fa-arrow-up"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">
+                                                            <?= translate('subastas_directas_lang') ?>
+                                                        </font>
+                                                    </font>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                        <div style="margin-top:2%" class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
+                                            <?php if ($this->session->userdata('session_palabra') || $this->session->userdata('session_categoria')) { ?>
+                                                <a href="<?= site_url('search_subasta_inversa') ?>" id="btn_subasta_inversa_2" class="btn btn-block btn-theme">
                                                     <span><i style="color:#fff" class="fa fa-exchange"></i></span>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;">
@@ -121,11 +142,21 @@
                                                         </font>
                                                     </font>
                                                 </a>
-                                            </div>
-
-
+                                            <?php } else { ?>
+                                                <a href="<?= site_url('subastas_inversas') ?>" id="btn_subasta_inversa_2" class="btn btn-block btn-theme">
+                                                    <span><i style="color:#fff" class="fa fa-exchange"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">
+                                                            <?= translate('subastas_inversas_lang') ?>
+                                                        </font>
+                                                    </font>
+                                                </a>
+                                            <?php } ?>
                                         </div>
+
+
                                     </div>
+
 
                                 </div>
                             </div>
@@ -147,129 +178,246 @@
                                         <?php foreach ($all_subastas as $item) { ?>
                                             <?php if ($item->tipo_subasta == 1) { ?>
                                                 <?php $contador_directa++; ?>
-                                                <li class="tipo_directa">
+                                                <li>
+                                                    <div class="well ad-listing clearfix">
+                                                        <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
+                                                            <!-- Image Box -->
+                                                            <div class="img-box">
+                                                                <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
+                                                                <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
+                                                                <!--    <div class="quick-view"><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="view-button"><i class="fa fa-search"></i></a> </div> -->
+                                                            </div>
+                                                            <!-- Ad Status -->
+                                                            <!--<span class="ad-status"> Featured </span>-->
+                                                            <!-- User Preview -->
 
-                                                <?php } else if ($item->tipo_subasta == 2) { ?>
-                                                    <?php $contador_inversa++; ?>
-
-                                                <li class="tipo_inversa">
-                                                <?php } ?>
-
-                                                <div class="well ad-listing clearfix">
-                                                    <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
-                                                        <!-- Image Box -->
-                                                        <div class="img-box">
-                                                            <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
-                                                            <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
-                                                            <div class="quick-view"><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="view-button"><i class="fa fa-search"></i></a> </div>
                                                         </div>
-                                                        <!-- Ad Status -->
-                                                        <!--<span class="ad-status"> Featured </span>-->
-                                                        <!-- User Preview -->
+                                                        <div class="col-md-9 col-sm-7 col-xs-12">
+                                                            <!-- Ad Content-->
+                                                            <div class="row">
+                                                                <div class="content-area">
+                                                                    <div class="col-md-9 col-sm-12 col-xs-12">
+                                                                        <!-- Category Title -->
 
-                                                    </div>
-                                                    <div class="col-md-9 col-sm-7 col-xs-12">
-                                                        <!-- Ad Content-->
-                                                        <div class="row">
-                                                            <div class="content-area">
-                                                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                                                    <!-- Category Title -->
+                                                                        <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
 
-                                                                    <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
-
-                                                                    </div>
-
-
-                                                                    <!-- Ad Title -->
-                                                                    <h6><a><?= $item->nombre_espa ?></a> </h6>
-                                                                    <!-- Info Icons -->
-
-                                                                    <!-- Ad Meta Info -->
-                                                                    <ul class="ad-meta-info">
-                                                                        <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
-                                                                        <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
-                                                                    </ul>
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
-                                                                                <div class="timer conte">
-                                                                                    <span class="days" id="day_<?= $item->subasta_id ?>"></span>
-                                                                                </div>
-                                                                                <div class="smalltext"><?= translate("dias_lang"); ?></div>
-                                                                            </div>
-                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
-                                                                                <div class="timer conte">
-                                                                                    <span class="hours" id="hour_<?= $item->subasta_id ?>"></span>
-                                                                                </div>
-                                                                                <div class="smalltext"><?= translate("horas_lang"); ?></div>
-                                                                            </div>
-                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
-                                                                                <div class="timer conte">
-                                                                                    <span class="minutes" id="minute_<?= $item->subasta_id ?>"></span>
-                                                                                </div>
-                                                                                <div class="smalltext"><?= translate("minutos_lang"); ?></div>
-                                                                            </div>
-                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
-                                                                                <div class="timer conte">
-                                                                                    <span class="seconds" id="second_<?= $item->subasta_id ?>"></span>
-                                                                                </div>
-                                                                                <div class="smalltext"><?= translate("segundos_lang"); ?></div>
-                                                                            </div>
                                                                         </div>
-                                                                    </div>
-
-                                                                    <!-- Ad Description-->
-                                                                    <div class="ad-details">
-
-                                                                        <?= $item->descrip_espa ?>
 
 
-                                                                    </div>
-                                                                    <?php if ($this->session->userdata('user_id')) { ?>
+                                                                        <!-- Ad Title -->
+                                                                        <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                        <!-- Info Icons -->
+
+                                                                        <!-- Ad Meta Info -->
+                                                                        <ul class="ad-meta-info">
+                                                                            <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+                                                                            <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
+                                                                        </ul>
                                                                         <div class="row">
-
-                                                                            <?php if (!$item->subasta_user) { ?>
-                                                                                <div class="col-md-6">
-                                                                                    <button onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
-
+                                                                            <div class="col-md-12">
+                                                                                <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                    <div class="timer conte">
+                                                                                        <span class="days" id="day_<?= $item->subasta_id ?>"></span>
+                                                                                    </div>
+                                                                                    <div class="smalltext"><?= translate("dias_lang"); ?></div>
                                                                                 </div>
-                                                                            <?php } ?>
-                                                                            <?php if ($item->subasta_user) { ?>
-                                                                                <div class="col-md-6">
-                                                                                    <button onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
-
+                                                                                <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                    <div class="timer conte">
+                                                                                        <span class="hours" id="hour_<?= $item->subasta_id ?>"></span>
+                                                                                    </div>
+                                                                                    <div class="smalltext"><?= translate("horas_lang"); ?></div>
                                                                                 </div>
-                                                                            <?php } ?>
+                                                                                <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                    <div class="timer conte">
+                                                                                        <span class="minutes" id="minute_<?= $item->subasta_id ?>"></span>
+                                                                                    </div>
+                                                                                    <div class="smalltext"><?= translate("minutos_lang"); ?></div>
+                                                                                </div>
+                                                                                <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                    <div class="timer conte">
+                                                                                        <span class="seconds" id="second_<?= $item->subasta_id ?>"></span>
+                                                                                    </div>
+                                                                                    <div class="smalltext"><?= translate("segundos_lang"); ?></div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    <?php } ?>
-                                                                </div>
-                                                                <div class="col-md-3 col-xs-12 col-sm-12">
-                                                                    <!-- Ad Stats -->
 
-                                                                    <!-- Price -->
-                                                                    <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
-                                                                        <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
-                                                                        <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
-                                                                    <?php } ?>
-                                                                    <h6 class="text-center"><?= "Valor de entreda" ?></h6>
-                                                                    <div class="price text-center"> <span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
-                                                                    <h6 class="text-center"><?= "Valor inicial" ?> </h6>
-                                                                    <div class="price text-center"><span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
-                                                                    <!-- Ad View Button -->
+                                                                        <!-- Ad Description-->
+                                                                        <div class="ad-details">
 
-                                                                    <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                            <?= $item->descrip_espa ?>
+
+
+                                                                        </div>
+                                                                        <?php if ($this->session->userdata('user_id')) { ?>
+                                                                            <div class="row">
+
+                                                                                <?php if (!$item->subasta_user) { ?>
+                                                                                    <div class="col-md-6">
+                                                                                        <button onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
+
+                                                                                    </div>
+                                                                                <?php } ?>
+                                                                                <?php if ($item->subasta_user) { ?>
+                                                                                    <div class="col-md-6">
+                                                                                        <button onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                    </div>
+                                                                                <?php } ?>
+                                                                            </div>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12 col-sm-12">
+                                                                        <!-- Ad Stats -->
+
+                                                                        <!-- Price -->
+                                                                        <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
+                                                                            <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
+                                                                            <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
+                                                                        <?php } ?>
+                                                                        <h6 class="text-center"><?= "Valor de entreda" ?></h6>
+                                                                        <div class="price text-center"> <span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
+                                                                        <h6 class="text-center"><?= "Valor inicial" ?> </h6>
+                                                                        <div class="price text-center"><span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
+                                                                        <!-- Ad View Button -->
+
+                                                                        <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <!-- Ad Content End -->
                                                         </div>
-                                                        <!-- Ad Content End -->
                                                     </div>
-                                                </div>
                                                 </li>
+
+                                            <?php } else if ($item->tipo_subasta == 2) { ?>
+                                                <?php $count_intervalo = count($item->intervalo); ?>
+                                                <?php $contador_inversa++; ?>
+                                                <?php if ($item->intervalo[$count_intervalo - 1]->cantidad > 0) { ?>
+                                                    <li>
+                                                        <div class="well ad-listing clearfix">
+                                                            <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
+                                                                <!-- Image Box -->
+                                                                <div class="img-box">
+                                                                    <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
+                                                                    <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
+                                                                    <!--    <div class="quick-view"><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="view-button"><i class="fa fa-search"></i></a> </div> -->
+                                                                </div>
+                                                                <!-- Ad Status -->
+                                                                <!--<span class="ad-status"> Featured </span>-->
+                                                                <!-- User Preview -->
+
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-7 col-xs-12">
+                                                                <!-- Ad Content-->
+                                                                <div class="row">
+                                                                    <div class="content-area">
+                                                                        <div class="col-md-9 col-sm-12 col-xs-12">
+                                                                            <!-- Category Title -->
+
+                                                                            <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
+
+                                                                            </div>
+
+
+                                                                            <!-- Ad Title -->
+                                                                            <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                            <!-- Info Icons -->
+
+                                                                            <!-- Ad Meta Info -->
+                                                                            <ul class="ad-meta-info">
+                                                                                <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+
+                                                                                <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?></li>
+                                                                            </ul>
+                                                                            <!--      <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                        <div class="timer conte">
+                                                                                            <span class="days" id="day_<?= $item->subasta_id ?>"></span>
+                                                                                        </div>
+                                                                                        <div class="smalltext"><?= translate("dias_lang"); ?></div>
+                                                                                    </div>
+                                                                                    <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                        <div class="timer conte">
+                                                                                            <span class="hours" id="hour_<?= $item->subasta_id ?>"></span>
+                                                                                        </div>
+                                                                                        <div class="smalltext"><?= translate("horas_lang"); ?></div>
+                                                                                    </div>
+                                                                                    <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                        <div class="timer conte">
+                                                                                            <span class="minutes" id="minute_<?= $item->subasta_id ?>"></span>
+                                                                                        </div>
+                                                                                        <div class="smalltext"><?= translate("minutos_lang"); ?></div>
+                                                                                    </div>
+                                                                                    <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                        <div class="timer conte">
+                                                                                            <span class="seconds" id="second_<?= $item->subasta_id ?>"></span>
+                                                                                        </div>
+                                                                                        <div class="smalltext"><?= translate("segundos_lang"); ?></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div> -->
+
+                                                                            <!-- Ad Description-->
+                                                                            <div class="ad-details">
+
+                                                                                <?= $item->descrip_espa ?>
+
+
+                                                                            </div>
+                                                                            <?php if ($this->session->userdata('user_id')) { ?>
+                                                                                <div class="row">
+
+                                                                                    <?php if (!$item->subasta_user) { ?>
+                                                                                        <div class="col-md-6">
+                                                                                            <button onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
+
+                                                                                        </div>
+                                                                                    <?php } ?>
+                                                                                    <?php if ($item->subasta_user) { ?>
+                                                                                        <div class="col-md-6">
+                                                                                            <button onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                        </div>
+                                                                                    <?php } ?>
+                                                                                </div>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                        <div class="col-md-3 col-xs-12 col-sm-12">
+                                                                            <!-- Ad Stats -->
+
+                                                                            <!-- Price -->
+                                                                            <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
+                                                                                <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
+                                                                                <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
+                                                                            <?php } ?>
+                                                                            <h6 class="text-center"><?= "Precio" ?></h6>
+                                                                            <?php if ($count_intervalo >= 2) { ?>
+                                                                                <div class="price text-center"> <span style="font-size:18px !important; color:#2a3681 !important;" class="strikethrough">$ <?= number_format($item->intervalo[$count_intervalo - 2]->valor, 2) ?></span> </div>
+                                                                                <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
+                                                                            <?php } else { ?>
+                                                                                <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
+                                                                            <?php } ?>
+                                                                            <div class="category-title text-center">Stock: <span> <?= $item->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
+
+                                                                            <!-- Ad View Button -->
+                                                                            <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Ad Content End -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php } ?>
                                             <?php } ?>
-                                            <!-- Listing Grid -->
-                                        <?php } else { ?>
-                                            <p class="text-center"><?= translate("n_resultados"); ?></p>
+
                                         <?php } ?>
+                                        <!-- Listing Grid -->
+                                    <?php } else { ?>
+                                        <p class="text-center"><?= translate("n_resultados"); ?></p>
+                                    <?php } ?>
 
 
 
