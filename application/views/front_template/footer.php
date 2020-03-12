@@ -406,6 +406,7 @@
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 
 <script type="text/javascript">
+   let contador_directa = 1;
    var user_id = "<?= $this->session->userdata('user_id') ?>";
    $(function() {
 
@@ -578,6 +579,7 @@
             },
             success: function(result) {
                result = JSON.parse(result);
+               console.log(result);
                if (result) {
 
 
@@ -905,6 +907,57 @@
       $('#invresa_subasta_id').val(object.subasta_id);
       $('#modal_pagar_inversa').modal("show");
       $("#modal_detalle").modal("hide");
+
+   }
+
+
+   $(function() {
+
+      if (contador_directa == 0) {
+         $('.mensaje_directa').show();
+         $('.mensaje_inversa').hide();
+
+      } else {
+         $('#btn_subasta_directa_2').addClass('active');
+         $('#btn_subasta_inversa_2').removeClass('active');
+      }
+      if (contador_inversa == 0) {
+         $('.mensaje_directa').hide();
+         $('.mensaje_inversa').show();
+
+      } else {
+         $('#btn_subasta_directa_2').removeClass('active');
+         $('#btn_subasta_inversa_2').addClass('active');
+      }
+   });
+
+   function cambio_btn_directa_2() {
+      $('.mensaje_directa').hide();
+      $('.mensaje_inversa').hide();
+      $('#btn_subasta_directa_2').addClass('active');
+      $('#btn_subasta_inversa_2').removeClass('active');
+      $(".tipo_directa").removeClass("active_subasta");
+      $(".tipo_inversa").addClass("active_subasta");
+      if (contador_directa == 0) {
+         $('.mensaje_directa').show();
+         $('.mensaje_inversa').hide();
+      }
+
+
+   }
+
+   function cambio_btn_inversa_2() {
+      $('.mensaje_directa').hide();
+      $('.mensaje_inversa').hide();
+      $('#btn_subasta_directa_2').removeClass('active');
+      $('#btn_subasta_inversa_2').addClass('active');
+      $(".tipo_inversa").removeClass("active_subasta");
+      $(".tipo_directa").addClass("active_subasta");
+
+      if (contador_inversa == 0) {
+         $('.mensaje_directa').hide();
+         $('.mensaje_inversa').show();
+      }
 
    }
 </script>

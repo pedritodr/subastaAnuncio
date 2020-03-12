@@ -203,7 +203,6 @@ class Subasta_model extends CI_Model
 
         return $afec;
     }
-
     function get_subastas()
     {
         $this->db->select('subasta.tipo_subasta,subasta.valor_maximo,subasta.valor_minimo,subasta.porcentaje,subasta.cantidad_dias,subasta.intervalo,subasta.qty_articles,subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
@@ -211,10 +210,48 @@ class Subasta_model extends CI_Model
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.is_active', 1);
+
         $query = $this->db->get();
         return $query->result();
     }
-    function get_subastas_category($id)
+    function get_subastas_directas()
+    {
+        $this->db->select('subasta.tipo_subasta,subasta.valor_maximo,subasta.valor_minimo,subasta.porcentaje,subasta.cantidad_dias,subasta.intervalo,subasta.qty_articles,subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
+        $this->db->from('subasta');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_subastas_inversas()
+    {
+        $this->db->select('subasta.tipo_subasta,subasta.valor_maximo,subasta.valor_minimo,subasta.porcentaje,subasta.cantidad_dias,subasta.intervalo,subasta.qty_articles,subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
+        $this->db->from('subasta');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', 2);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_subastas_category($id, $tipo)
+    {
+        $this->db->select('subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
+        $this->db->from('subasta');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->where('categoria.categoria_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_search_all($id, $name, $tipo)
     {
         $this->db->select('subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
         $this->db->from('subasta');
@@ -222,55 +259,76 @@ class Subasta_model extends CI_Model
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
         $this->db->where('categoria.categoria_id', $id);
+        $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->like('subasta.nombre_espa', $name);
         $query = $this->db->get();
         return $query->result();
     }
-    function get_subastas_palabra($name)
+    function get_subastas_palabra($name, $tipo)
     {
         $this->db->select('subasta.subasta_id,subasta.photo as subasta_photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.fecha_cierre,subasta.valor_pago,user.name as user,user.photo,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->like('subasta.nombre_espa', $name);
 
         $query = $this->db->get();
         return $query->result();
     }
 
-    function get_all_by_subastas_with_pagination($limit, $start)
+    function get_all_by_subastas_with_pagination($limit, $start, $tipo)
     {
         $this->db->limit($limit, $start);
-        $this->db->select('subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         // $this->db->join('user', 'user.user_id = subasta.user_id');
         $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', $tipo);
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
         $query = $this->db->get();
         return $query->result();
     }
-    function get_all_by_subastas_with_pagination_categoria($limit, $start, $id)
+    function get_all_by_subastas_with_pagination_categoria($limit, $start, $id, $tipo)
     {
         $this->db->limit($limit, $start);
-        $this->db->select('subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->from('subasta');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->where('categoria.categoria_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_all_by_subastas_with_pagination_search($limit, $start, $id, $palabra, $tipo)
+    {
+
+        $this->db->limit($limit, $start);
+        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->where('subasta.is_active', 1);
         $this->db->where('categoria.categoria_id', $id);
+        $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->like('subasta.nombre_espa', $palabra);
         $query = $this->db->get();
         return $query->result();
     }
-    function get_all_by_subastas_with_pagination_palabra($limit, $start, $palabra)
+    function get_all_by_subastas_with_pagination_palabra($limit, $start, $palabra, $tipo)
     {
         $this->db->limit($limit, $start);
-        $this->db->select('subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->like('subasta.nombre_espa', $palabra);
         $query = $this->db->get();
         return $query->result();

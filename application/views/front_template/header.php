@@ -153,7 +153,7 @@
                            <a href="<?= site_url('nosotros') ?>"> <?= translate('acerca_lang') ?> <i></i></a>
                         </li>
                         <li>
-                           <a href="<?= site_url('subastas') ?>"> <?= translate('subasta_lang') ?> <i></i></a>
+                           <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?> <i></i></a>
                         </li>
                         <li>
                            <a href="<?= site_url('anuncios') ?>"> <?= translate('Anuncios_lang') ?> <i></i></a>
