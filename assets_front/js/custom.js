@@ -43,12 +43,12 @@ Designed and Development by: ScriptsBundle
     }, 2000);
 
     /* ======= Counter FunFacts ======= */
-    var timer = $('.timer');
-    if (timer.length) {
-        timer.appear(function () {
-            timer.countTo();
-        });
-    }
+    // var timer = $('.timer');
+    // if (timer.length) {
+    //     timer.appear(function () {
+    //         timer.countTo();
+    //     });
+    // }
 
     /* ======= List Grid Style Switcher ======= */
     $('#list').on("click", function (event) {

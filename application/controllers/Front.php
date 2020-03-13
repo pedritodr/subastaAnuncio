@@ -18,6 +18,7 @@ class Front extends CI_Controller
         $this->session->set_userdata('lang_subasta', 'es');
         $this->load_language();
         $this->init_form_validation();
+        ini_set('memory_limit', '512M');
     }
 
     public function show_404()
@@ -584,7 +585,6 @@ class Front extends CI_Controller
     {
 
         $this->load->model('Anuncio_model', 'anuncio');
-
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
@@ -628,7 +628,8 @@ class Front extends CI_Controller
                         'ciudad_id' => $ciudad,
                         'user_id' => $user_id,
                         'direccion' => $direccion,
-                        'fecha' =>  date("Y-m-d")
+                        'fecha' =>  date("Y-m-d"),
+                        'destacado' => 0
                     ];
                     $this->anuncio->create($data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -1421,9 +1422,14 @@ class Front extends CI_Controller
 
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
-
+        if ($page) {
+            if ($page >= 4) {
+                $this->session->set_userdata('validando', 2);
+            }
+        }
         $offset = !$page ? 0 : $page;
         $anuncios_partes = $this->anuncio->get_all_by_anuncios_with_pagination($user_id, $config['per_page'], $offset);
+
         foreach ($anuncios_partes as $item) {
 
             $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($item->subcate_id);
@@ -1464,8 +1470,7 @@ class Front extends CI_Controller
         }
 
 
-        $this->session->set_userdata('validando', 2);
-
+        $data['contador_anuncios'] = $contador;
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;
         $data['all_membresia'] = $all_membresia;

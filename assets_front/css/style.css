@@ -2856,7 +2856,8 @@ width: 100%;
 }
 
 .ribbon.popular {
-	background: rgba(0, 0, 0, 0) url("../images/featured.png") no-repeat scroll 0 0;
+	background: #8c1822;
+	color: #fff
 }
 
 .ribbon.expired {
@@ -2876,7 +2877,7 @@ width: 100%;
 	height: 28px;
 	position: absolute;
 	top: 0;
-	width: 78px;
+	width: 45%;
 	z-index: 1;
 	padding: 0 12px;
 }

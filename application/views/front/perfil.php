@@ -60,7 +60,11 @@
                             <?php if ($this->session->userdata('photo') == "") { ?>
                                 <img style="width:50%" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
                             <?php } else { ?>
-                                <img style="width:50%" src="<?= base_url($this->session->userdata('photo')) ?>" alt="">
+                                <?php if (strpos($this->session->userdata('photo'), 'uploads') !== false) { ?>
+                                    <img style="width:50%" src="<?= base_url($this->session->userdata('photo')) ?>" alt="">
+                                <?php } else { ?>
+                                    <img style="width:50%" src="<?= $this->session->userdata('photo') ?>" alt="">
+                                <?php } ?>
                             <?php } ?>
                         </div>
 
@@ -85,7 +89,8 @@
                         </div>
                         <ul>
                             <li class="active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
-                            <li class="" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($all_anuncios) { ?> <?= count($all_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
 
                             <li><a href="<?= site_url('login/logout') ?>"><?= translate('sign_out_lang') ?></a></li>
                         </ul>
@@ -364,7 +369,15 @@
                                         <!--Checkout-Form-->
                                         <h4 class="text-center">No tiene membresia</h4>
 
-
+                                        <a href="<?= site_url('membresia') ?>" class="btn btn-block btn-theme">
+                                            <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                            </span>
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">
+                                                    <?= translate('adquirir_membresia_btn_lang') ?>
+                                                </font>
+                                            </font>
+                                        </a>
                                         <!--End Checkout-Form-->
 
                                     </div>
@@ -383,18 +396,24 @@
         <!-- Main Container End -->
     </section>
     <!-- Mostrando y ocultando vistas-->
+    <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+    <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
     <script type="text/javascript">
         var validando = <?= $this->session->userdata('validando') ?>
 
         $(function() {
+
             if (validando == 1) {
                 $("#listado_anuncio").hide();
                 $("#panel_perfil").show();
-            } else {
+            } else if (validando == 2) {
                 $("#listado_anuncio").show();
                 $("#panel_perfil").hide();
                 $("#perfil").removeClass('active');
                 $("#ads").addClass('active');
+            } else {
+                $("#listado_anuncio").hide();
+                $("#panel_perfil").show();
             }
 
         });
