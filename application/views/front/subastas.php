@@ -448,7 +448,7 @@
 
     <script>
         var subastas = <?= json_encode($all_subastas); ?>;
-        let contador_inversa = <?= $contador_inversa ?>;
+         contador_inversa = <?= $contador_inversa ?>;
         contador_directa = <?= $contador_directa ?>;
 
         for (let i = 0; i < subastas.length + 1; i++) {

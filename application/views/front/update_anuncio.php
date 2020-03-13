@@ -147,7 +147,14 @@
                         <label><?= translate("image_lang"); ?> (750x750)</label>
                         <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>">
                         <div id="dropzone" class="dropzone">
-                           <img style="width:20%" src="<?= base_url($anuncio_object->photo) ?>" class="img-responsive" alt="">
+                           <?php if (strpos($anuncio_object->photo, 'uploads') !== false) { ?>
+
+                              <img class="img-responsive" src="<?= base_url($anuncio_object->photo) ?>" alt="">
+                           <?php } else { ?>
+                              <img class="img-responsive" src="<?= $anuncio_object->photo ?>" alt="">
+
+                           <?php } ?>
+
                         </div>
                      </div>
                   </div>
@@ -256,13 +263,11 @@
       <!-- Main Container End -->
    </section>
    <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
-
+   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
 
    <script type="text/javascript">
       $(document).ready(function() {
-
-
          var lat = '<?php echo $anuncio_object->lat; ?>';
          var lng = '<?php echo $anuncio_object->lng; ?>';
          cargar_city(city = "", lat, lng);
@@ -554,71 +559,64 @@
 
 
       }
-      const FILETYPES = [
-         'image/jpeg',
-         'image/pjpeg',
-         'image/png',
-         'image/bmp',
-         'image/gif'
-      ];
+      /*   let FILETYPES = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/bmp', 'image/gif'];
+        let MESSAGES = [];
+        let MAX_FILE_SIZE = 5 * 1048576;
 
-      const MESSAGES = [];
-      const MAX_FILE_SIZE = 5 * 1048576;
+        // Define text message
+        MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
+        MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
 
-      // Define text message
-      MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
-      MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
+        // action message validation
+        let input_image = $("#image_upload");
+        let alert_message = $("#alert-message");
 
-      // action message validation
-      const input_image = $("#image_upload");
-      const alert_message = $("#alert-message");
+        input_image.on("change", (e) => {
 
-      input_image.on("change", (e) => {
+           if (window.File && window.FileReader && window.FileList && window.Blob) {
 
-         if (window.File && window.FileReader && window.FileList && window.Blob) {
+              //get the file size and file type from file input field
+              let fileUpload = e.target.files[0];
 
-            //get the file size and file type from file input field
-            let fileUpload = e.target.files[0];
+              // Validate type file
+              if (!validFileType(fileUpload)) {
+                 // console.log("Tipo de archivo Incorrecto");
+                 showMessage(MESSAGES['file_not_accept']);
+                 resetForm();
+              }
 
-            // Validate type file
-            if (!validFileType(fileUpload)) {
-               // console.log("Tipo de archivo Incorrecto");
-               showMessage(MESSAGES['file_not_accept']);
-               resetForm();
-            }
+              // Valid max file size
+              if (fileUpload.size > MAX_FILE_SIZE) {
+                 // console.log('Supera los 5 mb');
+                 showMessage(MESSAGES['file_size_exceeded']);
+                 resetForm();
+              }
+           }
+        });
 
-            // Valid max file size
-            if (fileUpload.size > MAX_FILE_SIZE) {
-               // console.log('Supera los 5 mb');
-               showMessage(MESSAGES['file_size_exceeded']);
-               resetForm();
-            }
-         }
-      });
-
-      function showMessage(message) {
-         alert_message.find('p').html(message);
-         alert_message.show(1);
-         setTimeout(() => {
-            alert_message.fadeOut(2000)
-         }, 5000);
-      }
+        function showMessage(message) {
+           alert_message.find('p').html(message);
+           alert_message.show(1);
+           setTimeout(() => {
+              alert_message.fadeOut(2000)
+           }, 5000);
+        }
 
 
 
-      function resetForm() {
-         input_image.val('');
-      }
+        function resetForm() {
+           input_image.val('');
+        }
 
-      function validFileType(file) {
-         console.log(FILETYPES);
-         for (let i = 0; i < FILETYPES.length; i++) {
-            if (file.type === FILETYPES[i]) {
-               return true;
-            }
-         }
-         return false;
-      }
+        function validFileType(file) {
+           console.log(FILETYPES);
+           for (let i = 0; i < FILETYPES.length; i++) {
+              if (file.type === FILETYPES[i]) {
+                 return true;
+              }
+           }
+           return false;
+        } */
    </script>
    <style>
       h6 a:hover {

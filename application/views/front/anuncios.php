@@ -96,6 +96,7 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
+
                                             <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
                                                 <!--   <div class="ribbon popular"></div> -->
 
@@ -109,8 +110,11 @@
                                                 <?php } ?>
 
                                             </a>
-
+                                            <?php if ($item->destacado == 1) { ?>
+                                                <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                            <?php } ?>
                                         </div>
+
                                         <!-- Img Block -->
                                     </div>
                                     <!-- Ads Listing -->

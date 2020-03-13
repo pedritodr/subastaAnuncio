@@ -379,11 +379,11 @@
 <!-- Menu Hover  -->
 <script src="<?= base_url('assets_front/js/forest-megamenu.js') ?>"></script>
 <!-- Jquery Appear Plugin -->
-<script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script>
+<!-- <script src="<?= base_url('assets_front/js/jquery.appear.min.js') ?>"></script> -->
 <!-- Numbers Animation   -->
 <script src="<?= base_url('assets_front/js/jquery.countTo.js') ?>"></script>
 <!-- Jquery Smooth Scroll  -->
-<script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script>
+<!-- <script src="<?= base_url('assets_front/js/jquery.smoothscroll.js') ?>"></script> -->
 <!-- Jquery Select Options  -->
 <script src="<?= base_url('assets_front/js/select2.min.js') ?>"></script>
 <!-- noUiSlider -->
@@ -397,7 +397,7 @@
 <!-- CheckBoxes  -->
 <script src="<?= base_url('assets_front/js/icheck.min.js') ?>"></script>
 <!-- Jquery Migration  -->
-<script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script>
+<!-- <script src="<?= base_url('assets_front/js/jquery-migrate.min.js') ?>"></script> -->
 <!-- Sticky Bar  -->
 <script src="<?= base_url('assets_front/js/theia-sticky-sidebar.js') ?>"></script>
 <!-- Style Switcher -->
@@ -406,7 +406,8 @@
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 
 <script type="text/javascript">
-   let contador_directa = 1;
+   let contador_directa = 0;
+   let contador_inversa = 0;
    var user_id = "<?= $this->session->userdata('user_id') ?>";
    $(function() {
 
@@ -780,7 +781,7 @@
    /* $(".modal-body").bind("click", function() {
 
     });*/
-   const FILETYPES = [
+   let FILETYPES = [
       'image/jpeg',
       'image/pjpeg',
       'image/png',
@@ -788,16 +789,16 @@
       'image/gif'
    ];
 
-   const MESSAGES = [];
-   const MAX_FILE_SIZE = 5 * 1048576;
+   let MESSAGES = [];
+   let MAX_FILE_SIZE = 5 * 1048576;
 
    // Define text message
    MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
    MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
 
    // action message validation
-   const input_image = $("#image_upload");
-   const alert_message = $("#alert-message");
+   let input_image = $("#image_upload");
+   let alert_message = $("#alert-message");
 
    input_image.on("change", (e) => {
 

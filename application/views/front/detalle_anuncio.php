@@ -61,6 +61,13 @@
                   <!-- Titulo -->
                   <div class="ad-box">
                      <h5><?= $all_anuncios->titulo; ?></h5>
+                     <?php if ($all_anuncios->destacado == 1) { ?>
+                        <div class="featured-ribbon">
+                           <span>
+                              <?= translate("featured_lang") ?>
+                           </span>
+                        </div>
+                     <?php } ?>
 
                      <div class="short-history">
                         <ul>
@@ -158,6 +165,112 @@
                   </div>
                </div>
                <!-- Single Ad End -->
+
+               <!-- =-=-=-=-=-=-= Latest Ads End =-=-=-=-=-=-= -->
+            </div>
+            <!-- Right Sidebar -->
+            <div class="col-md-4 col-xs-12 col-sm-12">
+               <!-- Sidebar Widgets -->
+               <div class="sidebar">
+                  <!-- Contact info -->
+
+                  <!-- Price info block -->
+                  <div class="ad-listing-price">
+                     <p>$. <?= number_format($all_anuncios->precio, 2); ?></p>
+                  </div>
+                  <!-- User Info -->
+                  <div class="white-bg user-contact-info">
+                     <div class="user-info-card">
+                        <div class="user-photo col-md-4 col-sm-3  col-xs-4">
+                           <?php if (strpos($all_anuncios->photo_perfil, 'uploads') !== false) { ?>
+                              <img class="img-responsive" src="<?= base_url($all_anuncios->photo_perfil) ?>" alt="">
+                           <?php } else { ?>
+                              <img class="img-responsive" src="<?= $all_anuncios->photo_perfil ?>" alt="">
+
+                           <?php } ?>
+
+                        </div>
+                        <div class="user-information no-padding col-md-8 col-sm-9 col-xs-8">
+                           <span class="user-name"><a class="hover-color"><?= $all_anuncios->user ?></a></span><br>
+                           <span class="text-center"><a href="https://api.whatsapp.com/send?phone=593<?= $all_anuncios->whatsapp ?>" target="_blank">
+                                 <i class="fa fa-whatsapp" aria-hidden="true"></i> <?= $all_anuncios->whatsapp ?></a></span>
+
+
+                           <div class="item-date">
+                              <span class="ad-pub"><?= translate("publicado_lang"); ?>: <?= $all_anuncios->fecha ?></span><br>
+                           </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="ad-listing-meta">
+                        <ul>
+
+                           <li><?= translate("categories_lang"); ?>: <span><?= $all_anuncios->categoria ?>/<?= $all_anuncios->subcategoria ?></span></li>
+
+                           <li id="direccion">Location: <span class="color">New York, USA</span></li>
+                        </ul>
+                     </div>
+                     <!--mapa -->
+                     <br>
+                     <div id="map" class="google-maps">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89553.25418528763!2d9.19406272678945!3d45.458941223623455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c1493f1275e7%3A0x3cffcd13c6740e8d!2sMilan!5e0!3m2!1sen!2s!4v1403031740860" width="370" height="150"></iframe>
+                     </div>
+                  </div>
+                  <!-- Featured Ads -->
+                  <div class="widget" style="margin-top:8% !important">
+                     <div class="widget-heading">
+                        <h4 class="panel-title"><a>Featured Ads</a></h4>
+                     </div>
+                     <div class="widget-content">
+                        <div class="featured-slider-3">
+                           <!-- Featured Ads -->
+                           <?php foreach ($relacionados as $item) { ?>
+                              <div class="item">
+                                 <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
+                                    <!-- Ad Box -->
+                                    <div class="category-grid-box">
+                                       <!-- Ad Img -->
+                                       <div class="category-grid-img">
+                                          <img class="img-responsive" alt="" src="<?= base_url($item->anuncio_photo) ?>">
+                                          <!-- Ad Status -->
+                                          <!-- User Review -->
+                                          <div class="user-preview">
+                                             <a href="#"> <img src="" class="avatar avatar-small" alt=""> </a>
+                                          </div>
+                                          <!-- View Details --><a href="#" class="view-details">View Details</a>
+                                       </div>
+                                       <!-- Ad Img End -->
+                                       <div class="short-description">
+                                          <!-- Ad Category -->
+                                          <div class="category-title"> <span><a href="#">Cars</a></span> </div>
+                                          <!-- Ad Title -->
+                                          <h3><a title="" href="single-page-listing.html">2017 Honda Civic EX</a></h3>
+                                          <!-- Price -->
+                                          <div class="price">$18,200 <span class="negotiable">(Negotiable)</span></div>
+                                       </div>
+                                       <!-- Addition Info -->
+                                       <div class="ad-info">
+                                          <ul>
+                                             <li><i class="fa fa-map-marker"></i>London</li>
+                                             <li><i class="fa fa-clock-o"></i> 15 minutes ago </li>
+                                          </ul>
+                                       </div>
+                                    </div>
+                                    <!-- Ad Box End -->
+                                 </div>
+                              </div>
+                           <?php } ?>
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+               <!-- Sidebar Widgets End -->
+
+            </div>
+
+            <div class="col-md-8 col-xs-12 col-sm-12">
                <?php if ($relacionados) { ?>
                   <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
                   <div class="grid-panel margin-top-30">
@@ -280,62 +393,8 @@
                         </div>
                      </div>
                   </div> <?php } ?>
-               <!-- =-=-=-=-=-=-= Latest Ads End =-=-=-=-=-=-= -->
             </div>
-            <!-- Right Sidebar -->
-            <div class="col-md-4 col-xs-12 col-sm-12">
-               <!-- Sidebar Widgets -->
-               <div class="sidebar">
-                  <!-- Contact info -->
 
-                  <!-- Price info block -->
-                  <div class="ad-listing-price">
-                     <p>$. <?= number_format($all_anuncios->precio, 2); ?></p>
-                  </div>
-                  <!-- User Info -->
-                  <div class="white-bg user-contact-info">
-                     <div class="user-info-card">
-                        <div class="user-photo col-md-4 col-sm-3  col-xs-4">
-                           <?php if (strpos($all_anuncios->photo_perfil, 'uploads') !== false) { ?>
-                              <img class="img-responsive" src="<?= base_url($all_anuncios->photo_perfil) ?>" alt="">
-                           <?php } else { ?>
-                              <img class="img-responsive" src="<?= $all_anuncios->photo_perfil ?>" alt="">
-
-                           <?php } ?>
-
-                        </div>
-                        <div class="user-information no-padding col-md-8 col-sm-9 col-xs-8">
-                           <span class="user-name"><a class="hover-color"><?= $all_anuncios->user ?></a></span><br>
-                           <span class="text-center"><a href="https://api.whatsapp.com/send?phone=593987027302" target="_blank">
-                                 <i class="fa fa-whatsapp" aria-hidden="true"></i> <?= $all_anuncios->phone ?></a></span>
-
-
-                           <div class="item-date">
-                              <span class="ad-pub"><?= translate("publicado_lang"); ?>: <?= $all_anuncios->fecha ?></span><br>
-                           </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-                     </div>
-                     <div class="ad-listing-meta">
-                        <ul>
-
-                           <li><?= translate("categories_lang"); ?>: <span><?= $all_anuncios->categoria ?>/<?= $all_anuncios->subcategoria ?></span></li>
-
-                           <li id="direccion">Location: <span class="color">New York, USA</span></li>
-                        </ul>
-                     </div>
-                     <!--mapa -->
-                     <br>
-                     <div id="map" class="google-maps">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89553.25418528763!2d9.19406272678945!3d45.458941223623455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c1493f1275e7%3A0x3cffcd13c6740e8d!2sMilan!5e0!3m2!1sen!2s!4v1403031740860" width="370" height="150"></iframe>
-                     </div>
-                  </div>
-
-
-               </div>
-               <!-- Sidebar Widgets End -->
-            </div>
             <!-- Middle Content Area  End -->
          </div>
          <!-- Row End -->
