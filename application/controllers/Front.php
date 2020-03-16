@@ -19,6 +19,7 @@ class Front extends CI_Controller
         $this->load_language();
         $this->init_form_validation();
         ini_set('memory_limit', '512M');
+        header('Cache-Control: no cache');
     }
 
     public function show_404()
@@ -58,8 +59,6 @@ class Front extends CI_Controller
 
         $all_categorias = $this->categoria->get_all(['is_active' => 1]);
 
-
-
         foreach ($all_categorias as $item) {
             $contador_inversa = 0;
             $contador_directa = 0;
@@ -78,8 +77,6 @@ class Front extends CI_Controller
             $item->all_subastas = $subastas;
         }
 
-
-
         $data['all_categorias'] = $all_categorias;
         $all_subastas = $this->subasta->get_subastas();
 
@@ -89,8 +86,6 @@ class Front extends CI_Controller
         die();*/
         $this->load_view_front('front/index', $data);
     }
-
-
 
     public function llamar_login()
     {
@@ -114,6 +109,7 @@ class Front extends CI_Controller
 
     public function anuncio()
     {
+
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
 
@@ -307,8 +303,6 @@ class Front extends CI_Controller
         exit();
     }
 
-
-
     public function Lista_anuncio()
     {
 
@@ -340,7 +334,6 @@ class Front extends CI_Controller
         $this->load_view_front('front/listado_anuncios', $data);
     }
 
-
     public function detalle_anuncio($anuncio_id)
     {
 
@@ -370,10 +363,32 @@ class Front extends CI_Controller
         $data['relacionados'] =  $relacionados;
         $data['all_anuncios'] =  $all_anuncios;
         $data['fotos_object'] = $fotos_object;
+        $recientes = $this->anuncio->get_all_anuncios_recientes();
+        foreach ($recientes as $item) {
+            $long = strlen($item->titulo);
 
+            if ($long > 22) {
+                $item->titulo_corto = substr($item->titulo, 0, 22) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['recientes'] = $recientes;
+        $destacados = $this->anuncio->get_all_anuncios_destacados();
+        foreach ($destacados as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 20) {
+                $item->titulo_corto = substr($item->titulo, 0, 20) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['destacados'] = $destacados;
         $this->load_view_front('front/detalle_anuncio', $data);
     }
-
 
     public function detalle_subasta()
     {
@@ -585,6 +600,7 @@ class Front extends CI_Controller
     {
 
         $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Membresia_model', 'membresia');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
@@ -596,7 +612,9 @@ class Front extends CI_Controller
         $ciudad = $this->input->post('ciudad');
         $user_id = $this->session->userdata('user_id');
         $direccion = $this->input->post('pac-input');
-
+        $membresia = $this->membresia->get_by_user_id($user_id);
+        $fecha = date('Y-m-d');
+        $fecha_fin = strtotime('+30 day', strtotime($fecha));
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
 
@@ -629,9 +647,25 @@ class Front extends CI_Controller
                         'user_id' => $user_id,
                         'direccion' => $direccion,
                         'fecha' =>  date("Y-m-d"),
-                        'destacado' => 0
+                        'destacado' => 0,
+                        'fecha_vencimiento' => $fecha_fin
                     ];
-                    $this->anuncio->create($data);
+                    if ($membresia) {
+
+                        $id =  $this->anuncio->create($data);
+                        if ($id) {
+                            if ((int) $membresia->anuncios_publi > 0) {
+
+                                $qty_anuncios = (int) $membresia->anuncios_publi - 1;
+                                $this->membresia->update_membresia_user($membresia->membresia_user_id, ['anuncios_publi' => $qty_anuncios]);
+                                $this->anuncio->update($id, ['destacado' => 1]);
+                            }
+                        }
+                    } else {
+
+                        $this->anuncio->create($data);
+                    }
+
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                     $this->session->set_userdata('validando', 2);
                     redirect("perfil");
@@ -646,7 +680,18 @@ class Front extends CI_Controller
             }
         }
     }
+    public function destacar_anuncio()
+    {
 
+        $this->load->model('Anuncio_model', 'anuncio');
+        $anuncio_id = $this->input->post('anuncio_id_destacar');
+        $fecha = date('Y-m-d');
+        $fecha_fin = strtotime('+30 day', strtotime($fecha));
+        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+        $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+        $this->session->set_userdata('validando', 2);
+        redirect("perfil");
+    }
     public function contacto()
     {
         $this->load->model('Banner_model', 'banner');
@@ -910,7 +955,7 @@ class Front extends CI_Controller
                 $data['fin'] = $intervalo;
             }
         }
-        header('Cache-Control: no cache');
+
 
         $this->load_view_front('front/subastas', $data);
     }
@@ -928,7 +973,7 @@ class Front extends CI_Controller
         $all_banners = $this->banner->get_all(['menu_id' => 2]); //todos los banners
         $data['all_banners'] = $all_banners;
         /* URL a la que se desea agregar la paginación*/
-        $config['base_url'] = site_url('subastas_directas/page//');
+        $config['base_url'] = site_url('subastas_directas/page/');
 
         /*Obtiene el total de registros a paginar */
 
@@ -1121,7 +1166,7 @@ class Front extends CI_Controller
         }
         $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
-        $config['base_url'] = site_url('front/anuncios_index/');
+        $config['base_url'] = site_url('anuncios/page/');
 
         /*Obtiene el total de registros a paginar */
 
@@ -1130,7 +1175,7 @@ class Front extends CI_Controller
         $user_id = $this->session->userdata('user_id');
 
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '5';
+        $config['per_page'] = '6';
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1177,14 +1222,40 @@ class Front extends CI_Controller
                 $item->corta = $item->descripcion;
             }
         }
+
         $data['all_anuncios'] = $all_anuncios;
         $data['resultados'] = $contador;
+        $recientes = $this->anuncio->get_all_anuncios_recientes();
+        foreach ($recientes as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 22) {
+                $item->titulo_corto = substr($item->titulo, 0, 22) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['recientes'] = $recientes;
+        $destacados = $this->anuncio->get_all_anuncios_destacados();
+        foreach ($destacados as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 20) {
+                $item->titulo_corto = substr($item->titulo, 0, 20) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['destacados'] = $destacados;
+
         if ($offset == 0) {
             $data['inicio'] = 1;
-            $data['fin'] =  5;
+            $data['fin'] =  6;
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 5 + $offset;
+            $intervalo = 6 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
@@ -1225,7 +1296,7 @@ class Front extends CI_Controller
         }
 
         /* URL a la que se desea agregar la paginación*/
-        $config['base_url'] = site_url('front/anuncios_index/');
+        $config['base_url'] = site_url('anuncios/page/');
 
         /*Obtiene el total de registros a paginar */
 
@@ -1233,7 +1304,7 @@ class Front extends CI_Controller
         $user_id = $this->session->userdata('user_id');
 
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '5';
+        $config['per_page'] = '6';
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1297,21 +1368,45 @@ class Front extends CI_Controller
                 $data['fin'] = 0;
             } else {
                 $data['inicio'] = 1;
-                if ($contador >= 5) {
-                    $data['fin'] =  5;
+                if ($contador >= 6) {
+                    $data['fin'] =  6;
                 } else {
                     $data['fin'] = $contador;
                 }
             }
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 5 + $offset;
+            $intervalo = 6 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
                 $data['fin'] = $intervalo;
             }
         }
+        $recientes = $this->anuncio->get_all_anuncios_recientes();
+        foreach ($recientes as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 22) {
+                $item->titulo_corto = substr($item->titulo, 0, 22) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['recientes'] = $recientes;
+        $destacados = $this->anuncio->get_all_anuncios_destacados();
+        foreach ($destacados as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 20) {
+                $item->titulo_corto = substr($item->titulo, 0, 20) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['destacados'] = $destacados;
 
         $this->load_view_front('front/anuncios', $data);
     }
@@ -1381,7 +1476,7 @@ class Front extends CI_Controller
 
         $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id]);
 
-        $config['base_url'] = site_url('front/perfil/');
+        $config['base_url'] = site_url('perfil/page/');
 
         /*Obtiene el total de registros a paginar */
         $contador = count($all_anuncios);
@@ -1544,13 +1639,23 @@ class Front extends CI_Controller
     public function pagar_membresia()
     {
         $user_id = $this->session->userdata('user_id');
-        $membresia = $this->input->post('membresia');
+        $membresia = $this->input->post('membresia_id');
         $this->load->model('Membresia_model', 'membresia');
+        $object_membresia = $this->membresia->get_by_id($membresia);
+        $fecha = date('Y-m-d H:i:s');
+        $fecha_fin = strtotime('+364 day', strtotime($fecha));
+        $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+        $fecha_mes = strtotime('+30 day', strtotime($fecha));
+        $fecha_mes = date('Y-m-d', $fecha_mes);
         $data = [
             'user_id' => $user_id,
             'membresia_id' => $membresia,
-            'fecha' => date('Y-m-d H:i:s'),
-
+            'fecha_inicio' => $fecha,
+            'fecha_fin' => $fecha_fin,
+            'fecha_mes' => $fecha_mes,
+            'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+            'estado' => 1,
+            'mes' => 1
         ];
         $this->membresia->create_membresia_user($data);
         $this->response->set_message(translate('adquirir_membresia_lang'), ResponseMessage::SUCCESS);

@@ -62,38 +62,51 @@ $route['nosotros'] = 'front/about';
 $route['membresia'] = 'front/membresia';
 $route['registrarse'] = 'front/registrar';
 $route['listado-anuncio'] = 'front/Lista_anuncio';
-$route['perfil'] = 'front/perfil';
+//$route['perfil'] = 'front/perfil';
 $route['subastas_inversas'] = 'front/subasta_inversa';
 $route['subastas_directas'] = 'front/subasta_directa';
-$route['anuncios'] = 'front/anuncios_index';
+//$route['anuncios'] = 'front/anuncios_index';
 $route['prueba'] = 'front/prueba';
 $route['search_subasta_directa'] = 'front/buscar_subasta_directa';
 $route['search_subasta_inversa'] = 'front/buscar_subasta_inversa';
-
+$route['search_anuncios'] = 'front/buscar_anuncio';
 
 
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();
 $page = 5;
+$route[strtolower('subastas_directas/page')] = 'front/subasta_directa/';
 for ($i = 0; $i < 20; $i++) {
     $route[strtolower('subastas_directas/page/' . $page)] = 'front/subasta_directa/' . $page;
     $page += 5;
 }
 $page2 = 5;
+$route[strtolower('subastas_inversas/page')] = 'front/subasta_inversa/';
 for ($i = 0; $i < 20; $i++) {
     $route[strtolower('subastas_inversas/page/' . $page2)] = 'front/subasta_inversa/' . $page2;
     $page2 += 5;
 }
-/*
+$page3 = 6;
+$route[strtolower('anuncios/page')] = 'front/anuncios_index';
 
-
-$query = $db->get( 'service' );
-$result = $query->result();
-foreach( $result as $row )
-{
-    $route[strtolower(seo_url($row->nombre))] = 'front/view_service/'.$row->service_id;
+for ($i = 0; $i < 30; $i++) {
+    $route[strtolower('anuncios/page/' . $page3)] = 'front/anuncios_index/' . $page3;
+    $page3 += 6;
 }
-*/
+$page4 = 4;
+$route[strtolower('perfil/page')] = 'front/perfil';
+for ($i = 0; $i < 20; $i++) {
+    $route[strtolower('perfil/page/' . $page4)] = 'front/perfil/' . $page4;
+    $page4 += 4;
+}
+
+$query = $db->get('anuncio');
+$result = $query->result();
+foreach ($result as $row) {
+    $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo)))] = 'front/detalle_anuncio/' . $row->anuncio_id;
+    $route[strtolower('update_anuncio/' . strtolower(seo_url($row->titulo)))] = 'front/update_anuncio_index/' . $row->anuncio_id;
+}
+
 /*
 $query = $db->get('solicitud');
 $result = $query->result();

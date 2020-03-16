@@ -89,6 +89,10 @@ ul.category-list-style li:hover a i,
 	color: #8c1822;
 }
 
+#menu-1 {
+	cursor: pointer !important;
+}
+
 .featured-slider .owl-controls .owl-nav .owl-next:hover,
 .featured-slider .owl-controls .owl-nav .owl-prev:hover .ms-layer.btn3:hover,
 .home-category-slider .category-slider .owl-controls .owl-nav .owl-next:hover,

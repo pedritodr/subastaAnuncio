@@ -49,6 +49,7 @@ $config['activar_ads_noti_lang'] = "Anuncio activado con exito";
 $config['desactivar_ads_noti_lang'] = "Anuncio desactivado con exito";
 $config['desactivar_ads_lang'] = "Desactivar Anuncio";
 $config['activar_ads_lang'] = "Activar Anuncio";
+$config['confirmar_destacar_ads_lang'] = "Está seguro (a) que desea destacar el anuncio";
 $config['confirmar_desactivar_ads_lang'] = "Está seguro (a) que desea desactivar el anuncio";
 $config['confirmar_activar_ads_lang'] = "Está seguro (a) que desea activar el anuncio";
 $config['palabras_dinam_lang'] = "Palabras dinámicas";
@@ -59,7 +60,7 @@ $config['desarrolladores_lang'] = "Desarrolladores";
 $config['premios_lang'] = "Premios";
 $config['precios_flex_lang'] = "Precios flexibles";
 
-$config['precios_lang'] = "Precio: ";
+$config['precios_lang'] = "Precio";
 
 $config['preguntas_lang'] = "Preguntas frecuentes ";
 
@@ -83,7 +84,7 @@ $config['entrar_lang'] = "Entrar";
 $config['pizarra_resumen_lang'] = "Pizarra resumen";
 $config['panel_lang'] = "Panel Principal";
 $config['manage_users'] = "Gestionar usuarios";
-
+$config['user_lang'] = "Usuario";
 $config['login_lang'] = "Login";
 $config['idiomas_lang'] = "Idiomas";
 
@@ -108,6 +109,7 @@ $config['add_boton_lang'] = "Agregar";
 $config['pagar_lang'] = "Pagar";
 $config['ubicacion_lang'] = "Ubicaciòn:";
 
+$config['membresias_lang'] = "Membresias";
 $config['manage_membresia_lang'] = "Gestionar membresia";
 $config['listar_membresia_lang'] = "Listado de membresias";
 $config['add_membresia_lang'] = "Adicionar membresia";
@@ -226,6 +228,9 @@ $config['comprar_inversa_lang'] = "Comprar";
 $config['subir_puja_lang'] = "Subir puja";
 $config['valor_alto_lang'] = "Valor más alto";
 $config['featured_lang'] = "Destacado";
+$config['featured_ads_lang'] = "Destacar anuncio";
+$config['anuncios_destacados_lang'] = "Anuncios destacado";
+$config['anuncios_recientes_lang'] = "Anuncios recientes";
 $config['caracteristicas_lang'] = "Características";
 $config['icon_lang'] = "Ícono";
 
@@ -280,7 +285,7 @@ $config['manage_comments_lang'] = "Gestionar comentarios";
 $config['listar_comments_lang'] = "Listar comentarios";
 $config['change_lang'] = "Cambiar estado";
 $config['usuario_lang'] = "Usuario";
-
+$config['estado_lang'] = "Estado";
 
 $config['manage_pedidos_lang'] = "Gestionar pedidos";
 $config['listar_pedidos_lang'] = "Listar pedidos";
@@ -318,10 +323,13 @@ $config['listar_books_lang'] = "Listar libros";
 $config['editar_books_lang'] = "Editar libro";
 $config['ver_book_lang'] = "Ver libro";
 $config['ver_lang'] = "Ver";
+$config['ver_perfil_lang'] = "Ver perfil";
 $config['add_book_lang'] = "Adicionar libro";
 $config['cod_lang'] = "Código";
 $config['edicion_lang'] = "Edición libro";
 $config['fecha_salida_lang'] = "Fecha salida";
+$config['fecha_vencimiento_lang'] = "Fecha vencimiento";
+$config['fecha_publicacion_lang'] = "Fecha publicación";
 $config['resumen_lang'] = "Resumen";
 $config['precio_lang'] = "Precio";
 $config['add_pages'] = "Adicionar Páginas";
@@ -539,11 +547,11 @@ $config['sobre_nosotros_lang'] = "Sobre nosotros";
 $config['eleccion_empresa_lang'] = "Porque elegirnos";
 
 
-$config['manage_seguimiento_lang'] = "Gestionar seguimientos";
-$config['listar_seguimiento_lang'] = "Listar seguimientos";
-$config['add_seguimiento_lang'] = "Adicionar seguimiento";
-$config['update_seguimiento_lang'] = "Editar seguimiento";
-$config['seguimiento_lang'] = "Seguimiento";
+$config['manage_anuncio_lang'] = "Gestionar anuncios";
+$config['listar_anuncio_lang'] = "Listar anuncios";
+$config['add_anuncio_lang'] = "Adicionar anuncio";
+$config['update_anuncio_lang'] = "Editar anuncio";
+$config['anuncio_lang'] = "Anuncio";
 
 
 $config['manage_categories_lang'] = "Gestionar categorías";

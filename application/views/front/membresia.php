@@ -70,11 +70,11 @@
                                     <span class="price">$<?= number_format($item->precio, 2); ?></span>
                                     <span class="time"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
                                     <span class="time"><?= translate('descripcion_lang') ?></span>
-                                    <div class="text-center">
+                                    <div style="height:260px !important" class="text-center">
                                         <?= $item->descripcion; ?>
                                     </div>
                                     <?php if ($this->session->userdata('user_id')) { ?>
-                                        <a style="cursor:pointer" onclick="seleccionar_membresia('<?= $item->membresia_id; ?>','<?= $item->precio; ?>');" class="btn btn-theme"><?= translate('select_plan_lang') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                                        <a style="cursor:pointer;" onclick="seleccionar_membresia('<?= base64_encode(json_encode($item)); ?>');" class="btn btn-theme"><?= translate('select_plan_lang') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -91,33 +91,7 @@
     </section>
 </div>
 <!-- =-=-=-=-=-=-= Forget Password Modal =-=-=-=-=-=-= -->
-<div class="custom-modal">
-    <div id="modal_membresia" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header rte">
-                    <h2 class="modal-title text-center"><?= translate('menbresi_lang'); ?></h2>
-                </div>
-                <?= form_open("front/pagar_membresia") ?>
 
-                <div class="modal-body">
-                    <div class="block">
-                        <h3 class="text-center" id="nombre"></h3>
-                        <h4 class="text-center" id="precio"></h4>
-                        <input name="membresia" id="membresia" type="hidden" value="">
-                        <h4 class="text-center"><span id="cantidad" class="time"></span></h4>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-default"><?= translate('pagar_lang'); ?></button>
-                    <button type="button" class="btn btn-dark" data-dismiss="modal"><?= translate('cancelar_lang'); ?></button>
-                </div>
-                <?= form_close(); ?>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- =-=-=-=-=-=-= Share Modal =-=-=-=-=-=-= -->
 <style>
     /* CUSTOMIZE THE CAROUSEL
