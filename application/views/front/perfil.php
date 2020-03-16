@@ -127,7 +127,7 @@
                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12  ">
                                         <div class="white category-grid-box-1 ">
                                             <!-- foto -->
-                                            <div class="image"> <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>">
+                                            <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>">
 
                                                     <?php if (strpos($item->photo, 'uploads') !== false) { ?>
 
@@ -137,7 +137,11 @@
 
                                                     <?php } ?>
 
-                                                </a></div>
+                                                </a>
+                                                <?php if ($item->destacado == 1) { ?>
+                                                    <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                                <?php } ?>
+                                            </div>
                                             <!--descripcion -->
                                             <div class="short-description-1 ">
                                                 <!-- subcategoria  -->
@@ -145,7 +149,7 @@
 
                                                 <!-- descripcion -->
                                                 <h6>
-                                                    <a title="" href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>"><?= $item->titulo; ?></a>
+                                                    <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><?= $item->titulo; ?></a>
                                                 </h6>
                                                 <!-- Location -->
                                                 <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
@@ -166,13 +170,19 @@
                                                     <?php } ?>
                                                 </ul>
                                                 <ul class="pull-right">
-                                                    <li> <a href=" <?= site_url('front/update_anuncio_index/' . $item->anuncio_id) ?>"><i class="fa fa-pencil edit"></i></a> </li>
+                                                    <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><i class="fa fa-pencil edit"></i></a> </li>
                                                     <?php if ($item->is_active == 1) { ?>
-                                                        <li> <a title="desactivar" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
+                                                        <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
                                                     <?php } else { ?>
                                                         <li>
-                                                            <a title="Activar" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
+                                                            <a title="Activar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
                                                         </li>
+                                                    <?php } ?>
+                                                    <?php if ($item->destacado == 0) { ?>
+                                                        <li>
+                                                            <a title="Destacar anuncio" onclick="cargar_modal_destacar('<?= $item->anuncio_id ?>');"><i class="fa fa-star delete"></i></a>
+                                                        </li>
+
                                                     <?php } ?>
                                                     <li>
                                                         <a title='Subir imagenes' onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></a>
@@ -344,22 +354,25 @@
                                         <!--Checkout-Form-->
                                         <dl class="dl-horizontal">
 
-                                            <dt><strong><?= translate('membresia_act_lang') ?></strong></dt>
+                                            <dt><strong><?= translate('membresia_act_lang') ?>: </strong></dt>
                                             <dd>
                                                 <?= $all_membresia->nombre ?>
                                             </dd>
-                                            <dt><strong><?= translate('date_compra_lang') ?> </strong></dt>
+                                            <dt><strong><?= translate('date_compra_lang') ?>: </strong></dt>
                                             <dd>
-                                                <?= $all_membresia->fecha ?>
+                                                <?= $all_membresia->fecha_inicio ?>
                                             </dd>
-                                            <dt><strong><?= translate('cant_anuncios_lang') ?> </strong></dt>
+                                            <dt><strong><?= translate('fecha_vencimiento_lang') ?>: </strong></dt>
                                             <dd>
-                                                <?= $all_membresia->cant_anuncio ?>
+                                                <?= $all_membresia->fecha_fin ?>
                                             </dd>
+
                                         </dl>
-
-
-                                        <!--End Checkout-Form-->
+                                        <strong><?= translate('cant_anuncios_lang') ?> </strong>
+                                        <?= $all_membresia->cant_anuncio ?>
+                                        <br>
+                                        <strong><?= translate('descripcion_lang') ?> </strong>
+                                        <?= $all_membresia->descripcion ?>
 
                                     </div>
                                 <?php } else { ?>

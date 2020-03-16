@@ -170,6 +170,38 @@
       </div>
    </div>
 </div>
+<div id="modal_destacar" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <?php echo form_open_multipart("front/destacar_anuncio") ?>
+
+            <input type="hidden" id='anuncio_id_destacar' name="anuncio_id_destacar">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center"><?= translate('featured_ads_lang') ?></h3>
+         </div>
+         <div class="modal-body">
+            <!-- content goes here =-->
+
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+                  <p class="text-center">
+                     <?= translate('confirmar_destacar_ads_lang') ?>
+                  </p>
+
+                  <div id="dropzone" class="dropzone"></div>
+               </div>
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button id="btn_destacar" type="submit" class="btn btn-theme btn-block"><?= translate('featured_ads_lang') ?></button>
+
+            </div>
+            <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
 <div class="quick-view-modal modalopen" id="modal_detalle" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog modal-lg ad-modal">
       <button class="close close-btn popup-cls" aria-label="Close" data-dismiss="modal" type="button"> <i class="fa-times fa"></i> </button>
@@ -370,6 +402,37 @@
       </div>
    </div>
 </div>
+
+<div id="modal_membresia_gratis" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("menbresi_lang"); ?></h3>
+         </div>
+         <?php echo form_open_multipart("front/pagar_membresia") ?>
+         <div class="modal-body">
+            <!-- content goes here =-->
+
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                  <h3 class="text-center" id="nombre_membresia"></h3>
+                  <h4 class="text-center" id="precio_membresia"></h4>
+                  <input name="membresia_id" id="membresia_id" type="hidden" value="">
+
+               </div>
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button type="submit" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
+               <button type="button" class="btn btn-dark btn-block" data-dismiss="modal"><?= translate('cancelar_lang'); ?></button>
+
+            </div>
+            <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
 <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
 <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
 <!-- Bootstrap Core Css  -->
@@ -520,6 +583,12 @@
       }
       $('#modal_desactivar').modal("show");
       $('#anuncio_id2').val(id);
+   }
+
+   function cargar_modal_destacar(id) {
+
+      $('#modal_destacar').modal("show");
+      $('#anuncio_id_destacar').val(id);
    }
 
    function cargar_modal_membresia(id, nombre, precio, cantidad) {
@@ -750,30 +819,16 @@
    }
 
 
-   function seleccionar_membresia(membresia_id, precio) {
-
+   function seleccionar_membresia(object) {
+      object = atob(object);
+      object = JSON.parse(object);
       var user_id = "<?= $this->session->userdata('user_id'); ?>";
       var phone = "<?= $this->session->userdata('phone'); ?>";
       var email = "<?= $this->session->userdata('email'); ?>";
-
-      var sub = parseFloat(precio) / 1.12;
-      var iva = parseFloat(precio) - sub;
-      var descripcion = "Compra de una membresia de subasta anuncio";
-      var misElementos = "1234567890"; // Conjunto de elementos validos a obtener
-      // posición aleatoria del elemento que va a ser elegido
-      var posicion = 0 + Math.floor(Math.random() * misElementos.length);
-
-      paymentezCheckout.open({
-         user_id: user_id,
-         user_email: email, //optional
-         user_phone: phone, //optional
-         order_description: descripcion,
-         order_amount: parseFloat(parseFloat(precio).toFixed(2)),
-         order_vat: parseFloat(parseFloat(iva).toFixed(2)),
-         order_reference: posicion.toString(),
-         order_taxable_amount: parseFloat(parseFloat(sub).toFixed(2)),
-         order_tax_percentage: 12
-      });
+      $('#nombre_membresia').text(object.nombre);
+      $('#precio_membresia').text("$" + parseFloat(object.precio).toFixed(2));
+      $('#membresia_id').val(object.membresia_id);
+      $('#modal_membresia_gratis').modal('show');
 
    }
 

@@ -8,6 +8,7 @@ class Membresia extends CI_Controller
         parent::__construct();
 
         $this->load->model('Membresia_model', 'membresia');
+        $this->load->model('User_model', 'user');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 
@@ -28,7 +29,19 @@ class Membresia extends CI_Controller
         $data['all_membresia'] = $all_membresia;
         $this->load_view_admin_g("membresia/index", $data);
     }
+    public function index_usuarios()
+    {
 
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $all_users = $this->membresia->get_all_membresias_users();
+
+        $data['all_users'] = $all_users;
+        $this->load_view_admin_g("membresia/index_usuario", $data);
+    }
 
 
     public function add_index()

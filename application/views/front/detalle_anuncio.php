@@ -163,10 +163,135 @@
 
                      <div class="clearfix"></div>
                   </div>
+
                </div>
                <!-- Single Ad End -->
 
                <!-- =-=-=-=-=-=-= Latest Ads End =-=-=-=-=-=-= -->
+               <div class="hidden-sm hidden-xs">
+                  <?php if ($relacionados) { ?>
+                     <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
+                     <div class="grid-panel margin-top-30">
+                        <div class="heading-panel">
+                           <div class="col-xs-12 col-md-12 col-sm-12">
+                              <h3 class="main-title text-left">
+                                 <?= translate('anuncio_relacionado_lang') ?>
+                              </h3>
+                           </div>
+                        </div>
+                        <!-- Ads Archive -->
+                        <div class="posts-masonry">
+                           <div class="col-md-12 col-xs-12 col-sm-12">
+
+                              <!-- Ads Archive --><?php if ($relacionados) { ?>
+                                 <?php foreach ($relacionados as $item) { ?>
+                                    <div class="ads-list-archive">
+                                       <!-- Image Block -->
+                                       <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
+                                          <!-- Img Block -->
+                                          <div class="ad-archive-img">
+                                             <a href="#">
+                                                <!--   <div class="ribbon popular"></div> -->
+
+
+                                                <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
+                                                   <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                                <?php } else { ?>
+                                                   <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
+
+                                                <?php } ?>
+
+                                             </a>
+
+                                          </div>
+                                          <!-- Img Block -->
+                                       </div>
+                                       <!-- Ads Listing -->
+                                       <div class="clearfix visible-xs-block"></div>
+                                       <!-- Content Block -->
+                                       <div class="col-lg-8 col-md-8 col-sm-8 no-padding">
+                                          <!-- Ad Desc -->
+                                          <div class="ad-archive-desc">
+                                             <!-- Price -->
+                                             <div class="ad-price">
+                                                <font style="vertical-align: inherit;">
+                                                   <font style="vertical-align: inherit;">$ <?= number_format($item->precio, 2) ?></font>
+                                                </font>
+                                             </div>
+                                             <!-- Title -->
+                                             <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                                <h6>
+                                                   <font style="vertical-align: inherit;">
+                                                      <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                                   </font>
+                                                </h6>
+                                             </a>
+                                             <!-- Category -->
+                                             <div class="category-title"> <span><a href="#">
+                                                      <font style="vertical-align: inherit;">
+                                                         <font style="vertical-align: inherit;"><?= $item->categoria ?>/<?= $item->subcategoria ?></font>
+                                                      </font>
+                                                   </a></span> </div>
+                                             <!-- Short Description -->
+                                             <div class="clearfix visible-xs-block"></div>
+                                             <p class="hidden-sm">
+                                                <font style="vertical-align: inherit;">
+                                                   <font style="vertical-align: inherit;"><?= $item->corta ?></font>
+                                                </font>
+                                             </p>
+                                             <!-- Ad Features -->
+                                             <ul class="add_info">
+                                                <!-- Contact Details -->
+                                                <li>
+                                                   <div class="custom-tooltip tooltip-effect-4">
+                                                      <span class="tooltip-item"><i class="fa fa-phone"></i></span>
+                                                      <div class="tooltip-content">
+                                                         <span class="label label-success">
+                                                            <font style="vertical-align: inherit;">
+                                                               <font style="vertical-align: inherit;">+ <?= $item->whatsapp ?></font>
+                                                            </font>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                </li>
+                                                <!-- Address -->
+                                                <li>
+                                                   <div class="custom-tooltip tooltip-effect-4">
+                                                      <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
+                                                      <div class="tooltip-content">
+
+                                                         <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                               <?= $item->direccion ?>
+                                                            </font>
+                                                         </font>
+                                                      </div>
+                                                   </div>
+                                                </li>
+
+
+                                             </ul>
+                                             <!-- Ad History -->
+                                             <div class="clearfix archive-history">
+
+                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
+                                                      <font style="vertical-align: inherit;">
+                                                         <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
+                                                      </font>
+                                                   </a> </div>
+                                             </div>
+                                          </div>
+                                          <!-- Ad Desc End -->
+                                       </div>
+                                       <!-- Content Block End -->
+                                    </div>
+                                 <?php } ?>
+                              <?php } ?>
+
+                           </div>
+                        </div>
+                     </div> <?php } ?>
+               </div>
             </div>
             <!-- Right Sidebar -->
             <div class="col-md-4 col-xs-12 col-sm-12">
@@ -208,7 +333,7 @@
 
                            <li><?= translate("categories_lang"); ?>: <span><?= $all_anuncios->categoria ?>/<?= $all_anuncios->subcategoria ?></span></li>
 
-                           <li id="direccion">Location: <span class="color">New York, USA</span></li>
+                           <li id="direccion"><?= translate("ubicacion_lang") ?>: <span class="color"><?= $all_anuncios->ciudad ?></span></li>
                         </ul>
                      </div>
                      <!--mapa -->
@@ -220,12 +345,12 @@
                   <!-- Featured Ads -->
                   <div class="widget" style="margin-top:8% !important">
                      <div class="widget-heading">
-                        <h4 class="panel-title"><a>Featured Ads</a></h4>
+                        <h4 class="panel-title"><a><?= translate("anuncios_destacados_lang") ?></a></h4>
                      </div>
                      <div class="widget-content">
                         <div class="featured-slider-3">
                            <!-- Featured Ads -->
-                           <?php foreach ($relacionados as $item) { ?>
+                           <?php foreach ($destacados as $item) { ?>
                               <div class="item">
                                  <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
                                     <!-- Ad Box -->
@@ -236,24 +361,30 @@
                                           <!-- Ad Status -->
                                           <!-- User Review -->
                                           <div class="user-preview">
-                                             <a href="#"> <img src="" class="avatar avatar-small" alt=""> </a>
+                                             <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"> <img src="" class="avatar avatar-small" alt=""> </a>
                                           </div>
-                                          <!-- View Details --><a href="#" class="view-details">View Details</a>
+                                          <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
                                        </div>
                                        <!-- Ad Img End -->
                                        <div class="short-description">
                                           <!-- Ad Category -->
-                                          <div class="category-title"> <span><a href="#">Cars</a></span> </div>
+                                          <div class="category-title"> <span><a href="#"><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span> </div>
                                           <!-- Ad Title -->
-                                          <h3><a title="" href="single-page-listing.html">2017 Honda Civic EX</a></h3>
+                                          <h6>
+                                             <?php if ($item->titulo_corto) { ?>
+                                                <a href="#"><?= $item->titulo_corto ?></a>
+                                             <?php } else { ?>
+                                                <a href="#"><?= $item->titulo ?></a>
+                                             <?php } ?>
+                                          </h6>
                                           <!-- Price -->
-                                          <div class="price">$18,200 <span class="negotiable">(Negotiable)</span></div>
+                                          <div class="price">$<?= number_format($item->precio, 2) ?></div>
                                        </div>
                                        <!-- Addition Info -->
                                        <div class="ad-info">
                                           <ul>
-                                             <li><i class="fa fa-map-marker"></i>London</li>
-                                             <li><i class="fa fa-clock-o"></i> 15 minutes ago </li>
+                                             <li><i class="fa fa-map-marker"></i><?= $item->ciudad ?></li>
+                                             <li><i class="fa fa-clock-o"></i><?= translate("publicado_lang"); ?>: <?= $item->fecha ?> </li>
                                           </ul>
                                        </div>
                                     </div>
@@ -264,13 +395,52 @@
                         </div>
                      </div>
                   </div>
+                  <!-- Recent Ads -->
+                  <div class="widget">
+                     <div class="widget-heading">
+                        <h4 class="panel-title"><a><?= translate("anuncios_recientes_lang") ?></a></h4>
+                     </div>
+                     <div class="widget-content recent-ads">
+                        <?php foreach ($recientes as $item) { ?>
+                           <!-- Ads -->
+                           <div class="recent-ads-list">
+                              <div class="recent-ads-container">
+                                 <div class="recent-ads-list-image">
+                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="recent-ads-list-image-inner">
+                                       <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                    </a><!-- /.recent-ads-list-image-inner -->
+                                 </div>
+                                 <!-- /.recent-ads-list-image -->
+                                 <div class="recent-ads-list-content">
+                                    <h4 class="recent-ads-list-title text-justify">
+                                       <?php if ($item->titulo_corto) { ?>
+                                          <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo_corto ?></a>
+                                       <?php } else { ?>
+                                          <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo ?></a>
+                                       <?php } ?>
+                                    </h4>
+                                    <ul class="recent-ads-list-location">
+                                       <li><a href="#"><?= $item->ciudad ?></a></li>
 
+                                    </ul>
+                                    <div class="recent-ads-list-price">
+                                       $ <?= number_format($item->precio, 2) ?>
+                                    </div>
+                                    <!-- /.recent-ads-list-price -->
+                                 </div>
+                                 <!-- /.recent-ads-list-content -->
+                              </div>
+                              <!-- /.recent-ads-container -->
+                           </div>
+                        <?php } ?>
+                     </div>
+                  </div>
                </div>
                <!-- Sidebar Widgets End -->
 
             </div>
 
-            <div class="col-md-8 col-xs-12 col-sm-12">
+            <div class="col-md-8 hidden-lg didden-md">
                <?php if ($relacionados) { ?>
                   <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
                   <div class="grid-panel margin-top-30">
@@ -292,7 +462,7 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
                                        <!-- Img Block -->
                                        <div class="ad-archive-img">
-                                          <a href="#">
+                                          <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
                                              <!--   <div class="ribbon popular"></div> -->
 
 
@@ -376,7 +546,7 @@
                                           <!-- Ad History -->
                                           <div class="clearfix archive-history">
 
-                                             <div class="ad-meta"> <a href="<?= site_url('front/detalle_anuncio/' . $item->anuncio_id) ?>" class="btn btn-success"><i class="fa fa-phone"></i>
+                                             <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
                                                    <font style="vertical-align: inherit;">
                                                       <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
                                                    </font>

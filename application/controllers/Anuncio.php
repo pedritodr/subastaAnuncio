@@ -23,8 +23,14 @@ class Anuncio extends CI_Controller
             $this->log_out();
             redirect('login');
         }
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+        $this->load->model('User_model', 'user');
+        $all_anuncios = $this->anuncio->get_anuncios();
+        foreach ($all_anuncios as $item) {
+            $item->galeria = $this->photo_anuncio->get_by_anuncio_id($item->anuncio_id);
+            $item->user = $this->user->get_by_id($item->user_id);
+        }
 
-        $all_anuncios = $this->anuncio->get_all();
         $data['all_anuncios'] = $all_anuncios;
         $this->load_view_admin_g("anuncio/index", $data);
     }
@@ -49,17 +55,12 @@ class Anuncio extends CI_Controller
             redirect('login');
         }
 
-
-
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
         $photo = $this->input->post('photo');
         $whatsapp = $this->input->post('whatsapp');
         $cate_anuncio = $this->input->post('nombre');
-
-
-
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('nombre_lang'), 'required');
@@ -80,13 +81,15 @@ class Anuncio extends CI_Controller
             if ($allow_extension) {
                 $result = save_image_from_post('archivo', './uploads/categoria', time(), 768, 768);
                 if ($result[0]) {
-                    $data = ['titulo' => $titulo,
-                    'descripcion' => $descripcion,
-                    'precio' => $precio,
-                    'photo' => $result[1],
-                    'whatsapp' => $whatsapp,
-                    'cate_anuncio_id' => $cate_anuncio,
-                    'is_active' => 1];
+                    $data = [
+                        'titulo' => $titulo,
+                        'descripcion' => $descripcion,
+                        'precio' => $precio,
+                        'photo' => $result[1],
+                        'whatsapp' => $whatsapp,
+                        'cate_anuncio_id' => $cate_anuncio,
+                        'is_active' => 1
+                    ];
                     $this->anuncio->create($data);
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                     redirect("anuncio/index");
@@ -205,6 +208,30 @@ class Anuncio extends CI_Controller
             show_404();
         }
     }
+    public function publicar()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
+        $anuncio_id = $this->input->post('anuncio_id_publicar');
+        $this->anuncio->update($anuncio_id, ['is_active' => 1]);
 
+        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+        redirect("anuncio/index");
+    }
+    public function desactivar()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $anuncio_id = $this->input->post('anuncio_id_desactivar');
+        $this->anuncio->update($anuncio_id, ['is_active' => 0]);
+
+        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+        redirect("anuncio/index");
+    }
 }

@@ -59,8 +59,25 @@ class Membresia_model extends CI_Model
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
-
-
+    function get_all_membresias_user()
+    {
+        $this->db->select('*');
+        $this->db->from('membresia_user');
+        $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
+        $this->db->where('membresia_user.estado', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_all_membresias_users()
+    {
+        $this->db->select('*');
+        $this->db->from('membresia_user');
+        $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
+        $this->db->join('user', 'user.user_id =membresia_user.user_id');
+        $this->db->where('membresia_user.estado', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
 
 
 
@@ -82,7 +99,23 @@ class Membresia_model extends CI_Model
         return $afec;
     }
 
+    function update_membresia_user($id, $data)
+    {
+        $old = $this->get_by_id($id);
+        $this->db->where('membresia_user_id', $id);
+        foreach ($data as $key => $value) {
+            $this->db->set($key, $value);
+        }
+        $this->db->update('membresia_user');
+        $afec = $this->db->affected_rows();
 
+        if ($afec > 0) {
+            $new = $this->get_by_id($id);
+            //  $this->activelog($id,null,2,$new,$old);
+        }
+
+        return $afec;
+    }
 
 
 

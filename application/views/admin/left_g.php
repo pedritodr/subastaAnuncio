@@ -72,7 +72,12 @@
                         <span><?= translate('manage_membresia_lang'); ?></span>
                     </a>
                 </li>
-
+                <li>
+                    <a href="<?= site_url('membresia/index_usuarios'); ?>">
+                        <i class="fa fa-user-secret" aria-hidden="true"></i>
+                        <span><?= translate('membresias_lang'); ?></span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="<?= site_url('banner/index'); ?>">
@@ -85,6 +90,14 @@
                 <li>
                     <a href="<?= site_url('pais/index'); ?>">
                         <i class="fa fa-globe" aria-hidden="true"></i> <span><?= translate('manage_country_lang'); ?></span>
+                    </a>
+
+
+                </li>
+
+                <li>
+                    <a href="<?= site_url('anuncio/index'); ?>">
+                        <i class="fa fa-tag" aria-hidden="true"></i> <span><?= translate('manage_anuncio_lang'); ?></span>
                     </a>
 
 
