@@ -74,7 +74,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center">Usuario</h4>
+                <h4 class="modal-title text-center">Perfil</h4>
             </div>
 
             <div class="modal-body">
@@ -109,14 +109,56 @@
                                         <!-- /.description-block -->
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4 border-right">
                                         <div class="description-block">
-                                            <h5 class="description-header">Dirección</h5>
-                                            <span id="direccion_usuario_perfil" class="description-text">PRODUCTS</span>
+                                            <h5 class="description-header">Ciudad</h5>
+                                            <span id="ciudad_perfil" class="description-text">SALES</span>
                                         </div>
                                         <!-- /.description-block -->
                                     </div>
                                     <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div style="text-align :left !important" class="description-block">
+                                            <h5 class="description-header">Dirección</h5>
+                                            <span id="direccion_usuario_perfil" class="description-text">PRODUCTS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="description-block">
+                                            <h5 class="description-header">Membresia</h5>
+                                            <span id="name_membresia" class="description-text">SALES</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 border-right">
+                                        <div class="description-block">
+                                            <h5 class="description-header">Anuncios disponibles</h5>
+                                            <span id="cant_anuncios" class="description-text">SALES</span>
+                                        </div>
+                                        <!-- /.description-block -->
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-sm-4 border-right">
+                                        <div class="description-block">
+                                            <h5 class="description-header">Fecha de compra</h5>
+                                            <span id="fecha_compra" class="description-text">FOLLOWERS</span>
+                                        </div>
+                                        <!-- /.description-block -->
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-sm-4 border-right">
+                                        <div class="description-block">
+                                            <h5 class="description-header">Fecha de vencimiento</h5>
+                                            <span id="fecha_vencimiento" class="description-text">SALES</span>
+                                        </div>
+                                        <!-- /.description-block -->
+                                    </div>
                                 </div>
                                 <!-- /.row -->
                             </div>
@@ -141,6 +183,7 @@
     function usuario_perfil(object) {
         object = atob(object);
         object = JSON.parse(object);
+        console.log(object);
         let photo = object.photo;
         let ok = photo.indexOf("uploads");
         $('.widget-user-header').css('background', 'url(<?= site_url() ?>)  center');
@@ -150,10 +193,14 @@
         } else {
             $('#img_perfil_2').prop('src', object.photo);
         }
-
+        $('#name_membresia').text(object.nombre);
+        $('#cant_anuncios').text(object.anuncios_publi);
+        $('#fecha_compra').text(object.fecha_inicio);
+        $('#fecha_vencimiento').text(object.fecha_fin);
         $('#direccion_usuario_perfil').text(object.direccion);
         $('#telefono_usuario_perfil').text(object.phone);
         $('#email_usuario_perfil').text(object.email);
+        $('#ciudad_perfil').text(object.name_ciudad);
         $('#modal_user_perfil').modal('show');
 
     }
