@@ -10,6 +10,7 @@ class Cron  extends CI_Controller
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Subasta_model', 'subasta');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
     }
@@ -92,6 +93,25 @@ class Cron  extends CI_Controller
 
             if ($fecha == $fecha_fin) {
                 $this->anuncio->update($item->anuncio_id, ['is_active' => 0]);
+            }
+        }
+    }
+    public function desactivar_subasta()
+    {
+        $fecha = date('Y-m-d');
+
+        $all_subastas = $this->subasta->get_all(['is_active' => 1]);
+
+        foreach ($all_subastas as $item) {
+            $fecha_fin =  $item->fecha_cierre;
+            $fechaEntera = strtotime($fecha_fin);
+            $anio = date("Y", $fechaEntera);
+            $mes = date("m", $fechaEntera);
+            $dia = date("d", $fechaEntera);
+            $fecha_fin = $anio . "-" . $mes . "-" . $dia;
+
+            if ($fecha == $fecha_fin) {
+                $this->anuncio->update($item->subasta_id, ['is_active' => 0]);
             }
         }
     }

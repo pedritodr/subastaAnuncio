@@ -75,7 +75,7 @@
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Acciones <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu pull-right">
                                                     <li><a onclick="detalles('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-eye"></i> <?= translate("ver_lang"); ?></a></li>
                                                     <?php if ($item->is_active == 1) { ?>
                                                         <li><a onclick="desactivar('<?= $item->anuncio_id ?>')"><i class="fa fa-remove"></i> <?= translate("desactivar_ads_lang"); ?></a></li>
@@ -426,9 +426,3 @@
 
     }
 </script>
-<style>
-    .dropdown-menu>li>a {
-        cursor: pointer !important;
-        white-space: normal !important;
-    }
-</style>
