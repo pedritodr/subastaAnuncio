@@ -28,10 +28,10 @@ class Login extends CI_Controller
     {
         $email = $this->input->post('email');
         $password = md5($this->input->post('password'));
-
+        $anuncio = $this->input->post('valida_ads');
 
         $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
-   
+
         if ($user) {
 
             $session_data = object_to_array($user);
@@ -40,7 +40,11 @@ class Login extends CI_Controller
             if ($user->role_id == 1) {
                 redirect("dashboard/index");
             } else if ($user->role_id == 2) {
-                redirect("front/index");
+                if ($anuncio == 1) {
+                    redirect("crear-anuncio");
+                } else {
+                    redirect("portada");
+                }
             } else {
                 redirect(site_url());
             }
@@ -52,7 +56,8 @@ class Login extends CI_Controller
     }
 
     public function facebook_auth()
-    { }
+    {
+    }
 
     public function logout()
     {

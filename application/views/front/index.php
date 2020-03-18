@@ -245,7 +245,7 @@
                         <!-- tab content -->
                         <div id="<?= strtolower(seo_url($all_categorias[$i]->name_espa)) ?>" class="row tab-pane fade ">
                            <?php if ($all_categorias[$i]->count_directa == 0) { ?>
-                              <p style="display:none" class="text-center mensaje_directa"><?= translate('mensaje_directa_lang') ?></p>
+                              <p class="text-center mensaje_directa"><?= translate('mensaje_directa_lang') ?></p>
                            <?php } ?>
                            <?php if ($all_categorias[$i]->count_inversa == 0) { ?>
                               <p style="display:none" class="text-center mensaje_inversa"><?= translate('mensaje_inversa_lang') ?></p>

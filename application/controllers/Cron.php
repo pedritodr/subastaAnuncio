@@ -111,7 +111,7 @@ class Cron  extends CI_Controller
             $fecha_fin = $anio . "-" . $mes . "-" . $dia;
 
             if ($fecha == $fecha_fin) {
-                $this->anuncio->update($item->subasta_id, ['is_active' => 0]);
+                $this->subasta->update($item->subasta_id, ['is_open' => 0]);
             }
         }
     }

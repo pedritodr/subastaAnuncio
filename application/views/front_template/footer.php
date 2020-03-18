@@ -77,7 +77,14 @@
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
 <?php if ($this->session->userdata('user_id')) { ?>
-   <a href="#" class="sticky-post-button hidden-xs">
+   <a href="<?= site_url('crear-anuncio') ?>" class="sticky-post-button hidden-xs">
+      <span class="sell-icons">
+         <i class="flaticon-online-job-search-symbol"></i>
+      </span>
+      <h4><?= translate("publicar_lang"); ?></h4>
+   </a>
+<?php } else { ?>
+   <a onclick="login()" class="sticky-post-button hidden-xs">
       <span class="sell-icons">
          <i class="flaticon-online-job-search-symbol"></i>
       </span>
@@ -270,7 +277,7 @@
 
                      </ul>
 
-                     <div style="margin-left:41px; margin-bottom:5px" class="col-md-12">
+                     <div style="display:none" id="body_cronometro" style="margin-left:41px; margin-bottom:5px" class="col-md-12">
                         <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
                            <div class="timer conte">
                               <span class="days a"></span>
@@ -308,7 +315,7 @@
                            <div id="body_pujar" class="col-md-12">
                               <button id="btn_pujar" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
                            </div>
-                           <div id="body_comprar_inversa" class="col-md-12">
+                           <div style="display:none" id="body_comprar_inversa" class="col-md-12">
                               <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
                            </div>
 
@@ -348,7 +355,52 @@
       </div>
    </div>
 </div>
+<div class="modal fade price-quote" id="modal_login" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("login_lang"); ?></h3>
 
+            <?php if (get_message_from_operation()) { ?>
+               <div role="alert" class="alert alert-success alert-dismissible">
+                  <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                  <strong><?= get_message_from_operation(); ?></strong>
+               </div>
+            <?php } ?>
+         </div> <?= form_open('login/auth'); ?>
+         <input name="valida_ads" id="" type="hidden" value="1">
+         <div class="modal-body">
+            <div class="form-group">
+               <label><?= translate("email_lang"); ?></label>
+               <input required placeholder="<?= translate("email_lang"); ?>" class="form-control" type="email" name="email">
+            </div>
+            <div class="form-group">
+               <label><?= translate('password_lang'); ?></label>
+               <input required placeholder="<?= translate('password_lang'); ?>" class="form-control" type="password" name="password">
+            </div>
+            <div class="form-group">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="skin-minimal">
+
+                        <div class="col-xs-12 col-sm-5 text-right">
+                           <p class="help-block"><a href="<?= site_url('registrarse') ?>"><?= translate('registrarse_lang'); ?></a>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button type="submit" class="btn btn-theme btn-lg btn-block"><?= translate('entrar_lang'); ?></button>
+            </div>
+            <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
 <div class="modal fade price-quote" id="modal_pagar_inversa" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -470,8 +522,9 @@
 
 <script type="text/javascript">
    let contador_directa = 0;
+   let vacio = null;
    let contador_inversa = 0;
-   var user_id = "<?= $this->session->userdata('user_id') ?>";
+   let user_id = "<?= $this->session->userdata('user_id') ?>";
    $(function() {
 
       $('.carousel').carousel();
@@ -514,6 +567,9 @@
       $("#myCarousel").carousel(0);
    });
 
+   function login() {
+      $('#modal_login').modal('show');
+   }
    // Enable Carousel Controls
    $(".left").click(function() {
       $("#myCarousel").carousel("prev");
@@ -684,8 +740,9 @@
                   $('#descripcion').html(result.all_detalle.descrip_espa);
                   $('#body_valor_alto').hide();
                   $('#li_valor_entrada').hide();
-
+                  $('#body_comprar_inversa').show();
                   $('#body_entrar_subasta').hide();
+                  $('#body_cronometro').hide();
                   $('#fecha_cierre').text(object.intervalo[count_intervalo - 1].fecha);
                   $('#btn_comprar_inversa').attr("onclick", "pagar_subasta_inversa('" + btoa(JSON.stringify(object)) + "')");
 
@@ -776,7 +833,7 @@
                      cadena_2 = cadena_2 + "<li data-target='#myCarousel' data-slide-to='" + cont + "'></li>";
 
                   }
-
+                  $('#body_cronometro').show();
                   $('#galeria_main').html(cadena_1);
                   $('.carousel-indicators').html(cadena_2);
                   $('#precio').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
@@ -886,8 +943,6 @@
       }, 5000);
    }
 
-
-
    function resetForm() {
       input_image.val('');
    }
@@ -969,16 +1024,20 @@
 
    $(function() {
 
+
+
       if (contador_directa == 0) {
+
          $('.mensaje_directa').show();
-         $('.mensaje_inversa').hide();
+         //  $('.mensaje_inversa').hide();
 
       } else {
          $('#btn_subasta_directa_2').addClass('active');
          $('#btn_subasta_inversa_2').removeClass('active');
       }
       if (contador_inversa == 0) {
-         $('.mensaje_directa').hide();
+
+         // $('.mensaje_directa').hide();
          $('.mensaje_inversa').show();
 
       } else {
@@ -1021,15 +1080,8 @@
 </div>
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
-<a href="<?= site_url('crear-anuncio') ?>" class="sticky-post-button hidden-xs">
-   <span class="sell-icons">
-      <i class="flaticon-online-job-search-symbol"></i>
-   </span>
-   <h4><?= translate("publicar_lang"); ?></h4>
-</a>
-<!-- Back To Top -->
-<a href="#0" class="cd-top">Top</a>
-<!-- Back To Top -->
+
+
 
 </body>
 
