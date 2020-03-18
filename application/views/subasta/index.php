@@ -94,6 +94,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
                                                     <li><a href="<?= site_url('subasta/update_index/' . $item->subasta_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
+                                                    <li><a href="<?= site_url('subasta/change_open/' . $item->subasta_id); ?>"><i class="fa fa-edit"></i> <?= translate("change_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('subasta/delete/' . $item->subasta_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('subasta/index_foto/' . $item->subasta_id); ?>"><i class="fa fa-picture-o" aria-hidden="true"></i> <?= translate("manage_photo_lang"); ?></a></li>
 
@@ -130,7 +131,11 @@
 
 <script>
     $(function() {
-        $("#example1").DataTable();
 
+        $('#example1').DataTable({
+            "order": [
+                [0, "desc"]
+            ]
+        });
     });
 </script>

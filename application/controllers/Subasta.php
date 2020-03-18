@@ -372,7 +372,28 @@ class Subasta  extends CI_Controller
         }
     }
 
+    public function change_open($subasta_id = 0)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
+        $subasta_object = $this->subasta->get_by_id($subasta_id);
+
+        if ($subasta_object) { //eliminado foto
+            if ($subasta_object->is_open == 1) {
+                $this->subasta->update($subasta_id, ['is_open' => 0]);
+            } else if ($subasta_object->is_open == 0) {
+                $this->subasta->update($subasta_id, ['is_open' => 1]);
+            }
+
+            $this->response->set_message(translate('data_changed_ok'), ResponseMessage::SUCCESS);
+            redirect("subasta/index");
+        } else {
+            show_404();
+        }
+    }
     //creacion de la vista fotos
 
     function index_foto($subasta_id = 0)

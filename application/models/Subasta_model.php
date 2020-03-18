@@ -74,7 +74,8 @@ class Subasta_model extends CI_Model
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->where('categoria.categoria_id', $id);
-
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.is_open', 1);
         $query = $this->db->get();
         return $query->result();
     }
@@ -101,6 +102,7 @@ class Subasta_model extends CI_Model
         foreach ($conditions as $key => $value) {
             $this->db->where($key, $value);
         }
+
         $query = $this->db->get('subasta');
 
         return ($get_as_row) ? $query->row() : $query->result();
@@ -234,6 +236,7 @@ class Subasta_model extends CI_Model
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', 2);
         $query = $this->db->get();
@@ -248,6 +251,8 @@ class Subasta_model extends CI_Model
         $this->db->join('user', 'user.user_id = subasta.user_id');
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->where('categoria.categoria_id', $id);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where('subasta.is_active', 1);
         $query = $this->db->get();
         return $query->result();
     }
@@ -260,6 +265,8 @@ class Subasta_model extends CI_Model
         $this->db->join('user', 'user.user_id = subasta.user_id');
         $this->db->where('categoria.categoria_id', $id);
         $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where('subasta.is_active', 1);
         $this->db->like('subasta.nombre_espa', $name);
         $query = $this->db->get();
         return $query->result();
@@ -272,6 +279,8 @@ class Subasta_model extends CI_Model
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
         $this->db->where('subasta.tipo_subasta', $tipo);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where('subasta.is_active', 1);
         $this->db->like('subasta.nombre_espa', $name);
 
         $query = $this->db->get();
@@ -286,6 +295,7 @@ class Subasta_model extends CI_Model
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         // $this->db->join('user', 'user.user_id = subasta.user_id');
+        $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
@@ -299,6 +309,7 @@ class Subasta_model extends CI_Model
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->where('categoria.categoria_id', $id);
@@ -313,6 +324,7 @@ class Subasta_model extends CI_Model
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('categoria.categoria_id', $id);
         $this->db->where('subasta.tipo_subasta', $tipo);
@@ -327,6 +339,7 @@ class Subasta_model extends CI_Model
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->like('subasta.nombre_espa', $palabra);

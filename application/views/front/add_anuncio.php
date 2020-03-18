@@ -87,7 +87,7 @@
                         <label><?= translate("cate_list_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
-                              ></span>
+                           </span>
                            <select onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2">
 
                               <?php
