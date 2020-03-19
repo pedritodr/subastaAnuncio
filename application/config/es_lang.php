@@ -80,6 +80,7 @@ $config['login_using_google'] = "Autenticar usando Google+";
 $config['i_forgot_password_lang'] = "Yo olvidé mi contraseña";
 $config['registrarse_lang'] = "Registrarse";
 $config['login_error'] = "Error de autenticación";
+$config['piso_error'] = "Error al pagar la entrada de la subasta";
 $config['entrar_lang'] = "Entrar";
 $config['pizarra_resumen_lang'] = "Pizarra resumen";
 $config['panel_lang'] = "Panel Principal";
@@ -88,6 +89,7 @@ $config['user_lang'] = "Usuario";
 $config['login_lang'] = "Login";
 $config['idiomas_lang'] = "Idiomas";
 
+$config['error_valor_pujar_lang'] = "Ingrese un valor mas alto para pujar";
 $config['español_lang'] = "Español";
 $config['english_lang'] = "Ingles";
 $config['arabe_lang'] = "Arabe";
@@ -117,7 +119,7 @@ $config['update_membresia_lang'] = "Editar membresia";
 $config['adquirir_membresia_lang'] = "Membresia adquirida exitosamente";
 $config['adquirir_membresia_btn_lang'] = "Adquirir  membresia";
 $config['piso_pagado_lang'] = "Valor de entrada pagada exitosamente";
-$config['pujar_valor_lang'] = "Valor de la pueja enviada  exitosamente";
+$config['pujar_valor_lang'] = "Valor de la puja enviada  exitosamente";
 $config['name_pag_lang'] = "Pagina";
 
 

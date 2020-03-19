@@ -345,8 +345,16 @@
             <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("entrar_subasta_lang"); ?></h3>
          </div>
          <div class="modal-body">
+            <div id="mensaje_piso" class="alert alert-danger alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_piso"></p>
+            </div>
+            <div id="mensaje_piso_2" class="alert alert-success alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_piso_2"></p>
+            </div>
             <!-- content goes here -->
-            <?php echo form_open_multipart("front/pagar_entrada") ?>
+            <!--  <?php echo form_open_multipart("front/pagar_entrada") ?> -->
             <h5 class="text-center" id="name_subasta"></h5>
             <h4 id="inicial" class="text-center"></h4>
 
@@ -354,9 +362,9 @@
 
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button type="submit" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
+               <button id="btn_pagar_piso" type="button" onclick="pagar_piso()" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
             </div>
-            <?= form_close(); ?>
+            <!--   <?= form_close(); ?> -->
          </div>
       </div>
    </div>
@@ -488,11 +496,19 @@
             <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("subir_puja_lang"); ?></h3>
          </div>
          <div class="modal-body">
+            <div id="mensaje_pujar" class="alert alert-danger alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_pujar"></p>
+            </div>
+            <div id="mensaje_pujar_2" class="alert alert-success alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_pujar_2"></p>
+            </div>
             <!-- content goes here -->
-            <?php echo form_open_multipart("front/pujar") ?>
+            <!--   <?php echo form_open_multipart("front/pujar") ?> -->
             <h4 class="text-center" id="name_subasta"></h4>
             <h4 class="text-center"><?= translate("valor_alto_lang"); ?> <span id="valor_puja" class="label label-success"></span></h4>
-            <h6 class="text-center"> <span style="display:none" id="error_puja" class="label label-danger">Ingrese un valor mas alto para pujar</span></h6>
+            <h6 class="text-center"> <span style="display:none" id="error_puja" class="label label-danger"><?= translate('error_valor_pujar_lang') ?></span></h6>
             <input type="hidden" id='subasta_user_id' name="subasta_user_id">
             <div class="clearfix"></div>
             <div class="form-group">
@@ -501,9 +517,9 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button style="display:none" id="btn_pujando" type="submit" class="btn btn-theme btn-block"><?= translate('pujar_lang') ?></button>
+               <button style="display:none" onclick="pagar_puja()" id="btn_pujando" type="button" class="btn btn-theme btn-block"><?= translate('pujar_lang') ?></button>
             </div>
-            <?= form_close(); ?>
+            <!--     <?= form_close(); ?> -->
          </div>
       </div>
    </div>
@@ -1055,7 +1071,83 @@
 
    }
 
+   function pagar_piso() {
+      let subasta_id = $('#subasta_id').val();
+      $('#btn_pagar_piso').prop('disabled', true);
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/pagar_entrada_ajax') ?>",
 
+         data: {
+            subasta_id: subasta_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               let message = "<?= translate('piso_error') ?>";
+               $('#mensaje_error_piso').text(message);
+               $('#mensaje_piso').show();
+               $('#btn_pagar_piso').prop('disabled', false);
+               setTimeout(() => {
+                  $('#mensaje_piso').fadeOut(2000)
+               }, 3000);
+
+            } else if (result.status == 200) {
+
+               let message = "<?= translate('piso_pagado_lang') ?>";
+               $('#mensaje_error_piso_2').text(message);
+               $('#mensaje_piso_2').show();
+               $('#btn_pagar_piso').prop('disabled', true);
+               setTimeout(() => {
+                  $('#modal_entrar').modal('hide');
+                  cargarmodal_subasta(subasta_id, "");
+               }, 2500);
+            }
+
+         }
+      });
+   }
+
+   function pagar_puja() {
+      let subasta_user_id = $('#subasta_user_id').val();
+      let valor_pujando = $('#valor_pujando').val();
+      $('#btn_pujando').prop('disabled', true);
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/pujar_ajax   ') ?>",
+
+         data: {
+            subasta_user_id: subasta_user_id,
+            valor_pujando: valor_pujando
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               let message = "<?= translate('error_valor_pujar_lang') ?>";
+               $('#mensaje_error_pujar').text(message);
+               $('#mensaje_pujar').show();
+               $('#btn_pujando').prop('disabled', false);
+               setTimeout(() => {
+                  $('#mensaje_pujar').fadeOut(2000)
+               }, 3000);
+
+            } else if (result.status == 200) {
+
+               let message = "<?= translate('pujar_valor_lang') ?>";
+               $('#mensaje_error_pujar_2').text(message);
+               $('#mensaje_pujar_2').show();
+               $('#btn_pujando').prop('disabled', true);
+               setTimeout(() => {
+                  $('#modal_pujar').modal('hide');
+                  cargarmodal_subasta(result.subasta_id, "");
+               }, 2500);
+            }
+
+         }
+      });
+   }
    /* $(".modal-body").bind("click", function() {
 
     });*/

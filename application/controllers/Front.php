@@ -1688,6 +1688,36 @@ class Front extends CI_Controller
         $this->response->set_message(translate('piso_pagado_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
     }
+    public function pagar_entrada_ajax()
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        if ($user_id) {
+            $subasta_id = $this->input->post('subasta_id');
+            $this->load->model('Subasta_model', 'subasta');
+            $data = [
+                'user_id' => $user_id,
+                'subasta_id' => $subasta_id,
+                'is_active' => 1
+            ];
+            $id = $this->subasta->create_subasta_user($data);
+            if ($id) {
+                $data['status'] = 200;
+            } else {
+                $data['status'] = 500;
+            }
+            echo json_encode($data);
+            exit();
+        } else {
+            $data['status'] = 500;
+            echo json_encode($data);
+            exit();
+        }
+
+
+        // $this->response->set_message(translate('piso_pagado_lang'), ResponseMessage::SUCCESS);
+        // redirect("perfil");
+    }
     public function pagar_inversa()
     {
         $user_id = $this->session->userdata('user_id');
@@ -1706,6 +1736,57 @@ class Front extends CI_Controller
         $this->subasta->create_subasta_user($data);
         $this->response->set_message(translate('compra_exitosa_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
+    }
+    public function pujar_ajax()
+    {
+        $user_id = $this->session->userdata('user_id');
+        if ($user_id) {
+            $subasta_user_id = $this->input->post('subasta_user_id');
+            $valor = $this->input->post('valor_pujando');
+            $this->load->model('Subasta_model', 'subasta');
+            $obj_subasta_user = $this->subasta->get_by_subasta_user($subasta_user_id);
+            $puja =  $this->subasta->get_puja_alta($obj_subasta_user->subasta_id);
+            if ($puja->valor != "null") {
+                if ((float) $valor > (float) $puja->valor) {
+                    $data = [
+                        'subasta_user_id' => $subasta_user_id,
+                        'fecha_hora' => date('Y-m-d H:i:s'),
+                        'valor' => $valor
+                    ];
+                    $id = $this->subasta->create_puja($data);
+                    if ($id) {
+                        $data['status'] = 200;
+                        $data['subasta_id'] = $obj_subasta_user->subasta_id;
+                    } else {
+                        $data['status'] = 500;
+                    }
+                } else {
+                    $data['status'] = 500;
+                }
+            } else {
+                $data = [
+                    'subasta_user_id' => $subasta_user_id,
+                    'fecha_hora' => date('Y-m-d H:i:s'),
+                    'valor' => $valor
+                ];
+                $id = $this->subasta->create_puja($data);
+                if ($id) {
+                    $data['status'] = 200;
+                    $data['subasta_id'] = $obj_subasta_user->subasta_id;
+                } else {
+                    $data['status'] = 500;
+                }
+            }
+            echo json_encode($data);
+            exit();
+        } else {
+            $data['status'] = 500;
+            echo json_encode($data);
+            exit();
+        }
+
+        // $this->response->set_message(translate('pujar_valor_lang'), ResponseMessage::SUCCESS);
+        // redirect("perfil");
     }
     public function pujar()
     {
