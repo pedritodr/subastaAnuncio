@@ -683,7 +683,7 @@ $config['userid_lang'] = "Usuario";
 $config['name_inicio_lang'] = "Iniciar sesion de usuario";
 
 $config['inicio_lang'] = "Inicio";
-
+$config['sesion_lang'] = "Sesion de usuario iniciada correctamente";
 $config['update_tabla_precios_lang'] = "Editar tabla de precios";
 $config['configuration_lang'] = "Configuración";
 $config['areas_escenario_lang'] = "Configuración de escenario";

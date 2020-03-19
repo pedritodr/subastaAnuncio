@@ -84,7 +84,7 @@
       <h4><?= translate("publicar_lang"); ?></h4>
    </a>
 <?php } else { ?>
-   <a onclick="login()" class="sticky-post-button hidden-xs">
+   <a onclick="login(1)" class="sticky-post-button hidden-xs">
       <span class="sell-icons">
          <i class="flaticon-online-job-search-symbol"></i>
       </span>
@@ -209,7 +209,7 @@
       </div>
    </div>
 </div>
-<div class="quick-view-modal modalopen" id="modal_detalle" tabindex="-1" role="dialog" aria-hidden="true">
+<div style="overflow: scroll !important" class="quick-view-modal modalopen" id="modal_detalle" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog modal-lg ad-modal">
       <button class="close close-btn popup-cls" aria-label="Close" data-dismiss="modal" type="button"> <i class="fa-times fa"></i> </button>
       <div class="modal-content single-product">
@@ -252,7 +252,7 @@
                               <span style="margin-top:5px"><?= translate('precios_lang') ?> <h5 id="precio"> </h5> </span>
                            </div>
                            <div id="body_valor_alto" class="col-md-8">
-                              <span style="color:#fff" class="label label-success"><?= translate("valor_alto_lang"); ?> <h4 id="valor_alto_modal" style="color:#fff"></h4></span>
+                              <span style="color:#fff" class="label label-success"><?= translate("valor_alto_lang"); ?> <h6 style="font-size:14px !important" id="valor_alto_modal" style="color:#fff"></h6></span>
                            </div>
                         </div>
 
@@ -307,18 +307,24 @@
                      <?php if ($this->session->userdata('user_id')) { ?>
                         <div class="row">
 
-                           <div id="body_entrar_subasta" class="col-md-12">
+                           <div style="margin-top:5% !important" id="body_entrar_subasta" class="col-md-12">
                               <button id="btn_entrar_subasta" onclick="" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
                               <br>
                            </div>
 
-                           <div id="body_pujar" class="col-md-12">
+                           <div style="margin-top:5% !important" id="body_pujar" class="col-md-12">
+
                               <button id="btn_pujar" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
                            </div>
-                           <div style="display:none" id="body_comprar_inversa" class="col-md-12">
+                           <div style="margin-top:5% !important" style="display:none" id="body_comprar_inversa" class="col-md-12">
                               <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
                            </div>
 
+                        </div>
+                     <?php } else { ?>
+
+                        <div style="margin-top:5% !important" id="body_login_subasta_entrar" class="col-md-12">
+                           <button id="btn_login_subasta" onclick="login(2)" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("login_lang"); ?></button>
                         </div>
                      <?php } ?>
                   </div>
@@ -369,7 +375,9 @@
                </div>
             <?php } ?>
          </div> <?= form_open('login/auth'); ?>
-         <input name="valida_ads" id="" type="hidden" value="1">
+         <input name="valida_ads" id="valida_ads" type="hidden" value="1">
+         <input name="subasta_id_login" id="subasta_id_login" type="hidden">
+         <input name="subasta_login_frm" id="subasta_login_frm" type="hidden">
          <div class="modal-body">
             <div class="form-group">
                <label><?= translate("email_lang"); ?></label>
@@ -397,6 +405,52 @@
                <button type="submit" class="btn btn-theme btn-lg btn-block"><?= translate('entrar_lang'); ?></button>
             </div>
             <?= form_close(); ?>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade price-quote" id="modal_login_subasta" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("login_lang"); ?></h3>
+         </div>
+         <div class="modal-body">
+            <div id="mensaje_login" class="alert alert-danger alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_login"></p>
+            </div>
+            <div id="mensaje_login_2" class="alert alert-success alert-dismissable" style="display: none;">
+               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <p id="mensaje_error_login_2"></p>
+            </div>
+            <div class="form-group">
+               <label><?= translate("email_lang"); ?></label>
+               <input required placeholder="<?= translate("email_lang"); ?>" class="form-control" type="email" id="email_subasta">
+            </div>
+            <div class="form-group">
+               <label><?= translate('password_lang'); ?></label>
+               <input required placeholder="<?= translate('password_lang'); ?>" class="form-control" type="password" id="password_subasta">
+            </div>
+            <div class="form-group">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="skin-minimal">
+
+                        <div class="col-xs-12 col-sm-5 text-right">
+                           <p class="help-block"><a href="<?= site_url('registrarse') ?>"><?= translate('registrarse_lang'); ?></a>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button id="btn_login_subasta" type="button" onclick="login_aut()" class="btn  btn-success btn-block"><?= translate('entrar_lang'); ?></button>
+            </div>
+
          </div>
       </div>
    </div>
@@ -437,17 +491,17 @@
             <!-- content goes here -->
             <?php echo form_open_multipart("front/pujar") ?>
             <h4 class="text-center" id="name_subasta"></h4>
-            <h4 class="text-center"><?= translate("valor_alto_lang"); ?> <span id="valor_puja" class="label label-danger"></span></h4>
-
+            <h4 class="text-center"><?= translate("valor_alto_lang"); ?> <span id="valor_puja" class="label label-success"></span></h4>
+            <h6 class="text-center"> <span style="display:none" id="error_puja" class="label label-danger">Ingrese un valor mas alto para pujar</span></h6>
             <input type="hidden" id='subasta_user_id' name="subasta_user_id">
             <div class="clearfix"></div>
             <div class="form-group">
                <label for="valor"><?= translate("escriba_valor_lang"); ?></label>
-               <input placeholder="<?= translate("escriba_valor_lang"); ?>" class="form-control" type="number" name="valor" id="valor">
+               <input placeholder="<?= translate("escriba_valor_lang"); ?>" class="form-control" type="number" name="valor_pujando" id="valor_pujando">
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button type="submit" class="btn btn-theme btn-block"><?= translate('pujar_lang') ?></button>
+               <button style="display:none" id="btn_pujando" type="submit" class="btn btn-theme btn-block"><?= translate('pujar_lang') ?></button>
             </div>
             <?= form_close(); ?>
          </div>
@@ -524,8 +578,42 @@
    let contador_directa = 0;
    let vacio = null;
    let contador_inversa = 0;
+   let obj_subasta = null;
+   let detalle_subasta_id = null;
    let user_id = "<?= $this->session->userdata('user_id') ?>";
+   let session_subasta_id = null;
+   let session_subasta = null;
+   let input_valor = 0;
+   $('#valor_pujando').change(function() {
+
+      let valor_modal = $('#valor_pujando').val();
+      if (valor_modal > input_valor) {
+
+         $('#error_puja').hide();
+         $('#btn_pujando').show();
+      } else {
+         $('#btn_pujando').hide();
+         $('#error_puja').show();
+      }
+   });
    $(function() {
+      session_subasta_id = "<?= $this->session->userdata('subasta_id') ?>";
+      session_subasta = "<?= base64_encode(json_encode($this->session->userdata('subasta')))   ?>";
+      console.log(session_subasta_id);
+      console.log(session_subasta);
+      if (session_subasta_id && session_subasta == "bnVsbA==") {
+         <?php $this->session->set_userdata('subasta_id', null) ?>
+         cargarmodal_subasta(session_subasta_id, "");
+
+      }
+      if (session_subasta_id && session_subasta != "bnVsbA==") {
+         <?php $this->session->set_userdata('subasta_id', null) ?>
+         <?php $this->session->set_userdata('subasta', null) ?>
+         cargarmodal_subasta(session_subasta_id, session_subasta);
+
+      }
+
+
 
       $('.carousel').carousel();
 
@@ -567,8 +655,56 @@
       $("#myCarousel").carousel(0);
    });
 
-   function login() {
-      $('#modal_login').modal('show');
+   function login_aut() {
+      let email = $('#email_subasta').val();
+      let pass = $('#password_subasta').val();
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('login/auth_ajax') ?>",
+
+         data: {
+            email: email,
+            password: pass
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               let message = "<?= translate('autenticacion_lang') ?>";
+               $('#mensaje_error_login').text(message);
+               $('#mensaje_login').show();
+               setTimeout(() => {
+                  $('#mensaje_login').fadeOut(2000)
+               }, 5000);
+
+            } else if (result.status == 200) {
+               $('#btn_login_subasta').prop('disabled', true);
+               $('#email_subasta').prop('disabled', true);
+               $('#password_subasta').prop('disabled', true);
+               let message = "<?= translate('sesion_lang') ?>";
+               $('#mensaje_error_login_2').text(message);
+               $('#mensaje_login_2').show();
+               setTimeout(() => {
+                  cargarmodal_subasta(subasta_id, obj_subasta);
+               }, 2500);
+            }
+
+         }
+      });
+   }
+
+   function login(dir) {
+      if (dir == 2) {
+         $('#valida_ads').val(0);
+         $('#subasta_login_frm').val(JSON.stringify(obj_subasta));
+         $('#subasta_id_login').val(detalle_subasta_id);
+         $("#modal_detalle").modal("hide");
+         $('#modal_login').modal('show');
+
+      } else if (dir == 1) {
+         $('#valida_ads').val(1);
+         $('#modal_login').modal('show');
+      }
    }
    // Enable Carousel Controls
    $(".left").click(function() {
@@ -671,9 +807,15 @@
       // var cant = "<?php echo translate('cant_anuncios_lang') ?>";
       $('#subasta_user_id').val(id);
       $('#name_subasta').text(nombre);
-      if (precio == "") {
+
+      if (precio == "null") {
+         input_valor = parseFloat(valor_inicial);
+
+         $('#valor_pujando').val(valor_inicial);
          $('#valor_puja').text("$" + parseFloat(valor_inicial).toFixed(2));
       } else {
+         input_valor = parseFloat(precio);
+         $('#valor_pujando').val(precio);
          $('#valor_puja').text("$" + parseFloat(precio).toFixed(2));
       }
       $("#modal_pujar").modal("show");
@@ -681,13 +823,18 @@
    }
 
    function cargarmodal_subasta(id, object) {
+      detalle_subasta_id = id;
       if (object != "") {
          object = atob(object);
          object = JSON.parse(object);
+         obj_subasta = object;
       }
-
+      /*  if (obj_subasta_directa) {
+          object = $obj_subasta;
+       } */
       console.log(object);
       if (object != "") {
+
          //  $("#body_valor_alto").show();
          //  $("#body_entrar_subasta").hide();
          $("#body_pujar").hide();
@@ -751,6 +898,13 @@
             }
          });
       } else {
+
+         if (user_id == "") {
+            $('#body_login_subasta_entrar').show();
+
+         } else {
+            $('#body_login_subasta_entrar').hide();
+         }
          $("#body_valor_alto").show();
          $("#body_entrar_subasta").hide();
          $("#body_pujar").hide();
@@ -834,6 +988,7 @@
 
                   }
                   $('#body_cronometro').show();
+                  $('#body_comprar_inversa').hide();
                   $('#galeria_main').html(cadena_1);
                   $('.carousel-indicators').html(cadena_2);
                   $('#precio').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
@@ -841,27 +996,38 @@
                   $('#descripcion').html(result.all_detalle.descrip_espa);
                   $('#valor_entrada').text("$" + parseFloat(result.all_detalle.valor_pago).toFixed(2));
                   $('#fecha_cierre').text(result.all_detalle.fecha_cierre);
-                  if (result.puja != null) {
-                     $("#valor_alto_modal").text("$" + parseFloat(result.puja.valor).toFixed(2));
+                  if (result.puja.valor != null) {
+                     $("#valor_alto_modal").html("<i class='fa fa-user-o'></i> " + result.user_win.name + " $" + parseFloat(result.puja.valor).toFixed(2));
                   }
 
                   if (result.subasta_user && result.puja.valor == null) {
-                     $('#valor_alto_modal').text("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
+                     $('#valor_alto_modal').html("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
                   }
                   if (result.subasta_user == null && result.puja.valor == null) {
                      $('#body_valor_alto').hide();
                   }
 
 
-                  if (result.subasta_user == null && user_id) {
-                     $("#body_entrar_subasta").show();
-                     $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_inicial + '")');
+                  if (user_id != "") {
+                     if (result.subasta_user == null && user_id) {
+                        $("#body_entrar_subasta").show();
+                        $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
 
-                  } else {
-                     $("#body_pujar").show();
-                     $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                     } else {
+                        if (result.puja_user.valor == null) {
+                           $("#body_pujar").show();
+                           $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                        } else {
+                           if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
+                              $("#body_pujar").show();
+                              $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                           }
+                        }
 
+
+                     }
                   }
+
 
 
 
@@ -936,6 +1102,7 @@
    });
 
    function showMessage(message) {
+
       alert_message.find('p').html(message);
       alert_message.show(1);
       setTimeout(() => {

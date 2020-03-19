@@ -29,6 +29,17 @@ class Login extends CI_Controller
         $email = $this->input->post('email');
         $password = md5($this->input->post('password'));
         $anuncio = $this->input->post('valida_ads');
+        $subasta_id = $this->input->post('subasta_id_login');
+        //$subasta = json_decode($_POST['subasta_login_frm']);
+        $subasta = json_decode($this->input->post('subasta_login_frm'));
+
+        if ($subasta != NULL || $subasta != "") {
+
+            $this->session->set_userdata('subasta', $subasta);
+        }
+        if ($subasta_id != "") {
+            $this->session->set_userdata('subasta_id', $subasta_id);
+        }
 
         $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
 
@@ -54,7 +65,27 @@ class Login extends CI_Controller
             redirect("login");
         }
     }
+    public function auth_ajax()
+    {
+        $email = $this->input->post('email');
+        $password = md5($this->input->post('password'));
 
+        $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
+
+        if ($user) {
+
+            $session_data = object_to_array($user);
+            $this->session->set_userdata($session_data);
+            $data['session_data'] = $session_data;
+            $data['status'] = 200;
+            echo json_encode($data);
+            exit();
+        } else {
+            $data['status'] = 500;
+            echo json_encode($data);
+            exit();
+        }
+    }
     public function facebook_auth()
     {
     }

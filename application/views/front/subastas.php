@@ -276,9 +276,9 @@
                                                                             <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
                                                                         <?php } ?>
                                                                         <h6 class="text-center"><?= "Valor de entreda" ?></h6>
-                                                                        <div class="price text-center"> <span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
+                                                                        <div class="price text-center"> <span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
                                                                         <h6 class="text-center"><?= "Valor inicial" ?> </h6>
-                                                                        <div class="price text-center"><span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
+                                                                        <div class="price text-center"><span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
                                                                         <!-- Ad View Button -->
 
                                                                         <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
@@ -448,7 +448,7 @@
 
     <script>
         var subastas = <?= json_encode($all_subastas); ?>;
-         contador_inversa = <?= $contador_inversa ?>;
+        contador_inversa = <?= $contador_inversa ?>;
         contador_directa = <?= $contador_directa ?>;
 
         for (let i = 0; i < subastas.length + 1; i++) {

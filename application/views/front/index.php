@@ -175,7 +175,7 @@
                                     <div class="ad-info">
                                        <ul>
                                           <li><i class="fa fa-map-marker"></i> <?= $all_categorias[0]->all_subastas[$k]->name_ciudad ?></li>
-                                          <li><button onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= '' ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
+                                          <li><button onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= NULL ?>');" class="btn btn-success" type="button"><?= translate('ver_info_lang') ?></button></li>
                                        </ul>
                                     </div>
                                  </div>
