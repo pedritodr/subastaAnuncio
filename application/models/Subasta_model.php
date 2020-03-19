@@ -404,13 +404,26 @@ class Subasta_model extends CI_Model
     }
     function get_puja_alta($subasta_id = 0)
     {
+
         $this->db->select_max('puja.valor');
         $this->db->from('puja');
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
+        $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('subasta_user.subasta_id', $subasta_id);
         $query = $this->db->get();
         return $query->row();
     }
+    function get_user_puja_alta($monto = 0)
+    {
+        $this->db->select('*');
+        $this->db->from('puja');
+        $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
+        $this->db->join('user', 'user.user_id = subasta_user.user_id');
+        $this->db->where('puja.valor', $monto);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     function get_puja_alta_user($subasta_id = 0, $user_id = 0)
     {
         $this->db->select_max('puja.valor');

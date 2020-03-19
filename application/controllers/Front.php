@@ -403,15 +403,28 @@ class Front extends CI_Controller
         $all_categoria = $this->categoria->get_by_id($categoria_id);
 
         $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
-        $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
+        if ($user_id) {
+            $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
+            $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+        } else {
+            $subasta_user = null;
+            $puja_user = null;
+        }
 
         $puja =  $this->subasta->get_puja_alta($subasta_id);
+        if ($puja) {
+            $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+        } else {
+            $user_win = null;
+        }
+
+        $data['user_win'] = $user_win;
         $data['subasta_user'] = $subasta_user;
         $data['puja'] = $puja;
         $data['all_detalle'] = $all_detalle;
         $data['foto_object'] = $foto_object;
         $data['all_categoria'] = $all_categoria;
-
+        $data['puja_user'] = $puja_user;
         echo json_encode($data);
         exit();
     }
@@ -1698,7 +1711,7 @@ class Front extends CI_Controller
     {
 
         $subasta_user_id = $this->input->post('subasta_user_id');
-        $valor = $this->input->post('valor');
+        $valor = $this->input->post('valor_pujando');
         $this->load->model('Subasta_model', 'subasta');
         $data = [
             'subasta_user_id' => $subasta_user_id,
