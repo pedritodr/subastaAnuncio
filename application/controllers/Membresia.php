@@ -68,7 +68,7 @@ class Membresia extends CI_Controller
         $descuento = $this->input->post('descuento');
         $sorteo = $this->input->post('sorteo');
         $descripcion = $this->input->post('descripcion');
-
+        $subastas = $this->input->post('subastas');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -85,7 +85,8 @@ class Membresia extends CI_Controller
                 'cant_anuncio' => $cant_anuncio,
                 'descuento' => $descuento,
                 'sorteo' => $sorteo,
-                'descripcion' => $descripcion
+                'descripcion' => $descripcion,
+                'qty_subastas' => $subastas
             ];
             $this->membresia->create($data);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -127,7 +128,7 @@ class Membresia extends CI_Controller
         $descuento = $this->input->post('descuento');
         $sorteo = $this->input->post('sorteo');
         $descripcion = $this->input->post('descripcion');
-
+        $subastas = $this->input->post('subastas');
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
 
@@ -141,7 +142,8 @@ class Membresia extends CI_Controller
                 'membresia_id' => $membresia_id,
                 'descuento' => $descuento,
                 'sorteo' => $sorteo,
-                'descripcion' => $descripcion
+                'descripcion' => $descripcion,
+                'qty_subastas' => $subastas
 
             ];
             $this->membresia->update($membresia_id, $data_membresia);

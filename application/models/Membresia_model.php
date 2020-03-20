@@ -35,6 +35,7 @@ class Membresia_model extends CI_Model
     function get_membresia_by_user_id($id)
     {
         $this->db->where('user_id', $id);
+        $this->db->where('membresia_user.estado', 1);
         $query = $this->db->get('membresia_user');
 
         return $query->row();
@@ -45,6 +46,7 @@ class Membresia_model extends CI_Model
         $this->db->from('membresia_user');
         $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
         $this->db->where('membresia_user.user_id', $id);
+        $this->db->where('membresia_user.estado', 1);
         $query = $this->db->get();
         return $query->row();
     }

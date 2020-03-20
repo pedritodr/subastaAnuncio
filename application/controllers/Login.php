@@ -8,6 +8,7 @@ class Login extends CI_Controller
         parent::__construct();
 
         $this->load->model('User_model', 'user');
+        $this->load->model('Membresia_model', 'membresia');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 
@@ -46,6 +47,12 @@ class Login extends CI_Controller
         if ($user) {
 
             $session_data = object_to_array($user);
+
+            if ($user->role_id == 2) {
+                $membresia = $this->membresia->get_by_user_id($user->user_id);
+                $membresia = object_to_array($membresia);
+                $this->session->set_userdata($membresia);
+            }
             $this->session->set_userdata($session_data);
 
             if ($user->role_id == 1) {
@@ -75,8 +82,14 @@ class Login extends CI_Controller
         if ($user) {
 
             $session_data = object_to_array($user);
+
+            $membresia = $this->membresia->get_by_user_id($user->user_id);
+            $membresia = object_to_array($membresia);
+            $this->session->set_userdata($membresia);
+
             $this->session->set_userdata($session_data);
             $data['session_data'] = $session_data;
+            $data['membresia'] = $membresia;
             $data['status'] = 200;
             echo json_encode($data);
             exit();
