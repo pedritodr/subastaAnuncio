@@ -19,7 +19,7 @@ class Cron  extends CI_Controller
     {
         $fecha = date('Y-m-d');
         $cantidad_intervalos = 0;
-        $all_subasta = $this->subasta->get_all(['is_active' => 1, 'tipo_subasta' => 2]);
+        $all_subasta = $this->subasta->get_all(['is_active' => 1, 'tipo_subasta' => 2, 'is_open' => 1]);
 
         foreach ($all_subasta as $item) {
             if ($item->cantidad_dias > 0 && $item->intervalo > 0) {

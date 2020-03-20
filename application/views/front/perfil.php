@@ -88,10 +88,10 @@
                             </ul>
                         </div>
                         <ul>
-                            <li class="active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
-                            <li class="" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
-                            <li class="" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
-
+                            <li class="forever active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
+                            <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="forever" id="subs_inversas" style="cursor:pointer"><a><?= translate('mis_subastas_inversas_lang') ?><span class="badge"><?php if ($mis_subastas_inversas) { ?> <?= (count($mis_subastas_inversas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li><a href="<?= site_url('login/logout') ?>"><?= translate('sign_out_lang') ?></a></li>
                         </ul>
                     </div>
@@ -210,7 +210,221 @@
                         </div>
                     <?php } ?>
                     <!-- Row -->
+                    <?php if ($mis_subastas_directas) { ?>
+                        <div id="listado_directas" class="row">
+                            <div class="posts-masonry">
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <ul class="list-unstyled">
+                                        <?php foreach ($mis_subastas_directas as $item) { ?>
 
+                                            <li>
+                                                <div class="well ad-listing clearfix">
+                                                    <!--    <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
+
+                                                        <div class="img-box">
+                                                            <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
+                                                            <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
+
+                                                        </div>
+
+                                                    </div> -->
+                                                    <div class="col-md-12 col-sm-7 col-xs-12">
+                                                        <!-- Ad Content-->
+                                                        <div class="row">
+                                                            <div class="content-area">
+                                                                <div class="col-md-8 col-sm-12 col-xs-12">
+                                                                    <!-- Category Title -->
+
+                                                                    <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
+
+                                                                    </div>
+
+
+                                                                    <!-- Ad Title -->
+                                                                    <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                    <!-- Info Icons -->
+
+                                                                    <!-- Ad Meta Info -->
+                                                                    <ul class="ad-meta-info">
+                                                                        <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+                                                                        <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
+                                                                    </ul>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                <div class="timer conte">
+                                                                                    <span class="days" id="day_<?= $item->subasta_id ?>"></span>
+                                                                                </div>
+                                                                                <div class="smalltext"><?= translate("dias_lang"); ?></div>
+                                                                            </div>
+                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                <div class="timer conte">
+                                                                                    <span class="hours" id="hour_<?= $item->subasta_id ?>"></span>
+                                                                                </div>
+                                                                                <div class="smalltext"><?= translate("horas_lang"); ?></div>
+                                                                            </div>
+                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                <div class="timer conte">
+                                                                                    <span class="minutes" id="minute_<?= $item->subasta_id ?>"></span>
+                                                                                </div>
+                                                                                <div class="smalltext"><?= translate("minutos_lang"); ?></div>
+                                                                            </div>
+                                                                            <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
+                                                                                <div class="timer conte">
+                                                                                    <span class="seconds" id="second_<?= $item->subasta_id ?>"></span>
+                                                                                </div>
+                                                                                <div class="smalltext"><?= translate("segundos_lang"); ?></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Ad Description-->
+                                                                    <div class="ad-details">
+
+                                                                        <?= $item->descrip_espa ?>
+
+
+                                                                    </div>
+                                                                    <?php if ($this->session->userdata('user_id')) { ?>
+                                                                        <div class="row">
+
+                                                                            <?php if (!$item->subasta_user) { ?>
+                                                                                <div class="col-md-6" style="margin-bottom:5% !important">
+                                                                                    <button id="btn_entrar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
+
+                                                                                </div>
+                                                                            <?php } ?>
+                                                                            <?php if ($item->subasta_user) { ?>
+                                                                                <?php if ($item->puja_user) { ?>
+                                                                                    <?php if ((float) $item->puja_user->valor < (float) $item->puja->valor) { ?>
+                                                                                        <div class="col-md-6" style="margin-bottom:5% !important">
+                                                                                            <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                        </div>
+                                                                                    <?php } else { ?>
+                                                                                        <div class="col-md-6" style="margin-bottom:5% !important">
+                                                                                            <button style="display:none" id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                        </div>
+                                                                                    <?php } ?>
+                                                                                <?php } else { ?>
+                                                                                    <div class="col-md-6" style="margin-bottom:5% !important">
+                                                                                        <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                    </div>
+                                                                                <?php } ?>
+                                                                            <?php } ?>
+
+                                                                        </div>
+                                                                    <?php } ?>
+
+                                                                </div>
+                                                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                                                    <!-- Ad Stats -->
+
+                                                                    <!-- Price -->
+                                                                    <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
+                                                                        <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
+                                                                        <h5 class="text-center" style="font-size:14px !important"><span id="valor_inicial_subasta_<?= $item->subasta_id ?>" class="label label-success"><i class='fa fa-user-o'></i> <?= $item->user_win->name ?> $<?= number_format($item->puja->valor, 2) ?></span></h5>
+                                                                    <?php } ?>
+                                                                    <h6 class="text-center"><?= "Valor de entreda" ?></h6>
+                                                                    <div class="price text-center"> <span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
+                                                                    <h6 class="text-center"><?= "Valor inicial" ?> </h6>
+                                                                    <div class="price text-center"><span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
+                                                                    <!-- Ad View Button -->
+
+                                                                    <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Ad Content End -->
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        <?php  } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <div id="listado_directas" class="row">
+                            <h4 class="text-center">No tiene subastas directas</h4>
+                        </div>
+                    <?php } ?>
+                    <?php if ($mis_subastas_inversas) { ?>
+                        <div id="listado_inversas" class="row">
+                            <div class="posts-masonry">
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <ul class="list-unstyled">
+                                        <?php foreach ($mis_subastas_inversas as $item) { ?>
+
+                                            <li>
+                                                <div class="well ad-listing clearfix">
+                                                    <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
+
+                                                        <div class="img-box">
+                                                            <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
+                                                            <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-9 col-sm-7 col-xs-12">
+                                                        <!-- Ad Content-->
+                                                        <div class="row">
+                                                            <div class="content-area">
+                                                                <div class="col-md-8 col-sm-12 col-xs-12">
+                                                                    <!-- Category Title -->
+
+                                                                    <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
+
+                                                                    </div>
+
+
+                                                                    <!-- Ad Title -->
+                                                                    <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                    <!-- Info Icons -->
+
+                                                                    <!-- Ad Meta Info -->
+                                                                    <ul class="ad-meta-info">
+                                                                        <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+                                                                        <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
+                                                                    </ul>
+
+                                                                    <!-- Ad Description-->
+                                                                    <div class="ad-details">
+
+                                                                        <?= $item->descrip_espa ?>
+
+
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                                                    <h6 class="text-center"><?= "Precio" ?></h6>
+                                                                    <div class="price text-center"> <span>$ <?= number_format($item->costo, 2) ?></span> </div>
+                                                                    <!-- Ad View Button -->
+                                                                    <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Ad Content End -->
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        <?php  } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <div id="listado_inversas" class="row">
+                            <h4 class="text-center">No tiene subastas inversas</h4>
+                        </div>
+                    <?php } ?>
                     <!--perfil-->
                     <div id="panel_perfil" class="profile-section margin-bottom-20">
                         <div class="profile-tabs">
@@ -412,6 +626,41 @@
     <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
     <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
     <script type="text/javascript">
+        let subastas_2 = <?= json_encode($mis_subastas_directas); ?>;
+
+        for (let i = 0; i < subastas_2.length; i++) {
+
+            var intervalo = setInterval(function() {
+                var fecha = subastas_2[i].fecha_cierre;
+                var deadline = new Date(fecha).getTime();
+                var currentTime = new Date().getTime();
+                var t = deadline - currentTime;
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                $('#day_' + subastas_2[i].subasta_id).html(days);
+                $('#hour_' + subastas_2[i].subasta_id).html(hours);
+                $('#minute_' + subastas_2[i].subasta_id).html(minutes);
+                $('#second_' + subastas_2[i].subasta_id).html(seconds);
+
+                if (t < 0) {
+
+                    clearInterval(intervalo);
+
+                    $('#day_' + subastas_2[i].subasta_id).html(0);
+                    $('#hour_' + subastas_2[i].subasta_id).html(0);
+                    $('#minute_' + subastas_2[i].subasta_id).html(0);
+                    $('#second_' + subastas_2[i].subasta_id).html(0);
+
+                }
+
+            }, 1000);
+
+
+
+        }
+
         var validando = <?= $this->session->userdata('validando') ?>
 
         $(function() {
@@ -419,12 +668,18 @@
             if (validando == 1) {
                 $("#listado_anuncio").hide();
                 $("#panel_perfil").show();
+                $('#listado_directas').hide();
+                $('#listado_inversas').hide();
             } else if (validando == 2) {
                 $("#listado_anuncio").show();
+                $('#listado_directas').hide();
+                $('#listado_inversas').hide();
                 $("#panel_perfil").hide();
                 $("#perfil").removeClass('active');
                 $("#ads").addClass('active');
             } else {
+                $('#listado_inversas').hide();
+                $('#listado_directas').hide();
                 $("#listado_anuncio").hide();
                 $("#panel_perfil").show();
             }
@@ -433,15 +688,47 @@
 
         $("#perfil").click(function() {
             $("#listado_anuncio").hide();
+            $('#listado_inversas').hide();
             $("#panel_perfil").show();
-            $("#perfil").addClass('active');
+            $("#listado_directas").hide();
             $("#ads").removeClass('active');
+            $("#subs").removeClass('active');
+            $("#subs_inversas").removeClass('active');
+            $("#perfil").addClass('active');
+
         });
         $("#ads").click(function() {
-            $("#perfil").removeClass('active');
-            $("#ads").addClass('active');
 
+            $("#subs").removeClass('active');
+            $("#perfil").removeClass('active');
+            $("#subs").removeClass('active');
+            $("#subs_inversas").removeClass('active');
+            $("#ads").addClass('active');
+            $('#listado_inversas').hide();
+            $("#listado_directas").hide();
             $("#listado_anuncio").show();
+            $("#panel_perfil").hide();
+        });
+        $("#subs").click(function() {
+
+            $("#ads").removeClass('active');
+            $("#perfil").removeClass('active');
+            $("#subs_inversas").removeClass('active');
+            $("#subs").addClass('active');
+            $('#listado_inversas').hide();
+            $("#listado_anuncio").hide();
+            $("#listado_directas").show();
+            $("#panel_perfil").hide();
+        });
+        $("#subs_inversas").click(function() {
+
+            $("#ads").removeClass('active');
+            $("#perfil").removeClass('active');
+            $("#subs").removeClass('active');
+            $("#subs_inversas").addClass('active');
+            $('#listado_inversas').show();
+            $("#listado_anuncio").hide();
+            $("#listado_directas").hide();
             $("#panel_perfil").hide();
         });
 

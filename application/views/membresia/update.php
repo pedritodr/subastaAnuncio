@@ -57,7 +57,7 @@
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control input-sm" name="precio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->precio; ?>">
+                                            <input type="number" class="form-control input-sm" name="precio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->precio; ?>">
                                         </div>
 
                                     </div>
@@ -66,7 +66,7 @@
                                         <label><?= translate("cant_anuncios_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i><strong>N°</strong></i></i></span>
-                                            <input type="text" class="form-control input-sm" name="cant_anuncio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->cant_anuncio; ?>">
+                                            <input step="any" type="number" class="form-control input-sm" name="cant_anuncio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->cant_anuncio; ?>">
                                         </div>
 
                                     </div>
@@ -78,20 +78,29 @@
                                     </textarea>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
                                         <label><?= translate("descuento_lang"); ?></label>
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i><strong>%</strong></i></i></span>
-                                            <input type="text" class="form-control input-sm" name="descuento" placeholder="<?= translate('descuento_lang'); ?>" value="<?= $membresia_object->descuento; ?>">
+                                            <input required type="number" class="form-control input-sm" name="descuento" placeholder="<?= translate('descuento_lang'); ?>" value="<?= $membresia_object->descuento; ?>">
                                         </div>
 
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
+                                        <label><?= "Cantidad de subastas"; ?></label>
+                                        <div class="input-group">
+
+                                            <span class="input-group-addon"><i><strong>N</strong></i></i></span>
+                                            <input required type="number" class="form-control input-sm" name="subastas" placeholder="<?= "Cantidad de subastas"; ?>" value="<?= $membresia_object->qty_subastas; ?>">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-2">
                                         <label><?= translate("sorteo_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                            <select id="sorteo" name="sorteo" class="form-control  input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+                                            <select required id="sorteo" name="sorteo" class="form-control  input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
                                                 <option <?php if ($membresia_object->sorteo == 1) { ?> selected <?php } ?> value="1">SI</option>
                                                 <option <?php if ($membresia_object->sorteo == 2) { ?> selected <?php } ?> value="2">NO</option>

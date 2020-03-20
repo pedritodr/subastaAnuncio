@@ -254,16 +254,31 @@
 
                                                                                 <?php if (!$item->subasta_user) { ?>
                                                                                     <div class="col-md-6">
-                                                                                        <button onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
+                                                                                        <button id="btn_entrar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
 
                                                                                     </div>
                                                                                 <?php } ?>
                                                                                 <?php if ($item->subasta_user) { ?>
-                                                                                    <div class="col-md-6">
-                                                                                        <button onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+                                                                                    <?php if ($item->puja_user) { ?>
+                                                                                        <?php if ((float) $item->puja_user->valor < (float) $item->puja->valor) { ?>
+                                                                                            <div class="col-md-6">
+                                                                                                <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
 
-                                                                                    </div>
+                                                                                            </div>
+                                                                                        <?php } else { ?>
+                                                                                            <div class="col-md-6">
+                                                                                                <button style="display:none" id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                            </div>
+                                                                                        <?php } ?>
+                                                                                    <?php } else { ?>
+                                                                                        <div class="col-md-6">
+                                                                                            <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+
+                                                                                        </div>
+                                                                                    <?php } ?>
                                                                                 <?php } ?>
+
                                                                             </div>
                                                                         <?php } ?>
                                                                     </div>
@@ -273,7 +288,7 @@
                                                                         <!-- Price -->
                                                                         <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
                                                                             <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
-                                                                            <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
+                                                                            <h5 class="text-center" style="font-size:14px !important"><span id="valor_inicial_subasta_<?= $item->subasta_id ?>" class="label label-success"><i class='fa fa-user-o'></i> <?= $item->user_win->name ?> $<?= number_format($item->puja->valor, 2) ?></span></h5>
                                                                         <?php } ?>
                                                                         <h6 class="text-center"><?= "Valor de entreda" ?></h6>
                                                                         <div class="price text-center"> <span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
@@ -369,18 +384,13 @@
                                                                             <?php if ($this->session->userdata('user_id')) { ?>
                                                                                 <div class="row">
 
-                                                                                    <?php if (!$item->subasta_user) { ?>
+                                                                                    <!--  <?php if (!$item->subasta_user) { ?>
                                                                                         <div class="col-md-6">
                                                                                             <button onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
 
                                                                                         </div>
-                                                                                    <?php } ?>
-                                                                                    <?php if ($item->subasta_user) { ?>
-                                                                                        <div class="col-md-6">
-                                                                                            <button onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
-
-                                                                                        </div>
-                                                                                    <?php } ?>
+                                                                                    <?php } ?> -->
+                                                                                    <!--   -->
                                                                                 </div>
                                                                             <?php } ?>
                                                                         </div>
@@ -447,38 +457,41 @@
     <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
 
     <script>
-        var subastas = <?= json_encode($all_subastas); ?>;
         contador_inversa = <?= $contador_inversa ?>;
         contador_directa = <?= $contador_directa ?>;
+        let subastas_2 = <?= json_encode($all_subastas); ?>;
 
-        for (let i = 0; i < subastas.length + 1; i++) {
+        for (let i = 0; i < subastas_2.length; i++) {
 
-            var x = setInterval(function() {
-                var fecha = subastas[i].fecha_cierre;
-                var deadline = new Date(fecha).getTime();
-                var currentTime = new Date().getTime();
-                var t = deadline - currentTime;
-                var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                $('#day_' + subastas[i].subasta_id).html(days);
-                $('#hour_' + subastas[i].subasta_id).html(hours);
-                $('#minute_' + subastas[i].subasta_id).html(minutes);
-                $('#second_' + subastas[i].subasta_id).html(seconds);
+            if (subastas_2[i].tipo_subasta == 1) {
 
-                if (t < 0) {
+                var x = setInterval(function() {
+                    var fecha = subastas_2[i].fecha_cierre;
+                    var deadline = new Date(fecha).getTime();
+                    var currentTime = new Date().getTime();
+                    var t = deadline - currentTime;
+                    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                    $('#day_' + subastas_2[i].subasta_id).html(days);
+                    $('#hour_' + subastas_2[i].subasta_id).html(hours);
+                    $('#minute_' + subastas_2[i].subasta_id).html(minutes);
+                    $('#second_' + subastas_2[i].subasta_id).html(seconds);
 
-                    clearInterval(x);
+                    if (t < 0) {
 
-                    $('#day_' + subastas[i].subasta_id).html(0);
-                    $('#hour_' + subastas[i].subasta_id).html(0);
-                    $('#minute_' + subastas[i].subasta_id).html(0);
-                    $('#second_' + subastas[i].subasta_id).html(0);
+                        clearInterval(x);
 
-                }
+                        $('#day_' + subastas_2[i].subasta_id).html(0);
+                        $('#hour_' + subastas_2[i].subasta_id).html(0);
+                        $('#minute_' + subastas_2[i].subasta_id).html(0);
+                        $('#second_' + subastas_2[i].subasta_id).html(0);
 
-            }, 1000);
+                    }
+
+                }, 1000);
+            }
 
 
         }

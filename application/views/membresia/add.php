@@ -45,7 +45,7 @@
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                            <input type="text" class="form-control input-sm" name="nombre" placeholder="<?= translate('nombre_lang'); ?>">
+                                            <input required type="text" class="form-control input-sm" name="nombre" placeholder="<?= translate('nombre_lang'); ?>">
                                         </div>
 
                                     </div>
@@ -55,7 +55,7 @@
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control input-sm" name="precio" placeholder="<?= translate('precios_lang'); ?>">
+                                            <input required step="any" type="number" class="form-control input-sm" name="precio" placeholder="<?= translate('precios_lang'); ?>">
                                         </div>
 
                                     </div>
@@ -67,7 +67,7 @@
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i><strong>N°</strong></i></i></span>
-                                            <input type="text" class="form-control input-sm" name="cant_anuncio" placeholder="<?= translate('cant_anuncios_lang'); ?>">
+                                            <input required type="number" class="form-control input-sm" name="cant_anuncio" placeholder="<?= translate('cant_anuncios_lang'); ?>">
                                         </div>
 
                                     </div>
@@ -79,20 +79,29 @@
                                     </textarea>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
                                         <label><?= translate("descuento_lang"); ?></label>
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i><strong>%</strong></i></i></span>
-                                            <input type="text" class="form-control input-sm" name="descuento" value="0" placeholder="<?= translate('descuento_lang'); ?>">
+                                            <input required type="number" class="form-control input-sm" name="descuento" value="0" placeholder="<?= translate('descuento_lang'); ?>">
                                         </div>
 
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
+                                        <label><?= "Cantidad de subastas"; ?></label>
+                                        <div class="input-group">
+
+                                            <span class="input-group-addon"><i><strong>N</strong></i></i></span>
+                                            <input required type="number" class="form-control input-sm" name="subastas" value="0" placeholder="<?= "Cantidad de subastas"; ?>">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-2">
                                         <label><?= translate("sorteo_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                            <select id="sorteo" name="sorteo" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+                                            <select required id="sorteo" name="sorteo" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
                                                 <option value="1">SI</option>
                                                 <option value="2">NO</option>
