@@ -32,6 +32,7 @@
                                     <th><?= translate("fullname_lang"); ?></th>
                                     <th><?= translate("email_lang"); ?></th>
                                     <th><?= translate("phone_lang"); ?></th>
+                                    <th><?= translate("membresias_lang"); ?></th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </thead>
@@ -42,6 +43,11 @@
                                         <td><?= $item->email; ?></td>
                                         <td>
                                             <?= $item->phone; ?>
+                                        </td>
+                                        <td>
+
+                                            <label class="label label-info"> <?= $item->nombre; ?></label>
+
                                         </td>
                                         <td>
                                             <a class="btn btn-info" style="cursor:pointer" onclick="usuario_perfil('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-edit"></i> <?= translate("ver_perfil_lang"); ?></a>
@@ -59,6 +65,7 @@
                                     <th><?= translate("fullname_lang"); ?></th>
                                     <th><?= translate("email_lang");  ?></th>
                                     <th><?= translate("phone_lang"); ?></th>
+                                    <th><?= translate("membresias_lang"); ?></th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </tfoot>
