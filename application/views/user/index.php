@@ -43,8 +43,8 @@
                                     <tr>
                                         <td><?= $item->name; ?></td>
                                         <td><?= $item->email; ?></td>
-                                     
-                                     
+
+
                                         <td>
 
                                             <?php if ($item->role_id == 1) { ?>
@@ -58,25 +58,27 @@
 
 
                                             <?php } ?>
-                                            
+
                                         </td>
                                         <td>
-                                           <!-- Single button -->
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Acciones <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="<?= site_url('user/update_index/' . $item->user_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
-                                                <li><a href="<?= site_url('user/delete/' .$item->user_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
-                                               
-                                            </ul>
-                                        </div>
+                                            <!-- Single button -->
+                                            <?php if ($item->user_id != 4) { ?>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Acciones <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="<?= site_url('user/update_index/' . $item->user_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
+                                                        <li><a href="<?= site_url('user/delete/' . $item->user_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
+
+                                                    </ul>
+                                                </div>
+                                            <?php } ?>
                                         </td>
                                     </tr>
 
-                                              
-                                
+
+
 
                                 <?php } ?>
 
