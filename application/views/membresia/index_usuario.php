@@ -45,8 +45,14 @@
                                             <?= $item->phone; ?>
                                         </td>
                                         <td>
+                                            <?php if ($item->membresia_id == 6) { ?>
+                                                <label class="label label-success"> <?= $item->nombre; ?></label>
+                                            <?php } elseif ($item->membresia_id == 7) { ?>
+                                                <label class="label label-warning"> <?= $item->nombre; ?></label>
+                                            <?php } else { ?>
+                                                <label class="label label-danger"> <?= $item->nombre; ?></label>
+                                            <?php } ?>
 
-                                            <label class="label label-info"> <?= $item->nombre; ?></label>
 
                                         </td>
                                         <td>
