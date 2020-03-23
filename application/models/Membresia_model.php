@@ -86,7 +86,7 @@ class Membresia_model extends CI_Model
         $this->db->from('membresia_user');
         $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
         $this->db->join('user', 'user.user_id =membresia_user.user_id');
-        $this->db->join('ciudad', 'ciudad.ciudad_id =user.ciudad_id');
+        // $this->db->join('ciudad', 'ciudad.ciudad_id =user.ciudad_id');
         $this->db->where('membresia_user.estado', 1);
         $query = $this->db->get();
         return $query->result();

@@ -36,8 +36,11 @@ class Membresia extends CI_Controller
             $this->log_out();
             redirect('login');
         }
-
+        $this->load->model('Pais_model', 'pais');
         $all_users = $this->membresia->get_all_membresias_users();
+        foreach ($all_users as $item) {
+            $item->ciudad = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
+        }
 
         $data['all_users'] = $all_users;
         $this->load_view_admin_g("membresia/index_usuario", $data);
