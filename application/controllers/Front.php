@@ -1303,11 +1303,10 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
-        var_dump($offset);
-        die();
+
         if ($offset == 0) {
             $data['inicio'] = 1;
-            $data['fin'] =  6;
+            $data['fin'] =  $contador;
         } else {
             $data['inicio'] = $offset + 1;
             $intervalo = 6 + $offset;
