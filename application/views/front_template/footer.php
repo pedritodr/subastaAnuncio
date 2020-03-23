@@ -1313,25 +1313,31 @@
    $(function() {
 
 
-
-      if (contador_directa == 0) {
-
+      if (contador_directa == 0 && contador_inversa != 0) {
          $('.mensaje_directa').show();
-         //  $('.mensaje_inversa').hide();
-
-      } else {
-         $('#btn_subasta_directa_2').addClass('active');
-         $('#btn_subasta_inversa_2').removeClass('active');
-      }
-      if (contador_inversa == 0) {
-
-         // $('.mensaje_directa').hide();
+      } else if (contador_directa != 0 && contador_inversa == 0) {
          $('.mensaje_inversa').show();
-
-      } else {
-         $('#btn_subasta_directa_2').removeClass('active');
-         $('#btn_subasta_inversa_2').addClass('active');
+      } else if (contador_directa == 0 && contador_inversa == 0) {
+         $('.mensaje_all').show();
       }
+      /*      if (contador_directa == 0) {
+
+              $('.mensaje_directa').show();
+              //  $('.mensaje_inversa').hide();
+
+           } else {
+              $('#btn_subasta_directa_2').addClass('active');
+              $('#btn_subasta_inversa_2').removeClass('active');
+           }
+           if (contador_inversa == 0) {
+
+              // $('.mensaje_directa').hide();
+              $('.mensaje_inversa').show();
+
+           } else {
+              $('#btn_subasta_directa_2').removeClass('active');
+              $('#btn_subasta_inversa_2').addClass('active');
+           } */
    });
 
    function cambio_btn_directa_2() {

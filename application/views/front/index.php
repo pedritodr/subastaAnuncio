@@ -105,11 +105,13 @@
                   <!-- Tab Content -->
                   <div class="tab-content">
                      <div id="<?= strtolower(seo_url($all_categorias[0]->name_espa)) ?>" class="row tab-pane active in fade">
-                        <?php if ($all_categorias[0]->count_directa == 0) { ?>
+                        <?php if ($all_categorias[0]->count_directa == 0 && $all_categorias[0]->count_inversa != 0) { ?>
                            <p style="display:none" class="text-center mensaje_directa"><?= translate('mensaje_directa_lang') ?></p>
-                        <?php } ?>
-                        <?php if ($all_categorias[0]->count_inversa == 0) { ?>
+                        <?php } else if ($all_categorias[0]->count_directa != 0 &&  $all_categorias[0]->count_inversa == 0) { ?>
                            <p style="display:none" class="text-center mensaje_inversa"><?= translate('mensaje_inversa_lang') ?></p>
+                        <?php } else if ($all_categorias[0]->count_inversa == 0 && $all_categorias[0]->count_directa == 0) { ?>
+
+                           <p style="display:none" class="text-center mensaje_all"><?= translate('mensaje_subasta_lang') ?></p>
                         <?php } ?>
                         <?php for ($k = 0; $k < count($all_categorias[0]->all_subastas); $k++) { ?>
                            <?php if ($all_categorias[0]->all_subastas[$k]->tipo_subasta == 1) { ?>
