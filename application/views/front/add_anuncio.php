@@ -213,7 +213,7 @@
                            <br><br>
                            <div style="margin-left: 1.4%;" class="input-group">
                               <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui">
+                              <input style="width:99%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui">
 
                            </div>
 
@@ -258,7 +258,8 @@
       <!-- Main Container End -->
    </section>
    <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
-
+   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
 
    <script type="text/javascript">
