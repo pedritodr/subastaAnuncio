@@ -1219,8 +1219,15 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
+        if ($contador >= 6) {
+            $config['per_page'] = '6';
+        } else {
+
+            $config['per_page'] = (string) $contador;
+        }
+
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '6';
+
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1347,9 +1354,14 @@ class Front extends CI_Controller
 
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
+        if ($contador >= 6) {
+            $config['per_page'] = '6';
+        } else {
 
+            $config['per_page'] = (string) $contador;
+        }
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '6';
+
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1385,7 +1397,6 @@ class Front extends CI_Controller
 
         $offset = !$page ? 0 : $page;
 
-        //
         if ($ok) {
 
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);

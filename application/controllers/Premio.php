@@ -8,7 +8,7 @@ class Premio extends CI_Controller
         parent::__construct();
 
         $this->load->model('Premio_model', 'premio');
-
+        $this->load->model('Membresia_model', 'membresia');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 
@@ -48,44 +48,45 @@ class Premio extends CI_Controller
         }
 
 
-        $nombre = $this->input->post('nombre');
-        $desc = $this->input->post('desc');
+        $premio = $this->input->post('premio');
+        $cantidad = $this->input->post('cantidad');
+        $sorteo = $this->input->post('sorteo');
+        $date = date("Y-m-d");
+        $users = $this->membresia->get_all_membresias_user_date($date);
 
-
-        $icono = $this->input->post('icono');
-        $resumen = $this->input->post('resumen');
-
+        if ($cantidad == 0) {
+            $this->response->set_message(translate("qty_wins_lang"), ResponseMessage::ERROR);
+            redirect("premio/add_index", "location", 301);
+        }
         //establecer reglas de validacion
-        $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
-        $this->form_validation->set_rules('desc', translate('description_lang'), 'required');
-
+        $this->form_validation->set_rules('premio', translate('qty_wins_lang'), 'required');
+        $this->form_validation->set_rules('cantidad', translate('description_lang'), 'required');
+        $this->form_validation->set_rules('sorteo', translate('sorteo'), 'required');
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("premio/add_index");
         } else { //en caso de que todo este bien
-            $name_file = $_FILES['archivo']['name'];
-            $separado = explode('.', $name_file);
-            $ext = end($separado); // me quedo con la extension
-            $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
-            $allow_extension = in_array($ext, $allow_extension_array);
-            if ($allow_extension) {
-                $result = save_image_from_post('archivo', './uploads/premio', time(), 360, 220);
-                if ($result[0]) {
-                    $data = ['is_active' => 1, 'descripcion' => $desc, 'nombre' => $nombre, 'imagen' => $result[1], 'icono' => $icono, 'resumen' => $resumen];
-                    $id = $this->premio->create($data);
-
-                    $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                    redirect("premio/index", "location", 301);
-                } else {
-                    $this->response->set_message($result[1], ResponseMessage::ERROR);
-                    redirect("premio/add_index", "location", 301);
-                }
+            if ($sorteo == 1) {
+                $wins = array_rand($users, $cantidad);
+                /*   $premios = $this->premio->get_all(['tipo' => 1]);
+                foreach ($premios as $item) {
+                } */
+                $win = $users[$wins];
+                var_dump($win);
+                die();
             } else {
-
-                $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                redirect("premio/add_index", "location", 301);
             }
+
+
+
+
+
+
+
+
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            redirect("premio/index", "location", 301);
         }
     }
 

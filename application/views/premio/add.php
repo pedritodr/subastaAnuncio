@@ -50,25 +50,23 @@
                                         <label><?= translate("qty_wins_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-check"></i></span>
-                                            <input type="number" class="form-control" name="cantidad" placeholder="<?= translate('qty_wins_lang'); ?>" required />
+                                            <input type="number" min="1" class="form-control" name="cantidad" placeholder="<?= translate('qty_wins_lang'); ?>" required />
 
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <label><?= translate("sorteo_lang"); ?></label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-check"></i></span>
-                                            <input type="number" class="form-control" name="cantidad" placeholder="<?= translate('qty_wins_lang'); ?>" required />
+                                            <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                            <select required id="sorteo" name="sorteo" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+
+                                                <option value="1">Mensual</option>
+                                                <option value="2">Anual</option>
+
+                                            </select>
 
                                         </div>
                                     </div>
-
-
-
-
-
-
-
 
 
                                 </div>
@@ -76,7 +74,7 @@
 
                             </div>
 
-                            <div class="col-xs-12" style="text-align: right;">
+                            <div class="col-xs-12" style="text-align: right; margin-top:5%">
 
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
                             </div>
