@@ -61,7 +61,7 @@ $config['clientes_lang'] = "Clientes";
 $config['desarrolladores_lang'] = "Desarrolladores";
 $config['premios_lang'] = "Premios";
 $config['precios_flex_lang'] = "Precios flexibles";
-
+$config['qty_wins_lang'] = "Cantidad de ganadores";
 $config['precios_lang'] = "Precio";
 
 $config['preguntas_lang'] = "Preguntas frecuentes ";
@@ -157,6 +157,11 @@ $config['tax_lang'] = "Tax_id";
 $config['identificacion_lang'] = "Identificación";
 $config['max_item_lang'] = "Máximo de items";
 
+$config['manage_premios_lang'] = "Gestionar premio";
+$config['listar_premios_lang'] = "Listar premios";
+$config['add_premios_lang'] = "Adicionar premio";
+$config['update_premios_lang'] = "Editar premio";
+$config['premio_lang'] = "Premio";
 
 $config['manage_subports_lang'] = "Gestionar marcación";
 $config['listar_subports_lang'] = "Listar marcaciones";
@@ -334,6 +339,7 @@ $config['ver_lang'] = "Ver";
 $config['ver_perfil_lang'] = "Ver perfil";
 $config['add_book_lang'] = "Adicionar libro";
 $config['cod_lang'] = "Código";
+$config['date_lang'] = "Fecha";
 $config['edicion_lang'] = "Edición libro";
 $config['fecha_salida_lang'] = "Fecha salida";
 $config['fecha_vencimiento_lang'] = "Fecha vencimiento";
@@ -465,13 +471,14 @@ $config['subcategoria_lang'] = "Subcategoria";
 $config['number_account_lang'] = "Número de cuenta";
 $config['repeat_password_lang'] = "Repetir contraseña";
 $config['administrador_lang'] = "Administrador";
+$config['administracion_lang'] = "Administración";
 $config['editor_lang'] = "Editor";
 $config['supervisor_lang'] = "Supervisor";
 $config['data_saved_ok'] = "Los datos se guardaron correctamente";
 $config['message_saved_ok'] = "Mensaje enviado correctamente";
 $config['calificar_lang'] = "Calificar servicio";
 $config['culminar_lang'] = "Culminar servicio";
-
+$config['ganadores_lang'] = "Ganadores";
 
 
 $config['data_changed_ok'] = "El estado se cambió correctamente";

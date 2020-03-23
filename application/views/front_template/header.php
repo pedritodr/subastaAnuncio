@@ -114,11 +114,20 @@
                         <?php } ?>
                         <!--usuario autenticado-->
 
-                        <?php if ($this->session->userdata('role_id')) { ?>
+                        <?php if ($this->session->userdata('role_id') != 1) { ?>
                            <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
                               <ul class="dropdown-menu">
                                  <li><a href="<?= site_url('perfil/page'); ?>"><i class="fa fa-user-o" aria-hidden="true"></i><?= translate("perfil_lang"); ?> </a></li>
+
+                                 <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock" aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
+                              </ul>
+                           </li>
+                        <?php } else { ?>
+                           <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                 <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-user-o" aria-hidden="true"></i><?= translate("administracion_lang"); ?> </a></li>
 
                                  <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock" aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
                               </ul>
