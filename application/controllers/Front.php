@@ -1294,7 +1294,7 @@ class Front extends CI_Controller
             }
         }
         $data['destacados'] = $destacados;
-
+        $data['contador'] = $contador;
         if ($offset == 0) {
             $data['inicio'] = 1;
             $data['fin'] =  6;
@@ -1452,7 +1452,7 @@ class Front extends CI_Controller
             }
         }
         $data['destacados'] = $destacados;
-
+        $data['contador'] = $contador;
         $this->load_view_front('front/anuncios', $data);
     }
 

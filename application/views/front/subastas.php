@@ -107,7 +107,11 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                             <!-- Sorting Filters Breadcrumb -->
                             <div class="filter-brudcrums">
-                                <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
+                                <?php if ($all_subastas) { ?>
+                                    <?php if (count($all_subastas) > 0) { ?>
+                                        <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
+                                    <?php } ?>
+                                <?php } ?>
                                 <div style="margin-top:1%" class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 

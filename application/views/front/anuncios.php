@@ -78,15 +78,19 @@
                 <div class="col-md-8 col-md-push-4 col-lg-8 col-sx-12 white-bg">
                     <!-- Row -->
                     <div class="row">
-                        <!-- Sorting Filters -->
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                            <!-- Sorting Filters Breadcrumb -->
-                            <div class="filter-brudcrums">
-                                <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
+                        <?php if ($all_anuncios) { ?>
+                            <?php if (count($all_anuncios) > 0) { ?>
+                                <!-- Sorting Filters -->
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <!-- Sorting Filters Breadcrumb -->
+                                    <div class="filter-brudcrums">
+                                        <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
 
-                            </div>
-                            <!-- Sorting Filters Breadcrumb End -->
-                        </div>
+                                    </div>
+                                    <!-- Sorting Filters Breadcrumb End -->
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
                         <!-- Sorting Filters End-->
                         <div class="clearfix"></div>
                         <!-- Ads Archive --><?php if ($all_anuncios) { ?>
