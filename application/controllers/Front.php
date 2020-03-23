@@ -1223,8 +1223,7 @@ class Front extends CI_Controller
 
             $config['per_page'] = '6';
         } else {
-            var_dump($contador);
-            die();
+
             $config['per_page'] = (string) $contador;
         }
 
@@ -1304,6 +1303,8 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
+        var_dump($offset);
+        die();
         if ($offset == 0) {
             $data['inicio'] = 1;
             $data['fin'] =  6;
