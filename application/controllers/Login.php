@@ -61,7 +61,10 @@ class Login extends CI_Controller
                 if ($anuncio == 1) {
                     redirect("crear-anuncio");
                 } else {
-                    redirect("portada");
+
+                    $this->session->set_userdata('validando', 1);
+                    redirect("perfil/page/");
+                    //  redirect("portada");
                 }
             } else {
                 redirect(site_url());
