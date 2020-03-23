@@ -14,6 +14,7 @@ $config['feb'] = "Feb";
 $config['jan'] = "Ene";
 
 $config['facebook_lang'] = "Facebook";
+$config['intervalo_lang'] = "Intervalo";
 $config['pinterest_lang'] = "Pinterest";
 $config['twitter_lang'] = "Twitter";
 $config['youtube_lang'] = "Youtube";
@@ -86,6 +87,7 @@ $config['pizarra_resumen_lang'] = "Pizarra resumen";
 $config['panel_lang'] = "Panel Principal";
 $config['manage_users'] = "Gestionar usuarios";
 $config['user_lang'] = "Usuario";
+$config['users_lang'] = "Usuarios";
 $config['login_lang'] = "Login";
 $config['idiomas_lang'] = "Idiomas";
 
@@ -93,6 +95,7 @@ $config['error_valor_pujar_lang'] = "Ingrese un valor mas alto para pujar";
 $config['español_lang'] = "Español";
 $config['english_lang'] = "Ingles";
 $config['arabe_lang'] = "Arabe";
+$config['win_lang'] = "Ganador";
 
 $config['manage_subasta_lang'] = "Gestionar subasta";
 $config['listar_subasta_lang'] = "Listado de subasta";
@@ -227,6 +230,7 @@ $config['send_menssage_lang'] = "Envie su mensaje";
 
 $config['state_lang'] = "Estado";
 $config['pujar_lang'] = "Pujar";
+$config['pujas_lang'] = "Pujas";
 $config['comprar_inversa_lang'] = "Comprar";
 $config['subir_puja_lang'] = "Subir puja";
 $config['valor_alto_lang'] = "Valor más alto";
@@ -308,7 +312,7 @@ $config['update_plan_lang'] = "Editar plan";
 $config['planes_vendidos_lang'] = "Planes vendidos";
 
 $config['listar_plan_lang'] = "Lista de planes";
-
+$config['resultados_lang'] = "Resultados";
 $config['name_plan_lang'] = "Plan para ti";
 $config['select_plan_lang'] = "Seleccionar plan";
 $config['select_category_lang'] = "Seleccionar una categoria";

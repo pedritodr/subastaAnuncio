@@ -204,8 +204,6 @@ class Subasta  extends CI_Controller
         }
     }
 
-
-
     public function update()
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2])) {
@@ -352,7 +350,6 @@ class Subasta  extends CI_Controller
         }
     }
 
-
     public function delete($subasta_id = 0)
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2])) {
@@ -450,7 +447,6 @@ class Subasta  extends CI_Controller
         }
     }
 
-
     //llama a la vista que actuliza una foto en especifico
 
     function update_index_foto($photo_id = 0)
@@ -469,8 +465,6 @@ class Subasta  extends CI_Controller
             show_404();
         }
     }
-
-
 
     //actualiza la imagen de la galeria segun la imagen seleccionada a actualzar
 
@@ -536,6 +530,91 @@ class Subasta  extends CI_Controller
             $this->subasta->delete_foto($photo_id);
             $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
             redirect("subasta/index_foto/" . $foto_object->subasta_id, "location", 301);
+        } else {
+            show_404();
+        }
+    }
+    function resultados($subasta_id = 0)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $subasta_object = $this->subasta->get_by_id($subasta_id);
+
+        if ($subasta_object) {
+
+            $this->load->model('Categoria_model', 'categoria');
+            $this->load->model('Pais_model', 'pais');
+            $this->load->model('Membresia_model', 'membresia');
+            $this->load->model('User_model', 'user');
+            if ($subasta_object->tipo_subasta == 1) {
+                $categoria_object = $this->categoria->get_by_id($subasta_object->categoria_id);
+                $ciudad_object = $this->pais->get_by_ciudad_id_object($subasta_object->ciudad_id);
+                $galeria = $this->subasta->get_by_subasta_id($subasta_id);
+                $puja =  $this->subasta->get_puja_alta($subasta_id);
+                $piso = $this->subasta->get_all_subasta_id($subasta_id);
+                $array = [];
+                foreach ($piso as $item) {
+                    $user = $this->user->get_by_id($item->user_id);
+                    $user->membresia = $this->membresia->get_by_user_id($user->user_id);
+                    $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+                    array_push($array, $user);
+                }
+
+                if ($puja) {
+                    $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                    if ($user_win) {
+                        $user_win->membresia = $this->membresia->get_by_user_id($user_win->user_id);
+                        $user_win->ciudad = $this->pais->get_by_ciudad_id_object($user_win->ciudad_id);
+                    }
+                } else {
+                    $user_win = null;
+                }
+                $pujas = $this->subasta->get_pujas($subasta_id);
+                foreach ($pujas as $item) {
+                    $user = $this->user->get_by_id($item->user_id);
+                    $user->membresia = $this->membresia->get_by_user_id($user->user_id);
+                    $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+                    $item->user = $user;
+                }
+
+                $data['categoria'] = $categoria_object;
+                $data['ciudad'] = $ciudad_object;
+                $data['galeria'] = $galeria;
+                $data['subasta'] = $subasta_object;
+                $data['user_win'] = $user_win;
+                $data['subasta'] = $subasta_object;
+                $data['puja'] = $puja;
+                $data['pisos'] = $array;
+                $data['pujas'] = $pujas;
+                $this->load_view_admin_g('subasta/resultados_directas', $data);
+            } else {
+                $categoria_object = $this->categoria->get_by_id($subasta_object->categoria_id);
+                $ciudad_object = $this->pais->get_by_ciudad_id_object($subasta_object->ciudad_id);
+                $galeria = $this->subasta->get_by_subasta_id($subasta_id);
+                $intervalos = $this->subasta->get_intevalo_by_id($subasta_id);
+                foreach ($intervalos as $item) {
+                    $subasta_user = $this->subasta->get_all_subasta_intervalo($item->intervalo_subasta_id);
+                    if ($subasta_user) {
+                        foreach ($subasta_user as $subasta) {
+                            $user = $this->user->get_by_id($subasta->user_id);
+                            $user->membresia = $this->membresia->get_by_user_id($user->user_id);
+                            $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+                            $subasta->user = $user;
+                        }
+                    }
+                    $item->user_subasta = $subasta_user;
+                }
+
+                $data['intervalos'] = $intervalos;
+                $data['categoria'] = $categoria_object;
+                $data['ciudad'] = $ciudad_object;
+                $data['galeria'] = $galeria;
+                $data['subasta'] = $subasta_object;
+                $this->load_view_admin_g('subasta/resultados_inversas', $data);
+            }
         } else {
             show_404();
         }

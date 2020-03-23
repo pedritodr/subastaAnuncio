@@ -97,7 +97,8 @@
                                                     <li><a href="<?= site_url('subasta/change_open/' . $item->subasta_id); ?>"><i class="fa fa-edit"></i> <?= translate("change_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('subasta/delete/' . $item->subasta_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('subasta/index_foto/' . $item->subasta_id); ?>"><i class="fa fa-picture-o" aria-hidden="true"></i> <?= translate("manage_photo_lang"); ?></a></li>
-
+                                                    <li class="divider"></li>
+                                                    <li><a href="<?= site_url('subasta/resultados/' . $item->subasta_id); ?>"><i class="fa fa-line-chart" aria-hidden="true"></i> <?= translate("resultados_lang"); ?></a></li>
                                                 </ul>
                                             </div>
                                         </td>

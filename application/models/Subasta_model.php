@@ -443,6 +443,18 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->row();
     }
+    function get_pujas($subasta_id = 0)
+    {
+
+        $this->db->select('*');
+        $this->db->from('puja');
+        $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
+        $this->db->join('user', 'user.user_id = subasta_user.user_id');
+        $this->db->where('subasta_user.subasta_id', $subasta_id);
+        $this->db->order_by('puja.valor', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
     function get_user_puja_alta($monto = 0)
     {
         $this->db->select('*');
@@ -479,6 +491,22 @@ class Subasta_model extends CI_Model
         $query = $this->db->get('subasta_user');
 
         return $query->row();
+    }
+    function get_all_subasta_id($id = 0) //foto subasta
+    {
+
+        $this->db->where('subasta_id', $id);
+        $query = $this->db->get('subasta_user');
+
+        return $query->result();
+    }
+    function get_all_subasta_intervalo($id = 0) //foto subasta
+    {
+
+        $this->db->where('intervalo_subasta_id', $id);
+        $query = $this->db->get('subasta_user');
+
+        return $query->result();
     }
     function get_by_puja_id($id) //foto subasta
     {
