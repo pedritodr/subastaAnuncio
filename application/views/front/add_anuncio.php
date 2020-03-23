@@ -211,7 +211,7 @@
                         <div id="google-maps-inner" class="google-maps-inner">
 
                            <br><br>
-                           <div class="input-group">
+                           <div style="margin-left: 1.4%;" class="input-group">
                               <span class="input-group-addon"><i class="fa fa-search"></i></span>
                               <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui">
 
