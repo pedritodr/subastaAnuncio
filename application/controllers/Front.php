@@ -1220,11 +1220,11 @@ class Front extends CI_Controller
         $user_id = $this->session->userdata('user_id');
 
         if ($contador >= 6) {
-            var_dump("entro 6");
-            die();
+
             $config['per_page'] = '6';
         } else {
-
+            var_dump($contador);
+            die();
             $config['per_page'] = (string) $contador;
         }
 
