@@ -424,7 +424,7 @@ $config['name_cliente_lang'] = "Tu Nombre";
 
 $config['buscando_lang'] = "Qué estás buscando...";
 $config['mensaje_contacto_lang'] = "Mensaje enviado correctamente. Subastaanuncio.com se pondrá en contacto con usted de inmediato. Muchas gracias";
-
+$config['error_cantidad_lang'] = "No hay usuarios disponibles para el sorteo";
 
 $config['name_cate_lang'] = "Categoria";
 $config['cate_list_lang'] = "Lista de categorias";

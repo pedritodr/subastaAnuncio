@@ -47,13 +47,16 @@ class Premio extends CI_Controller
             redirect('login/index');
         }
 
-
+        $this->load->model('Pais_model', 'pais');
         $premio = $this->input->post('premio');
         $cantidad = $this->input->post('cantidad');
         $sorteo = $this->input->post('sorteo');
         $date = date("Y-m-d");
         $users = $this->membresia->get_all_membresias_user_date($date);
-
+        foreach ($users as $user) {
+            $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+        }
+        $ganadores = [];
         if ($cantidad == 0) {
             $this->response->set_message(translate("qty_wins_lang"), ResponseMessage::ERROR);
             redirect("premio/add_index", "location", 301);
@@ -68,13 +71,28 @@ class Premio extends CI_Controller
             redirect("premio/add_index");
         } else { //en caso de que todo este bien
             if ($sorteo == 1) {
-                $wins = array_rand($users, $cantidad);
-                /*   $premios = $this->premio->get_all(['tipo' => 1]);
-                foreach ($premios as $item) {
-                } */
-                $win = $users[$wins];
-                var_dump($win);
-                die();
+                if ($cantidad == count($users)) {
+                } elseif ($cantidad > count($users)) {
+                    $this->response->set_message(translate("error_cantidad_lang"), ResponseMessage::ERROR);
+                    redirect("premio/add_index", "location", 301);
+                } elseif ($cantidad < count($users)) {
+                    $wins = array_rand($users, $cantidad);
+                    if (is_array($wins)) {
+                        for ($i = 0; $i < count($wins); $i++) {
+                            array_push($ganadores, $users[$i]);
+                        }
+                    } else {
+                        array_push($ganadores, $users[$wins]);
+                    }
+                }
+                $data = [
+                    'premio' => $premio,
+                    'cantidad_ganadores' => $cantidad,
+                    'tipo' => $sorteo,
+                    'fecha_create' => $date,
+                    'ganadores' => json_encode($ganadores)
+                ];
+                $this->premio->create($data);
             } else {
             }
 

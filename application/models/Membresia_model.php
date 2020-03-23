@@ -147,12 +147,12 @@ class Membresia_model extends CI_Model
     function get_all_membresias_user_date($date)
     {
 
-        $this->db->select('user.user_id,user.name,user.email');
+        $this->db->select('*');
         $this->db->from('membresia_user');
         $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
         $this->db->join('user', 'user.user_id =membresia_user.user_id');
         $this->db->where('membresia_user.estado', 1);
-        $this->db->where("membresia_user.fecha_inicio <=", $date);
+        //  $this->db->where("membresia_user.fecha_inicio <=", $date);
         $this->db->where("membresia_user.fecha_fin >=", $date);
 
         $query = $this->db->get();

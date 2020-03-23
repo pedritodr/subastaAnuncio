@@ -42,11 +42,24 @@
                                         <td>
                                             <?= $item->premio; ?>
                                         </td>
-                                        <td>
+                                        <td style="width:15% !important">
                                             <label class="label label-danger"> <?= $item->cantidad_ganadores; ?></label>
                                         </td>
-                                        <td style="width:10% !important">
-                                            <?= $item->cantidad_ganadores; ?>
+                                        <td>
+                                            <?php $wins = json_decode($item->ganadores) ?>
+                                            <?php foreach ($wins as $win) { ?>
+                                                <p><strong>Nombre: </strong><?= $win->name ?> </p>
+                                                <p><strong>Email: </strong><?= $win->email ?> </p>
+                                                <p><strong>Telefono: </strong><?= $win->phone ?> </p>
+                                                <?php if ($win->ciudad) { ?>
+                                                    <p><strong>Ciudad: </strong><?= $win->ciudad->ciudad_name ?> </p>
+                                                <?php } else { ?>
+                                                    <p><strong>Ciudad: </strong> </p>
+                                                <?php } ?>
+                                                <p><strong>Dirección: </strong><?= $win->direccion ?></p>
+                                                <hr>
+                                            <?php } ?>
+
                                         </td>
                                         <td>
                                             <?php if ($item->tipo == 1) { ?>
@@ -57,7 +70,7 @@
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <?= $item->fecha; ?>
+                                            <?= $item->fecha_create; ?>
                                         </td>
 
                                     </tr>
