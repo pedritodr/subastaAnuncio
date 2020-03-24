@@ -535,7 +535,7 @@
    <script>
       var subastas = <?= json_encode($all_subastas); ?>;
 
-      for (let i = 0; i < subastas.length + 1; i++) {
+      for (let i = 0; i < subastas.length; i++) {
 
          var x = setInterval(function() {
             var fecha = subastas[i].fecha_cierre;
