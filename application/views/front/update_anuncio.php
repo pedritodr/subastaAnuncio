@@ -124,7 +124,7 @@
                         <label><?= translate("precios_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-                           <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" type="text" name="precio" value="<?= $anuncio_object->precio ?>">
+                           <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" min="0" type="number" step="any" name="precio" value="<?= $anuncio_object->precio ?>">
                         </div>
 
                      </div>

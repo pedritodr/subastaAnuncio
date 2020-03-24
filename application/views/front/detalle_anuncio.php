@@ -57,7 +57,7 @@
                <!-- Single Ad -->
 
 
-               <div class="single-ad">
+               <div class="single-anun">
                   <!-- Titulo -->
                   <div class="ad-box">
                      <h5><?= $all_anuncios->titulo; ?></h5>
@@ -337,7 +337,7 @@
 
                            <li><?= translate("categories_lang"); ?>: <span><?= $all_anuncios->categoria ?>/<?= $all_anuncios->subcategoria ?></span></li>
 
-                           <li id="direccion"><?= translate("ubicacion_lang") ?>: <span class="color"><?= $all_anuncios->ciudad ?></span></li>
+                           <li id="direccion"><?= translate("ubicacion_lang") ?>: <span class="color">AQUI<?= $all_anuncios->ciudad ?></span></li>
                         </ul>
                      </div>
                      <!--mapa -->
@@ -723,5 +723,14 @@
             left: 0;
             min-height: 300px;
          }
+      }
+
+      .recent-ads .recent-ads-list-image-inner {
+         background-color: rgba(0, 0, 0, 0.0) !important;
+         display: block;
+         height: 60px;
+         margin: 0 16px 0 0;
+         position: relative;
+         width: 100px;
       }
    </style>
