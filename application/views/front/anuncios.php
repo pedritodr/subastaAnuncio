@@ -322,7 +322,7 @@
                                                 <div class="recent-ads-list">
                                                     <div class="recent-ads-container">
                                                         <div class="recent-ads-list-image">
-                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="recent-ads-list-image-inner">
+                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="">
                                                                 <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
                                                             </a><!-- /.recent-ads-list-image-inner -->
                                                         </div>
