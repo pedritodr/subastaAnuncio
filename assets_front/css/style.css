@@ -3702,7 +3702,7 @@ ul.add_info li i {
 }
 
 .recent-ads .recent-ads-list-image-inner {
-	background-color: rgba(0, 0, 0, 0.12);
+	/* background-color: rgba(0, 0, 0, 0.12); */
 	display: block;
 	height: 60px;
 	margin: 0 16px 0 0;
