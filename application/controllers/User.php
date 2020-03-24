@@ -24,7 +24,7 @@ class User extends CI_Controller
             redirect('login');
         }
 
-        $all_users = $this->user->get_all();
+        $all_users = $this->user->get_all(['status' => 1]);
 
 
         $data['all_users'] = $all_users;
@@ -143,7 +143,7 @@ class User extends CI_Controller
 
         $user_object = $this->user->get_by_id($user_id);
         if ($user_object) {
-            $this->user->delete($user_id);
+            $this->user->update($user_id, ['status' => 0]);
             $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
             redirect("user/index");
         } else {

@@ -42,7 +42,7 @@ class Login extends CI_Controller
             $this->session->set_userdata('subasta_id', $subasta_id);
         }
 
-        $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
+        $user = $this->user->get_all(['email' => $email, 'password' => $password, 'status' => 1], TRUE);
 
         if ($user) {
 
@@ -61,7 +61,10 @@ class Login extends CI_Controller
                 if ($anuncio == 1) {
                     redirect("crear-anuncio");
                 } else {
-                    redirect("portada");
+
+                    $this->session->set_userdata('validando', 1);
+                    redirect("perfil/page/");
+                    //  redirect("portada");
                 }
             } else {
                 redirect(site_url());
@@ -77,7 +80,7 @@ class Login extends CI_Controller
         $email = $this->input->post('email');
         $password = md5($this->input->post('password'));
 
-        $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
+        $user = $this->user->get_all(['email' => $email, 'password' => $password, 'status' => 1], TRUE);
 
         if ($user) {
 

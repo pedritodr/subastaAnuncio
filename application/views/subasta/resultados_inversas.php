@@ -349,18 +349,30 @@
         object = JSON.parse(object);
         console.log(object);
         let photo = object.photo;
-        let ok = photo.indexOf("uploads");
+        if (photo) {
+            let ok = photo.indexOf("uploads");
+            if (ok > 0) {
+                $('#img_perfil_2').prop('src', "<?= site_url() ?>" + object.photo);
+            } else {
+                $('#img_perfil_2').prop('src', object.photo);
+            }
+        } else {
+            $('#img_perfil_2').prop('src', '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>');
+
+        }
+
         $('.widget-user-header').css('background', 'url(<?= site_url() ?>)  center');
         $('#nombre_perfil').text(object.name);
-        if (ok > 0) {
-            $('#img_perfil_2').prop('src', "<?= site_url() ?>" + object.photo);
-        } else {
-            $('#img_perfil_2').prop('src', object.photo);
-        }
+
         $('#direccion_usuario_perfil').text(object.direccion);
         $('#telefono_usuario_perfil').text(object.phone);
         $('#email_usuario_perfil').text(object.email);
-        $('#ciudad_perfil').text(object.ciudad.name_ciudad);
+        if (object.ciudad) {
+            $('#ciudad_perfil').text(object.ciudad.name_ciudad);
+        } else {
+            $('#ciudad_perfil').text("");
+        }
+
         if (object.membresia) {
             $('#name_membresia').text(object.membresia.nombre);
             $('#cant_anuncios').text(object.membresia.anuncios_publi);

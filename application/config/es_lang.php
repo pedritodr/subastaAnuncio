@@ -34,6 +34,7 @@ $config['subastas_directas_lang'] = "Subastas directas";
 $config['subastas_inversas_lang'] = "Subastas inversas";
 $config['mensaje_directa_lang'] = "No hay subastas directas disponibles";
 $config['mensaje_inversa_lang'] = "No hay  subastas inversas disponibles";
+$config['mensaje_subasta_lang'] = "No hay  subastas  disponibles";
 $config['acerca_lang'] = "Acerca de";
 $config['subasta_lang'] = "Subastas";
 $config['Anuncios_lang'] = "Anuncios";
@@ -60,7 +61,7 @@ $config['clientes_lang'] = "Clientes";
 $config['desarrolladores_lang'] = "Desarrolladores";
 $config['premios_lang'] = "Premios";
 $config['precios_flex_lang'] = "Precios flexibles";
-
+$config['qty_wins_lang'] = "Cantidad de ganadores";
 $config['precios_lang'] = "Precio";
 
 $config['preguntas_lang'] = "Preguntas frecuentes ";
@@ -156,6 +157,11 @@ $config['tax_lang'] = "Tax_id";
 $config['identificacion_lang'] = "Identificación";
 $config['max_item_lang'] = "Máximo de items";
 
+$config['manage_premios_lang'] = "Gestionar premio";
+$config['listar_premios_lang'] = "Listar premios";
+$config['add_premios_lang'] = "Adicionar premio";
+$config['update_premios_lang'] = "Editar premio";
+$config['premio_lang'] = "Premio";
 
 $config['manage_subports_lang'] = "Gestionar marcación";
 $config['listar_subports_lang'] = "Listar marcaciones";
@@ -333,6 +339,7 @@ $config['ver_lang'] = "Ver";
 $config['ver_perfil_lang'] = "Ver perfil";
 $config['add_book_lang'] = "Adicionar libro";
 $config['cod_lang'] = "Código";
+$config['date_lang'] = "Fecha";
 $config['edicion_lang'] = "Edición libro";
 $config['fecha_salida_lang'] = "Fecha salida";
 $config['fecha_vencimiento_lang'] = "Fecha vencimiento";
@@ -417,8 +424,9 @@ $config['name_cliente_lang'] = "Tu Nombre";
 
 $config['buscando_lang'] = "Qué estás buscando...";
 $config['mensaje_contacto_lang'] = "Mensaje enviado correctamente. Subastaanuncio.com se pondrá en contacto con usted de inmediato. Muchas gracias";
-
-
+$config['error_cantidad_lang'] = "No hay usuarios disponibles para el sorteo";
+$config['error_sorteo_lang'] = "Ya existe un sorteo en este mes";
+$config['error_sorteo_2_lang'] = "Este sorteo esta disponible solo en Diciembre";
 $config['name_cate_lang'] = "Categoria";
 $config['cate_list_lang'] = "Lista de categorias";
 
@@ -464,13 +472,14 @@ $config['subcategoria_lang'] = "Subcategoria";
 $config['number_account_lang'] = "Número de cuenta";
 $config['repeat_password_lang'] = "Repetir contraseña";
 $config['administrador_lang'] = "Administrador";
+$config['administracion_lang'] = "Administración";
 $config['editor_lang'] = "Editor";
 $config['supervisor_lang'] = "Supervisor";
 $config['data_saved_ok'] = "Los datos se guardaron correctamente";
 $config['message_saved_ok'] = "Mensaje enviado correctamente";
 $config['calificar_lang'] = "Calificar servicio";
 $config['culminar_lang'] = "Culminar servicio";
-
+$config['ganadores_lang'] = "Ganadores";
 
 
 $config['data_changed_ok'] = "El estado se cambió correctamente";

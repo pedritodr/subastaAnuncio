@@ -99,8 +99,11 @@
                     <a href="<?= site_url('anuncio/index'); ?>">
                         <i class="fa fa-tag" aria-hidden="true"></i> <span><?= translate('manage_anuncio_lang'); ?></span>
                     </a>
-
-
+                </li>
+                <li>
+                    <a href="<?= site_url('premio/index'); ?>">
+                        <i class="fa fa-trophy" aria-hidden="true"></i> <span><?= translate('manage_premios_lang'); ?></span>
+                    </a>
                 </li>
 
 

@@ -213,7 +213,7 @@ class Front extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("anuncios");
+            redirect("perfil/page/");
         } else {
 
             $name_file = $_FILES['archivo']['name'];
@@ -242,15 +242,15 @@ class Front extends CI_Controller
                         $this->anuncio->update($anuncio_id, $data);
                         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                         $this->session->set_userdata('validando', 2);
-                        redirect("perfil");
+                        redirect("perfil/page/");
                     } else {
                         $this->response->set_message($result[1], ResponseMessage::ERROR);
-                        redirect("anuncios", "location", 301);
+                        redirect("perfil/page", "location", 301);
                     }
                 } else {
 
                     $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                    redirect("anuncios", "location", 301);
+                    redirect("perfil/page", "location", 301);
                 }
             } else {
 
@@ -270,7 +270,7 @@ class Front extends CI_Controller
                 $this->anuncio->update($anuncio_id, $data);
                 $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                 $this->session->set_userdata('validando', 2);
-                redirect("perfil");
+                redirect("perfil/page/");
             }
         }
     }
@@ -482,12 +482,13 @@ class Front extends CI_Controller
                 redirect("front/detalle_anuncio/" . $anuncio_id);
             } else {
                 $this->response->set_message($result[1], ResponseMessage::ERROR);
-                redirect("perfil");
+                redirect("perfil/page/");
             }
         } else {
 
             $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-            redirect("perfil");
+            $this->session->set_userdata('validando', 2);
+            redirect("perfil/page/");
         }
     }
 
@@ -530,7 +531,8 @@ class Front extends CI_Controller
             $session_data = object_to_array($user);
             $this->session->set_userdata($session_data);
             $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-            redirect("perfil");
+            $this->session->set_userdata('validando', 1);
+            redirect("perfil/page/");
         }
     }
 
@@ -578,15 +580,16 @@ class Front extends CI_Controller
                         $session_data = object_to_array($user);
                         $this->session->set_userdata($session_data);
                         $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-                        redirect("perfil");
+                        $this->session->set_userdata('validando', 1);
+                        redirect("perfil/page/");
                     } else {
                         $this->response->set_message($result[1], ResponseMessage::ERROR);
-                        redirect("perfil", "location", 301);
+                        redirect("perfil/page", "location", 301);
                     }
                 } else {
 
                     $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                    redirect("perfil", "location", 301);
+                    redirect("perfil/page", "location", 301);
                 }
             } else {
 
@@ -603,7 +606,7 @@ class Front extends CI_Controller
                 $this->session->set_userdata($session_data);
                 $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
                 $this->session->set_userdata('validando', 1);
-                redirect("perfil");
+                redirect("perfil/page/");
             }
         }
     }
@@ -632,7 +635,7 @@ class Front extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("anuncios");
+            redirect("perfil/page/");
         } else {
             $name_file = $_FILES['archivo']['name'];
 
@@ -680,15 +683,15 @@ class Front extends CI_Controller
 
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                     $this->session->set_userdata('validando', 2);
-                    redirect("perfil");
+                    redirect("perfil/page");
                 } else {
                     $this->response->set_message($result[1], ResponseMessage::ERROR);
-                    redirect("anuncios", "location", 301);
+                    redirect("perfil/page", "location", 301);
                 }
             } else {
 
                 $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                redirect("anuncios", "location", 301);
+                redirect("perfil/page", "location", 301);
             }
         }
     }
@@ -702,7 +705,7 @@ class Front extends CI_Controller
         $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
         $this->session->set_userdata('validando', 2);
-        redirect("perfil");
+        redirect("perfil/page");
     }
     public function contacto()
     {
@@ -1219,8 +1222,16 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
+        if ($contador >= 6) {
+
+            $config['per_page'] = '6';
+        } else {
+
+            $config['per_page'] = (string) $contador;
+        }
+
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '6';
+
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1294,10 +1305,11 @@ class Front extends CI_Controller
             }
         }
         $data['destacados'] = $destacados;
+        $data['contador'] = $contador;
 
         if ($offset == 0) {
             $data['inicio'] = 1;
-            $data['fin'] =  6;
+            $data['fin'] =  $contador;
         } else {
             $data['inicio'] = $offset + 1;
             $intervalo = 6 + $offset;
@@ -1347,9 +1359,14 @@ class Front extends CI_Controller
 
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
+        if ($contador >= 6) {
+            $config['per_page'] = '6';
+        } else {
 
+            $config['per_page'] = (string) $contador;
+        }
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '6';
+
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1385,7 +1402,6 @@ class Front extends CI_Controller
 
         $offset = !$page ? 0 : $page;
 
-        //
         if ($ok) {
 
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);
@@ -1452,7 +1468,7 @@ class Front extends CI_Controller
             }
         }
         $data['destacados'] = $destacados;
-
+        $data['contador'] = $contador;
         $this->load_view_front('front/anuncios', $data);
     }
 
@@ -1757,7 +1773,8 @@ class Front extends CI_Controller
         ];
         $this->membresia->create_membresia_user($data);
         $this->response->set_message(translate('adquirir_membresia_lang'), ResponseMessage::SUCCESS);
-        redirect("perfil");
+        $this->session->set_userdata('validando', 1);
+        redirect("perfil/page/");
     }
 
     public function pagar_entrada()

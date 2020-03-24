@@ -1,0 +1,107 @@
+<!-- Select2 -->
+<link rel="stylesheet" href="<?= base_url(); ?>admin_lte/plugins/select2/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="<?= base_url(); ?>admin_lte/dist/css/AdminLTE.min.css">
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <?= translate('manage_premios_lang'); ?>
+            <small><?= translate('add_premios_lang'); ?></small>
+            | <a href="<?= site_url('premio/index'); ?>" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> <?= translate('back_lang'); ?>
+            </a>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
+            <li class="active"><?= translate('add_premios_lang'); ?></li>
+
+
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><?= translate('add_premios_lang'); ?></h3>
+                    </div>
+                    <div class="box-body">
+
+                        <?= get_message_from_operation(); ?>
+
+                        <?= form_open_multipart("premio/add"); ?>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label><?= translate("premio_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cogs"></i></span>
+                                            <input type="text" class="form-control" name="premio" placeholder="<?= translate('premio_lang'); ?>">
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-6">
+                                        <label><?= translate("qty_wins_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-check"></i></span>
+                                            <input type="number" min="1" class="form-control" name="cantidad" placeholder="<?= translate('qty_wins_lang'); ?>" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label><?= translate("sorteo_lang"); ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                            <select required id="sorteo" name="sorteo" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+
+                                                <option value="1">Mensual</option>
+                                                <option value="2">Anual</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-xs-12" style="text-align: right; margin-top:5%">
+
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                            </div>
+
+
+                        </div>
+
+
+                        <?= form_close(); ?>
+
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+<script>
+    $(function() {
+        $("#example1").DataTable();
+        $(".textarea").wysihtml5();
+        $(".select2").select2();
+
+    });
+</script>
+<!-- Select2 -->
+<script src="<?= base_url(); ?>admin_lte/plugins/select2/select2.full.min.js"></script>
