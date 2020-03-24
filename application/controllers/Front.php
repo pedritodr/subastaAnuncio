@@ -677,7 +677,8 @@ class Front extends CI_Controller
                             }
                         }
                     } else {
-
+                        var_dump("aqui");
+                        die();
                         $this->anuncio->create($data);
                     }
 
