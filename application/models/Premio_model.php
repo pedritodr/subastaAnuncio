@@ -37,9 +37,25 @@ class Premio_model extends CI_Model
         return ($get_as_row) ? $query->row() : $query->result();
     }
 
+    function get_all_date($date)
+    {
+        $this->db->select('*');
+        $this->db->from('premio');
+        $this->db->where("fecha_create >=", $date);
+        $this->db->where("tipo", 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
 
-
-
+    function get_all_date_vip()
+    {
+        $this->db->select('*');
+        $this->db->from('premio');
+        //   $this->db->where("fecha_create >=", $date);
+        $this->db->where("tipo", 2);
+        $query = $this->db->get();
+        return $query->result();
+    }
 
     function update($id, $data)
     {

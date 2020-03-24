@@ -48,15 +48,15 @@ class Premio extends CI_Controller
         }
 
         $this->load->model('Pais_model', 'pais');
-        $premio = $this->input->post('premio');
+        $premio_win = $this->input->post('premio');
         $cantidad = $this->input->post('cantidad');
         $sorteo = $this->input->post('sorteo');
         $date = date("Y-m-d");
-        $users = $this->membresia->get_all_membresias_user_date($date);
-        foreach ($users as $user) {
-            $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
-        }
-        $ganadores = [];
+        $mes_actual = date("m");
+        $ano_actual = date("Y");
+        $premios = $this->premio->get_all_date($date);
+
+
         if ($cantidad == 0) {
             $this->response->set_message(translate("qty_wins_lang"), ResponseMessage::ERROR);
             redirect("premio/add_index", "location", 301);
@@ -71,37 +71,183 @@ class Premio extends CI_Controller
             redirect("premio/add_index");
         } else { //en caso de que todo este bien
             if ($sorteo == 1) {
-                if ($cantidad == count($users)) {
-                } elseif ($cantidad > count($users)) {
-                    $this->response->set_message(translate("error_cantidad_lang"), ResponseMessage::ERROR);
-                    redirect("premio/add_index", "location", 301);
-                } elseif ($cantidad < count($users)) {
-                    $wins = array_rand($users, $cantidad);
-                    if (is_array($wins)) {
-                        for ($i = 0; $i < count($wins); $i++) {
-                            array_push($ganadores, $users[$i]);
+                $ok = false;
+                $participantes = [];
+                $ganadores = [];
+                $users = $this->membresia->get_all_membresias_user_date($date);
+
+                if ($premios) {
+
+                    $users_win = [];
+                    foreach ($premios as $premio) {
+                        $wins = json_decode($premio->ganadores);
+                        foreach ($wins as $item) {
+                            $valida = false;
+                            if ($users_win) {
+                                for ($i = 0; $i < count($users_win); $i++) {
+                                    if ($item->user_id == $users_win[$i]->user_id) {
+                                        $valida = true;
+                                    }
+                                }
+                                if (!$valida) {
+                                    array_push($users_win, $item);
+                                }
+                            } else {
+                                array_push($users_win, $item);
+                            }
                         }
+                        $fecha_create = explode('-', $premio->fecha_create);
+                        $mes = $fecha_create[1];
+                        $ano = $fecha_create[0];
+                        if ($mes == $mes_actual && $ano == $ano_actual) {
+
+                            $ok = true;
+                        }
+                    }
+                    foreach ($users as $user) {
+                        $valido = false;
+                        for ($i = 0; $i < count($users_win); $i++) {
+
+                            if ($user->user_id == $users_win[$i]->user_id) {
+                                $valido = true;
+                            }
+                        }
+                        if (!$valido) {
+                            array_push($participantes, $user);
+                        }
+                    }
+                } else {
+
+                    $participantes = $users;
+                }
+
+
+                if ($ok) {
+                    $this->response->set_message(translate("error_sorteo_lang"), ResponseMessage::ERROR);
+                    redirect("premio/add_index", "location", 301);
+                }
+
+                foreach ($participantes as $user) {
+                    if ($user->ciudad_id > 0) {
+                        $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
                     } else {
-                        array_push($ganadores, $users[$wins]);
+                        $user->ciudad = null;
                     }
                 }
+
+                if ($cantidad == count($participantes)) {
+                    $ganadores = $participantes;
+                } elseif ($cantidad > count($participantes)) {
+                    $this->response->set_message(translate("error_cantidad_lang"), ResponseMessage::ERROR);
+                    redirect("premio/add_index", "location", 301);
+                } elseif ($cantidad < count($participantes)) {
+                    $wins = array_rand($participantes, $cantidad);
+                    if (is_array($wins)) {
+                        for ($i = 0; $i < count($wins); $i++) {
+                            array_push($ganadores, $participantes[$i]);
+                        }
+                    } else {
+                        array_push($ganadores, $participantes[$wins]);
+                    }
+                }
+
                 $data = [
-                    'premio' => $premio,
+                    'premio' => $premio_win,
                     'cantidad_ganadores' => $cantidad,
                     'tipo' => $sorteo,
                     'fecha_create' => $date,
                     'ganadores' => json_encode($ganadores)
                 ];
+
                 $this->premio->create($data);
             } else {
+                $premios = $this->premio->get_all_date_vip();
+                $ok = false;
+                $participantes = [];
+                $ganadores = [];
+                $users = $this->membresia->get_all_membresias_user_date_vip($date);
+                if (12 == $mes_actual) {
+                    $ok = true;
+                }
+
+                if ($premios) {
+
+                    $users_win = [];
+                    foreach ($premios as $premio) {
+                        $wins = json_decode($premio->ganadores);
+                        foreach ($wins as $item) {
+                            $valida = false;
+                            if ($users_win) {
+                                for ($i = 0; $i < count($users_win); $i++) {
+                                    if ($item->user_id == $users_win[$i]->user_id) {
+                                        $valida = true;
+                                    }
+                                }
+                                if (!$valida) {
+                                    array_push($users_win, $item);
+                                }
+                            } else {
+                                array_push($users_win, $item);
+                            }
+                        }
+                    }
+                    foreach ($users as $user) {
+                        $valido = false;
+                        for ($i = 0; $i < count($users_win); $i++) {
+
+                            if ($user->user_id == $users_win[$i]->user_id) {
+                                $valido = true;
+                            }
+                        }
+                        if (!$valido) {
+                            array_push($participantes, $user);
+                        }
+                    }
+                } else {
+
+                    $participantes = $users;
+                }
+
+
+                if (!$ok) {
+                    $this->response->set_message(translate("error_sorteo_2_lang"), ResponseMessage::ERROR);
+                    redirect("premio/add_index", "location", 301);
+                }
+
+                foreach ($participantes as $user) {
+                    if ($user->ciudad_id > 0) {
+                        $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+                    } else {
+                        $user->ciudad = null;
+                    }
+                }
+
+                if ($cantidad == count($participantes)) {
+                    $ganadores = $participantes;
+                } elseif ($cantidad > count($participantes)) {
+                    $this->response->set_message(translate("error_cantidad_lang"), ResponseMessage::ERROR);
+                    redirect("premio/add_index", "location", 301);
+                } elseif ($cantidad < count($participantes)) {
+                    $wins = array_rand($participantes, $cantidad);
+                    if (is_array($wins)) {
+                        for ($i = 0; $i < count($wins); $i++) {
+                            array_push($ganadores, $participantes[$i]);
+                        }
+                    } else {
+                        array_push($ganadores, $participantes[$wins]);
+                    }
+                }
+
+                $data = [
+                    'premio' => $premio_win,
+                    'cantidad_ganadores' => $cantidad,
+                    'tipo' => $sorteo,
+                    'fecha_create' => $date,
+                    'ganadores' => json_encode($ganadores)
+                ];
+
+                $this->premio->create($data);
             }
-
-
-
-
-
-
-
 
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
             redirect("premio/index", "location", 301);

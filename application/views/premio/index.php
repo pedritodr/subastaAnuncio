@@ -52,7 +52,7 @@
                                                 <p><strong>Email: </strong><?= $win->email ?> </p>
                                                 <p><strong>Telefono: </strong><?= $win->phone ?> </p>
                                                 <?php if ($win->ciudad) { ?>
-                                                    <p><strong>Ciudad: </strong><?= $win->ciudad->ciudad_name ?> </p>
+                                                    <p><strong>Ciudad: </strong><?= $win->ciudad->name_ciudad ?> </p>
                                                 <?php } else { ?>
                                                     <p><strong>Ciudad: </strong> </p>
                                                 <?php } ?>
