@@ -497,4 +497,13 @@
                 min-height: 300px;
             }
         }
+
+        .recent-ads .recent-ads-list-image-inner {
+            background-color: rgba(0, 0, 0, 0.0) !important;
+            display: block;
+            height: 60px;
+            margin: 0 16px 0 0;
+            position: relative;
+            width: 100px;
+        }
     </style>
