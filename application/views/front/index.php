@@ -137,7 +137,7 @@
                                        <div class="price"> $<?= number_format($all_categorias[0]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                        <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                        <?php if ($all_categorias[0]->all_subastas[0]->fecha_cierre >= date("Y-m-d H:i:s")) { ?>
-                                          <div class="row">
+                                          <!--    <div class="row">
                                              <div class="col-md-12 col-sm-12 col-xs-12">
                                                 <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
                                                    <div class="timer conte">
@@ -164,7 +164,7 @@
                                                    <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                                 </div>
                                              </div>
-                                          </div>
+                                          </div> -->
                                        <?php } ?>
                                     </div>
                                     <!-- Addition Info -->
@@ -262,7 +262,7 @@
                                           <div class="price"> $<?= number_format($all_categorias[$i]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                           <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                           <?php if ($all_categorias[$i]->all_subastas[$k]->fecha_cierre >= date("Y-m-d H:i:s")) { ?>
-                                             <div class="row">
+                                             <!--        <div class="row">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                                    <div style="margin-left:-19px" class="timer col-md-3 col-xs-4">
                                                       <div class="timer conte">
@@ -289,7 +289,7 @@
                                                       <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                                    </div>
                                                 </div>
-                                             </div>
+                                             </div> -->
                                           <?php } ?>
                                        </div>
                                        <!-- Addition Info -->
@@ -508,7 +508,7 @@
       }
    </style>
    <script>
-      var subastas = <?= json_encode($all_subastas); ?>;
+      /*     var subastas = <?= json_encode($all_subastas); ?>;
 
       for (let i = 0; i < subastas.length; i++) {
 
@@ -540,7 +540,7 @@
          }, 1000);
 
 
-      }
+      } */
 
 
       function cargar_input(params) {
