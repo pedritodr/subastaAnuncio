@@ -75,7 +75,7 @@
                   <div style="margin-top:1%" class="row">
                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="switcher pull-left">
-                           <div style="margin-top:2%" class="col-lg-6 col-xs-12 text-center">
+                           <div style="margin-top:2%" class="col-lg-6 col-sm-6 col-xs-12 text-center">
                               <a onclick="cambio_btn_directa();" id="btn_subasta_directa" class="btn active btn-theme">
                                  <span class="fa fa-arrow-up"></span>
                                  <font style="vertical-align: inherit;">
@@ -85,7 +85,7 @@
                                  </font>
                               </a>
                            </div>
-                           <div style="margin-top:2%" class="col-lg-6 col-xs-12 text-center">
+                           <div style="margin-top:2%" class="col-lg-6 col-sm-6 col-xs-12 text-center">
                               <a onclick="cambio_btn_inversa()" id="btn_subasta_inversa" class="btn  btn-theme">
                                  <span class="fa fa-exchange"></span>
                                  <font style="vertical-align: inherit;">
@@ -116,29 +116,23 @@
                         <?php for ($k = 0; $k < count($all_categorias[0]->all_subastas); $k++) { ?>
                            <?php if ($all_categorias[0]->all_subastas[$k]->tipo_subasta == 1) { ?>
 
-                              <div class="col-md-4 col-xs-12 col-sm-6 direct subastas">
+                              <div class="col-md-3 col-xs-12 col-sm-3 direct subastas">
 
                                  <!-- Ad Box -->
-                                 <div class="category-grid-box">
+                                 <div class="category-grid-box white category-grid-box-1 ">
                                     <!-- Ad Img -->
                                     <div class="category-grid-img">
-                                       <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
-                                       <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                       <!-- User Review -->
-                                       <div class="user-preview">
-                                          <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
-                                       </div>
-                                       <div class="additional-information">
-                                          <?= $all_categorias[0]->all_subastas[$k]->descrip_espa ?>
+                                       <div style="cursor:pointer" class="image" onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= NULL ?>');">
+                                          <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
                                        </div>
 
                                     </div>
                                     <!-- Ad Img End -->
-                                    <div class="short-description">
+                                    <div style="height: 174px !important;" class="short-description">
                                        <!-- Ad Category -->
-                                       <div class="category-title"> <span><a href="#"><?= $all_categorias[0]->name_espa ?></a></span> </div>
+                                       <div class="category-title"> <span><a><?= $all_categorias[0]->name_espa ?></a></span> </div>
                                        <!-- Ad Title -->
-                                       <h6><a title="" href="single-page-listing.html"><?= $all_categorias[0]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                       <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= NULL ?>');"><?= $all_categorias[0]->all_subastas[$k]->titulo_corto ?></a></h6>
                                        <!-- Price -->
                                        <div class="price"> $<?= number_format($all_categorias[0]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                        <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
@@ -187,30 +181,24 @@
                            <?php } else { ?>
                               <?php $count_intervalo = count($all_categorias[0]->all_subastas[$k]->intervalo); ?>
                               <?php if ($all_categorias[0]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad > 0) { ?>
-                                 <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
+                                 <div style="display:none" class="col-md-3 col-xs-12 col-sm-3 subastas inverse">
 
                                     <!-- Ad Box -->
-                                    <div class="category-grid-box">
+                                    <div class="category-grid-box white category-grid-box-1">
                                        <!-- Ad Img -->
                                        <div class="category-grid-img">
-                                          <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
-                                          <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                          <!-- User Review -->
-                                          <div class="user-preview">
-                                             <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
-                                          </div>
-                                          <div class="additional-information">
-                                             <?= $all_categorias[0]->all_subastas[$k]->descrip_espa ?>
+                                          <div style="cursor:pointer" class="image" onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[0]->all_subastas[$k])) ?>');">
+                                             <img class="img-responsive" alt="" src="<?= base_url($all_categorias[0]->all_subastas[$k]->photo_subasta) ?>">
                                           </div>
 
                                        </div>
 
                                        <!-- Ad Img End -->
-                                       <div class="short-description">
+                                       <div style="height: 174px !important;" class="short-description">
                                           <!-- Ad Category -->
                                           <div class="category-title"> <span><a href="#"><?= $all_categorias[0]->name_espa ?></a></span> </div>
                                           <!-- Ad Title -->
-                                          <h6><a title="" href="single-page-listing.html"><?= $all_categorias[0]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                          <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[0]->all_subastas[$k])) ?>');"><?= $all_categorias[0]->all_subastas[$k]->titulo_corto ?></a></h6>
                                           <!-- Price -->
                                           <?php if ($count_intervalo >= 2) { ?>
                                              <div class="price">
@@ -255,27 +243,21 @@
                            <?php for ($k = 0; $k < count($all_categorias[$i]->all_subastas); $k++) { ?>
                               <?php if ($all_categorias[$i]->all_subastas[$k]->tipo_subasta == 1) { ?>
 
-                                 <div class="col-md-4 col-xs-12 col-sm-6 subastas direct">
+                                 <div class="col-md-3 col-xs-12 col-sm-3 subastas direct">
                                     <!-- Ad Box -->
-                                    <div class="category-grid-box">
+                                    <div class="category-grid-box  white category-grid-box-1">
                                        <!-- Ad Img -->
                                        <div class="category-grid-img">
-                                          <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
-                                          <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                          <!-- User Review -->
-                                          <div class="user-preview">
-                                             <!--      <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a> -->
-                                          </div>
-                                          <div class="additional-information">
-                                             <?= $all_categorias[$i]->all_subastas[$k]->descrip_espa ?>
+                                          <div style="cursor:pointer" class="image" onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= '' ?>');">
+                                             <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
                                           </div>
                                        </div>
                                        <!-- Ad Img End -->
-                                       <div class="short-description">
+                                       <div style="height: 174px !important;" class="short-description">
                                           <!-- Ad Category -->
-                                          <div class="category-title"> <span><a href="#"><?= $all_categorias[$i]->name_espa ?></a></span> </div>
+                                          <div class="category-title"> <span><a><?= $all_categorias[$i]->name_espa ?></a></span> </div>
                                           <!-- Ad Title -->
-                                          <h6><a title="" href=""><?= $all_categorias[$i]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                          <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= '' ?>');"><?= $all_categorias[$i]->all_subastas[$k]->titulo_corto ?></a></h6>
                                           <!-- Price -->
                                           <div class="price"> $<?= number_format($all_categorias[$i]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                           <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
@@ -325,30 +307,23 @@
                               <?php } else { ?>
                                  <?php $count_intervalo = count($all_categorias[$i]->all_subastas[$k]->intervalo); ?>
                                  <?php if ($all_categorias[$i]->all_subastas[$k]->intervalo[$count_intervalo - 1]->cantidad > 0) { ?>
-                                    <div style="display:none" class="col-md-4 col-xs-12 col-sm-6 subastas inverse">
+                                    <div style="display:none" class="col-md-3 col-xs-12 col-sm-3 subastas inverse">
 
                                        <!-- Ad Box -->
-                                       <div class="category-grid-box">
+                                       <div class="category-grid-box  white category-grid-box-1">
                                           <!-- Ad Img -->
                                           <div class="category-grid-img">
-                                             <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
-                                             <!-- Ad Status <span class="ad-status"> Destacado </span>-->
-                                             <!-- User Review -->
-                                             <div class="user-preview">
-                                                <!-- <a href="#"> <img src="images/users/7.jpg" class="avatar avatar-small" alt=""> </a>-->
+                                             <div style="cursor:pointer" class="image" onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[$i]->all_subastas[$k])) ?>');">
+                                                <img class="img-responsive" alt="" src="<?= base_url($all_categorias[$i]->all_subastas[$k]->photo_subasta) ?>">
                                              </div>
-                                             <div class="additional-information">
-                                                <?= $all_categorias[$i]->all_subastas[$k]->descrip_espa ?>
-                                             </div>
-
                                           </div>
 
                                           <!-- Ad Img End -->
-                                          <div class="short-description">
+                                          <div style="height: 174px !important;" class="short-description">
                                              <!-- Ad Category -->
-                                             <div class="category-title"> <span><a href="#"><?= $all_categorias[$i]->name_espa ?></a></span> </div>
+                                             <div class="category-title"> <span><a><?= $all_categorias[$i]->name_espa ?></a></span> </div>
                                              <!-- Ad Title -->
-                                             <h6><a title="" href="single-page-listing.html"><?= $all_categorias[$i]->all_subastas[$k]->nombre_espa ?></a></h6>
+                                             <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= base64_encode(json_encode($all_categorias[$i]->all_subastas[$k])) ?>');"><?= $all_categorias[$i]->all_subastas[$k]->titulo_corto ?></a></h6>
                                              <!-- Price -->
                                              <?php if ($count_intervalo >= 2) { ?>
                                                 <div class="price">

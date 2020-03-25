@@ -64,6 +64,14 @@ class Front extends CI_Controller
             $contador_directa = 0;
             $subastas  = $this->subasta->get_by_categoria_id($item->categoria_id);
             foreach ($subastas as $subasta) {
+                $nombre = strlen($subasta->nombre_espa);
+
+                if ($nombre > 54) {
+                    $subasta->titulo_corto = substr($subasta->nombre_espa, 0, 54) . "...";
+                } else {
+
+                    $subasta->titulo_corto = $subasta->nombre_espa;
+                }
                 if ($subasta->tipo_subasta == 1) {
                     $contador_directa++;
                     $subasta->intervalo = null;
@@ -672,7 +680,7 @@ class Front extends CI_Controller
                             if ((int) $membresia->anuncios_publi > 0) {
 
                                 $qty_anuncios = (int) $membresia->anuncios_publi - 1;
-                                $this->membresia->update_membresia_user($membresia->membresia_user_id, ['anuncios_publi' => $qty_anuncios]);
+                                $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                                 $this->anuncio->update($id, ['destacado' => 1]);
                             }
                         }
@@ -810,6 +818,23 @@ class Front extends CI_Controller
             $all_subastas = $this->subasta->get_all_by_subastas_with_pagination_palabra($config['per_page'], $offset, $subasta_palabra, 1);
         }
         foreach ($all_subastas as $item) {
+            $long = strlen($item->descrip_espa);
+
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
+            $nombre = strlen($item->nombre_espa);
+
+            if ($nombre > 100) {
+                $item->corto = substr($item->nombre_espa, 0, 100) . "...";
+            } else {
+
+                $item->corto = $item->nombre_espa;
+            }
+
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
 
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
@@ -955,6 +980,21 @@ class Front extends CI_Controller
             $all_subastas = $this->subasta->get_all_by_subastas_with_pagination_palabra($config['per_page'], $offset, $subasta_palabra, 2);
         }
         foreach ($all_subastas as $item) {
+            $long = strlen($item->descrip_espa);
+
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
+            $nombre = strlen($item->nombre_espa);
+            if ($nombre > 100) {
+                $item->corto = substr($item->nombre_espa, 0, 100) . "...";
+            } else {
+
+                $item->corto = $item->nombre_espa;
+            }
             $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
 
@@ -1058,6 +1098,22 @@ class Front extends CI_Controller
         $all_subastas = $this->subasta->get_all_by_subastas_with_pagination($config['per_page'], $offset, 1);
 
         foreach ($all_subastas as $item) {
+            $long = strlen($item->descrip_espa);
+
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
+            $nombre = strlen($item->nombre_espa);
+
+            if ($nombre > 100) {
+                $item->corto = substr($item->nombre_espa, 0, 100) . "...";
+            } else {
+
+                $item->corto = $item->nombre_espa;
+            }
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
 
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
@@ -1173,7 +1229,22 @@ class Front extends CI_Controller
 
         foreach ($all_subastas as $item) {
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
+            $long = strlen($item->descrip_espa);
 
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
+            $nombre = strlen($item->nombre_espa);
+
+            if ($nombre > 100) {
+                $item->corto = substr($item->nombre_espa, 0, 100) . "...";
+            } else {
+
+                $item->corto = $item->nombre_espa;
+            }
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
             $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
             $item->puja =  $this->subasta->get_puja_alta($item->subasta_id);
@@ -1276,6 +1347,14 @@ class Front extends CI_Controller
             } else {
 
                 $item->corta = $item->descripcion;
+            }
+            $nombre = strlen($item->titulo);
+
+            if ($nombre > 54) {
+                $item->corto = substr($item->titulo, 0, 54) . "...";
+            } else {
+
+                $item->corto = $item->titulo;
             }
         }
 
@@ -1419,6 +1498,14 @@ class Front extends CI_Controller
 
                 $item->corta = $item->descripcion;
             }
+            $nombre = strlen($item->titulo);
+
+            if ($nombre > 54) {
+                $item->corto = substr($item->titulo, 0, 54) . "...";
+            } else {
+
+                $item->corto = $item->titulo;
+            }
         }
 
         $data['all_anuncios'] = $all_anuncios;
@@ -1539,6 +1626,21 @@ class Front extends CI_Controller
         $mis_subastas = $this->subasta->get_subastas_directas_by_user($user_id);
         $subastas_inversas = $this->subasta->get_subastas_inversas_by_user($user_id);
         foreach ($subastas_inversas as $item) {
+            $long = strlen($item->descrip_espa);
+            $nombre = strlen($item->nombre_espa);
+
+            if ($nombre > 54) {
+                $item->titulo_corto = substr($item->nombre_espa, 0, 54) . "...";
+            } else {
+
+                $item->titulo_corto = $item->nombre_espa;
+            }
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
             $item->intervalo = null;
@@ -1562,6 +1664,21 @@ class Front extends CI_Controller
         }
 
         foreach ($mis_subastas as $item) {
+            $long = strlen($item->descrip_espa);
+            $nombre = strlen($item->nombre_espa);
+
+            if ($nombre > 54) {
+                $item->titulo_corto = substr($item->nombre_espa, 0, 54) . "...";
+            } else {
+
+                $item->titulo_corto = $item->nombre_espa;
+            }
+            if ($long > 185) {
+                $item->corta = substr($item->descrip_espa, 0, 185) . "...";
+            } else {
+
+                $item->corta = $item->descrip_espa;
+            }
             $item->contador_fotos = count($this->subasta->get_by_subasta_id($item->subasta_id));
 
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
@@ -1595,7 +1712,7 @@ class Front extends CI_Controller
 
 
         /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '4';
+        $config['per_page'] = '6';
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
 
@@ -1637,7 +1754,14 @@ class Front extends CI_Controller
         $anuncios_partes = $this->anuncio->get_all_by_anuncios_with_pagination($user_id, $config['per_page'], $offset);
 
         foreach ($anuncios_partes as $item) {
+            $nombre = strlen($item->titulo);
 
+            if ($nombre > 54) {
+                $item->titulo_corto = substr($item->titulo, 0, 54) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
             $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($item->subcate_id);
 
             $item->subcate =  $subcate_object;
@@ -1652,10 +1776,10 @@ class Front extends CI_Controller
         $data['resultados'] = $contador;
         if ($offset == 0) {
             $data['inicio'] = 1;
-            $data['fin'] =  4;
+            $data['fin'] =  6;
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 4 + $offset;
+            $intervalo = 6 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {

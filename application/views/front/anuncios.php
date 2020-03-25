@@ -97,7 +97,7 @@
                             <?php foreach ($all_anuncios as $item) { ?>
                                 <div class="ads-list-archive">
                                     <!-- Image Block -->
-                                    <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
 
@@ -124,7 +124,7 @@
                                     <!-- Ads Listing -->
                                     <div class="clearfix visible-xs-block"></div>
                                     <!-- Content Block -->
-                                    <div class="col-lg-8 col-md-8 col-sm-8 no-padding">
+                                    <div class="col-lg-9 col-md-9 col-sm-9 no-padding">
                                         <!-- Ad Desc -->
                                         <div class="ad-archive-desc">
                                             <!-- Price -->
@@ -137,7 +137,7 @@
                                             <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
                                                 <h6>
                                                     <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                                        <font style="vertical-align: inherit;"><?= $item->corto ?></font>
                                                     </font>
                                                 </h6>
                                             </a>
@@ -187,7 +187,7 @@
 
                                             </ul>
                                             <!-- Ad History -->
-                                            <div class="clearfix archive-history">
+                                            <div>
 
                                                 <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
                                                         <font style="vertical-align: inherit;">

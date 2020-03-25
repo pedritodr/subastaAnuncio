@@ -124,7 +124,7 @@
                                 <?php $contador = 1;
                                 foreach ($all_anuncios as $item) { ?>
 
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12  ">
+                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                         <div class="white category-grid-box-1 ">
                                             <!-- foto -->
                                             <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>">
@@ -143,32 +143,32 @@
                                                 <?php } ?>
                                             </div>
                                             <!--descripcion -->
-                                            <div class="short-description-1 ">
+                                            <div style="height:199px !important" class="short-description-1 ">
                                                 <!-- subcategoria  -->
                                                 <div class="category-title"><?= $item->subcate->nombre; ?> </div>
 
                                                 <!-- descripcion -->
                                                 <h6>
-                                                    <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><?= $item->titulo; ?></a>
+                                                    <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><?= $item->titulo_corto; ?></a>
                                                 </h6>
                                                 <!-- Location -->
                                                 <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
                                                 <!-- Rating -->
                                                 <div class="rating">
 
-
+                                                    <ul class="pull-left">
+                                                        <?php if ($item->is_active == 1) { ?>
+                                                            <span class="badge"> Publicado</span>
+                                                        <?php } else { ?>
+                                                            <span class="badge"> Desactivado</span>
+                                                        <?php } ?>
+                                                    </ul>
                                                 </div>
                                                 <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
                                             </div>
                                             <!-- Ad Meta Stats -->
                                             <div class="ad-info-1">
-                                                <ul class="pull-left">
-                                                    <?php if ($item->is_active == 1) { ?>
-                                                        <span class="badge"> Publicado</span>
-                                                    <?php } else { ?>
-                                                        <span class="badge"> Desactivado</span>
-                                                    <?php } ?>
-                                                </ul>
+
                                                 <ul class="pull-right">
                                                     <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><i class="fa fa-pencil edit"></i></a> </li>
                                                     <?php if ($item->is_active == 1) { ?>
@@ -228,25 +228,25 @@
                                                         </div>
 
                                                     </div> -->
-                                                    <div class="col-md-12 col-sm-7 col-xs-12">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
                                                         <!-- Ad Content-->
                                                         <div class="row">
                                                             <div class="content-area">
-                                                                <div class="col-md-8 col-sm-12 col-xs-12">
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
                                                                     <!-- Category Title -->
 
-                                                                    <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
+                                                                    <div class="category-title"> <span><a><?= $item->categoria ?></a></span>
 
                                                                     </div>
 
 
                                                                     <!-- Ad Title -->
-                                                                    <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                    <h6><a><?= $item->titulo_corto ?></a> </h6>
                                                                     <!-- Info Icons -->
 
                                                                     <!-- Ad Meta Info -->
                                                                     <ul class="ad-meta-info">
-                                                                        <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+                                                                        <li> <i class="fa fa-map-marker"></i><a><?= $item->ciudad ?></a> </li>
                                                                         <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
                                                                     </ul>
                                                                     <div class="row">
@@ -281,7 +281,7 @@
                                                                     <!-- Ad Description-->
                                                                     <div class="ad-details">
 
-                                                                        <?= $item->descrip_espa ?>
+                                                                        <?= $item->corta ?>
 
 
                                                                     </div>
@@ -319,7 +319,7 @@
                                                                     <?php } ?>
 
                                                                 </div>
-                                                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                                                <div style="margin-bottom:5% !important" class="col-lg-4 col-md-4 col-xs-12 col-sm-4">
                                                                     <!-- Ad Stats -->
 
                                                                     <!-- Price -->
@@ -383,7 +383,7 @@
 
 
                                                                     <!-- Ad Title -->
-                                                                    <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                    <h6><a><?= $item->titulo_corto ?></a> </h6>
                                                                     <!-- Info Icons -->
 
                                                                     <!-- Ad Meta Info -->
@@ -395,7 +395,7 @@
                                                                     <!-- Ad Description-->
                                                                     <div class="ad-details">
 
-                                                                        <?= $item->descrip_espa ?>
+                                                                        <?= $item->corta ?>
 
 
                                                                     </div>

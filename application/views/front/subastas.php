@@ -209,7 +209,7 @@
 
 
                                                                         <!-- Ad Title -->
-                                                                        <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                        <h6><a><?= $item->corto ?></a> </h6>
                                                                         <!-- Info Icons -->
 
                                                                         <!-- Ad Meta Info -->
@@ -249,7 +249,7 @@
                                                                         <!-- Ad Description-->
                                                                         <div class="ad-details">
 
-                                                                            <?= $item->descrip_espa ?>
+                                                                            <?= $item->corta ?>
 
 
                                                                         </div>
@@ -301,6 +301,7 @@
                                                                         <!-- Ad View Button -->
 
                                                                         <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -340,7 +341,7 @@
 
 
                                                                             <!-- Ad Title -->
-                                                                            <h6><a><?= $item->nombre_espa ?></a> </h6>
+                                                                            <h6><a><?= $item->corto ?></a> </h6>
                                                                             <!-- Info Icons -->
 
                                                                             <!-- Ad Meta Info -->

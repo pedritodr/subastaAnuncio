@@ -402,7 +402,7 @@ h5 {
 h6 {
 	font-family: 'Lato';
 	font-weight: 500;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 p {
@@ -2148,7 +2148,7 @@ ul.category-list-style li a span {
 }
 
 .ad-price {
-	font-size: 25px;
+	font-size: 16px;
 	font-weight: 600;
 	float: right;
 	margin-bottom: 15px;
@@ -2337,7 +2337,7 @@ ul.category-list-style li a span {
 
 .category-grid-box .short-description .price {
 	font-weight: 600;
-	font-size: 24px;
+	font-size: 16px;
 }
 
 .category-grid-box span.negotiable {
@@ -2877,7 +2877,7 @@ width: 100%;
 	height: 28px;
 	position: absolute;
 	top: 0;
-	width: 45%;
+	width: 50%;
 	z-index: 1;
 	padding: 0 12px;
 }
