@@ -1369,382 +1369,154 @@
       }
 
    }
-   let y = setInterval(function() {
-
-      if ($('#modal_detalle').hasClass('in')) {
-
-         let subasta_id = $('#detalle_subasta_id').val();
-
-         if (subasta_id > 0) {
-            console.log(":entro");
-            $.ajax({
-               type: 'POST',
-               url: "<?= site_url('front/detalle_subasta') ?>",
-
-               data: {
-                  id: subasta_id
-               },
-               success: function(result) {
-                  result = JSON.parse(result);
-                  if (result) {
-
-                     if (result.tipo_subasta == 1) {
-                        var fecha = result.all_detalle.fecha_cierre;
-                        var date = new Date(fecha);
-                        var hoy = new Date();
-
-                        // console.log(hoy + " inter " + date);
-                        if (date >= hoy) {
-
-                           var x = setInterval(function() {
-
-                              var deadline = new Date(fecha).getTime();
-                              var currentTime = new Date().getTime();
-                              var t = deadline - currentTime;
-                              var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                              var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                              var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                              var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                              $('#day-' + subasta_id).html(days);
-                              $('#hour-' + subasta_id).html(hours);
-                              $('#minute-' + subasta_id).html(minutes);
-                              $('#second-' + subasta_id).html(seconds);
-
-                              if (t < 0) {
-
-                                 clearInterval(x);
-
-                                 $('#day-' + subasta_id).html(0);
-                                 $('#hour-' + subasta_id).html(0);
-                                 $('#minute-' + subasta_id).html(0);
-                                 $('#second-' + subasta_id).html(0);
-
-                              }
-
-                           }, 1000);
-                        } else {
-
-                           $('#day-' + subasta_id).html(0);
-                           $('#hour-' + subasta_id).html(0);
-                           $('#minute-' + subasta_id).html(0);
-                           $('#second-' + subasta_id).html(0);
-                        }
-                        if (result.puja.valor != null) {
-                           $("#valor_alto_modal").html("<i class='fa fa-user-o'></i> " + result.user_win.name + " $" + parseFloat(result.puja.valor).toFixed(2));
-                        }
-                        if (result.subasta_user && result.puja.valor == null) {
-                           $('#valor_alto_modal').html("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
-                        }
-
-                        if (user_id != "") {
-                           if (result.subasta_user == null && user_id) {
-                              $("#body_entrar_subasta").show();
-                              $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
-
-                           } else {
-                              if (result.puja_user.valor == null) {
-                                 $("#body_pujar").show();
-                                 $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
-                              } else {
-                                 if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
-                                    $("#body_pujar").show();
-                                    $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
-                                 }
-                              }
-
-                           }
-                        }
-                     }
-
-
-                  }
-
-               }
-            });
-         }
-
-      }
-      if (user_id != "") {
-         console.log(":entro subastas");
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/subasta_directas_ajax') ?>",
-
-            data: {
-               id: 0
-            },
-            success: function(result) {
-               result = JSON.parse(result);
-               if (result) {
-                  console.log(result);
-                  for (let i = 0; i < result.length; i++) {
-                     if (result[i].puja.valor == "null") {
-                        $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));
-                     } else {
-                        if (result[i].user_win) {
-
-                           let name_win = result[i].user_win.name;
-                           $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
-                        }
-
-                     }
-
-                     if (result[i].puja.valor != "null") {
-                        if (result[i].puja_user.valor == "null") {
-                           //$("#btn_pujar_subasta_" + result[i].subasta_id).remove();
-                           // $('#body_btn_pujar_' + result[i].subasta_id).empty();
-                           //$('#body_btn_pujar_' + result[i].subasta_id).show(); $('#body_btn_pujar_' + result[i].subasta_id).html("<button id='btn_pujar_subasta_" + result[i].subasta_id + "' onclick='' class='btn btn-block btn-success'><i class='fa fa-hand-paper-o'></i > <?= translate('pujar_lang'); ?> < /button>");
-                           //  $("#btn_pujar_subasta_" + result[i].subasta_id).attr('onclick', 'cargarmodal_pujar("' + result[i].subasta_user.subasta_user_id + '","' + result[i].nombre_espa + '","' + result[i].puja.valor + '","' + result[i].valor_inicial + '")');
-                           $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                        } else {
-                           $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
-                        }
-                        if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
-                           //$("#btn_pujar_subasta_" + result[i].subasta_id).remove();
-                           //$('#body_btn_pujar_' + result[i].subasta_id).empty();
-                           // $('#body_btn_pujar_' + result[i].subasta_id).html("<button id='btn_pujar_subasta_" + result[i].subasta_id + "' onclick='' class='btn btn-block btn-success'><i class='fa fa-hand-paper-o'></i> <?= translate('pujar_lang'); ?></button>");
-                           //$("#btn_pujar_subasta_" + result.subasta_id).attr('onclick', 'cargarmodal_pujar("' + result[i].subasta_user.subasta_user_id + '","' + result[i].nombre_espa + '","' + result[i].puja.valor + '","' + result[i].valor_inicial + '")');
-                           $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                        } else {
-
-                           $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
-                        }
-                     }
-
-
-                  }
-
-
-               }
-
-            }
-         });
-      }
-
-      /* if ($('.faq-a').is(':visible')) {
-          $.ajax({
-              type: 'POST',
-              url: "<?= site_url('front/solicitudes_ajax') ?>",
-              timeout: 4000,
-              success: function(result) {
-
-                  if (result) {
-                      result = JSON.parse(result);
-
-                      if (result.length > 0) {
-                          for (var i = 0; i < result.length; i++) {
-                              $('#estado_solicitud_' + result[i].solicitud_id).removeClass("label-danger");
-                              $('#estado_solicitud_' + result[i].solicitud_id).text("");
-                              if (result[i].estado_solicitud == 0) {
-
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-warning");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text("En revisión");
-
-                              } else if (result[i].estado_solicitud == 1) {
-
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-danger");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text("En espera");
-
-                              } else if (result[i].estado_solicitud == 2 && result[i].pago != null) {
-                                  $('#llamar_calificacion_' + result[i].solicitud_id).remove();
-                                  $('#salto_label' + result[i].solicitud_id).remove();
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-success");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text(" Culminada ");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).after("<br id='salto_label" + result[i].solicitud_id + "'><button id='llamar_calificacion_" + result[i].solicitud_id + "' data-toggle='modal' data-target='#myCalificacion' class='col-sm-12 col-xs-12 col-lg-4 col-md-4 btn btn-warning'><i class='fa fa-star'></i> <?= translate('calificar_lang'); ?></button>");
-                                  $('#llamar_calificacion_' + result[i].solicitud_id).attr('onclick', 'cargar_calificacion("' + result[i].solicitud_id + '")');
-                                  $('#cancelar_solicitud_' + result[i].solicitud_id).hide();
-                              } else if (result[i].estado_solicitud == 3) {
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-danger");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text("Cancelada");
-                              } else if (result[i].estado_solicitud == 4) {
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-danger");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text("Sin técnico");
-                              } else if (result[i].estado_solicitud == 5) {
-                                  $('#estado_solicitud_' + result[i].solicitud_id).addClass("label-danger");
-                                  $('#estado_solicitud_' + result[i].solicitud_id).text("En visita");
-                              }
-
-                              if (result[i].tecnicos.length > 0) {
-                                  for (var j = 0; j < result[i].tecnicos.length; j++) {
-                                      $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("");
-
-                                      if (result[i].tecnicos[j].estado_tecnico == 0) {
-
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-warning");
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("En revisión");
-
-                                      } else if (result[i].tecnicos[j].estado_tecnico == 3) {
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-danger");
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("Visita");
-                                      } else if (result[i].tecnicos[j].estado_tecnico == 1) {
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-danger");
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("Cotizada");
-                                      } else if (result[i].tecnicos[j].estado_tecnico == 6) {
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-success");
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("Culminada");
-                                      } else if (result[i].estado_solicitud == 0 && result[i].tecnicos[j].estado_tecnico == 3 && result[i].tecnicos[j].precio > 0) {
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-danger");
-                                          $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("Cotizada");
-                                          $('#botones_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).show();
-                                      }
-                                      if (result[i].estado_solicitud == 5 && result[i].tecnicos[j].estado_tecnico == 3 && result[i].tecnicos[j].precio > 0) {
-
-                                          $('#botones_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).show();
-                                          $('#cotiza_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("$ " + result[i].tecnicos[j].precio);
-                                      }
-                                      if (result[i].estado_solicitud == 0 && result[i].tecnicos[j].estado_tecnico == 1 && result[i].tecnicos[j].precio > 0) {
-
-                                          $('#botones_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).show();
-                                          $('#cotiza_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("$ " + result[i].tecnicos[j].precio);
-                                      }
-                                      if (result[i].estado_solicitud == 1 && result[i].tecnicos[j].estado_tecnico == 3 && result[i].monto_final > 0) {
-
-                                          if (result[i].pago.length <= 0) {
-                                              $('#botones_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).hide();
-                                              $('#pago_' + result[i].solicitud_id).remove();
-                                              $('#pago2_' + result[i].solicitud_id).remove();
-                                              $('#salto1_' + result[i].solicitud_id).remove();
-                                              $('#salto2_' + result[i].solicitud_id).remove();
-                                              $('#cancelar_solicitud_' + result[i].solicitud_id).after("<br id='salto1_" + result[i].solicitud_id + "'><br id='salto2_" + result[i].solicitud_id + "'><button id='pago2_" + result[i].solicitud_id + "' data-toggle='modal' data-target='#myModal5' class='col-sm-12 col-xs-12 col-lg-4 col-md-4 btn btn-success'><i class='fa fa-credit-card-alt' aria-hidden='true'></i> Pagar</button>");
-                                              $('#pago2_' + result[i].solicitud_id).attr('onclick', 'cargar_pago("' + result[i].solicitud_id + '","' + result[i].tecnicos[j].tecnico_id + '","' + result[i].monto_final + '")');
-                                          }
-                                      }
-                                      if (result[i].estado_solicitud == 1) {
-                                          $.ajax({
-                                              type: 'POST',
-                                              url: "<?= site_url('front/solicitudes_tecnico_rechazado_ajax') ?>",
-                                              timeout: 4000,
-                                              data: {
-                                                  user: user
-                                              },
-                                              success: function(result) {
-                                                  result = JSON.parse(result);
-
-                                                  if (result.length > 0) {
-
-                                                      for (var i = 0; i < result.length; i++) {
-
-                                                          if (result[i].tecnicos.length > 0) {
-                                                              for (var j = 0; j < result[i].tecnicos.length; j++) {
-                                                                  if (result[i].estado_solicitud == 1 && result[i].tecnicos[j].estado_tecnico == 4) {
-                                                                      $('#botones_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).hide();
-                                                                      $('#aceptar_visita_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).remove();
-                                                                  }
-                                                              }
-
-                                                          }
-                                                      }
-
-                                                  }
-                                              }
-                                          });
-
-                                      }
-
-
-                                      if (result[i].tecnicos[j].visita != null) {
-
-                                          if (result[i].tecnicos[j].visita.estado_visita == 0) {
-                                              $('#aceptar_visita_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).remove();
-                                              $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).addClass("label-danger");
-                                              $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).text("Visita solicitda");
-                                              $('#estado_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).after("<a id='aceptar_visita_" + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id + "' class='btn btn-success btn-sm' data-toggle='modal' data-target='#myModal2' href='#'><i class='fa fa-car'></i> Aceptar visita</a>");
-                                              $('#aceptar_visita_' + result[i].tecnicos[j].tecnico_id + result[i].tecnicos[j].solicitud_id).attr('onclick', 'cargar_modal_visita("' + result[i].tecnicos[j].solicitud_id + '","' + result[i].tecnicos[j].tecnico_id + '","' + result[i].inicio + '","' + result[i].fin + '","' + result[i].fecha + '","' + result[i].tecnicos[j].visita.visita_id + '")');
-                                          }
-
-                                      }
-
-                                      var extras = 0;
-                                      var pagos = 0;
-                                      var total_pagar = 0;
-                                      if (result[i].extras.length > 0) {
-
-
-                                          $('#titulo_extra_' + result[i].solicitud_id).show();
-                                          for (let m = 0; m < result[i].extras.length; m++) {
-                                              $('#extra_' + result[i].extras[m].servicio_extra_id).remove();
-
-                                          }
-
-                                          for (let k = 0; k < result[i].extras.length; k++) {
-
-                                              $('#titulo_extra_' + result[i].solicitud_id).after("<p id='extra_" + result[i].extras[k].servicio_extra_id + "' class='col-lg-12 col-sm-12 col-xs-12 col-md-12'><i class='fa fa-plus'></i>" + result[i].extras[k].descripcion + "<strong style='color: #f8b604;'> $" + parseFloat(result[i].extras[k].precio).toFixed(2) + "</strong></p>")
-                                              var suma = parseFloat(extras) + parseFloat(result[i].extras[k].precio);
-                                              extras = +suma;
-
-                                          }
-                                          total_pagar = extras + parseFloat(result[i].monto_final);
-                                          $('#total_full_' + result[i].solicitud_id).show();
-                                          $('#total_full_' + result[i].solicitud_id).html("<strong>Total: </strong><strong style='color: #f8b604;'> $" + total_pagar.toFixed(2) + "</strong>");
-                                          if (result[i].pago.length > 0) {
-
-                                              for (let h = 0; h < result[i].pago.length; h++) {
-                                                  var pg = parseFloat(pagos) + parseFloat(result[i].pago[h].monto_pagado);
-                                                  pagos = +pg;
-
-                                              }
-                                          }
-                                          var resultado = total_pagar - pagos;
-
-                                          if (resultado > 0 && pagos > 0) {
-
-                                              $('#pago_' + result[i].solicitud_id).remove();
-                                              $('#pago2_' + result[i].solicitud_id).remove();
-                                              $('#salto1_' + result[i].solicitud_id).remove();
-                                              $('#salto2_' + result[i].solicitud_id).remove();
-                                              $('#cancelar_solicitud_' + result[i].solicitud_id).after("<br id='salto1_" + result[i].solicitud_id + "'><br id='salto2_" + result[i].solicitud_id + "'><button id='pago2_" + result[i].solicitud_id + "' data-toggle='modal' data-target='#myModal5' class='col-sm-12 col-xs-12 col-lg-4 col-md-4 btn btn-success'><i class='fa fa-credit-card-alt' aria-hidden='true'></i> Pagar</button>");
-                                              $('#pago2_' + result[i].solicitud_id).attr('onclick', 'cargar_pago("' + result[i].solicitud_id + '","' + result[i].tecnicos[j].tecnico_id + '","' + resultado + '")');
-
-                                          }
-                                          if (resultado > 0 && pagos == 0) {
-
-                                              $('#pago_' + result[i].solicitud_id).remove();
-                                              $('#pago2_' + result[i].solicitud_id).remove();
-                                              $('#salto1_' + result[i].solicitud_id).remove();
-                                              $('#salto2_' + result[i].solicitud_id).remove();
-                                              $('#cancelar_solicitud_' + result[i].solicitud_id).after("<br id='salto1_" + result[i].solicitud_id + "'><br id='salto2_" + result[i].solicitud_id + "'><button id='pago2_" + result[i].solicitud_id + "' data-toggle='modal' data-target='#myModal5' class='col-sm-12 col-xs-12 col-lg-4 col-md-4 btn btn-success'><i class='fa fa-credit-card-alt' aria-hidden='true'></i> Pagar</button>");
-                                              $('#pago2_' + result[i].solicitud_id).attr('onclick', 'cargar_pago("' + result[i].solicitud_id + '","' + result[i].tecnicos[j].tecnico_id + '","' + resultado + '")');
-                                          }
-
-                                      }
-
-
-
-                                  }
-                              }
-
+   /*   let y = setInterval(function() {
+
+        if ($('#modal_detalle').hasClass('in')) {
+
+           let subasta_id = $('#detalle_subasta_id').val();
+
+           if (subasta_id > 0) {
+              console.log(":entro");
+              $.ajax({
+                 type: 'POST',
+                 url: "<?= site_url('front/detalle_subasta') ?>",
+
+                 data: {
+                    id: subasta_id
+                 },
+                 success: function(result) {
+                    result = JSON.parse(result);
+                    if (result) {
+
+                       if (result.tipo_subasta == 1) {
+                          var fecha = result.all_detalle.fecha_cierre;
+                          var date = new Date(fecha);
+                          var hoy = new Date();
+
+                          if (date >= hoy) {
+
+                             var x = setInterval(function() {
+
+                                var deadline = new Date(fecha).getTime();
+                                var currentTime = new Date().getTime();
+                                var t = deadline - currentTime;
+                                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                                $('#day-' + subasta_id).html(days);
+                                $('#hour-' + subasta_id).html(hours);
+                                $('#minute-' + subasta_id).html(minutes);
+                                $('#second-' + subasta_id).html(seconds);
+
+                                if (t < 0) {
+
+                                   clearInterval(x);
+
+                                   $('#day-' + subasta_id).html(0);
+                                   $('#hour-' + subasta_id).html(0);
+                                   $('#minute-' + subasta_id).html(0);
+                                   $('#second-' + subasta_id).html(0);
+
+                                }
+
+                             }, 1000);
+                          } else {
+
+                             $('#day-' + subasta_id).html(0);
+                             $('#hour-' + subasta_id).html(0);
+                             $('#minute-' + subasta_id).html(0);
+                             $('#second-' + subasta_id).html(0);
                           }
-                      }
-                  }
-              }
+                          if (result.puja.valor != null) {
+                             $("#valor_alto_modal").html("<i class='fa fa-user-o'></i> " + result.user_win.name + " $" + parseFloat(result.puja.valor).toFixed(2));
+                          }
+                          if (result.subasta_user && result.puja.valor == null) {
+                             $('#valor_alto_modal').html("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
+                          }
 
-          });
-      } */
+                          if (user_id != "") {
+                             if (result.subasta_user == null && user_id) {
+                                $("#body_entrar_subasta").show();
+                                $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
+
+                             } else {
+                                if (result.puja_user.valor == null) {
+                                   $("#body_pujar").show();
+                                   $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                                } else {
+                                   if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
+                                      $("#body_pujar").show();
+                                      $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                                   }
+                                }
+
+                             }
+                          }
+                       }
 
 
-      /* if ($('#myChat').is(':visible')) {
-          $.ajax({
+                    }
+
+                 }
+              });
+           }
+
+        }
+        if (user_id != "") {
+
+           $.ajax({
               type: 'POST',
-              url: "<?= site_url('front/update_estado') ?>",
-              timeout: 4000,
-              data: {
-                  solicitud_id: solicitud_id,
-                  tecnico_id: tecnico_id
+              url: "<?= site_url('front/subasta_directas_ajax') ?>",
 
+              data: {
+                 id: 0
               },
               success: function(result) {
+                 result = JSON.parse(result);
+                 if (result) {
+                    console.log(result);
+                    for (let i = 0; i < result.length; i++) {
+                       if (result[i].puja.valor == "null") {
+                          $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));
+                       } else {
+                          if (result[i].user_win) {
 
-                  if (result) {
-                      result = JSON.parse(result);
-                  }
+                             let name_win = result[i].user_win.name;
+                             $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
+                          }
+
+                       }
+
+                       if (result[i].puja.valor != "null") {
+                          if (result[i].puja_user.valor == "null") {
+
+                             $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                          } else {
+                             $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                          }
+                          if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
+
+                             $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                          } else {
+
+                             $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                          }
+                       }
+
+
+                    }
+
+
+                 }
 
               }
+           });
+        }
 
-          });
-      } */
 
 
-   }, 6000);
+     }, 6000); */
 </script>
 <!-- =-=-=-=-=-=-= FOOTER END =-=-=-=-=-=-= -->
 </div>

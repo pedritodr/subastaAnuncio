@@ -402,7 +402,7 @@ h5 {
 h6 {
 	font-family: 'Lato';
 	font-weight: 500;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 p {
@@ -2148,7 +2148,7 @@ ul.category-list-style li a span {
 }
 
 .ad-price {
-	font-size: 25px;
+	font-size: 16px;
 	font-weight: 600;
 	float: right;
 	margin-bottom: 15px;
@@ -2337,7 +2337,7 @@ ul.category-list-style li a span {
 
 .category-grid-box .short-description .price {
 	font-weight: 600;
-	font-size: 24px;
+	font-size: 16px;
 }
 
 .category-grid-box span.negotiable {
@@ -2877,7 +2877,7 @@ width: 100%;
 	height: 28px;
 	position: absolute;
 	top: 0;
-	width: 45%;
+	width: 50%;
 	z-index: 1;
 	padding: 0 12px;
 }
@@ -3156,66 +3156,66 @@ ul.add_info li i {
 }
 
 /* =-=-=-=-=-=-= Single Ad Details =-=-=-=-=-=-= */
-.single-ad .image-box p b {
+.single-anun .image-box p b {
 	color: #232323;
 }
 
-.single-ad .flexslider {
+.single-anun .flexslider {
 	border: medium none;
 }
 
-.single-ad .flexslider .slide-main img {
+.single-anun .flexslider .slide-main img {
 	border: 1px solid #e4e4e4;
 }
 
-.single-ad .flexslider .slides {
+.single-anun .flexslider .slides {
 	background-color: #fff;
 }
 
-.single-ad .ad-share .ad-box span {
+.single-anun .ad-share .ad-box span {
 	color: #232323;
 }
 
-.single-ad .flexslider .slide-thumbnail li {
+.single-anun .flexslider .slide-thumbnail li {
 	cursor: pointer;
 	margin-right: 18px;
 }
 
-.single-ad .ad-box .short-features {
+.single-anun .ad-box .short-features {
 	overflow: hidden;
 	margin-top: 10px;
 	margin-bottom: 25px;
 }
 
-.single-ad .heading-panel h3 {
+.single-anun .heading-panel h3 {
 	font-size: 20px;
 }
 
-.single-ad .heading-panel h3.main-title {
+.single-anun .heading-panel h3.main-title {
 	border-bottom: medium none;
 	display: inline-block;
 }
 
-.single-ad .heading-panel {
+.single-anun .heading-panel {
 	margin-bottom: 10px;
 }
 
-.single-ad .ad-share {
+.single-anun .ad-share {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	overflow: hidden;
 }
 
-.single-ad .ad-box .short-features span strong {
+.single-anun .ad-box .short-features span strong {
 	color: #232323;
 }
 
-.single-ad .ad-box .ad-related-img {
+.single-anun .ad-box .ad-related-img {
 	overflow: hidden;
 	margin-bottom: 30px;
 }
 
-.single-ad .ad-box .specification p:first-letter {
+.single-anun .ad-box .specification p:first-letter {
 	text-transform: normal
 }
 
@@ -3382,22 +3382,22 @@ ul.add_info li i {
 	box-shadow: 0 2px 0 #367bc4;
 }
 
-.single-ad .ad-box .short-history li {
+.single-anun .ad-box .short-history li {
 	display: inline-block;
 	border-right: 1px solid #e7e7e7;
 	padding-right: 10px;
 	padding-left: 10px;
 }
 
-.single-ad .ad-box .short-history li:first-child {
+.single-anun .ad-box .short-history li:first-child {
 	padding-left: 0;
 }
 
-.single-ad .ad-box .short-history li:last-child {
+.single-anun .ad-box .short-history li:last-child {
 	border-right: medium none;
 }
 
-.single-ad .ad-box .short-history li b {
+.single-anun .ad-box .short-history li b {
 	font-weight: 600;
 }
 
@@ -3429,7 +3429,7 @@ ul.add_info li i {
 	color: #232323;
 }
 
-.single-ad .adz-head h4 {
+.single-anun .adz-head h4 {
 	color: #232323;
 	font-size: 24px;
 }
@@ -3525,24 +3525,24 @@ ul.add_info li i {
 	display: none;
 }
 
-.single-ad .single-details:hover .owl-controls .owl-nav {
+.single-anun .single-details:hover .owl-controls .owl-nav {
 	display: block;
 }
 
-.single-ad .ad-box .ad-title {
+.single-anun .ad-box .ad-title {
 	border-bottom: 1px solid #eee;
 	margin-bottom: 15px;
 	padding-bottom: 25px;
 }
 
-.single-ad .ad-box .ad-title h2 {
+.single-anun .ad-box .ad-title h2 {
 	color: #232323;
 	font-size: 22px;
 	margin-bottom: 4px;
 	text-transform: normal;
 }
 
-.single-ad .ad-box .ad-title h2 a {
+.single-anun .ad-box .ad-title h2 a {
 	color: #232323;
 }
 
@@ -3702,7 +3702,7 @@ ul.add_info li i {
 }
 
 .recent-ads .recent-ads-list-image-inner {
-	background-color: rgba(0, 0, 0, 0.12);
+	/* background-color: rgba(0, 0, 0, 0.12); */
 	display: block;
 	height: 60px;
 	margin: 0 16px 0 0;
@@ -10297,7 +10297,7 @@ ul.listingViewIcon li.shortByListingLi ul li a {
 	color: #fff;
 }
 
-.single-ad .featured-border {
+.single-anun .featured-border {
 	border-top: 4px solid #b63339;
 	position: realtive;
 	width: 100%;

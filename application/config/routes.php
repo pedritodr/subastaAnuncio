@@ -93,11 +93,11 @@ for ($i = 0; $i < 30; $i++) {
     $route[strtolower('anuncios/page/' . $page3)] = 'front/anuncios_index/' . $page3;
     $page3 += 6;
 }
-$page4 = 4;
+$page4 = 6;
 $route[strtolower('perfil/page')] = 'front/perfil';
 for ($i = 0; $i < 20; $i++) {
     $route[strtolower('perfil/page/' . $page4)] = 'front/perfil/' . $page4;
-    $page4 += 4;
+    $page4 += 6;
 }
 
 $query = $db->get('anuncio');

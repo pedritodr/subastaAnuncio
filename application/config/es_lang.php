@@ -461,7 +461,7 @@ $config['address_lang'] = "Dirección";
 $config['password_lang'] = "Contraseña";
 $config['categories_lang'] = "Categorias";
 $config['categorie_lang'] = "Categoria";
-$config['categorie_popular_lang'] = "Categorias populares";
+$config['categorie_popular_lang'] = "Categorías de anuncios";
 $config['contactar_vendedor_lang'] = "Contactar al vendedor";
 $config['anuncio_relacionado_lang'] = "Anuncios relacionados";
 
