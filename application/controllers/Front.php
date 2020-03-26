@@ -202,7 +202,7 @@ class Front extends CI_Controller
     {
 
         $this->load->model('Anuncio_model', 'anuncio');
-
+        $this->load->model('Pais_model', 'pais');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
@@ -211,10 +211,27 @@ class Front extends CI_Controller
         $subcate_id = $this->input->post('subcategoria');
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
-        $ciudad = $this->input->post('ciudad');
+        //  $ciudad = $this->input->post('ciudad');
         $user_id = $this->session->userdata('user_id');
         $direccion = $this->input->post('pac-input');
         $anuncio_id = $this->input->post('anuncio_id');
+        $city = $this->input->post('city_main');
+        if ($city != null) {
+            $city = strtoupper($city);
+            $ciudad_object = $this->pais->get_city($city);
+            if (!$ciudad_object) {
+                $data_ciudad = [
+                    'name_ciudad' => $city,
+                    'pais_id' => 4,
+
+                ];
+                $ciudad_id = $this->pais->create_cuidad($data_ciudad);
+            } else {
+                $ciudad_id = $ciudad_object->ciudad_id;
+            }
+        } else {
+            $ciudad_id = 4;
+        }
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
@@ -242,7 +259,7 @@ class Front extends CI_Controller
                             'subcate_id' => $subcate_id,
                             'lat' => $lat,
                             'lng' => $lng,
-                            'ciudad_id' => $ciudad,
+                            'ciudad_id' => $ciudad_id,
                             'user_id' => $user_id,
                             'direccion' => $direccion,
 
@@ -270,7 +287,7 @@ class Front extends CI_Controller
                     'subcate_id' => $subcate_id,
                     'lat' => $lat,
                     'lng' => $lng,
-                    'ciudad_id' => $ciudad,
+                    'ciudad_id' => $ciudad_id,
                     'user_id' => $user_id,
                     'direccion' => $direccion,
 
@@ -632,17 +649,36 @@ class Front extends CI_Controller
 
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Membresia_model', 'membresia');
+        $this->load->model('Pais_model', 'pais');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
         $photo = $this->input->post('photo');
         $whatsapp = $this->input->post('whatsapp');
         $subcate_id = $this->input->post('subcategoria');
+
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
-        $ciudad = $this->input->post('ciudad');
         $user_id = $this->session->userdata('user_id');
         $direccion = $this->input->post('pac-input');
+        $city = $this->input->post('city_main');
+        if ($city != null) {
+            $city = strtoupper($city);
+            $ciudad_object = $this->pais->get_city($city);
+            if (!$ciudad_object) {
+                $data_ciudad = [
+                    'name_ciudad' => $city,
+                    'pais_id' => 4,
+
+                ];
+                $ciudad_id = $this->pais->create_cuidad($data_ciudad);
+            } else {
+                $ciudad_id = $ciudad_object->ciudad_id;
+            }
+        } else {
+            $ciudad_id = 4;
+        }
+
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
@@ -674,7 +710,7 @@ class Front extends CI_Controller
                         'is_active' => 1,
                         'lat' => $lat,
                         'lng' => $lng,
-                        'ciudad_id' => $ciudad,
+                        'ciudad_id' => $ciudad_id,
                         'user_id' => $user_id,
                         'direccion' => $direccion,
                         'fecha' =>  date("Y-m-d"),
@@ -1800,13 +1836,7 @@ class Front extends CI_Controller
         $city = $this->pais->get_by_city_all($ciudad_id);
         $all_pais = $this->pais->get_all();
         $data['all_pais'] = $all_pais;
-
-        if ($city) {
-            $all_ciudad = $this->pais->get_by_pais_id_object($city->pais_id);
-        } else {
-            $all_ciudad = $this->pais->get_by_pais_id_object($all_pais[0]->pais_id);
-        }
-
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
 
         $data['contador_anuncios'] = $contador;
         $data['all_ciudad'] = $all_ciudad;

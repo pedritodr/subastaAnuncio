@@ -58,7 +58,13 @@
                <!--  Form -->
                <div class="form-grid">
                   <form action="<?= site_url('front/add_cliente'); ?>" method="post">
-                     <?= get_message_from_operation(); ?>
+                     <?php if (get_message_from_operation()) { ?>
+                        <div role="alert" class="alert alert-success alert-dismissible">
+                           <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                           <strong><?= get_message_from_operation(); ?></strong>
+                        </div>
+                     <?php } ?>
+
                      <div class="form-group">
                         <label><?= translate("nombre_lang"); ?></label>
                         <input required placeholder="<?= translate('nombre_lang'); ?>" class="form-control" type="text" name="name">

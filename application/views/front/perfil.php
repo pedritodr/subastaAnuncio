@@ -55,7 +55,7 @@
                 <!-- Middle Content Area -->
                 <div class="col-md-4 col-sm-12 col-xs-12 leftbar-stick blog-sidebar">
                     <!-- Sidebar Widgets -->
-                    <div class="user-profile">
+                    <div style="padding-top: 5%;" class="user-profile">
                         <div class="text-center">
                             <?php if ($this->session->userdata('photo') == "") { ?>
                                 <img style="width:50%" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
@@ -506,7 +506,7 @@
                                         </div>
 
 
-                                        <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
+                                        <!-- <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
                                             <label> <?= translate('country_lang') ?> <span class="color-red">*</span></label>
                                             <select onchange="change_pais();" id="pais" name="pais" class="form-control select2">
 
@@ -523,13 +523,13 @@
 
                                             </select>
 
-                                        </div>
+                                        </div> -->
 
 
-                                        <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-20">
+                                        <div class="col-md-4 col-sm-4 col-xs-12 margin-bottom-20">
                                             <label> <?= translate('name_city_lang') ?> <span class="color-red">*</span></label>
                                             <select id="ciudad" name="ciudad" class="form-control select2">
-
+                                                <option>Seleccione una ciudad</option>
                                                 <?php
                                                 if (isset($all_ciudad))
                                                     foreach ($all_ciudad as $item) { ?>
@@ -543,19 +543,23 @@
                                             </select>
 
                                         </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 margin-bottom-20">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label> <?= translate('photo_lang') ?> (400x400)</label>
+                                                    <input style="width: 104%;" type="file" class="form-control" name="archivo" placeholder="<?= translate('photo_lang'); ?>">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <label> <?= translate('direccion_lang') ?> <span class="color-red">*</span></label>
                                             <textarea name="direccion" class="form-control margin-bottom-20" rows="2"><?= $this->session->userdata('direccion'); ?></textarea>
                                         </div>
                                     </div>
                                     <div class="row margin-bottom-20">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <label> <?= translate('photo_lang') ?> (400x400)</label>
-                                                <input type="file" class="form-control" name="archivo" placeholder="<?= translate('photo_lang'); ?>">
-                                            </div>
 
-                                        </div>
                                     </div>
                                     <div class="clearfix"></div>
 
