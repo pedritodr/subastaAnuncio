@@ -116,8 +116,11 @@ class Front extends CI_Controller
 
 
     public function anuncio()
-    {
-
+    {   
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
 
@@ -148,6 +151,10 @@ class Front extends CI_Controller
     }
     public function update_anuncio_index($anuncio_id)
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
@@ -201,6 +208,10 @@ class Front extends CI_Controller
     public function update_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Pais_model', 'pais');
         $titulo = $this->input->post('titulo');
@@ -571,7 +582,10 @@ class Front extends CI_Controller
 
     public function update_cliente()
     {
-
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('User_model', 'user');
 
         $name = $this->input->post('name');
@@ -647,6 +661,10 @@ class Front extends CI_Controller
     public function add_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Pais_model', 'pais');
@@ -750,6 +768,10 @@ class Front extends CI_Controller
     public function destacar_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $anuncio_id = $this->input->post('anuncio_id_destacar');
         $fecha = date('Y-m-d');
@@ -1656,6 +1678,10 @@ class Front extends CI_Controller
 
     public function perfil()
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
@@ -2082,6 +2108,10 @@ class Front extends CI_Controller
     }
     public function desactivar()
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
         $anuncio_id = $this->input->post('anuncio_id2');
 
