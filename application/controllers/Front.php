@@ -2091,4 +2091,20 @@ class Front extends CI_Controller
         echo json_encode($all_subastas);
         exit();
     }
+    public function subastas_ajax()
+    {
+        $this->load->model('Subasta_model', 'subasta');
+        $fecha_actual = strtotime(date("Y-m-d H:i:00", time()));
+
+        $all_subastas =  $this->subasta->get_subastas();
+        foreach ($all_subastas as $item) {
+            $fecha_cierre = strtotime($item->fecha_cierre);
+            if ($fecha_actual   >= $fecha_cierre) {
+                $this->subasta->update($item->subasta_id, ['is_open' => 0]);
+            }
+        }
+        $all_subastas =  $this->subasta->get_subastas();
+        echo json_encode($all_subastas);
+        exit();
+    }
 }
