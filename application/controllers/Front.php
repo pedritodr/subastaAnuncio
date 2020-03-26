@@ -365,6 +365,14 @@ class Front extends CI_Controller
 
                 $item->corta = $item->descripcion;
             }
+            $titulo = strlen($item->titulo);
+
+            if ($titulo > 54) {
+                $item->titulo_corto = substr($item->titulo, 0, 54) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
         }
         $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
 
