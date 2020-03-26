@@ -115,7 +115,7 @@ class Membresia_model extends CI_Model
     function update_membresia_user($id, $data)
     {
         $old = $this->get_by_id($id);
-        $this->db->where('membresia_user_id', $id);
+        $this->db->where('membre_user_id', $id);
         foreach ($data as $key => $value) {
             $this->db->set($key, $value);
         }

@@ -56,8 +56,7 @@ class Subasta  extends CI_Controller
 
 
         $this->load->model('Pais_model', 'pais');
-        $data['all_ciudad'] = $this->pais->get_all_ciudad();
-
+        $data['all_ciudad'] = $this->pais->get_by_pais_id_object(4);
 
         $this->load_view_admin_g('subasta/add', $data);
     }
@@ -192,7 +191,7 @@ class Subasta  extends CI_Controller
             $all_categoria = $this->categoria->get_all();
             $data['all_categoria'] = $all_categoria;
 
-            $all_ciudad = $this->pais->get_all_ciudad();
+            $all_ciudad = $this->pais->get_by_pais_id_object(4);
             $data['all_ciudad'] = $all_ciudad;
 
 

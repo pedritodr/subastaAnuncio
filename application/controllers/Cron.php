@@ -98,19 +98,21 @@ class Cron  extends CI_Controller
     }
     public function desactivar_subasta()
     {
-        $fecha = date('Y-m-d');
 
+        $fecha = strtotime(date("Y-m-d H:i:00", time()));
         $all_subastas = $this->subasta->get_all(['is_active' => 1]);
 
         foreach ($all_subastas as $item) {
-            $fecha_fin =  $item->fecha_cierre;
+            $fecha_cierre = strtotime($item->fecha_cierre);
+            // $fecha_fin =  $item->fecha_cierre;
+            /*
             $fechaEntera = strtotime($fecha_fin);
             $anio = date("Y", $fechaEntera);
             $mes = date("m", $fechaEntera);
             $dia = date("d", $fechaEntera);
-            $fecha_fin = $anio . "-" . $mes . "-" . $dia;
+            $fecha_fin = $anio . "-" . $mes . "-" . $dia; */
 
-            if ($fecha == $fecha_fin) {
+            if ($fecha >= $fecha_cierre) {
                 $this->subasta->update($item->subasta_id, ['is_open' => 0]);
             }
         }

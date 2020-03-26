@@ -159,7 +159,7 @@
                   <!-- end row -->
                   <!-- Ad Description  -->
                   <div class="row">
-                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                     <div style="margin-bottom: -3%;" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                         <div class="form-group">
                            <label class="control-label"><?= translate('description_lang'); ?></label>
                            <textarea name="descripcion" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>"></textarea>
@@ -170,7 +170,7 @@
 
                   <div class="row">
 
-                     <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                     <!--     <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
                         <label><?= translate("listar_country_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"> <i class="fa fa-globe"></i></span>
@@ -185,9 +185,9 @@
                            </select>
 
                         </div>
-                     </div>
+                     </div> -->
 
-                     <div id="cuerpo_ciudades" class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                     <!--       <div id="cuerpo_ciudades" class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
                         <label><?= translate("listar_city_lang"); ?></label>
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
@@ -203,17 +203,17 @@
 
                         </div>
 
-                     </div>
-                     <br><br>
+                     </div> -->
 
 
-                     <div class="google-maps-wrapper">
+
+                     <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
                         <div id="google-maps-inner" class="google-maps-inner">
 
-                           <br><br>
-                           <div style="margin-left: 1.4%; margin-bottom: 2%;" class="input-group">
+                           <label><?= translate("direccion_lang"); ?></label>
+                           <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                              <input style="width:99%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui">
+                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
 
                            </div>
 
@@ -230,6 +230,7 @@
 
                      <input type="hidden" id="lat" name="lat" />
                      <input type="hidden" id="lng" name="lng" />
+                     <input type="hidden" id="city_main" name="city_main" />
                      <button type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
 
 
@@ -263,9 +264,11 @@
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
 
    <script type="text/javascript">
+      let latitude = 0;
+      let longitude = 0;
       $(document).ready(function() {
 
-         cargar_city(city = "");
+         initMap();
 
       });
 
@@ -282,12 +285,9 @@
                result = JSON.parse(result);
 
                var cadena = "";
-               cadena = "<label><?= translate('listar_subcate_lang'); ?></label><div class='input-group'><span class='input-group-addon'><i class='fa fa-user'></i></span><select id='subcategoria' name='subcategoria' class='form-control select2'>";
-
                for (let i = 0; i < result.length; i++) {
                   cadena = cadena + "<option value='" + result[i].subcate_id + "'>" + result[i].nombre + "</option>";
                }
-               cadena = cadena + "</select></div>"
 
                $('#subcategoria').html(cadena);
             }
@@ -296,67 +296,40 @@
 
       }
 
+      function getReverseGeocodingData(lat, lng) {
+         var latlng = new google.maps.LatLng(lat, lng);
 
-      function change_pais() {
+         // This is making the Geocode request
+         var geocoder = new google.maps.Geocoder();
+         geocoder.geocode({
+            'latLng': latlng
+         }, function(results, status) {
+            if (status !== google.maps.GeocoderStatus.OK) {
+               alert(status);
+            }
+            // This is checking to see if the Geoeode Status is OK before proceeding
+            if (status == google.maps.GeocoderStatus.OK) {
 
-         var nuevo = $("select[name=pais]").val();
-
-         $('#ciudad').empty();
-         $.ajax({
-
-            type: 'POST',
-            url: "<?= site_url('front/get_ciudad') ?>",
-            data: {
-
-               pais_id: nuevo
-            },
-
-            success: function(result) {
-               result = JSON.parse(result);
-
-               var cadena = "";
-               cadena = "<label><?= translate('listar_city_lang'); ?></label><div  class='input-group'><span class='input-group-addon'><i class='fa fa-globe></i></span><select id='ciudad' name='ciudad class='form-control select2'>";
-
-               for (let i = 0; i < result.length; i++) {
-
-                  cadena = cadena + "<option value ='" + result[i].ciudad_id + "'>" + result[i].name_ciudad + "</option>";
-
-               }
-
-               cadena = cadena + "</select></div>"
-
-               $('#ciudad').html(cadena);
-
-               cargar_city(result[0].name_ciudad.toUpperCase());
+               var address = (results[0].formatted_address);
+               alert(address);
+               $('#pac-input').val(address);
 
             }
-
          });
-
       }
 
-      function cargar_city(city = "") {
 
-         if (city == "") {
-            var ciudad = $('#ciudad option:selected').text().toUpperCase();
-
-            initMap(ciudad);
-         } else {
-            initMap(city);
-         }
-
-      }
 
       //Funcion principal
-      function initMap(city) {
+      function initMap() {
 
          $('#pac-input').val("");
-
+         let country = "ecuador"
          $.ajax({
-            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + city + ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
+            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + country + ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
             dataType: 'json',
             success: function(response) {
-
+               //  console.log(response);
                var pos = {
                   lat: parseFloat(response.results[0].geometry.location.lat),
 
@@ -365,7 +338,7 @@
                var map = new google.maps.Map(document.getElementById('map'), {
                   center: pos,
                   scrollwheel: false,
-                  zoom: 13
+                  zoom: 7
                });
                var marker = new google.maps.Marker({
                   position: pos,
@@ -450,6 +423,7 @@
                   var lng = currentLocation.lng(); //longitude
                   $('#lat').val(lat);
                   $('#lng').val(lng);
+                  search_city(lat, lng);
                   getReverseGeocodingData2(lat, lng)
                   google.maps.event.addListener(marker, 'dragend', function(event) {
 
@@ -458,6 +432,7 @@
                      var lng = currentLocation.lng(); //longitude
                      $('#lat').val(lat);
                      $('#lng').val(lng);
+                     search_city(lat, lng);
                      getReverseGeocodingData2(lat, lng)
                   });
 
@@ -508,7 +483,7 @@
                      var lng = currentLocation.lng(); //longitude
                      var geocoder = new google.maps.Geocoder;
                      var infowindow = new google.maps.InfoWindow;
-
+                     search_city(lat, lng);
                      getReverseGeocodingData2(lat, lng);
                      $('#lat').val(lat);
                      $('#lng').val(lng);
@@ -527,6 +502,7 @@
                   geocoder.geocode({
                      'latLng': latlng
                   }, function(results, status) {
+                     //  console.log(results);
                      if (status !== google.maps.GeocoderStatus.OK) {
                         alert(status);
                      }
@@ -534,12 +510,65 @@
                      if (status == google.maps.GeocoderStatus.OK) {
 
                         var address = (results[0].formatted_address);
+                        var ciudad = results[0].address_components;
 
                         $('#pac-input').val(address);
 
                      }
                   });
                }
+
+               function search_city(lat, lng) {
+                  var latlng;
+                  latlng = new google.maps.LatLng(lat, lng); // New York, US
+
+                  new google.maps.Geocoder().geocode({
+                     'latLng': latlng
+                  }, function(results, status) {
+                     if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[1]) {
+                           var country = null,
+                              countryCode = null,
+                              city = null,
+                              cityAlt = null;
+                           var c, lc, component;
+                           for (var r = 0, rl = results.length; r < rl; r += 1) {
+                              var result = results[r];
+
+                              if (!city && result.types[0] === 'locality') {
+                                 for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                                    component = result.address_components[c];
+
+                                    if (component.types[0] === 'locality') {
+                                       city = component.long_name;
+                                       break;
+                                    }
+                                 }
+                              } else if (!city && !cityAlt && result.types[0] === 'administrative_area_level_1') {
+                                 for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                                    component = result.address_components[c];
+
+                                    if (component.types[0] === 'administrative_area_level_1') {
+                                       cityAlt = component.long_name;
+                                       break;
+                                    }
+                                 }
+                              } else if (!country && result.types[0] === 'country') {
+                                 country = result.address_components[0].long_name;
+                                 countryCode = result.address_components[0].short_name;
+                              }
+
+                              if (city && country) {
+                                 break;
+                              }
+                           }
+                           $("#city_main").val(city);
+                           // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
+                        }
+                     }
+                  });
+               }
+
 
             }
          });

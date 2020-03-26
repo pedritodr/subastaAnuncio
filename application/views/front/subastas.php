@@ -186,7 +186,7 @@
                                                     <div class="well ad-listing clearfix">
                                                         <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
                                                             <!-- Image Box -->
-                                                            <div class="img-box">
+                                                            <div style="cursor:pointer" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="img-box">
                                                                 <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
                                                                 <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
                                                                 <!--    <div class="quick-view"><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="view-button"><i class="fa fa-search"></i></a> </div> -->
@@ -203,21 +203,21 @@
                                                                     <div class="col-md-9 col-sm-12 col-xs-12">
                                                                         <!-- Category Title -->
 
-                                                                        <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
-
+                                                                        <div class="category-title"> <span><a><?= $item->categoria ?></a></span>
+                                                                            <span style="display:none" id="span_subasta_<?= $item->subasta_id ?>" class="label label-danger">Finalizada</span>
                                                                         </div>
 
 
                                                                         <!-- Ad Title -->
-                                                                        <h6><a><?= $item->corto ?></a> </h6>
+                                                                        <h6><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');"><?= $item->corto ?></a> </h6>
                                                                         <!-- Info Icons -->
 
                                                                         <!-- Ad Meta Info -->
                                                                         <ul class="ad-meta-info">
-                                                                            <li> <i class="fa fa-map-marker"></i><a href="#"><?= $item->ciudad ?></a> </li>
+                                                                            <li> <i class="fa fa-map-marker"></i><a><?= $item->ciudad ?></a> </li>
                                                                             <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
                                                                         </ul>
-                                                                        <div class="row">
+                                                                        <div class="row" id="cronometro_subasta_<?= $item->subasta_id ?>">
                                                                             <div class="col-md-12">
                                                                                 <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
                                                                                     <div class="timer conte">
@@ -254,7 +254,7 @@
 
                                                                         </div>
                                                                         <?php if ($this->session->userdata('user_id')) { ?>
-                                                                            <div class="row">
+                                                                            <div class="row" id="btn_subastas_<?= $item->subasta_id ?>">
 
                                                                                 <?php if (!$item->subasta_user) { ?>
                                                                                     <div class="col-md-6">
@@ -318,7 +318,7 @@
                                                         <div class="well ad-listing clearfix">
                                                             <div class="col-md-3 col-sm-5 col-xs-12 grid-style no-padding">
                                                                 <!-- Image Box -->
-                                                                <div class="img-box">
+                                                                <div style="cursor:pointer" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="img-box">
                                                                     <img src="<?= base_url($item->photo) ?>" class="img-responsive" alt="">
                                                                     <div class="total-images"><strong><?= $item->contador_fotos + 1 ?></strong> <?= translate("photos_lang"); ?> </div>
                                                                     <!--    <div class="quick-view"><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>');" class="view-button"><i class="fa fa-search"></i></a> </div> -->
@@ -335,13 +335,13 @@
                                                                         <div class="col-md-9 col-sm-12 col-xs-12">
                                                                             <!-- Category Title -->
 
-                                                                            <div class="category-title"> <span><a href="#"><?= $item->categoria ?></a></span>
+                                                                            <div class="category-title"> <span><a><?= $item->categoria ?></a></span>
 
                                                                             </div>
 
 
                                                                             <!-- Ad Title -->
-                                                                            <h6><a><?= $item->corto ?></a> </h6>
+                                                                            <h6><a onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');"><?= $item->corto ?></a> </h6>
                                                                             <!-- Info Icons -->
 
                                                                             <!-- Ad Meta Info -->
@@ -382,7 +382,7 @@
                                                                             <!-- Ad Description-->
                                                                             <div class="ad-details">
 
-                                                                                <?= $item->descrip_espa ?>
+                                                                                <?= $item->corta ?>
 
 
                                                                             </div>

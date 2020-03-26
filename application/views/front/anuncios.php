@@ -101,7 +101,7 @@
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
 
-                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
                                                 <!--   <div class="ribbon popular"></div> -->
 
 
@@ -134,7 +134,7 @@
                                                 </font>
                                             </div>
                                             <!-- Title -->
-                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
                                                 <h6>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;"><?= $item->corto ?></font>

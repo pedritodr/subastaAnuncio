@@ -33,7 +33,13 @@ class Pais_model extends CI_Model
 
         return $query->row();
     }
+    function get_city($name) //pais
+    {
+        $this->db->like('name_ciudad', $name);
+        $query = $this->db->get('ciudad');
 
+        return $query->row();
+    }
     function get_by_pais_id($id) //pais
     {
 

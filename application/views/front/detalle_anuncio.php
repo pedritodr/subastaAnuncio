@@ -224,7 +224,7 @@
                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
                                                       <h6>
                                                          <font style="vertical-align: inherit;">
-                                                            <font style="vertical-align: inherit;"><?= $item->titulo ?></font>
+                                                            <font style="vertical-align: inherit;"><?= $item->titulo_corto ?></font>
                                                          </font>
                                                       </h6>
                                                    </a>

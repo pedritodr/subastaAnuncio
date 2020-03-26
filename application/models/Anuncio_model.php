@@ -108,6 +108,7 @@ class Anuncio_model extends CI_Model
         $this->db->select('*');
         $this->db->from('anuncio');
         $this->db->where('user_id', $id);
+        $this->db->order_by('anuncio_id', 'desc');
         $query = $this->db->get();
         return $query->result();
     }
