@@ -63,7 +63,7 @@ class Login extends CI_Controller
                 } else {
 
                     $this->session->set_userdata('validando', 1);
-                    redirect("perfil/page/");
+                    redirect("portada");
                     //  redirect("portada");
                 }
             } else {
