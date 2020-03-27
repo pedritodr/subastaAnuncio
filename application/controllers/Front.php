@@ -116,7 +116,7 @@ class Front extends CI_Controller
 
 
     public function anuncio()
-    {   
+    {
         if (!in_array($this->session->userdata('role_id'), [2])) {
             $this->log_out();
             redirect('login');
@@ -568,8 +568,10 @@ class Front extends CI_Controller
                 'password' => md5($password),
                 'phone' => $phone,
                 'role_id' => 4,
+                'status' => 1
 
             ];
+
             $user_id =  $this->user->create($data_user);
             $user = $this->user->get_by_id($user_id);
             $session_data = object_to_array($user);
