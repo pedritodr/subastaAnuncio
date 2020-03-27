@@ -19,7 +19,6 @@ class Front extends CI_Controller
         $this->load_language();
         $this->init_form_validation();
         ini_set('memory_limit', '512M');
-        header('Cache-Control: no cache');
     }
 
     public function show_404()
@@ -567,7 +566,7 @@ class Front extends CI_Controller
                 'email' => $email,
                 'password' => md5($password),
                 'phone' => $phone,
-                'role_id' => 4,
+                'role_id' => 2,
                 'status' => 1
 
             ];
@@ -578,7 +577,7 @@ class Front extends CI_Controller
             $this->session->set_userdata($session_data);
             $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
             $this->session->set_userdata('validando', 1);
-            redirect("perfil/page/");
+            redirect("portada");
         }
     }
 
@@ -793,6 +792,7 @@ class Front extends CI_Controller
     }
     public function buscar_subasta_directa()
     {
+        header('Cache-Control: no cache');
         $this->session->set_userdata('page', 'buscar_subasta');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
@@ -955,6 +955,7 @@ class Front extends CI_Controller
     }
     public function buscar_subasta_inversa()
     {
+        header('Cache-Control: no cache');
         $this->session->set_userdata('page', 'buscar_subasta');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
@@ -1472,7 +1473,7 @@ class Front extends CI_Controller
 
     public function buscar_anuncio()
     {
-
+        header('Cache-Control: no cache');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
