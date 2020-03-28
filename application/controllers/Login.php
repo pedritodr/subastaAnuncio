@@ -58,6 +58,7 @@ class Login extends CI_Controller
             if ($user->role_id == 1) {
                 redirect("dashboard/index");
             } else if ($user->role_id == 2) {
+                $this->session->set_userdata('login', "ok");
                 if ($anuncio == 1) {
                     redirect("crear-anuncio");
                 } else {

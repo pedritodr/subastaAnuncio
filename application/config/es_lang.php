@@ -429,7 +429,8 @@ $config['error_sorteo_lang'] = "Ya existe un sorteo en este mes";
 $config['error_sorteo_2_lang'] = "Este sorteo esta disponible solo en Diciembre";
 $config['name_cate_lang'] = "Categoria";
 $config['cate_list_lang'] = "Lista de categorias";
-
+$config['msg_hola_lang'] = "Gracias por pertenecer a nuestra plataforma.";
+$config['hola_lang'] = "¡Hola!";
 $config['lista_clients_lang'] = "Lista de clientes";
 
 

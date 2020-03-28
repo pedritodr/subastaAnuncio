@@ -456,7 +456,8 @@ class Front extends CI_Controller
 
         $puja =  $this->subasta->get_puja_alta($subasta_id);
         if ($puja) {
-            $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+            // $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+            $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
         } else {
             $user_win = null;
         }
@@ -1757,9 +1758,11 @@ class Front extends CI_Controller
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
 
             $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
             $item->puja = $puja;
             if ($puja) {
-                $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                // $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
             } else {
                 $user_win = null;
             }
@@ -2144,7 +2147,8 @@ class Front extends CI_Controller
             $puja =  $this->subasta->get_puja_alta($item->subasta_id);
             $item->puja = $puja;
             if ($puja) {
-                $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                //  $user_win = $this->subasta->get_user_puja_alta($puja->valor);
             } else {
                 $user_win = null;
             }
