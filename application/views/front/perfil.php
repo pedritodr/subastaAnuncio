@@ -172,10 +172,10 @@
                                                 <ul class="pull-right">
                                                     <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><i class="fa fa-pencil edit"></i></a> </li>
                                                     <?php if ($item->is_active == 1) { ?>
-                                                        <li> <a title="Desactilet anuncio" onclick="cargar_modal_desactilet('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
+                                                        <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
                                                     <?php } else { ?>
                                                         <li>
-                                                            <a title="Actilet anuncio" onclick="cargar_modal_desactilet('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
+                                                            <a title="Actilet anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
                                                         </li>
                                                     <?php } ?>
                                                     <?php if ($item->destacado == 0) { ?>

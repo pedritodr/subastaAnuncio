@@ -19,7 +19,6 @@ class Front extends CI_Controller
         $this->load_language();
         $this->init_form_validation();
         ini_set('memory_limit', '512M');
-        header('Cache-Control: no cache');
     }
 
     public function show_404()
@@ -117,7 +116,10 @@ class Front extends CI_Controller
 
     public function anuncio()
     {
-
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
 
@@ -148,6 +150,10 @@ class Front extends CI_Controller
     }
     public function update_anuncio_index($anuncio_id)
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
@@ -201,6 +207,10 @@ class Front extends CI_Controller
     public function update_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Pais_model', 'pais');
         $titulo = $this->input->post('titulo');
@@ -446,7 +456,8 @@ class Front extends CI_Controller
 
         $puja =  $this->subasta->get_puja_alta($subasta_id);
         if ($puja) {
-            $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+            // $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+            $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
         } else {
             $user_win = null;
         }
@@ -556,22 +567,27 @@ class Front extends CI_Controller
                 'email' => $email,
                 'password' => md5($password),
                 'phone' => $phone,
-                'role_id' => 4,
+                'role_id' => 2,
+                'status' => 1
 
             ];
+
             $user_id =  $this->user->create($data_user);
             $user = $this->user->get_by_id($user_id);
             $session_data = object_to_array($user);
             $this->session->set_userdata($session_data);
             $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
             $this->session->set_userdata('validando', 1);
-            redirect("perfil/page/");
+            redirect("portada");
         }
     }
 
     public function update_cliente()
     {
-
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('User_model', 'user');
 
         $name = $this->input->post('name');
@@ -647,6 +663,10 @@ class Front extends CI_Controller
     public function add_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Pais_model', 'pais');
@@ -750,6 +770,10 @@ class Front extends CI_Controller
     public function destacar_anuncio()
     {
 
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $this->load->model('Anuncio_model', 'anuncio');
         $anuncio_id = $this->input->post('anuncio_id_destacar');
         $fecha = date('Y-m-d');
@@ -769,6 +793,7 @@ class Front extends CI_Controller
     }
     public function buscar_subasta_directa()
     {
+        header('Cache-Control: no cache');
         $this->session->set_userdata('page', 'buscar_subasta');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
@@ -931,6 +956,7 @@ class Front extends CI_Controller
     }
     public function buscar_subasta_inversa()
     {
+        header('Cache-Control: no cache');
         $this->session->set_userdata('page', 'buscar_subasta');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
@@ -1448,7 +1474,7 @@ class Front extends CI_Controller
 
     public function buscar_anuncio()
     {
-
+        header('Cache-Control: no cache');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
@@ -1656,6 +1682,10 @@ class Front extends CI_Controller
 
     public function perfil()
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
@@ -1728,9 +1758,11 @@ class Front extends CI_Controller
             $item->subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
 
             $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
             $item->puja = $puja;
             if ($puja) {
-                $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                // $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
             } else {
                 $user_win = null;
             }
@@ -2082,6 +2114,10 @@ class Front extends CI_Controller
     }
     public function desactivar()
     {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
 
         $anuncio_id = $this->input->post('anuncio_id2');
 
@@ -2111,7 +2147,8 @@ class Front extends CI_Controller
             $puja =  $this->subasta->get_puja_alta($item->subasta_id);
             $item->puja = $puja;
             if ($puja) {
-                $user_win = $this->subasta->get_user_puja_alta($puja->valor);
+                $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                //  $user_win = $this->subasta->get_user_puja_alta($puja->valor);
             } else {
                 $user_win = null;
             }
