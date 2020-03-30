@@ -18,13 +18,12 @@ class Rest_membresia extends REST_Controller
         $this->init_form_validation();
     }
 
-
-    public function listar_get() //econtrando usuario
+    public function listar_post()
     {
 
         $all_membresias = $this->membresia->get_all();
         if ($all_membresias) {
-            $this->response(['status' => 200, 'all_membresias' => $all_membresias]);
+            $this->response(['status' => 200, 'membresias' => $all_membresias]);
         } else {
             $this->response(['status' => 500]);
         }
