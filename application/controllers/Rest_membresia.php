@@ -10,6 +10,7 @@ class Rest_membresia extends REST_Controller
         parent::__construct();
 
         $this->load->model('Membresia_model', 'membresia');
+        $this->load->model('User_model', 'user');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 

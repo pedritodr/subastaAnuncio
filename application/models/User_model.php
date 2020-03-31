@@ -90,14 +90,7 @@ class User_model  extends CI_Model
     }
     function is_valid_auth($user_id_decoded, $security_token)
     {
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('user_id', $user_id_decoded);
-        $this->db->where('security_token', $security_token);
-        $query = $this->db->get();
-
+        $query = $this->db->get_where("user", ['user_id' => $user_id_decoded, 'security_token' => $security_token]);
         return ($query->num_rows() > 0) ? $query->row() : false;
-        /*      $query = $this->db->get_where("user", ['user_id' => $user_id_decoded, 'security_token' => $security_token]);
-        return ($query->num_rows() > 0) ? $query->row() : false; */
     }
 }
