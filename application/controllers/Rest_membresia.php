@@ -68,9 +68,14 @@ class Rest_membresia extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-    public function membresia_user_post()
+    public function buscar_membresia_user_post()
     {
-
+        $all_membresias = $this->membresia->get_all();
+        if ($all_membresias) {
+            $this->response(['status' => 200, 'membresias' => $all_membresias]);
+        } else {
+            $this->response(['status' => 500]);
+        }
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
