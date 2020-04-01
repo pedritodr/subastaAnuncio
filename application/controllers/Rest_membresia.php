@@ -73,10 +73,9 @@ class Rest_membresia extends REST_Controller
     {
 
         $user_id = $this->input->post('user_id');
-
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-        $this->response(['status' => 200, 'auth' => $auth]);
+
         if ($auth) {
             $membresia_user = $this->membresia->get_by_user_id($user_id);
             if ($membresia_user) {
