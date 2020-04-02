@@ -307,7 +307,7 @@ class Rest_anuncio extends REST_Controller
                 'titulo' => $titulo,
                 'descripcion' => $descripcion,
                 'precio' => $precio,
-                'photo' => $file,
+                'photo' => $data[0]->imagen,
                 'whatsapp' => $whatsapp,
                 'subcate_id' => $subcategoria,
                 'is_active' => 1,
@@ -453,6 +453,13 @@ class Rest_anuncio extends REST_Controller
             }
 
             if ($object) {
+                if (count($data) > 1) {
+                    for ($i = 1; $i < count($data); $i++) {
+
+
+                        $this->photo_anuncio->create(['photo_anuncio' => $data[$i]->imagen, 'anuncio_id' => $object]);
+                    }
+                }
                 $this->response(['status' => 200, 'object' => $object]);
             } else {
                 $this->response(['status' => 404]);
