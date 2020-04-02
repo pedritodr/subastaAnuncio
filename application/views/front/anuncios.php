@@ -134,7 +134,7 @@
                                                 </font>
                                             </div>
                                             <!-- Title -->
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                 <h6>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;"><?= $item->corto ?></font>
@@ -189,7 +189,7 @@
                                             <!-- Ad History -->
                                             <div>
 
-                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
+                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
                                                         <font style="vertical-align: inherit;">
                                                             <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
                                                         </font>
