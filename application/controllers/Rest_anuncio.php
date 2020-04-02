@@ -251,7 +251,7 @@ class Rest_anuncio extends REST_Controller
             $fecha_fin = strtotime('+30 day', strtotime($fecha));
             $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            define('UPLOAD_DIR', './uploads/anuncio/');
+            /*        define('UPLOAD_DIR', './uploads/anuncio/');
             $img =  $data[0]->imagen;
             $img = str_replace('data:image/jpeg;base64,', '', $img);
 
@@ -301,7 +301,7 @@ class Rest_anuncio extends REST_Controller
                 $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
                 imagejpeg($imagen_optimizada, $file);
             }
-
+ */
 
             $datos = [
                 'titulo' => $titulo,
@@ -330,7 +330,7 @@ class Rest_anuncio extends REST_Controller
                         $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                         $this->anuncio->update($object, ['destacado' => 1]);
                     }
-                    if (count($data) > 1) {
+                    /*   if (count($data) > 1) {
                         for ($i = 1; $i < count($data); $i++) {
 
                             $img =  $data[$i]->imagen;
@@ -386,13 +386,13 @@ class Rest_anuncio extends REST_Controller
 
                             $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $object]);
                         }
-                    }
+                    } */
                 }
             } else {
 
                 $object = $this->anuncio->create($datos);
                 if ($object) {
-                    if (count($data) > 1) {
+                    /*  if (count($data) > 1) {
                         for ($i = 1; $i < count($data); $i++) {
 
                             $img =  $data[$i]->imagen;
@@ -448,7 +448,7 @@ class Rest_anuncio extends REST_Controller
 
                             $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $object]);
                         }
-                    }
+                    } */
                 }
             }
 
