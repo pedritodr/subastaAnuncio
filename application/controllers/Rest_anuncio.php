@@ -339,7 +339,7 @@ class Rest_anuncio extends REST_Controller
             if ($object) {
                 if (count($data) > 1) {
                     for ($i = 1; $i < count($data); $i++) {
-                    
+
                         $img =  $data[$i]->imagen;
                         $img = str_replace('data:image/jpeg;base64,', '', $img);
 
@@ -351,7 +351,40 @@ class Rest_anuncio extends REST_Controller
 
                         $success = file_put_contents($file, $data);
 
+                        function redimensionar_imagen($nombreimg, $rutaimg, $xmax, $ymax)
+                        {
+                            $ext = explode(".", $nombreimg);
+                            $ext = $ext[count($ext) - 1];
 
+                            if ($ext == "jpg" || $ext == "jpeg")
+
+                                $imagen = imagecreatefromjpeg($rutaimg);
+                            elseif ($ext == "png")
+                                $imagen = imagecreatefrompng($rutaimg);
+                            elseif ($ext == "gif")
+                                $imagen = imagecreatefromgif($rutaimg);
+
+                            $x = imagesx($imagen);
+                            $y = imagesy($imagen);
+
+                            if ($x <= $xmax && $y <= $ymax) {
+
+                                return $imagen;
+                            }
+
+                            if ($x >= $y) {
+                                $nuevax = $xmax;
+                                $nuevay = $nuevax * $y / $x;
+                            } else {
+                                $nuevay = $ymax;
+                                $nuevax = $x / $y * $nuevay;
+                            }
+
+                            $img2 = imagecreatetruecolor($nuevax, $nuevay);
+                            imagecopyresized($img2, $imagen, 0, 0, 0, 0, floor($nuevax), floor($nuevay), $x, $y);
+
+                            return $img2;
+                        }
                         if ($success) {
                             $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
                             imagejpeg($imagen_optimizada, $file);
