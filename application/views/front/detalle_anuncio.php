@@ -374,13 +374,13 @@
                                              <!-- Ad Img End -->
                                              <div class="short-description">
                                                 <!-- Ad Category -->
-                                                <div class="category-title"> <span><a href="#"><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span> </div>
+                                                <div class="category-title"> <span><a><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span> </div>
                                                 <!-- Ad Title -->
                                                 <h6>
                                                    <?php if ($item->titulo_corto) { ?>
-                                                      <a href="#"><?= $item->titulo_corto ?></a>
+                                                      <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
                                                    <?php } else { ?>
-                                                      <a href="#"><?= $item->titulo ?></a>
+                                                      <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
                                                    <?php } ?>
                                                 </h6>
                                                 <!-- Price -->
