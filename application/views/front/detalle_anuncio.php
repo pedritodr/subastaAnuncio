@@ -366,9 +366,9 @@
                                                 <img class="img-responsive" alt="" src="<?= base_url($item->anuncio_photo) ?>">
                                                 <!-- Ad Status -->
                                                 <!-- User Review -->
-                                                <div class="user-preview">
+                                                <!--    <div class="user-preview">
                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"> <img src="" class="avatar avatar-small" alt=""> </a>
-                                                </div>
+                                                </div> -->
                                                 <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
                                              </div>
                                              <!-- Ad Img End -->

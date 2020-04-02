@@ -252,62 +252,27 @@ class Rest_anuncio extends REST_Controller
             $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
             define('UPLOAD_DIR', './uploads/anuncio/');
-            $img =  $data[0]->imagen;
-            $img = str_replace('data:image/jpeg;base64,', '', $img);
+            $fotos = [];
+            foreach ($data as $item) {
+                $img =  $item->imagen;
+                $img = str_replace('data:image/jpeg;base64,', '', $img);
 
-            $img = str_replace(' ', '+', $img);
-            $data = base64_decode($img);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
 
-            $file = UPLOAD_DIR . uniqid() . '.jpg';
-            $image = uniqid() . '.jpg';
+                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                // $image = uniqid() . '.jpg';
 
-            $success = file_put_contents($file, $data);
-
-            /*     function redimensionar_imagen($nombreimg, $rutaimg, $xmax, $ymax)
-            {
-                $ext = explode(".", $nombreimg);
-                $ext = $ext[count($ext) - 1];
-
-                if ($ext == "jpg" || $ext == "jpeg")
-
-                    $imagen = imagecreatefromjpeg($rutaimg);
-                elseif ($ext == "png")
-                    $imagen = imagecreatefrompng($rutaimg);
-                elseif ($ext == "gif")
-                    $imagen = imagecreatefromgif($rutaimg);
-
-                $x = imagesx($imagen);
-                $y = imagesy($imagen);
-
-                if ($x <= $xmax && $y <= $ymax) {
-
-                    return $imagen;
-                }
-
-                if ($x >= $y) {
-                    $nuevax = $xmax;
-                    $nuevay = $nuevax * $y / $x;
-                } else {
-                    $nuevay = $ymax;
-                    $nuevax = $x / $y * $nuevay;
-                }
-
-                $img2 = imagecreatetruecolor($nuevax, $nuevay);
-                imagecopyresized($img2, $imagen, 0, 0, 0, 0, floor($nuevax), floor($nuevay), $x, $y);
-
-                return $img2;
+                $success = file_put_contents($file, $data);
+                array_push($fotos, $file);
             }
-            if ($success) {
-                $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
-                imagejpeg($imagen_optimizada, $file);
-            } */
 
 
             $datos = [
                 'titulo' => $titulo,
                 'descripcion' => $descripcion,
                 'precio' => $precio,
-                'photo' => $file,
+                'photo' => $fotos[0],
                 'whatsapp' => $whatsapp,
                 'subcate_id' => $subcategoria,
                 'is_active' => 1,
@@ -337,25 +302,9 @@ class Rest_anuncio extends REST_Controller
             }
 
             if ($object) {
-                if (count($data) > 1) {
-                    for ($i = 1; $i < count($data); $i++) {
-                        $img =  $data[$i]->imagen;
-                        /*        $img = str_replace('data:image/jpeg;base64,', '', $img);
-
-                        $img = str_replace(' ', '+', $img);
-                        $data = base64_decode($img);
-
-                        $file = UPLOAD_DIR . uniqid() . '.jpg';
-                        $image = uniqid() . '.jpg';
-
-                        $success = file_put_contents($file, $data);
-
-                        if ($success) {
-                            $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
-                            imagejpeg($imagen_optimizada, $file);
-                        }
- */
-
+                if (count($fotos) > 1) {
+                    for ($i = 1; $i < count($fotos); $i++) {
+                        $img =  $fotos[$i];
                         $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
                     }
                 }
