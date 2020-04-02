@@ -339,7 +339,7 @@ class Rest_anuncio extends REST_Controller
             if ($object) {
                 if (count($data) > 1) {
                     for ($i = 1; $i < count($data); $i++) {
-                        define('UPLOAD_DIR', './uploads/anuncio/');
+                    
                         $img =  $data[$i]->imagen;
                         $img = str_replace('data:image/jpeg;base64,', '', $img);
 

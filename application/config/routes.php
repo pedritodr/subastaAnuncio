@@ -103,8 +103,8 @@ for ($i = 0; $i < 20; $i++) {
 $query = $db->get('anuncio');
 $result = $query->result();
 foreach ($result as $row) {
-    $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo)))] = 'front/detalle_anuncio/' . $row->anuncio_id;
-    $route[strtolower('update_anuncio/' . strtolower(seo_url($row->titulo)))] = 'front/update_anuncio_index/' . $row->anuncio_id;
+    $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo))) . $row->anuncio_id] = 'front/detalle_anuncio/' . $row->anuncio_id;
+    $route[strtolower('update_anuncio/' . strtolower(seo_url($row->titulo))) . $row->anuncio_id] = 'front/update_anuncio_index/' . $row->anuncio_id;
 }
 
 /*
