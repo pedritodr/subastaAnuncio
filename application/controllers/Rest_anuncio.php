@@ -341,7 +341,7 @@ class Rest_anuncio extends REST_Controller
                     for ($i = 1; $i < count($data); $i++) {
 
                         $img =  $data[$i]->imagen;
-                        /*    $img = str_replace('data:image/jpeg;base64,', '', $img);
+                        $img = str_replace('data:image/jpeg;base64,', '', $img);
 
                         $img = str_replace(' ', '+', $img);
                         $data = base64_decode($img);
@@ -388,15 +388,15 @@ class Rest_anuncio extends REST_Controller
                         if ($success) {
                             $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
                             imagejpeg($imagen_optimizada, $file);
-                        } */
+                        }
 
 
-                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
+                        $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $object]);
                     }
                 }
 
 
-                $this->response(['status' => 200, 'object' => $object, 'data' => $fecha_fin]);
+                $this->response(['status' => 200, 'object' => $object, 'data' => $data]);
             } else {
                 $this->response(['status' => 404]);
             }
