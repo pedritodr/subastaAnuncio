@@ -396,7 +396,7 @@ class Rest_anuncio extends REST_Controller
                 }
 
 
-                $this->response(['status' => 200, 'object' => $object, 'data' => $data]);
+                $this->response(['status' => 200, 'object' => $object]);
             } else {
                 $this->response(['status' => 404]);
             }
