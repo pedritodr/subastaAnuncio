@@ -298,7 +298,7 @@ class Rest_anuncio extends REST_Controller
                 return $img2;
             }
             if ($success) {
-                $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
+                $imagen_optimizada = redimensionar_imagen($image, $file, 500, 500);
                 imagejpeg($imagen_optimizada, $file);
             }
 
