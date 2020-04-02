@@ -291,7 +291,7 @@ class Rest_anuncio extends REST_Controller
                 }
 
 
-                $this->response(['status' => 200, 'object' => $object, 'data' => $data]);
+                $this->response(['status' => 200, 'object' => $object, 'data' => $fecha_fin]);
             } else {
                 $this->response(['status' => 404]);
             }
