@@ -101,7 +101,7 @@
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
 
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                 <!--   <div class="ribbon popular"></div> -->
 
 
