@@ -263,7 +263,7 @@ class Rest_anuncio extends REST_Controller
 
             $success = file_put_contents($file, $data);
 
-            function redimensionar_imagen($nombreimg, $rutaimg, $xmax, $ymax)
+            /*     function redimensionar_imagen($nombreimg, $rutaimg, $xmax, $ymax)
             {
                 $ext = explode(".", $nombreimg);
                 $ext = $ext[count($ext) - 1];
@@ -300,7 +300,7 @@ class Rest_anuncio extends REST_Controller
             if ($success) {
                 $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
                 imagejpeg($imagen_optimizada, $file);
-            }
+            } */
 
 
             $datos = [
