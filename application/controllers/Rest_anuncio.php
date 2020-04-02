@@ -280,7 +280,7 @@ class Rest_anuncio extends REST_Controller
                 $y = imagesy($imagen);
 
                 if ($x <= $xmax && $y <= $ymax) {
-                    echo "<center>Esta imagen ya esta optimizada para los maximos que deseas.<center>";
+
                     return $imagen;
                 }
 
@@ -294,11 +294,11 @@ class Rest_anuncio extends REST_Controller
 
                 $img2 = imagecreatetruecolor($nuevax, $nuevay);
                 imagecopyresized($img2, $imagen, 0, 0, 0, 0, floor($nuevax), floor($nuevay), $x, $y);
-                echo "<center>La imagen se ha optimizado correctamente.</center>";
+
                 return $img2;
             }
             if ($success) {
-                $imagen_optimizada = redimensionar_imagen($image, $file, 300, 300);
+                $imagen_optimizada = redimensionar_imagen($image, $file, 750, 750);
                 imagejpeg($imagen_optimizada, $file);
             }
 

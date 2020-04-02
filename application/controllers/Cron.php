@@ -104,9 +104,8 @@ class Cron  extends CI_Controller
             echo "<center>La imagen se ha optimizado correctamente.</center>";
             return $img2;
         }
-        $imagen_optimizada = redimensionar_imagen($image, $file, 300, 300);
+        $imagen_optimizada = redimensionar_imagen($image, $file, 450, 450);
         imagejpeg($imagen_optimizada, $file);
-       
     }
     public function actualizar_membresia()
     {
