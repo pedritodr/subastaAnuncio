@@ -249,6 +249,7 @@ class Rest_anuncio extends REST_Controller
             $membresia = $this->membresia->get_by_user_id($user_id);
             $fecha = date('Y-m-d');
             $fecha_fin = strtotime('+30 day', strtotime($fecha));
+            $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
             $datos = [
                 'titulo' => $titulo,

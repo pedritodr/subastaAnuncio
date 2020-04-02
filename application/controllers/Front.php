@@ -702,6 +702,8 @@ class Front extends CI_Controller
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
+        $fecha_fin = date('Y-m-d', $fecha_fin);
+
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
 

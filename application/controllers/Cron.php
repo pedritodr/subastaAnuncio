@@ -17,8 +17,9 @@ class Cron  extends CI_Controller
 
     public function subasta_inversa()
     {
-        // $fecha = date('Y-m-d');
+        //  $fecha_hoy = date('Y-m-d');
         $fecha = strtotime(date("Y-m-d", time()));
+
         $cantidad_intervalos = 0;
         $all_subasta = $this->subasta->get_all(['is_active' => 1, 'tipo_subasta' => 2, 'is_open' => 1]);
 
@@ -34,7 +35,7 @@ class Cron  extends CI_Controller
                 $fecha_cierre = strtotime($object->fecha);
                 if ($object->cantidad > 0 && $fecha >= $fecha_cierre) {
 
-                    $nuevafecha = strtotime('+' . $item->intervalo . ' day', strtotime($fecha));
+                    $nuevafecha = strtotime('+' . $item->intervalo . ' day', $fecha);
                     $nuevafecha = date('Y-m-d', $nuevafecha);
 
                     $porcentaje = ((float) $item->porcentaje / 100) + 1;
@@ -55,7 +56,10 @@ class Cron  extends CI_Controller
     public function actualizar_membresia()
     {
         $fecha = strtotime(date("Y-m-d H:i:00", time()));
-        $fecha_mes = strtotime('+30 day', strtotime($fecha));
+
+        $fecha_mes = strtotime('+30 day', $fecha);
+        $fecha_mes = date('Y-m-d  H:i:00', $fecha_mes);
+
         $all_membresias = $this->membresia->get_all_membresias_user(['estado' => 1]);
 
 
@@ -68,7 +72,7 @@ class Cron  extends CI_Controller
             $mes = date("m", $fechaEntera);
             $dia = date("d", $fechaEntera);
             $fecha_fin = $anio . "-" . $mes . "-" . $dia; */
-            if ($fecha == $fecha_fin) {
+            if ($fecha >= $fecha_fin) {
                 $this->membresia->update_membresia_user($item->membresia_user_id, ['estado' => 0]);
             }
             if ($item->mes <= 11 && $item->fecha_mes == $fecha) {
@@ -93,7 +97,7 @@ class Cron  extends CI_Controller
         foreach ($all_anuncios as $item) {
             $fecha_fin = strtotime($item->fecha_vencimiento);
 
-            if ($fecha == $fecha_fin) {
+            if ($fecha >= $fecha_fin) {
                 $this->anuncio->update($item->anuncio_id, ['is_active' => 0]);
             }
         }
