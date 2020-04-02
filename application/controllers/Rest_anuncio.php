@@ -472,7 +472,7 @@ class Rest_anuncio extends REST_Controller
                         }
 
 
-                        $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $object]);
+                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
                     }
                 }
                 $this->response(['status' => 200, 'object' => $object]);
