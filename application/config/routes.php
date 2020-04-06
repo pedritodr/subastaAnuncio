@@ -86,12 +86,12 @@ for ($i = 0; $i < 20; $i++) {
     $route[strtolower('subastas_inversas/page/' . $page2)] = 'front/subasta_inversa/' . $page2;
     $page2 += 5;
 }
-$page3 = 6;
+$page3 = 8;
 $route[strtolower('anuncios/page')] = 'front/anuncios_index';
 
 for ($i = 0; $i < 30; $i++) {
     $route[strtolower('anuncios/page/' . $page3)] = 'front/anuncios_index/' . $page3;
-    $page3 += 6;
+    $page3 += 8;
 }
 $page4 = 6;
 $route[strtolower('perfil/page')] = 'front/perfil';

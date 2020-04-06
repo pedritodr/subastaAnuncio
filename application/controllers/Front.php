@@ -1347,6 +1347,7 @@ class Front extends CI_Controller
     public function anuncios_index()
     {
         $this->load->model('Banner_model', 'banner');
+        $this->load->model('Pais_model', 'pais');
         $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
         $data['all_banners'] = $all_banners;
         $this->load->model('Anuncio_model', 'anuncio');
@@ -1365,9 +1366,9 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
-        if ($contador >= 6) {
+        if ($contador >= 8) {
 
-            $config['per_page'] = '6';
+            $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
@@ -1457,13 +1458,24 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
 
+        $data['all_ciudad'] = $all_ciudad;
         if ($offset == 0) {
-            $data['inicio'] = 1;
-            $data['fin'] =  $contador;
+            if ($contador == 0) {
+                $data['inicio'] = 0;
+                $data['fin'] = 0;
+            } else {
+                $data['inicio'] = 1;
+                if ($contador >= 8) {
+                    $data['fin'] =  8;
+                } else {
+                    $data['fin'] = $contador;
+                }
+            }
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 6 + $offset;
+            $intervalo = 8 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
@@ -1477,6 +1489,7 @@ class Front extends CI_Controller
     public function buscar_anuncio()
     {
         header('Cache-Control: no cache');
+        $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
@@ -1491,17 +1504,31 @@ class Front extends CI_Controller
 
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
+        $ciudad_id = $this->input->post('ciudad_id');
+        if ($ciudad_id != NULL) {
+            $this->session->set_userdata('session_ciudad', $ciudad_id);
+        } else {
+
+            $ciudad_id = 0;
+        }
 
         $ok = false;
+        $valida_city = false;
         if ($category != NULL) {
-
-            $contador = count($this->anuncio->get_anuncios_by_category($category));
+            $contador = count($this->anuncio->get_anuncios_by_category_city($category, $ciudad_id));
 
             $ok = true;
-        } elseif ($anuncio_palabra != '') {
-            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra));
+        } elseif ($anuncio_palabra != '' && $ciudad_id >= 0) {
+
+            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id));
+            $ok = false;
+        } elseif ($anuncio_palabra == '' && $ciudad_id >= 0) {
+
+            $contador = count($this->anuncio->get_anuncio_city($ciudad_id));
+            $valida_city = true;
             $ok = false;
         }
+
 
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('anuncios/page/');
@@ -1510,8 +1537,8 @@ class Front extends CI_Controller
 
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
-        if ($contador >= 6) {
-            $config['per_page'] = '6';
+        if ($contador >= 8) {
+            $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
@@ -1555,9 +1582,13 @@ class Front extends CI_Controller
 
         if ($ok) {
 
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);
+            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category, $ciudad_id);
         } else {
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra);
+            if ($valida_city) {
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_city($config['per_page'], $offset, $ciudad_id);
+            } else {
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id);
+            }
         }
 
 
@@ -1588,15 +1619,15 @@ class Front extends CI_Controller
                 $data['fin'] = 0;
             } else {
                 $data['inicio'] = 1;
-                if ($contador >= 6) {
-                    $data['fin'] =  6;
+                if ($contador >= 8) {
+                    $data['fin'] =  8;
                 } else {
                     $data['fin'] = $contador;
                 }
             }
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 6 + $offset;
+            $intervalo = 8 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
@@ -1626,6 +1657,9 @@ class Front extends CI_Controller
                 $item->titulo_corto = $item->titulo;
             }
         }
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
+
+        $data['all_ciudad'] = $all_ciudad;
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
         $this->load_view_front('front/anuncios', $data);
@@ -1690,6 +1724,7 @@ class Front extends CI_Controller
         }
 
         $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('User_model', 'user');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Membresia_model', 'membresia');
@@ -1876,7 +1911,7 @@ class Front extends CI_Controller
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;
         $data['all_membresia'] = $all_membresia;
-
+        $data['user_data'] = $this->user->get_by_id($user_id);
         $data['mis_subastas_inversas'] = $subastas_inversas;
         $data['mis_subastas_directas'] = $mis_subastas;
         $this->load_view_front('front/perfil', $data);

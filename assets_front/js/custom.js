@@ -102,7 +102,7 @@ Designed and Development by: ScriptsBundle
     /* ======= Jquery Select Dropdowns ======= */
 
     $("select").select2({
-        placeholder: 'Seleccionar una categoria',
+        placeholder: 'Todas las ciudades',
         allowClear: true,
         width: '100%'
     });
