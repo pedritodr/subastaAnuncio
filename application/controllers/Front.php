@@ -2352,7 +2352,8 @@ class Front extends CI_Controller
     }
     public function pago_exitoso($id = 0)
     {
-
+        var_dump("hola");
+        die();
         $this->load->model('payment_model', 'payment');
 
         $this->payment->create(['data' => json_encode($id)]);
