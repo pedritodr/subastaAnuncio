@@ -2297,7 +2297,7 @@ class Front extends CI_Controller
             "expiration" => $fecha_vencimiento,
             "ipAddress" => $ip,
             "userAgent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36",
-            "returnUrl" => site_url('payment/' . $reference),
+            "returnUrl" => site_url('payment'),
             "cancelUrl" => site_url('transaccion_cancelada'),
             "skipResult" => false,
             "noBuyerFill" => false,
@@ -2350,11 +2350,9 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $this->load_view_front('front/fallida', $data);
     }
-    public function pago_exitoso($id = 0)
+    public function pago_exitoso()
     {
-
         $this->load->model('payment_model', 'payment');
-
-        $this->payment->create(['data' => $id]);
+        $this->payment->create(['data' => json_encode($this->input->post())]);
     }
 }
