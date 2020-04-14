@@ -2355,6 +2355,6 @@ class Front extends CI_Controller
 
         $this->load->model('payment_model', 'payment');
 
-        $this->payment->create(['data' => "a"]);
+        //$this->payment->create(['data' => "a"]);
     }
 }
