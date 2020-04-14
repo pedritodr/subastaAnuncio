@@ -2365,7 +2365,7 @@ class Front extends CI_Controller
         $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
-        $status = $data['status']->status;
+        $status = $data['status'];
         if ($status == "APPROVED") {
             $status = 1;
         } elseif ($status == "REJECTED") {
