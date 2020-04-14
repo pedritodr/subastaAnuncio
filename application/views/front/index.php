@@ -383,7 +383,7 @@
             </div>
             <!-- Middle Content Box -->
             <div class="col-md-12 category-blocks">
-               <?= form_open_multipart("front/buscar_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+               <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                <ul class="popular-categories">
                   <?php foreach ($all_cate_anuncio as $item) {  ?>
                      <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->

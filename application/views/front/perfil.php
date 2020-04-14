@@ -57,33 +57,34 @@
                     <!-- Sidebar Widgets -->
                     <div style="padding-top: 5%;" class="user-profile">
                         <div class="text-center">
-                            <?php if ($this->session->userdata('photo') == "") { ?>
+                            <?php if ($user_data->photo == "") { ?>
                                 <img style="width:50%" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
                             <?php } else { ?>
-                                <?php if (strpos($this->session->userdata('photo'), 'uploads') !== false) { ?>
-                                    <img style="width:50%" src="<?= base_url($this->session->userdata('photo')) ?>" alt="">
+                                <?php if (strpos($user_data->photo, 'uploads') !== false) { ?>
+                                    <img style="width:50%" src="<?= base_url($user_data->photo) ?>" alt="">
                                 <?php } else { ?>
-                                    <img style="width:50%" src="<?= $this->session->userdata('photo') ?>" alt="">
+                                    <img style="width:50%" src="<?= $user_data->photo ?>" alt="">
                                 <?php } ?>
                             <?php } ?>
                         </div>
 
 
                         <div class="profile-detail">
-                            <h6 class="text-center"><?= $this->session->userdata('name'); ?></h6>
+                            <h6 class="text-center"><?= $user_data->name ?></h6>
 
                             <ul class="contact-details">
-                                <li>
-                                    <i class="fa fa-map-marker"></i> <?php if ($city) { ?>
+                                <?php if ($city) { ?>
+                                    <li>
+                                        <i class="fa fa-map-marker"></i>
                                         <?= $city->name_ciudad ?>
-                                    <?php } ?>
-                                </li>
+                                    </li>
+                                <?php } ?>
                                 <li>
-                                    <i class="fa fa-envelope"></i> <?= $this->session->userdata('email'); ?>
+                                    <i class="fa fa-envelope"></i> <?= $user_data->email; ?>
                                 </li>
 
                                 <li>
-                                    <i class="fa fa-phone"></i> <?= $this->session->userdata('phone'); ?>
+                                    <i class="fa fa-phone"></i> <?= $user_data->phone; ?>
                                 </li>
                             </ul>
                         </div>

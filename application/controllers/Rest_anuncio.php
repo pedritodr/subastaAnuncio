@@ -190,10 +190,6 @@ class Rest_anuncio extends REST_Controller
         }
     }
 
-
-
-
-
     public function subcategorias_post()
     {
 
@@ -216,13 +212,15 @@ class Rest_anuncio extends REST_Controller
     }
     public function add_post()
     {
-
+        $this->load->model('Membresia_model', 'membresia');
+        $this->load->model('Pais_model', 'pais');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
-        //$photo = $this->input->post('photo');
+        $city = $this->input->post('city_main');
+        $direccion = $this->input->post('direccion');
         $whatsapp = $this->input->post('phone');
         $subcategoria = $this->input->post('sub');
         $lng = $this->input->post('lng');
@@ -231,16 +229,85 @@ class Rest_anuncio extends REST_Controller
 
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
+
+            if ($city != null) {
+                $city = strtoupper($city);
+                $ciudad_object = $this->pais->get_city($city);
+                if (!$ciudad_object) {
+                    $data_ciudad = [
+                        'name_ciudad' => $city,
+                        'pais_id' => 4,
+
+                    ];
+                    $ciudad_id = $this->pais->create_cuidad($data_ciudad);
+                } else {
+                    $ciudad_id = $ciudad_object->ciudad_id;
+                }
+            } else {
+                $ciudad_id = 4;
+            }
+            $membresia = $this->membresia->get_by_user_id($user_id);
+            $fecha = date('Y-m-d');
+            $fecha_fin = strtotime('+30 day', strtotime($fecha));
+            $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            $object = $this->anuncio->create(['is_active' => 1, 'titulo' => $titulo, 'descripcion' => $descripcion, 'precio' => $precio, 'photo' => $data[0]->imagen, 'whatsapp' => $whatsapp, 'user_id' => $user_id, 'subcate_id' => $subcategoria, 'lng' => $lng, 'lat' => $lat, 'ciudad_id' => 4]);
-            if ($object) {
-                if (count($data) > 1) {
-                    for ($i = 1; $i < count($data); $i++) {
-                        $this->photo_anuncio->create(['photo_anuncio' => $data[$i]->imagen, 'anuncio_id' => $object]);
+            define('UPLOAD_DIR', './uploads/anuncio/');
+            $fotos = [];
+            foreach ($data as $item) {
+                $img =  $item->imagen;
+                $img = str_replace('data:image/jpeg;base64,', '', $img);
+
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+
+                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                // $image = uniqid() . '.jpg';
+
+                $success = file_put_contents($file, $data);
+                array_push($fotos, $file);
+            }
+
+
+            $datos = [
+                'titulo' => $titulo,
+                'descripcion' => $descripcion,
+                'precio' => $precio,
+                'photo' => $fotos[0],
+                'whatsapp' => $whatsapp,
+                'subcate_id' => $subcategoria,
+                'is_active' => 1,
+                'lat' => $lat,
+                'lng' => $lng,
+                'ciudad_id' => $ciudad_id,
+                'user_id' => $user_id,
+                'direccion' => $direccion,
+                'fecha' =>  $fecha,
+                'destacado' => 0,
+                'fecha_vencimiento' => $fecha_fin
+            ];
+            if ($membresia) {
+
+                $object =  $this->anuncio->create($datos);
+                if ($object) {
+                    if ((int) $membresia->anuncios_publi > 0) {
+
+                        $qty_anuncios = (int) $membresia->anuncios_publi - 1;
+                        $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
+                        $this->anuncio->update($object, ['destacado' => 1]);
                     }
                 }
+            } else {
 
+                $object = $this->anuncio->create($datos);
+            }
 
+            if ($object) {
+                if (count($fotos) > 1) {
+                    for ($i = 1; $i < count($fotos); $i++) {
+                        $img =  $fotos[$i];
+                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
+                    }
+                }
                 $this->response(['status' => 200, 'object' => $object]);
             } else {
                 $this->response(['status' => 404]);

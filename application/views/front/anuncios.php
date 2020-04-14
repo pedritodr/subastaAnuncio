@@ -49,9 +49,25 @@
             <div class="col-sm-12 col-xs-12 col-md-12">
                 <!-- Form -->
                 <?= form_open_multipart("search_anuncios", array('class' => 'search-form')); ?>
+                <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
+                    <select name="ciudad_id" class="category form-control">
+                        <option label="<?= translate("select_category_lang"); ?>"></option>
+                        <?php if ($all_ciudad) { ?>
+                            <?php foreach ($all_ciudad as $item) { ?>
+                                <?php if ($this->session->userdata('session_ciudad')) { ?>
+                                    <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php  } else { ?>
+                                    <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php } ?>
 
+                            <?php } ?>
+
+                        <?php } ?>
+
+                    </select>
+                </div>
                 <!-- Search Field -->
-                <div class="col-md-9 col-xs-12 col-sm-4 no-padding">
+                <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
                     <input name="anuncio_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
                 </div>
                 <!-- Search Button -->
@@ -101,7 +117,7 @@
                                         <!-- Img Block -->
                                         <div class="ad-archive-img">
 
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                 <!--   <div class="ribbon popular"></div> -->
 
 
@@ -134,7 +150,7 @@
                                                 </font>
                                             </div>
                                             <!-- Title -->
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>">
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                 <h6>
                                                     <font style="vertical-align: inherit;">
                                                         <font style="vertical-align: inherit;"><?= $item->corto ?></font>
@@ -189,7 +205,7 @@
                                             <!-- Ad History -->
                                             <div>
 
-                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
+                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
                                                         <font style="vertical-align: inherit;">
                                                             <font style="vertical-align: inherit;"> <?= translate("ver_info_lang"); ?></font>
                                                         </font>
@@ -273,9 +289,9 @@
                                                                     <img class="img-responsive" alt="" src="<?= base_url($item->anuncio_photo) ?>">
                                                                     <!-- Ad Status -->
                                                                     <!-- User Review -->
-                                                                    <div class="user-preview">
+                                                                    <!--    <div class="user-preview">
                                                                         <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"> <img src="" class="avatar avatar-small" alt=""> </a>
-                                                                    </div>
+                                                                    </div> -->
                                                                     <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
                                                                 </div>
                                                                 <!-- Ad Img End -->

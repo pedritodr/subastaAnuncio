@@ -373,7 +373,7 @@
 
         let photo = object.photo;
         if (photo) {
-            let ok = photo.indexOf("uploads");
+            
             if (ok > 0) {
                 $('#img_perfil_2').prop('src', "<?= site_url() ?>" + object.photo);
             } else {

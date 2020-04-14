@@ -1,4 +1,13 @@
 <?php
+require './vendor/autoload.php';
+
+use Dnetix\Redirection\PlacetoPay;
+
+/**
+ * Instanciates the PlacetoPay object providing the login and tranKey, also the url that will be
+ * used for the service
+ * @return PlacetoPay
+ */
 
 class Front extends CI_Controller
 {
@@ -702,6 +711,8 @@ class Front extends CI_Controller
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
+        $fecha_fin = date('Y-m-d', $fecha_fin);
+
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
 
@@ -1345,6 +1356,7 @@ class Front extends CI_Controller
     public function anuncios_index()
     {
         $this->load->model('Banner_model', 'banner');
+        $this->load->model('Pais_model', 'pais');
         $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
         $data['all_banners'] = $all_banners;
         $this->load->model('Anuncio_model', 'anuncio');
@@ -1363,9 +1375,9 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
-        if ($contador >= 6) {
+        if ($contador >= 8) {
 
-            $config['per_page'] = '6';
+            $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
@@ -1455,13 +1467,24 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
 
+        $data['all_ciudad'] = $all_ciudad;
         if ($offset == 0) {
-            $data['inicio'] = 1;
-            $data['fin'] =  $contador;
+            if ($contador == 0) {
+                $data['inicio'] = 0;
+                $data['fin'] = 0;
+            } else {
+                $data['inicio'] = 1;
+                if ($contador >= 8) {
+                    $data['fin'] =  8;
+                } else {
+                    $data['fin'] = $contador;
+                }
+            }
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 6 + $offset;
+            $intervalo = 8 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
@@ -1475,6 +1498,7 @@ class Front extends CI_Controller
     public function buscar_anuncio()
     {
         header('Cache-Control: no cache');
+        $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
         $categories = $this->category->get_all();
@@ -1489,17 +1513,31 @@ class Front extends CI_Controller
 
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
+        $ciudad_id = $this->input->post('ciudad_id');
+        if ($ciudad_id != NULL) {
+            $this->session->set_userdata('session_ciudad', $ciudad_id);
+        } else {
+
+            $ciudad_id = 0;
+        }
 
         $ok = false;
+        $valida_city = false;
         if ($category != NULL) {
-
-            $contador = count($this->anuncio->get_anuncios_by_category($category));
+            $contador = count($this->anuncio->get_anuncios_by_category_city($category, $ciudad_id));
 
             $ok = true;
-        } elseif ($anuncio_palabra != '') {
-            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra));
+        } elseif ($anuncio_palabra != '' && $ciudad_id >= 0) {
+
+            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id));
+            $ok = false;
+        } elseif ($anuncio_palabra == '' && $ciudad_id >= 0) {
+
+            $contador = count($this->anuncio->get_anuncio_city($ciudad_id));
+            $valida_city = true;
             $ok = false;
         }
+
 
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('anuncios/page/');
@@ -1508,8 +1546,8 @@ class Front extends CI_Controller
 
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
-        if ($contador >= 6) {
-            $config['per_page'] = '6';
+        if ($contador >= 8) {
+            $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
@@ -1553,9 +1591,13 @@ class Front extends CI_Controller
 
         if ($ok) {
 
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category);
+            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category, $ciudad_id);
         } else {
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra);
+            if ($valida_city) {
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_city($config['per_page'], $offset, $ciudad_id);
+            } else {
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id);
+            }
         }
 
 
@@ -1586,15 +1628,15 @@ class Front extends CI_Controller
                 $data['fin'] = 0;
             } else {
                 $data['inicio'] = 1;
-                if ($contador >= 6) {
-                    $data['fin'] =  6;
+                if ($contador >= 8) {
+                    $data['fin'] =  8;
                 } else {
                     $data['fin'] = $contador;
                 }
             }
         } else {
             $data['inicio'] = $offset + 1;
-            $intervalo = 6 + $offset;
+            $intervalo = 8 + $offset;
             if ($intervalo > $contador) {
                 $data['fin'] = $contador;
             } else {
@@ -1624,6 +1666,9 @@ class Front extends CI_Controller
                 $item->titulo_corto = $item->titulo;
             }
         }
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
+
+        $data['all_ciudad'] = $all_ciudad;
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
         $this->load_view_front('front/anuncios', $data);
@@ -1688,6 +1733,7 @@ class Front extends CI_Controller
         }
 
         $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('User_model', 'user');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Membresia_model', 'membresia');
@@ -1874,7 +1920,7 @@ class Front extends CI_Controller
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;
         $data['all_membresia'] = $all_membresia;
-
+        $data['user_data'] = $this->user->get_by_id($user_id);
         $data['mis_subastas_inversas'] = $subastas_inversas;
         $data['mis_subastas_directas'] = $mis_subastas;
         $this->load_view_front('front/perfil', $data);
@@ -2180,6 +2226,123 @@ class Front extends CI_Controller
         }
         $all_subastas =  $this->subasta->get_subastas();
         echo json_encode($all_subastas);
+        exit();
+    }
+
+    public function checkout()
+    {
+
+        function placetopay()
+        {
+            return new PlacetoPay([
+                'login' => '6dd79d14d110adedc41f3fbab8e58461',
+                'tranKey' => 'h61ByK5IO930k2T8',
+                'url' => 'https://test.placetopay.ec/redirection/',
+                'type' => getenv('P2P_TYPE') ?: PlacetoPay::TP_REST
+            ]);
+        }
+        /*        $placetopay = Dnetix\Redirection\PlacetoPay([
+            'login' => '6dd79d14d110adedc41f3fbab8e58461',
+            'tranKey' => 'h61ByK5IO930k2T8',
+            'url' => 'https://test.placetopay.ec/redirection/',
+        ]); */
+        $membresia = $this->input->post('nombre');
+        $membresia_id = $this->input->post('membresia_id');
+        $this->load->model('Membresia_model', 'membresia');
+        $obj_membresia = $this->membresia->get_by_id($membresia_id);
+        $monto = (float) $obj_membresia->precio;
+        $iva = $monto * 0.12;
+        $base = $monto - $iva;
+
+
+        $user_id = $this->session->userdata('user_id');
+        $reference = 'TEST_' . time();
+        $this->load->model('User_model', 'user');
+        $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
+        $obj_user = $this->user->get_by_id($user_id);
+        $fecha = date("Y-m-d H:i:s");
+        $fecha_vencimiento = strtotime('+20 minute', strtotime($fecha));
+        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+        // Request Information
+
+        $request = [
+
+            "buyer" => [
+                "name" => $obj_user->name,
+                "surname" => "",
+                "email" => $obj_user->email,
+                "documentType" => "",
+                "document" => "",
+                "mobile" => $obj_user->phone,
+            ],
+            "payment" => [
+                "reference" => $reference,
+                "description" => $membresia,
+                "amount" => [
+                    "taxes" => [
+
+                        [
+                            "kind" => "valueAddedTax",
+                            "amount" => $iva,
+                            "base" => $base
+                        ]
+                    ],
+
+                    "currency" => "USD",
+                    "total" => $monto
+                ],
+
+
+            ],
+            "expiration" => $fecha_vencimiento,
+            "ipAddress" => $ip,
+            "userAgent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36",
+            "returnUrl" => site_url(),
+            "cancelUrl" => site_url(),
+            "skipResult" => false,
+            "noBuyerFill" => false,
+            "captureAddress" => false,
+            "paymentMethod" => null
+        ];
+        $placetopay = placetopay();
+
+        $response = $placetopay->request($request);
+        echo json_encode($response);
+        exit();
+        /*   try {
+
+
+
+            if ($response->isSuccessful()) {
+                // Redirect the client to the processUrl or display it on the JS extension
+                // $response->processUrl();
+            } else {
+                // There was some error so check the message
+                // $response->status()->message();
+            }
+            var_dump($response);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        } */
+    }
+    //Método con rand()
+    function generando_codigo()
+    {
+
+
+        $length = 4;
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $login = '6dd79d14d110adedc41f3fbab8e58461';
+        $tranKey = 'h61ByK5IO930k2T8';
+        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey));
+        $randomString = base64_encode($randomString);
+        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString]);
         exit();
     }
 }
