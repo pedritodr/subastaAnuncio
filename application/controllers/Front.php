@@ -2352,14 +2352,9 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
-        $Fichero = "registros.txt"; //nombre del fichero donde se guardan los informes.
-        $fecha = date("Y-m-d;H:i:s"); //fecha y hora (por lo general del servidor)
+        $data = (string) $_POST;
 
-        $log = "FECHA: $fecha data: $_REQUEST";
-        $fp = fopen($Fichero, "a");
-        fwrite($fp, $log);
-        fclose($fp);
         $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => ""]);
+        $this->payment->create(['data' => $data]);
     }
 }
