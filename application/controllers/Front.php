@@ -2247,8 +2247,9 @@ class Front extends CI_Controller
             'url' => 'https://test.placetopay.ec/redirection/',
         ]); */
         $detalle = $this->input->post('detalle');
-        $id = $this->input->post('id');
-        $tipo = $this->input->post('tipo');
+        $id =  $this->input->post('id');
+        $tipo = (int) $this->input->post('tipo');
+
         if ($tipo == 0) {
             $this->load->model('Membresia_model', 'membresia');
             $obj = $this->membresia->get_by_id($id);
@@ -2260,7 +2261,8 @@ class Front extends CI_Controller
         $unico = $this->payment->create_unico(['status' => 1]);
 
         $user_id = $this->session->userdata('user_id');
-        $reference = 'RF_' . time() . $unico();
+        $reference = 'RF-' . time() . "-" . $unico;
+
         $this->load->model('User_model', 'user');
         $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
         $obj_user = $this->user->get_by_id($user_id);
