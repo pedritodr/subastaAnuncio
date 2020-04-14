@@ -2246,17 +2246,21 @@ class Front extends CI_Controller
             'tranKey' => 'h61ByK5IO930k2T8',
             'url' => 'https://test.placetopay.ec/redirection/',
         ]); */
-        $membresia = $this->input->post('nombre');
-        $membresia_id = $this->input->post('membresia_id');
-        $this->load->model('Membresia_model', 'membresia');
-        $obj_membresia = $this->membresia->get_by_id($membresia_id);
-        $monto = (float) $obj_membresia->precio;
-        $iva = $monto * 0.12;
-        $base = $monto - $iva;
-
+        $detalle = $this->input->post('detalle');
+        $id = $this->input->post('id');
+        $tipo = $this->input->post('tipo');
+        if ($tipo == 0) {
+            $this->load->model('Membresia_model', 'membresia');
+            $obj = $this->membresia->get_by_id($id);
+            $monto = (float) $obj->precio;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
+        }
+        $this->load->model('payment_model', 'payment');
+        $unico = $this->payment->create_unico(['status' => 1]);
 
         $user_id = $this->session->userdata('user_id');
-        $reference = 'TEST_' . time();
+        $reference = 'RF_' . time . $unico();
         $this->load->model('User_model', 'user');
         $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
         $obj_user = $this->user->get_by_id($user_id);
@@ -2277,7 +2281,7 @@ class Front extends CI_Controller
             ],
             "payment" => [
                 "reference" => $reference,
-                "description" => $membresia,
+                "description" => $detalle,
                 "amount" => [
                     "taxes" => [
 
@@ -2307,6 +2311,8 @@ class Front extends CI_Controller
         $placetopay = placetopay();
 
         $response = $placetopay->request($request);
+        $this->load->model('payment_model', 'payment');
+        $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
         echo json_encode($response);
         exit();
         /*   try {
@@ -2352,21 +2358,16 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
-
+        $this->load->model('payment_model', 'payment');
         $datos = file_get_contents('php://input');
         $data = json_decode($datos, true);
         $requestId = $data['requestId'];
+        $reference = $data['reference'];
+        $status = $data['status'];
 
-        /*   echo $requestId;
-        $status =  $data['status'];
-
-        if ($requestId <= 0) {
-            echo "Fallo 1: no hay ID";
-            exit();
-        } */
-
-
-        $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => $datos]);
+        $obj =  $this->payment->get_by_reference_id($reference);
+        if ($obj) {
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+        }
     }
 }

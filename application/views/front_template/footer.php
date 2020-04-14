@@ -628,11 +628,6 @@
 
    function payment() {
 
-      let fecha_actual_pay = "<?= Date("Y-m-d\TH:i:sP") ?>";
-
-      SecretKey = "h61ByK5IO930k2T8";
-      Login = "6dd79d14d110adedc41f3fbab8e58461";
-
       membresia_seleccionada = $('#membresia_id').val();
       nombre_membresia = $('#nombre_membresia').text();
       valor_membresia = $('#precio_membresia').text();
@@ -642,8 +637,9 @@
          url: "<?= site_url('front/checkout') ?>",
          data: {
             monto: valor_membresia,
-            nombre: nombre_membresia,
-            membresia_id: membresia_seleccionada
+            detalle: nombre_membresia,
+            id: membresia_seleccionada,
+            tipo: 0
          },
          success: function(data) {
             data = JSON.parse(data);
