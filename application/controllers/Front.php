@@ -2365,11 +2365,16 @@ class Front extends CI_Controller
         $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
-
+        $status = $data['status']['status'];
+        if ($status == "APPROVED") {
+            $status = 1;
+        } elseif ($status == "REJECTED") {
+            $status = 2;
+        }
 
         $obj =  $this->payment->get_by_reference_id($reference);
         if ($obj) {
-            $this->payment->update($obj->payment_id, ['status' => 1, 'request_id' => $requestId]);
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
         }
     }
 }
