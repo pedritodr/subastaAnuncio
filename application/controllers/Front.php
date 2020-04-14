@@ -2352,9 +2352,14 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
-        $datos = $_POST;
+        if ($_POST) {
+            $datos = $_POST;
 
-        $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => $datos]);
+            $this->load->model('payment_model', 'payment');
+            $this->payment->create(['data' => $datos]);
+        } else {
+            $this->load->model('payment_model', 'payment');
+            $this->payment->create(['data' => "nada"]);
+        }
     }
 }
