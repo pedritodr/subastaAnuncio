@@ -554,24 +554,25 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("menbresi_lang"); ?></h3>
          </div>
-         <?php echo form_open_multipart("front/pagar_membresia") ?>
+         <!--   <?php echo form_open_multipart("front/pagar_membresia") ?> -->
          <div class="modal-body">
             <!-- content goes here =-->
 
             <div class="row">
-               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+               <div id="lightbox-response" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                   <h3 class="text-center" id="nombre_membresia"></h3>
                   <h4 class="text-center" id="precio_membresia"></h4>
                   <input name="membresia_id" id="membresia_id" type="hidden" value="">
-
+                  <input id="cod_secret" class="btn btn-primary" type="hidden" value="">
                </div>
+
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button type="submit" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
+               <button onclick="payment()" type="button" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
                <button type="button" class="btn btn-dark btn-block" data-dismiss="modal"><?= translate('cancelar_lang'); ?></button>
 
             </div>
-            <?= form_close(); ?>
+            <!--       <?= form_close(); ?> -->
          </div>
       </div>
    </div>
@@ -610,7 +611,7 @@
 <script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
 <!-- Template Core JS -->
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
-
+<script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
 <script type="text/javascript">
    let contador_directa = 0;
    let vacio = null;
@@ -621,6 +622,52 @@
    let session_subasta_id = null;
    let session_subasta = null;
    let input_valor = 0;
+   let membresia_seleccionada = null;
+
+
+
+   function payment() {
+
+      let fecha_actual_pay = "<?= Date("Y-m-d\TH:i:sP") ?>";
+
+      SecretKey = "h61ByK5IO930k2T8";
+      Login = "6dd79d14d110adedc41f3fbab8e58461";
+
+      membresia_seleccionada = $('#membresia_id').val();
+      nombre_membresia = $('#nombre_membresia').text();
+      valor_membresia = $('#precio_membresia').text();
+
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/checkout') ?>",
+         data: {
+            monto: valor_membresia,
+            nombre: nombre_membresia,
+            membresia_id: membresia_seleccionada
+         },
+         success: function(data) {
+            data = JSON.parse(data);
+
+            var processUrl = data.processUrl;
+
+            P.init(processUrl);
+            $("#processUrl").val(processUrl);
+         },
+         error: function(data) {
+            data = JSON.parse(data);
+            alert(data.status.message);
+         }
+      });
+      P.on('response', function(data) {
+
+         $("#lightbox-response").html(JSON.stringify(data, null, 2));
+      });
+
+      $("#lightboxIt").on('click', function() {
+
+         P.init($("#processUrl").val());
+      });
+   }
 
    //  console.log(subastas_2);
    $('#valor_pujando').change(function() {
@@ -832,6 +879,7 @@
    }
 
    function cargar_modal_membresia(id, nombre, precio, cantidad) {
+
       var cant = "<?php echo translate('cant_anuncios_lang') ?>";
       $('#membresia').val(id);
       $('#nombre').text(nombre);
@@ -1146,18 +1194,32 @@
 
    }
 
+   let trakey = null;
+   let nonce = null;
 
    function seleccionar_membresia(object) {
+
       object = atob(object);
       object = JSON.parse(object);
       var user_id = "<?= $this->session->userdata('user_id'); ?>";
       var phone = "<?= $this->session->userdata('phone'); ?>";
       var email = "<?= $this->session->userdata('email'); ?>";
+
       $('#nombre_membresia').text(object.nombre);
       $('#precio_membresia').text("$" + parseFloat(object.precio).toFixed(2));
       $('#membresia_id').val(object.membresia_id);
       $('#modal_membresia_gratis').modal('show');
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/generando_codigo') ?>",
 
+         success: function(result) {
+            result = JSON.parse(result)
+
+            trakey = result.trakey;
+            nonce = result.nonce;
+         }
+      });
    }
 
    function pagar_piso() {
@@ -1627,7 +1689,7 @@
                      }
 
 
-                     
+
                   }
 
 

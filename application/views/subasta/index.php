@@ -135,7 +135,7 @@
 
         $('#example1').DataTable({
             "order": [
-                [0, "desc"]
+                [5, "desc"]
             ]
         });
     });

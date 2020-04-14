@@ -1,4 +1,13 @@
 <?php
+require './vendor/autoload.php';
+
+use Dnetix\Redirection\PlacetoPay;
+
+/**
+ * Instanciates the PlacetoPay object providing the login and tranKey, also the url that will be
+ * used for the service
+ * @return PlacetoPay
+ */
 
 class Front extends CI_Controller
 {
@@ -2217,6 +2226,123 @@ class Front extends CI_Controller
         }
         $all_subastas =  $this->subasta->get_subastas();
         echo json_encode($all_subastas);
+        exit();
+    }
+
+    public function checkout()
+    {
+
+        function placetopay()
+        {
+            return new PlacetoPay([
+                'login' => '6dd79d14d110adedc41f3fbab8e58461',
+                'tranKey' => 'h61ByK5IO930k2T8',
+                'url' => 'https://test.placetopay.ec/redirection/',
+                'type' => getenv('P2P_TYPE') ?: PlacetoPay::TP_REST
+            ]);
+        }
+        /*        $placetopay = Dnetix\Redirection\PlacetoPay([
+            'login' => '6dd79d14d110adedc41f3fbab8e58461',
+            'tranKey' => 'h61ByK5IO930k2T8',
+            'url' => 'https://test.placetopay.ec/redirection/',
+        ]); */
+        $membresia = $this->input->post('nombre');
+        $membresia_id = $this->input->post('membresia_id');
+        $this->load->model('Membresia_model', 'membresia');
+        $obj_membresia = $this->membresia->get_by_id($membresia_id);
+        $monto = (float) $obj_membresia->precio;
+        $iva = $monto * 0.12;
+        $base = $monto - $iva;
+
+
+        $user_id = $this->session->userdata('user_id');
+        $reference = 'TEST_' . time();
+        $this->load->model('User_model', 'user');
+        $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
+        $obj_user = $this->user->get_by_id($user_id);
+        $fecha = date("Y-m-d H:i:s");
+        $fecha_vencimiento = strtotime('+20 minute', strtotime($fecha));
+        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+        // Request Information
+
+        $request = [
+
+            "buyer" => [
+                "name" => $obj_user->name,
+                "surname" => "",
+                "email" => $obj_user->email,
+                "documentType" => "",
+                "document" => "",
+                "mobile" => $obj_user->phone,
+            ],
+            "payment" => [
+                "reference" => $reference,
+                "description" => $membresia,
+                "amount" => [
+                    "taxes" => [
+
+                        [
+                            "kind" => "valueAddedTax",
+                            "amount" => $iva,
+                            "base" => $base
+                        ]
+                    ],
+
+                    "currency" => "USD",
+                    "total" => $monto
+                ],
+
+
+            ],
+            "expiration" => $fecha_vencimiento,
+            "ipAddress" => $ip,
+            "userAgent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36",
+            "returnUrl" => site_url(),
+            "cancelUrl" => site_url(),
+            "skipResult" => false,
+            "noBuyerFill" => false,
+            "captureAddress" => false,
+            "paymentMethod" => null
+        ];
+        $placetopay = placetopay();
+
+        $response = $placetopay->request($request);
+        echo json_encode($response);
+        exit();
+        /*   try {
+
+
+
+            if ($response->isSuccessful()) {
+                // Redirect the client to the processUrl or display it on the JS extension
+                // $response->processUrl();
+            } else {
+                // There was some error so check the message
+                // $response->status()->message();
+            }
+            var_dump($response);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        } */
+    }
+    //Método con rand()
+    function generando_codigo()
+    {
+
+
+        $length = 4;
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $login = '6dd79d14d110adedc41f3fbab8e58461';
+        $tranKey = 'h61ByK5IO930k2T8';
+        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey));
+        $randomString = base64_encode($randomString);
+        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString]);
         exit();
     }
 }
