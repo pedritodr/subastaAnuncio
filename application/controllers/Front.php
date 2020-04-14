@@ -2260,7 +2260,7 @@ class Front extends CI_Controller
         $unico = $this->payment->create_unico(['status' => 1]);
 
         $user_id = $this->session->userdata('user_id');
-        $reference = 'RF_' . time . $unico();
+        $reference = 'RF_' . time() . $unico();
         $this->load->model('User_model', 'user');
         $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
         $obj_user = $this->user->get_by_id($user_id);
