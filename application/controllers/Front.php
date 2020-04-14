@@ -2352,10 +2352,19 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $requestId = $data['requestId'];
 
-        $datos = file_get_contents('php://input');
+        /*   echo $requestId;
+        $status =  $data['status'];
+
+        if ($requestId <= 0) {
+            echo "Fallo 1: no hay ID";
+            exit();
+        } */
+
 
         $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => $datos]);
+        $this->payment->create(['data' => json_encode($data)]);
     }
 }
