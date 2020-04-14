@@ -2352,11 +2352,9 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
-        $this->load->model('Banner_model', 'banner');
-        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
-        $data['all_banners'] = $all_banners;
-        var_dump($_REQUEST);
-        die();
-        $this->load_view_front('front/exitosa', $data);
+
+        $this->load->model('payment_model', 'payment');
+
+        $this->payment->create(['data' => json_encode($_REQUEST)]);
     }
 }
