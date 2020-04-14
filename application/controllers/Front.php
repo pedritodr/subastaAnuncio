@@ -2355,6 +2355,8 @@ class Front extends CI_Controller
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
+        var_dump($_POST);
+        die();
         $this->load_view_front('front/exitosa', $data);
     }
 }
