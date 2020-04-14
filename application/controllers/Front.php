@@ -2352,7 +2352,9 @@ class Front extends CI_Controller
     }
     public function pago_exitoso()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+
+        $datos = file_get_contents('php://input');
+        $data = json_decode($datos, true);
         $requestId = $data['requestId'];
 
         /*   echo $requestId;
@@ -2365,6 +2367,6 @@ class Front extends CI_Controller
 
 
         $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => json_encode($data)]);
+        $this->payment->create(['data' => $datos]);
     }
 }
