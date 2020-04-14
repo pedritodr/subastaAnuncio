@@ -2353,6 +2353,6 @@ class Front extends CI_Controller
     public function pago_exitoso()
     {
         $this->load->model('payment_model', 'payment');
-        $this->payment->create(['data' => json_encode($_REQUEST)]);
+        $this->payment->create(['data' => $_REQUEST]);
     }
 }
