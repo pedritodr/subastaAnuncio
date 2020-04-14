@@ -2297,8 +2297,8 @@ class Front extends CI_Controller
             "expiration" => $fecha_vencimiento,
             "ipAddress" => $ip,
             "userAgent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36",
-            "returnUrl" => site_url(),
-            "cancelUrl" => site_url(),
+            "returnUrl" => site_url('transaccion_exitosa'),
+            "cancelUrl" => site_url('transaccion_cancelada'),
             "skipResult" => false,
             "noBuyerFill" => false,
             "captureAddress" => false,
@@ -2328,9 +2328,7 @@ class Front extends CI_Controller
     //Método con rand()
     function generando_codigo()
     {
-
-
-        $length = 4;
+        $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -2340,9 +2338,23 @@ class Front extends CI_Controller
 
         $login = '6dd79d14d110adedc41f3fbab8e58461';
         $tranKey = 'h61ByK5IO930k2T8';
-        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey));
+        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey, true));
         $randomString = base64_encode($randomString);
-        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString]);
+        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString, 'date' => Date("Y-m-d\TH:i:sP")]);
         exit();
+    }
+    public function pago_cancelada()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/fallida', $data);
+    }
+    public function pago_exitoso()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/exitosa', $data);
     }
 }
