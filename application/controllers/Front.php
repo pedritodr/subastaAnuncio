@@ -2314,7 +2314,7 @@ class Front extends CI_Controller
 
         $response = $placetopay->request($request);
         $this->load->model('payment_model', 'payment');
-        //  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
+        $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
         echo json_encode($response);
         exit();
         /*   try {
@@ -2362,15 +2362,17 @@ class Front extends CI_Controller
     {
         $this->load->model('payment_model', 'payment');
         $datos = file_get_contents('php://input');
-        $this->payment->create(['texto' => $datos]);
-        /* $data = json_decode($datos, true);
-         $requestId = $data['requestId'];
+        $data = json_decode($datos, true);
+        $requestId = $data['requestId'];
         $reference = $data['reference'];
-
+        $status = $data['status']['status'];
+        if ($status == "APPROVED") {
+            $status = 1;
+        }
 
         $obj =  $this->payment->get_by_reference_id($reference);
         if ($obj) {
-            $this->payment->update($obj->payment_id, ['status' => 3 ]);
-        } */
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+        }
     }
 }
