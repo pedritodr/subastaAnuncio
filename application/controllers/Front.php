@@ -2374,7 +2374,7 @@ class Front extends CI_Controller
 
         $obj =  $this->payment->get_by_reference_id($reference);
         if ($obj) {
-            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+            $this->payment->update($obj->payment_id, ['status' => 3, 'request_id' => $status]);
         }
     }
 }
