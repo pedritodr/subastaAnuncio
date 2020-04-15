@@ -50,7 +50,14 @@ class Payment_model extends CI_Model
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
+    function get_all_transaccion()
+    {
+        $this->db->where('status', 0);
+        $this->db->or_where('status', 3);
+        $query = $this->db->get('payment');
 
+        return $query->result();
+    }
     function update($id, $data)
     {
         $old = $this->get_by_id($id);

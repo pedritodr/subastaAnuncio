@@ -2262,6 +2262,10 @@ class Front extends CI_Controller
             $monto = $valor;
             $iva = $monto * 0.12;
             $base = $monto - $iva;
+        } elseif ($tipo == 3) {
+            $monto = $valor;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
         }
         $this->load->model('payment_model', 'payment');
         $unico = $this->payment->create_unico(['status' => 1]);
@@ -2374,6 +2378,8 @@ class Front extends CI_Controller
         $status = $data['status']['status'];
         if ($status == "APPROVED") {
             $status = 1;
+        } elseif ($status == "PENDING") {
+            $status = 3;
         }
 
         $obj =  $this->payment->get_by_reference_id($reference);
@@ -2447,5 +2453,21 @@ class Front extends CI_Controller
                 }
             }
         }
+    }
+    function update_request_id()
+    {
+        $this->load->model('payment_model', 'payment');
+        $request_id = $this->input->post('request_id');
+        $reference = $this->input->post('reference');
+        $status = $this->input->post('status');
+        $obj = $this->payment->get_by_reference_id($reference);
+        if ($obj) {
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
+            echo json_encode(['status' => 200]);
+        } else {
+            echo json_encode(['status' => 404]);
+        }
+
+        exit();
     }
 }

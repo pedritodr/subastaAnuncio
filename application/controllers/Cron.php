@@ -1,5 +1,5 @@
 <?php
-
+require(APPPATH . "libraries/PPM.php");
 class Cron  extends CI_Controller
 {
 
@@ -11,6 +11,7 @@ class Cron  extends CI_Controller
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Subasta_model', 'subasta');
+        $this->load->model('payment_model', 'payment');
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
     }
@@ -174,6 +175,22 @@ class Cron  extends CI_Controller
 
             if ($fecha >= $fecha_cierre) {
                 $this->subasta->update($item->subasta_id, ['is_open' => 0]);
+            }
+        }
+    }
+    public function update_transacciones()
+    {
+
+        $transacciones = $this->payment->get_all_transaccion();
+        $ppm = new PPM();
+        foreach ($transacciones as $item) {
+            $response = $ppm->consultar_respuesta($item->request_id);
+            if ($response) {
+                if ($response->status()->status() == "APPROVED") {
+                    $this->payment->update($item->payment_id, ['status' => 1]);
+                } elseif ($response->status()->status() == "REJECTED") {
+                    $this->payment->update($item->payment_id, ['status' => 2]);
+                }
             }
         }
     }
