@@ -185,8 +185,7 @@ class Cron  extends CI_Controller
         $ppm = new PPM();
         foreach ($transacciones as $item) {
             $response = $ppm->consultar_respuesta($item->request_id);
-            var_dump($response);
-            die();
+
             if ($response) {
                 if ($response->status()->status() == "APPROVED") {
                     $this->payment->update($item->payment_id, ['status' => 1]);

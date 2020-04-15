@@ -782,6 +782,10 @@
                   $('#mensaje_notificacion').text(data.status.message);
                   $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
                   $('#modal_notificacion').modal('show');
+                  setTimeout(() => {
+                     location.href = "<?= site_url("perfil/page/") ?>";
+                  }, 4000);
+
                } else {
                   alert("Ocurrio un error en el servidor");
                }
