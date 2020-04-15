@@ -2381,11 +2381,11 @@ class Front extends CI_Controller
         } elseif ($status == "PENDING") {
             $status = 3;
         }
-        $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
-        // $obj =  $this->payment->get_by_reference_id($reference);
+        // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
+        $obj =  $this->payment->get_by_reference_id($reference);
         $status = 1;
         if ($obj) {
-            //  $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
 
             if ($status == 1) {
                 if ($obj->tipo == 0) { //membresia
