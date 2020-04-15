@@ -2390,7 +2390,7 @@ class Front extends CI_Controller
             if ($status == 1) {
                 if ($obj->tipo == 0) { //membresia
 
-                    $user_id = $this->session->userdata('user_id');
+                    $user_id = $obj->user_id;
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
                     $fecha = date('Y-m-d H:i:s');
@@ -2411,7 +2411,7 @@ class Front extends CI_Controller
                     ];
                     $this->membresia->create_membresia_user($data);
                 } elseif ($obj->tipo == 1) {
-                    $user_id = $this->session->userdata('user_id');
+                    $user_id = $obj->user_id;
                     $subasta_id = $obj->id;
                     $this->load->model('Subasta_model', 'subasta');
                     $this->load->model('Membresia_model', 'membresia');
@@ -2436,7 +2436,7 @@ class Front extends CI_Controller
                     $fecha_fin = strtotime('+30 day', strtotime($fecha));
                     $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
                 } elseif ($obj->tipo == 3) {
-                    $user_id = $this->session->userdata('user_id');
+                    $user_id = $obj->user_id;
                     $subasta_id = $obj->id;
                     $this->load->model('Subasta_model', 'subasta');
                     $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
