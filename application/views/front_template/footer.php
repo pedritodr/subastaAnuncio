@@ -939,6 +939,9 @@
                   $('#mensaje_notificacion').text(data.status.message);
                   $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
                   $('#modal_notificacion').modal('show');
+                  setTimeout(() => {
+                     location.reload();
+                  }, 4000);
                } else {
                   alert("Ocurrio un error en el servidor");
                }
@@ -1605,6 +1608,10 @@
                      $('#mensaje_notificacion').text(data.status.message);
                      $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
                      $('#modal_notificacion').modal('show');
+                     setTimeout(() => {
+                        $('#modal_notificacion').modal('hide');
+                        cargarmodal_subasta(subasta_id, "");
+                     }, 4000);
                   } else {
                      alert("Ocurrio un error en el servidor");
                   }
