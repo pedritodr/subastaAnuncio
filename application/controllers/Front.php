@@ -2389,8 +2389,7 @@ class Front extends CI_Controller
 
             if ($status == 1) {
                 if ($obj->tipo == 0) { //membresia
-                    $this->load->model('payment_model', 'payment');
-                    $unico = $this->payment->create_unico(['status' => 0]);
+
                     $user_id = $this->session->userdata('user_id');
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
