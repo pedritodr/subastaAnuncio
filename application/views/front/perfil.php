@@ -128,7 +128,7 @@
                                     <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                         <div class="white category-grid-box-1 ">
                                             <!-- foto -->
-                                            <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>">
+                                            <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
 
                                                     <?php if (strpos($item->photo, 'uploads') !== false) { ?>
 
@@ -150,7 +150,7 @@
 
                                                 <!-- descripcion -->
                                                 <h6>
-                                                    <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><?= $item->titulo_corto; ?></a>
+                                                    <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
                                                 </h6>
                                                 <!-- Location -->
                                                 <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
@@ -181,7 +181,7 @@
                                                     <?php } ?>
                                                     <?php if ($item->destacado == 0) { ?>
                                                         <li>
-                                                            <a title="Destacar anuncio" onclick="cargar_modal_destacar('<?= $item->anuncio_id ?>');"><i class="fa fa-star delete"></i></a>
+                                                            <a title="Destacar anuncio" onclick="cargar_modal_destacar('<?= base64_encode(json_encode($item)) ?>');"><i class="fa fa-star delete"></i></a>
                                                         </li>
 
                                                     <?php } ?>

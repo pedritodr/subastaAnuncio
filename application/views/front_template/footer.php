@@ -11,6 +11,17 @@
                      <div class="footer-widget about-widget">
                         <div class="logo">
                            <a href="<?= site_url('portada') ?>"><img alt="" class="img-responsive" src="<?= base_url('assets_front/images/subastanuncio-x1.png'); ?>"></a>
+                           <div style="display:none" class="row">
+                              <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                                 <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+                              </div>
+                              <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                                 <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+                              </div>
+                              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                                 <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt="">
+                              </div>
+                           </div>
                         </div>
                         <br>
                         <div class="social-links-two clearfix text-center">
@@ -181,9 +192,6 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <?php echo form_open_multipart("front/destacar_anuncio") ?>
-
-            <input type="hidden" id='anuncio_id_destacar' name="anuncio_id_destacar">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h3 class="modal-title text-center"><?= translate('featured_ads_lang') ?></h3>
          </div>
@@ -196,15 +204,28 @@
                   <p class="text-center">
                      <?= translate('confirmar_destacar_ads_lang') ?>
                   </p>
-
+                  <h3 class="text-center"><strong>Costo:</strong> $3.99</h3>
+                  <input type="hidden" id='anuncio_id_destacar'>
+                  <input type="hidden" id='anuncio_detalle_destacar'>
                   <div id="dropzone" class="dropzone"></div>
                </div>
             </div>
+            <div class="row">
+               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+               </div>
+               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+               </div>
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               </div>
+            </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button id="btn_destacar" type="submit" class="btn btn-theme btn-block"><?= translate('featured_ads_lang') ?></button>
+               <button id="btn_destacar" type="button" onclick="pagar_destacar()" class="btn btn-theme btn-block"><?= translate('featured_ads_lang') ?></button>
 
             </div>
-            <?= form_close(); ?>
+
          </div>
       </div>
    </div>
@@ -359,6 +380,17 @@
             <h4 style="font-size:26px !important" id="descuento" class="text-center"></h4>
             <h4 style="font-size:26px !important" id="inicial" class="text-center"></h4>
             <input type="hidden" id='subasta_id' name="subasta_id">
+            <div class="row">
+               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+               </div>
+               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+               </div>
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               </div>
+            </div>
 
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -472,17 +504,27 @@
          </div>
          <div class="modal-body">
             <!-- content goes here -->
-            <?php echo form_open_multipart("front/pagar_inversa") ?>
+
             <h5 class="text-center" id="name_subasta_inversa"></h5>
             <h4 id="valor_inversa" class="text-center"></h4>
-
-            <input type="hidden" id='invresa_subasta_id' name="invresa_subasta_id">
-
+            <input type="hidden" id='pagar_valor_inversa'>
+            <input type="hidden" id='invresa_subasta_id'>
+            <div class="row">
+               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+               </div>
+               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+               </div>
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               </div>
+            </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button type="submit" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
+               <button type="button" onclick="pagar_inversa()" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
             </div>
-            <?= form_close(); ?>
+
          </div>
       </div>
    </div>
@@ -559,20 +601,72 @@
             <!-- content goes here =-->
 
             <div class="row">
-               <div id="lightbox-response" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                   <h3 class="text-center" id="nombre_membresia"></h3>
                   <h4 class="text-center" id="precio_membresia"></h4>
                   <input name="membresia_id" id="membresia_id" type="hidden" value="">
                   <input id="cod_secret" class="btn btn-primary" type="hidden" value="">
                </div>
+               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+               </div>
+               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+               </div>
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               </div>
 
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button onclick="payment()" type="button" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
+               <button id="btn_modal_membresia" onclick="payment()" type="button" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
                <button type="button" class="btn btn-dark btn-block" data-dismiss="modal"><?= translate('cancelar_lang'); ?></button>
 
             </div>
             <!--       <?= form_close(); ?> -->
+         </div>
+      </div>
+   </div>
+</div>
+<div id="modal_notificacion" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= "Notificación" ?></h3>
+         </div>
+
+         <div class="modal-body">
+            <!-- content goes here =-->
+
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                  <h2 style="color:#008f39 " class="text-center" id="icono_notificacion"></h2>
+                  <h4 class="text-center" id="status_notificacion"></h4>
+                  <p class="text-center" id="referencia_notificacion"></p>
+                  <p class="text-center" id="mensaje_notificacion"></p>
+                  <p class="text-center" id="product_adquirido"></p>
+
+               </div>
+               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
+               </div>
+               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
+               </div>
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
+                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               </div>
+
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+
+               <button type="button" class="btn btn-dark btn-block" data-dismiss="modal"><?= translate('cerrar_lang'); ?></button>
+
+            </div>
+
          </div>
       </div>
    </div>
@@ -613,6 +707,10 @@
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 <script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
 <script type="text/javascript">
+   $('#btn_modal_membresia').click(function() {
+      $('#btn_modal_membresia').hide();
+      $('#modal_membresia_gratis').modal('hide');
+   });
    let contador_directa = 0;
    let vacio = null;
    let contador_inversa = 0;
@@ -623,8 +721,6 @@
    let session_subasta = null;
    let input_valor = 0;
    let membresia_seleccionada = null;
-
-
 
    function payment() {
 
@@ -643,7 +739,7 @@
          },
          success: function(data) {
             data = JSON.parse(data);
-            console.log(data);
+
             var processUrl = data.processUrl;
 
             P.init(processUrl);
@@ -656,7 +752,134 @@
       });
       P.on('response', function(data) {
 
-         $("#lightbox-response").html(JSON.stringify(data, null, 2));
+         if (data.status.status == "APPROVED") {
+            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+            $('#status_notificacion').text("Transacción Aprobada");
+            $('#product_adquirido').html("<strong>Membresia adquirida : </strong>" + nombre_membresia);
+         } else if (data.status.status == "REJECTED") {
+            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+            $('#status_notificacion').text("El pago ha sido rechazado");
+         } else if (data.status.status == "PENDING") {
+            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+            $('#status_notificacion').text("El proceso de pago está pendiente");
+         }
+
+         $('#mensaje_notificacion').text(data.status.message);
+         $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+         $('#modal_notificacion').modal('show');
+      });
+
+      $("#lightboxIt").on('click', function() {
+
+         P.init($("#processUrl").val());
+      });
+   }
+
+   function pagar_inversa() {
+
+      var name_subasta = $('#name_subasta_inversa').text();
+      var valor_subasta_inversa = $('#pagar_valor_inversa').val();
+      var inversa_subasta_id = $('#invresa_subasta_id').val();
+      $('#modal_pagar_inversa').modal("hide");
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/checkout') ?>",
+         data: {
+            monto: valor_subasta_inversa,
+            detalle: name_subasta,
+            id: inversa_subasta_id,
+            tipo: 1
+         },
+         success: function(data) {
+            data = JSON.parse(data);
+
+            var processUrl = data.processUrl;
+
+            P.init(processUrl);
+            $("#processUrl").val(processUrl);
+         },
+         error: function(data) {
+            data = JSON.parse(data);
+            alert(data.status.message);
+         }
+      });
+      P.on('response', function(data) {
+
+         if (data.status.status == "APPROVED") {
+            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+            $('#status_notificacion').text("Transacción Aprobada");
+            $('#product_adquirido').html("<strong>Subasta adquirida: </strong>" + name_subasta);
+            setTimeout(() => {
+               location.reload();
+            }, 4000);
+         } else if (data.status.status == "REJECTED") {
+            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+            $('#status_notificacion').text("El pago ha sido rechazado");
+         } else if (data.status.status == "PENDING") {
+            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+            $('#status_notificacion').text("El proceso de pago está pendiente");
+         }
+
+         $('#mensaje_notificacion').text(data.status.message);
+         $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+         $('#modal_notificacion').modal('show');
+      });
+
+      $("#lightboxIt").on('click', function() {
+
+         P.init($("#processUrl").val());
+      });
+   }
+
+   function pagar_destacar() {
+
+      var name_destacado = $('#anuncio_detalle_destacar').val();
+      var valor_destacado = 3.99;
+      var anuncio_destacado_id = $('#anuncio_id_destacar').val();
+      $('#modal_destacar').modal("hide");
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/checkout') ?>",
+         data: {
+            monto: valor_destacado,
+            detalle: name_destacado,
+            id: anuncio_destacado_id,
+            tipo: 2
+         },
+         success: function(data) {
+            data = JSON.parse(data);
+
+            var processUrl = data.processUrl;
+
+            P.init(processUrl);
+            $("#processUrl").val(processUrl);
+         },
+         error: function(data) {
+            data = JSON.parse(data);
+            alert(data.status.message);
+         }
+      });
+      P.on('response', function(data) {
+
+         if (data.status.status == "APPROVED") {
+            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+            $('#status_notificacion').text("Transacción Aprobada");
+            $('#product_adquirido').html("<strong>Anuncio destacado: </strong>" + name_destacado);
+            setTimeout(() => {
+               location.reload();
+            }, 4000);
+
+         } else if (data.status.status == "REJECTED") {
+            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+            $('#status_notificacion').text("El pago ha sido rechazado");
+         } else if (data.status.status == "PENDING") {
+            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+            $('#status_notificacion').text("El proceso de pago está pendiente");
+         }
+
+         $('#mensaje_notificacion').text(data.status.message);
+         $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+         $('#modal_notificacion').modal('show');
       });
 
       $("#lightboxIt").on('click', function() {
@@ -868,10 +1091,12 @@
       $('#anuncio_id2').val(id);
    }
 
-   function cargar_modal_destacar(id) {
-
+   function cargar_modal_destacar(object) {
+      object = atob(object);
+      object = JSON.parse(object);
       $('#modal_destacar').modal("show");
-      $('#anuncio_id_destacar').val(id);
+      $('#anuncio_id_destacar').val(object.anuncio_id);
+      $('#anuncio_detalle_destacar').val(object.titulo);
    }
 
    function cargar_modal_membresia(id, nombre, precio, cantidad) {
@@ -881,8 +1106,10 @@
       $('#nombre').text(nombre);
       $('#precio').text("$" + parseFloat(precio).toFixed(2));
       $('#cantidad').text(cant + " " + cantidad);
+      $('#btn_modal_membresia').show();
       $("#modal_membresia").modal("show");
    }
+   let precio_piso_subata = 0;
 
    function cargarmodal_entrar(id, nombre, precio) {
 
@@ -896,16 +1123,19 @@
       if (membresia_id != "") {
          if (qty_subastas > 0) {
             $('#inicial').html("<span class='label label-primary'>$0.00</span>");
+            precio_piso_subata = 0
             $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
          } else {
             precio = parseFloat(precio);
             let total = precio - (precio * (1 * descuento));
+            precio_piso_subata = total;
             $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(total).toFixed(2) + "</span>");
             $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
 
          }
 
       } else {
+         precio_piso_subata = precio;
          $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio).toFixed(2) + "</span>");
       }
 
@@ -1204,57 +1434,105 @@
       $('#nombre_membresia').text(object.nombre);
       $('#precio_membresia').text("$" + parseFloat(object.precio).toFixed(2));
       $('#membresia_id').val(object.membresia_id);
+      $('#btn_modal_membresia').show();
       $('#modal_membresia_gratis').modal('show');
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/generando_codigo') ?>",
 
-         success: function(result) {
-            result = JSON.parse(result)
-
-            trakey = result.trakey;
-            nonce = result.nonce;
-         }
-      });
    }
 
    function pagar_piso() {
       let subasta_id = $('#subasta_id').val();
-      $('#btn_pagar_piso').prop('disabled', true);
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/pagar_entrada_ajax') ?>",
+      $("#modal_entrar").modal("hide");
+      if (precio_piso_subata == 0) {
+         $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/pagar_entrada_ajax') ?>",
 
-         data: {
-            subasta_id: subasta_id,
-         },
-         success: function(result) {
-            result = JSON.parse(result);
-            // console.log(result);
-            if (result.status == 500) {
-               let message = "<?= translate('piso_error') ?>";
-               $('#mensaje_error_piso').text(message);
-               $('#mensaje_piso').show();
-               $('#btn_pagar_piso').prop('disabled', false);
+            data: {
+               subasta_id: subasta_id,
+            },
+            success: function(result) {
+               result = JSON.parse(result);
+               // console.log(result);
+               if (result.status == 500) {
+                  let message = "<?= translate('piso_error') ?>";
+                  $('#mensaje_error_piso').text(message);
+                  $('#mensaje_piso').show();
+                  $('#btn_pagar_piso').prop('disabled', false);
+                  setTimeout(() => {
+                     $('#mensaje_piso').fadeOut(2000)
+                  }, 3000);
+
+               } else if (result.status == 200) {
+
+                  let message = "<?= translate('piso_pagado_lang') ?>";
+                  $('#mensaje_error_piso_2').text(message);
+                  $('#mensaje_piso_2').show();
+                  $('#btn_pagar_piso').prop('disabled', true);
+                  $('#btn_entrar_subasta_' + subasta_id).hide();
+                  setTimeout(() => {
+                     $('#modal_entrar').modal('hide');
+                     cargarmodal_subasta(subasta_id, "");
+                  }, 2500);
+               }
+
+            }
+         });
+      } else {
+         let detalle = "Pago de piso de la subasta";
+
+         $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/checkout') ?>",
+            data: {
+               monto: precio_piso_subata,
+               detalle: detalle,
+               id: subasta_id,
+               tipo: 1
+            },
+            success: function(data) {
+               data = JSON.parse(data);
+
+               var processUrl = data.processUrl;
+
+               P.init(processUrl);
+               $("#processUrl").val(processUrl);
+            },
+            error: function(data) {
+               data = JSON.parse(data);
+               alert(data.status.message);
+            }
+         });
+         P.on('response', function(data) {
+
+            if (data.status.status == "APPROVED") {
+               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+               $('#status_notificacion').text("Transacción Aprobada");
+               $('#product_adquirido').html("<strong> Adquirido : </strong> Piso de la subasta");
                setTimeout(() => {
-                  $('#mensaje_piso').fadeOut(2000)
-               }, 3000);
-
-            } else if (result.status == 200) {
-
-               let message = "<?= translate('piso_pagado_lang') ?>";
-               $('#mensaje_error_piso_2').text(message);
-               $('#mensaje_piso_2').show();
-               $('#btn_pagar_piso').prop('disabled', true);
-               $('#btn_entrar_subasta_' + subasta_id).hide();
-               setTimeout(() => {
-                  $('#modal_entrar').modal('hide');
+                  $('#modal_notificacion').modal('hide');
                   cargarmodal_subasta(subasta_id, "");
-               }, 2500);
+               }, 4000);
+            } else if (data.status.status == "REJECTED") {
+               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+               $('#status_notificacion').text("El pago ha sido rechazado");
+            } else if (data.status.status == "PENDING") {
+               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+               $('#status_notificacion').text("El proceso de pago está pendiente");
             }
 
-         }
-      });
+            $('#mensaje_notificacion').text(data.status.message);
+            $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+            $('#modal_notificacion').modal('show');
+
+         });
+
+         $("#lightboxIt").on('click', function() {
+
+            P.init($("#processUrl").val());
+         });
+      }
+
+      /*  */
    }
 
    function pagar_puja() {
@@ -1422,6 +1700,7 @@
       object = atob(object);
       object = JSON.parse(object);
       $('#name_subasta_inversa').text(object.nombre_espa);
+      $('#pagar_valor_inversa').val(parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
       $('#valor_inversa').text("$" + parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
       $('#invresa_subasta_id').val(object.subasta_id);
       $('#modal_pagar_inversa').modal("show");
