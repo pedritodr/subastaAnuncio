@@ -2324,7 +2324,8 @@ class Front extends CI_Controller
 
         $response = $placetopay->request($request);
         $this->load->model('payment_model', 'payment');
-        $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
+        $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
+        $this->payment->update($payment_id, ['request_id' => $response->requestId]);
         echo json_encode($response);
         exit();
         /*   try {
@@ -2372,8 +2373,8 @@ class Front extends CI_Controller
     {
         $this->load->model('payment_model', 'payment');
         $datos = file_get_contents('php://input');
-        $this->payment->create_prueba(['data' => $datos]);
-        /*   $data = json_decode($datos, true);
+        //     $this->payment->create_prueba(['data' => $datos]);
+        $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
         // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
@@ -2457,7 +2458,7 @@ class Front extends CI_Controller
                     $this->subasta->create_subasta_user($data);
                 }
             }
-        } */
+        }
     }
     function update_request_id()
     {

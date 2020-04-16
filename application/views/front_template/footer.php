@@ -739,7 +739,7 @@
          },
          success: function(data) {
             data = JSON.parse(data);
-
+            console.log(data.requestId);
             var processUrl = data.processUrl;
 
             P.init(processUrl);
