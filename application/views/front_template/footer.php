@@ -2110,6 +2110,8 @@
 
                               $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
                            }
+                        } else {
+                           $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                         }
                      }
 
