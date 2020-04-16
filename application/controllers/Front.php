@@ -112,7 +112,13 @@ class Front extends CI_Controller
         $this->load_view_front('front/login', $data);
     }
 
-
+    public function faq()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/faq', $data);
+    }
     public function registrar()
     {
         $this->load->model('Banner_model', 'banner');
@@ -457,7 +463,11 @@ class Front extends CI_Controller
         $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
         if ($user_id) {
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
-            $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            if ($subasta_user) {
+                $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            } else {
+                $puja_user = null;
+            }
         } else {
             $subasta_user = null;
             $puja_user = null;
@@ -1741,8 +1751,11 @@ class Front extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $ciudad_id = $this->session->userdata('ciudad_id');
         $this->load->model('Banner_model', 'banner');
+        $this->load->model('payment_model', 'payment');
+        $payments = $this->payment->get_by_payment_user_id_all($user_id);
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
+        $data['payments'] = $payments;
         $mis_subastas = $this->subasta->get_subastas_directas_by_user($user_id);
         $subastas_inversas = $this->subasta->get_subastas_inversas_by_user($user_id);
         foreach ($subastas_inversas as $item) {
@@ -2241,22 +2254,38 @@ class Front extends CI_Controller
                 'type' => getenv('P2P_TYPE') ?: PlacetoPay::TP_REST
             ]);
         }
-        /*        $placetopay = Dnetix\Redirection\PlacetoPay([
-            'login' => '6dd79d14d110adedc41f3fbab8e58461',
-            'tranKey' => 'h61ByK5IO930k2T8',
-            'url' => 'https://test.placetopay.ec/redirection/',
-        ]); */
-        $membresia = $this->input->post('nombre');
-        $membresia_id = $this->input->post('membresia_id');
-        $this->load->model('Membresia_model', 'membresia');
-        $obj_membresia = $this->membresia->get_by_id($membresia_id);
-        $monto = (float) $obj_membresia->precio;
-        $iva = $monto * 0.12;
-        $base = $monto - $iva;
+        $detalle = $this->input->post('detalle');
+        $id =  $this->input->post('id');
+        $tipo = (int) $this->input->post('tipo');
+        $valor = (float) $this->input->post('monto');
+        if ($tipo == 0) {
+            $this->load->model('Membresia_model', 'membresia');
+            $obj = $this->membresia->get_by_id($id);
+            $monto = (float) $obj->precio;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
+        } elseif ($tipo == 1) {
+            $this->load->model('Subasta_model', 'subasta');
+            $obj = $this->subasta->get_by_id($id);
 
+            $monto = $valor;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
+        } elseif ($tipo == 2) {
+            $monto = $valor;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
+        } elseif ($tipo == 3) {
+            $monto = $valor;
+            $iva = $monto * 0.12;
+            $base = $monto - $iva;
+        }
+        $this->load->model('payment_model', 'payment');
+        $unico = $this->payment->create_unico(['status' => 1]);
 
         $user_id = $this->session->userdata('user_id');
-        $reference = 'TEST_' . time();
+        $reference = 'RF-' . time() . "-" . $unico;
+
         $this->load->model('User_model', 'user');
         $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
         $obj_user = $this->user->get_by_id($user_id);
@@ -2277,7 +2306,7 @@ class Front extends CI_Controller
             ],
             "payment" => [
                 "reference" => $reference,
-                "description" => $membresia,
+                "description" => $detalle,
                 "amount" => [
                     "taxes" => [
 
@@ -2297,8 +2326,8 @@ class Front extends CI_Controller
             "expiration" => $fecha_vencimiento,
             "ipAddress" => $ip,
             "userAgent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36",
-            "returnUrl" => site_url(),
-            "cancelUrl" => site_url(),
+            "returnUrl" => site_url('payment'),
+            "cancelUrl" => site_url('transaccion_cancelada'),
             "skipResult" => false,
             "noBuyerFill" => false,
             "captureAddress" => false,
@@ -2307,6 +2336,9 @@ class Front extends CI_Controller
         $placetopay = placetopay();
 
         $response = $placetopay->request($request);
+        $this->load->model('payment_model', 'payment');
+        $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
+        $this->payment->update($payment_id, ['request_id' => $response->requestId]);
         echo json_encode($response);
         exit();
         /*   try {
@@ -2328,9 +2360,7 @@ class Front extends CI_Controller
     //Método con rand()
     function generando_codigo()
     {
-
-
-        $length = 4;
+        $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -2340,9 +2370,140 @@ class Front extends CI_Controller
 
         $login = '6dd79d14d110adedc41f3fbab8e58461';
         $tranKey = 'h61ByK5IO930k2T8';
-        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey));
+        $resultado = base64_encode(sha1($randomString . Date("Y-m-d\TH:i:sP") . $tranKey, true));
         $randomString = base64_encode($randomString);
-        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString]);
+        echo json_encode(['trakey' => $resultado, 'nonce' => $randomString, 'date' => Date("Y-m-d\TH:i:sP")]);
+        exit();
+    }
+    public function pago_cancelada()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/fallida', $data);
+    }
+    public function pago_exitoso()
+    {
+        $this->load->model('payment_model', 'payment');
+        $datos = file_get_contents('php://input');
+        //     $this->payment->create_prueba(['data' => $datos]);
+        $data = json_decode($datos, true);
+        $requestId = $data['requestId'];
+        $reference = $data['reference'];
+        // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
+        $obj =  $this->payment->get_by_reference_id($reference);
+
+        if ($obj) {
+            $this->payment->update($obj->payment_id, ['request_id' => $requestId]);
+            if ($data['status']['status'] == "APPROVED") {
+                $status = 1;
+            } elseif ($data['status']['status'] == "PENDING") {
+                $status = 3;
+            } else {
+                $status = 0;
+            }
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+            if ($status == 1) {
+                if ($obj->tipo == 0) { //membresia
+
+                    $user_id = $obj->user_id;
+                    $this->load->model('Membresia_model', 'membresia');
+                    $object_membresia = $this->membresia->get_by_id($obj->id);
+                    $fecha = date('Y-m-d H:i:s');
+                    $fecha_fin = strtotime('+364 day', strtotime($fecha));
+                    $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+                    $fecha_mes = strtotime('+30 day', strtotime($fecha));
+                    $fecha_mes = date('Y-m-d', $fecha_mes);
+                    $data = [
+                        'user_id' => $user_id,
+                        'membresia_id' => $obj->id,
+                        'fecha_inicio' => $fecha,
+                        'fecha_fin' => $fecha_fin,
+                        'fecha_mes' => $fecha_mes,
+                        'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+                        'qty_subastas' => (int) $object_membresia->qty_subastas,
+                        'estado' => 1,
+                        'mes' => 1,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $this->membresia->create_membresia_user($data);
+                } elseif ($obj->tipo == 1) {
+                    $user_id = $obj->user_id;
+                    $subasta_id = $obj->id;
+                    $this->load->model('Subasta_model', 'subasta');
+                    $this->load->model('Membresia_model', 'membresia');
+                    $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+                    if ($membresia) {
+                        $qty = (int) $membresia->qty_subastas;
+                        if ($qty > 0) {
+                            $resta = $qty - 1;
+                            $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
+                        }
+                    }
+                    $data = [
+                        'user_id' => $user_id,
+                        'subasta_id' => $subasta_id,
+                        'is_active' => 1,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $this->subasta->create_subasta_user($data);
+                } elseif ($obj->tipo == 2) {
+                    $this->load->model('Anuncio_model', 'anuncio');
+                    $anuncio_id = $obj->id;
+                    $fecha = date('Y-m-d');
+                    $fecha_fin = strtotime('+30 day', strtotime($fecha));
+                    $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $obj->payment_id]);
+                } elseif ($obj->tipo == 3) {
+                    $user_id = $obj->user_id;
+                    $subasta_id = $obj->id;
+                    $this->load->model('Subasta_model', 'subasta');
+                    $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+                    $count = count($subasta);
+                    $cantidad = (int) $subasta[$count - 1]->cantidad - 1;
+                    if ($cantidad == 0) {
+                        $this->subasta->update($subasta_id, ['is_open' => 0]);
+                    }
+                    $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]);
+                    $data = [
+                        'user_id' => $user_id,
+                        'subasta_id' => $subasta_id,
+                        'is_active' => 1,
+                        'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $this->subasta->create_subasta_user($data);
+                }
+            }
+        }
+    }
+    public function update_request_id()
+    {
+        $this->load->model('payment_model', 'payment');
+        $request_id = $this->input->post('request_id');
+        $reference = $this->input->post('reference');
+        $status = $this->input->post('status');
+        $obj = $this->payment->get_by_reference_id($reference);
+        if ($obj) {
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
+            echo json_encode(['status' => 200]);
+        } else {
+            echo json_encode(['status' => 404]);
+        }
+
+        exit();
+    }
+    public function get_payments_user()
+    {
+        $this->load->model('payment_model', 'payment');
+        $user_id = $this->input->post('user_id');
+        $obj = $this->payment->get_by_payment_user_id($user_id);
+
+        if (count($obj) > 0) {
+            echo json_encode(['status' => 500]);
+        } else {
+            echo json_encode(['status' => 200]);
+        }
+
         exit();
     }
 }

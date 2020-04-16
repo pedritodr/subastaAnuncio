@@ -70,7 +70,10 @@ $route['prueba'] = 'front/prueba';
 $route['search_subasta_directa'] = 'front/buscar_subasta_directa';
 $route['search_subasta_inversa'] = 'front/buscar_subasta_inversa';
 $route['search_anuncios'] = 'front/buscar_anuncio';
-
+$route['faqs'] = 'front/faq';
+//$route['payment/(:any)'] = 'front/pago_exitoso/$1';
+$route['payment'] = 'front/pago_exitoso';
+$route['transaccion_cancelada'] = 'front/pago_cancelada';
 
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();

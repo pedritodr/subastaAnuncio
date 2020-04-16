@@ -86,7 +86,23 @@ class Anuncio_model extends CI_Model
         return $afec;
     }
 
+    function update_payment($id, $data)
+    {
+        $old = $this->get_by_id($id);
+        $this->db->where('payment_id', $id);
+        foreach ($data as $key => $value) {
+            $this->db->set($key, $value);
+        }
+        $this->db->update('anuncio');
+        $afec = $this->db->affected_rows();
 
+        if ($afec > 0) {
+            $new = $this->get_by_id($id);
+            //  $this->activelog($id,null,2,$new,$old);
+        }
+
+        return $afec;
+    }
 
 
     function delete($id)
