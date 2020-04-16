@@ -55,6 +55,8 @@ class Cron  extends CI_Controller
     }
     public function csm()
     {
+        var_dump('hola');
+        die();
         // header('Content-Type: image/jpeg');
         $mem =  $this->anuncio->get_by_id(42);
 
@@ -182,6 +184,8 @@ class Cron  extends CI_Controller
     {
 
         $transacciones = $this->payment->get_all_transaccion();
+        var_dump($transacciones);
+        die();
         $ppm = new PPM();
         foreach ($transacciones as $item) {
             $response = $ppm->consultar_respuesta($item->request_id);
