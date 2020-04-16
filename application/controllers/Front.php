@@ -2372,10 +2372,7 @@ class Front extends CI_Controller
     {
         $this->load->model('payment_model', 'payment');
         $datos = file_get_contents('php://input');
-
-        $this->payment->create_prueba(['data' => $datos]);
-
-        /*  $data = json_decode($datos, true);
+        $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
         $estado = $data['status']['status'];
@@ -2386,7 +2383,7 @@ class Front extends CI_Controller
         }
         // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
         $obj =  $this->payment->get_by_reference_id($reference);
-        $status = 1;
+
         if ($obj) {
             $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
 
@@ -2458,7 +2455,7 @@ class Front extends CI_Controller
                     $this->subasta->create_subasta_user($data);
                 }
             }
-        } */
+        }
     }
     function update_request_id()
     {
