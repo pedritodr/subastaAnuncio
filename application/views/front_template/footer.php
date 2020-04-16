@@ -2098,16 +2098,17 @@
                      } else {
                         if (result[i].puja.valor != "null") {
                            if (result[i].puja_user.valor == null) {
-
+                              console.log(1);
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
                               $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                              console.log(2);
                            }
                            if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
-
+                              console.log(3);
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
-
+                              console.log(4);
                               $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
                            }
                         }
