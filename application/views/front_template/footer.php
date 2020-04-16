@@ -2097,8 +2097,8 @@
                         $("#body_pujar").hide();
                      } else {
                         if (result[i].puja.valor != "null") {
-                           console.log(result[i].puja_user.valor);
-                           if (result[i].puja_user.valor) {
+
+                           if (result[i].puja_user.valor == null) {
                               console.log(1);
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
