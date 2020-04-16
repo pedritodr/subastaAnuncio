@@ -466,6 +466,7 @@ class Front extends CI_Controller
             if ($subasta_user) {
                 $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
             } else {
+                $subasta_user = null;
                 $puja_user = null;
             }
         } else {
