@@ -23,6 +23,13 @@ class Payment_model extends CI_Model
         // $this->activelog($id,$data['name'],1);
         return $id;
     }
+    function create_prueba($data)
+    {
+        $this->db->insert('prueba', $data);
+        $id = $this->db->insert_id();
+        // $this->activelog($id,$data['name'],1);
+        return $id;
+    }
 
     function get_by_id($id)
     {

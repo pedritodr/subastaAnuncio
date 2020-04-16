@@ -2372,7 +2372,10 @@ class Front extends CI_Controller
     {
         $this->load->model('payment_model', 'payment');
         $datos = file_get_contents('php://input');
-        $data = json_decode($datos, true);
+
+        $this->payment->create_prueba(['data' => $datos]);
+
+        /*  $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
         $estado = $data['status']['status'];
@@ -2455,7 +2458,7 @@ class Front extends CI_Controller
                     $this->subasta->create_subasta_user($data);
                 }
             }
-        }
+        } */
     }
     function update_request_id()
     {
