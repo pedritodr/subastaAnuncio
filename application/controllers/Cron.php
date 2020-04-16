@@ -7,7 +7,7 @@ class Cron  extends CI_Controller
     {
         parent::__construct();
 
-        $this->load->model('Subasta_model', 'subasta');
+
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Subasta_model', 'subasta');
@@ -212,7 +212,8 @@ class Cron  extends CI_Controller
                             'anuncios_publi' => (int) $object_membresia->cant_anuncio,
                             'qty_subastas' => (int) $object_membresia->qty_subastas,
                             'estado' => 1,
-                            'mes' => 1
+                            'mes' => 1,
+                            'payment_id' => $item->payment_id
                         ];
                         $this->membresia->create_membresia_user($data);
                     } elseif ($item->tipo == 1) {
@@ -231,7 +232,8 @@ class Cron  extends CI_Controller
                         $data = [
                             'user_id' => $user_id,
                             'subasta_id' => $subasta_id,
-                            'is_active' => 1
+                            'is_active' => 1,
+                            'payment_id' => $item->payment_id
                         ];
                         $this->subasta->create_subasta_user($data);
                     } elseif ($item->tipo == 2) {
@@ -239,7 +241,7 @@ class Cron  extends CI_Controller
                         $anuncio_id = $item->id;
                         $fecha = date('Y-m-d');
                         $fecha_fin = strtotime('+30 day', strtotime($fecha));
-                        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+                        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $item->payment_id]);
                     } elseif ($item->tipo == 3) {
                         $user_id = $item->user_id;
                         $subasta_id = $item->id;
@@ -255,7 +257,8 @@ class Cron  extends CI_Controller
                             'user_id' => $user_id,
                             'subasta_id' => $subasta_id,
                             'is_active' => 1,
-                            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id
+                            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+                            'payment_id' => $item->payment_id
                         ];
                         $this->subasta->create_subasta_user($data);
                     }

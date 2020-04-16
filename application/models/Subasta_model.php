@@ -139,6 +139,23 @@ class Subasta_model extends CI_Model
 
         return $afec;
     }
+    function update_subasta_user($id, $data)
+    {
+        $old = $this->get_by_id($id);
+        $this->db->where('payment_id', $id);
+        foreach ($data as $key => $value) {
+            $this->db->set($key, $value);
+        }
+        $this->db->update('subasta_user');
+        $afec = $this->db->affected_rows();
+
+        if ($afec > 0) {
+            $new = $this->get_by_id($id);
+            //  $this->activelog($id,null,2,$new,$old);
+        }
+
+        return $afec;
+    }
     function update_intervalo($id, $data)
     {
         $old = $this->get_by_id($id);
@@ -192,7 +209,17 @@ class Subasta_model extends CI_Model
         return $afec;
     }
 
+    function delete_subasta_user($id)
+    {
+        $this->db->where('subasta_id', $id);
+        $this->db->delete('subasta');
+        $afec = $this->db->affected_rows();
+        if ($afec > 0) {
+            //  $this->activelog($id,null,3);
+        }
 
+        return $afec;
+    }
 
 
     function delete_foto($id)
@@ -405,6 +432,7 @@ class Subasta_model extends CI_Model
         $this->db->from('subasta_user');
         $this->db->where('user_id', $user_id);
         $this->db->where('subasta_id', $subasta_id);
+        $this->db->where('is_active', 1);
         $query = $this->db->get();
         return $query->row();
     }

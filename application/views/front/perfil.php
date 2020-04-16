@@ -93,6 +93,7 @@
                             <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs_inversas" style="cursor:pointer"><a><?= translate('mis_subastas_inversas_lang') ?><span class="badge"><?php if ($mis_subastas_inversas) { ?> <?= (count($mis_subastas_inversas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="forever" id="historial" style="cursor:pointer"><a><?= translate('historial_payment_lang') ?><span class="badge"><?php if ($payments) { ?> <?= (count($payments)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li><a href="<?= site_url('login/logout') ?>"><?= translate('sign_out_lang') ?></a></li>
                         </ul>
                     </div>
@@ -104,6 +105,47 @@
                         <div class="alert">
 
                             <?= get_message_from_operation(); ?>
+                        </div>
+                    <?php } ?>
+                    <?php if ($payments) { ?>
+                        <!-- lista de anuncios -->
+                        <div id="listado_payments" class="row">
+
+                            <div class="clearfix"></div>
+                            <div class="col-md-12 margin-bottom-40">
+                                <div class="heading-title">
+                                    <h2><?= translate('historial_payment_lang') ?> </h2>
+                                </div>
+                                <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                    <?php foreach ($payments as $pago) { ?>
+                                        <?php if ($pago->status == 0) { ?>
+                                            <?php $estado = "Nuevo pago"; ?>
+                                        <?php } elseif ($pago->status == 1) { ?>
+                                            <?php $estado = "Aprobado"; ?>
+                                        <?php } elseif ($pago->status == 2) { ?>
+                                            <?php $estado = "Cancelada por el cliente ó rechazada"; ?>
+                                        <?php } elseif ($pago->status == 3) { ?>
+                                            <?php $estado = "Pendiente por aprobar"; ?>
+                                        <?php } elseif ($pago->status == 4) { ?>
+                                            <?php $estado = "Reverso"; ?>
+                                        <?php } ?>
+                                        <div class="panel panel-default">
+                                            <div id="headingOne" role="tab" class="panel-heading">
+                                                <h4 class="panel-title"> <a aria-controls="payment_<?= $pago->payment_id ?>" aria-expanded="false" href="#payment_<?= $pago->payment_id ?>" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed"><strong>Referencia: </strong> <?= $pago->reference ?> <strong> Valor: </strong> $<?= number_format($pago->monto, 2) ?> <strong> Estado: </strong> <?= $estado ?> </a> </h4>
+                                            </div>
+                                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="payment_<?= $pago->payment_id ?>" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <p class="text-center"> <?= $pago->detalle ?></p>
+                                                    <p class="text-center"> <strong>Fecha de la transacción: </strong><?= $pago->date ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div><?php } else { ?>
+                        <div id="listado_payments" class="row">
+                            <h4 class="text-center">No tiene pagos realizados.</h4>
                         </div>
                     <?php } ?>
                     <?php if ($all_anuncios) { ?>
@@ -686,10 +728,12 @@
                 $("#panel_perfil").show();
                 $('#listado_directas').hide();
                 $('#listado_inversas').hide();
+                $("#listado_payments").hide();
             } else if (validando == 2) {
                 $("#listado_anuncio").show();
                 $('#listado_directas').hide();
                 $('#listado_inversas').hide();
+                $("#listado_payments").hide();
                 $("#panel_perfil").hide();
                 $("#perfil").removeClass('active');
                 $("#ads").addClass('active');
@@ -705,11 +749,13 @@
         $("#perfil").click(function() {
             $("#listado_anuncio").hide();
             $('#listado_inversas').hide();
+            $("#listado_payments").hide();
             $("#panel_perfil").show();
             $("#listado_directas").hide();
             $("#ads").removeClass('active');
             $("#subs").removeClass('active');
             $("#subs_inversas").removeClass('active');
+            $("#historial").removeClass('active');
             $("#perfil").addClass('active');
 
         });
@@ -719,9 +765,11 @@
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
             $("#subs_inversas").removeClass('active');
+            $("#historial").removeClass('active');
             $("#ads").addClass('active');
             $('#listado_inversas').hide();
             $("#listado_directas").hide();
+            $("#listado_payments").hide();
             $("#listado_anuncio").show();
             $("#panel_perfil").hide();
         });
@@ -730,8 +778,10 @@
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs_inversas").removeClass('active');
+            $("#historial").removeClass('active');
             $("#subs").addClass('active');
             $('#listado_inversas').hide();
+            $("#listado_payments").hide();
             $("#listado_anuncio").hide();
             $("#listado_directas").show();
             $("#panel_perfil").hide();
@@ -741,13 +791,27 @@
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
+            $("#historial").removeClass('active');
             $("#subs_inversas").addClass('active');
             $('#listado_inversas').show();
             $("#listado_anuncio").hide();
             $("#listado_directas").hide();
+            $("#listado_payments").hide();
             $("#panel_perfil").hide();
         });
+        $("#historial").click(function() {
 
+            $("#ads").removeClass('active');
+            $("#perfil").removeClass('active');
+            $("#subs").removeClass('active');
+            $("#historial").addClass('active');
+            $("#subs_inversas").removeClass('active');
+            $('#listado_inversas').hide();
+            $("#listado_anuncio").hide();
+            $("#listado_directas").hide();
+            $("#panel_perfil").hide();
+            $("#listado_payments").show();
+        });
 
         function change_pais() {
 

@@ -112,7 +112,13 @@ class Front extends CI_Controller
         $this->load_view_front('front/login', $data);
     }
 
-
+    public function faq()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/faq', $data);
+    }
     public function registrar()
     {
         $this->load->model('Banner_model', 'banner');
@@ -457,7 +463,11 @@ class Front extends CI_Controller
         $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
         if ($user_id) {
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
-            $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            if ($subasta_user) {
+                $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            } else {
+                $puja_user = null;
+            }
         } else {
             $subasta_user = null;
             $puja_user = null;
@@ -1741,8 +1751,11 @@ class Front extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $ciudad_id = $this->session->userdata('ciudad_id');
         $this->load->model('Banner_model', 'banner');
+        $this->load->model('payment_model', 'payment');
+        $payments = $this->payment->get_by_payment_user_id_all($user_id);
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
+        $data['payments'] = $payments;
         $mis_subastas = $this->subasta->get_subastas_directas_by_user($user_id);
         $subastas_inversas = $this->subasta->get_subastas_inversas_by_user($user_id);
         foreach ($subastas_inversas as $item) {
@@ -2410,7 +2423,8 @@ class Front extends CI_Controller
                         'anuncios_publi' => (int) $object_membresia->cant_anuncio,
                         'qty_subastas' => (int) $object_membresia->qty_subastas,
                         'estado' => 1,
-                        'mes' => 1
+                        'mes' => 1,
+                        'payment_id' => $obj->payment_id
                     ];
                     $this->membresia->create_membresia_user($data);
                 } elseif ($obj->tipo == 1) {
@@ -2429,7 +2443,8 @@ class Front extends CI_Controller
                     $data = [
                         'user_id' => $user_id,
                         'subasta_id' => $subasta_id,
-                        'is_active' => 1
+                        'is_active' => 1,
+                        'payment_id' => $obj->payment_id
                     ];
                     $this->subasta->create_subasta_user($data);
                 } elseif ($obj->tipo == 2) {
@@ -2437,7 +2452,7 @@ class Front extends CI_Controller
                     $anuncio_id = $obj->id;
                     $fecha = date('Y-m-d');
                     $fecha_fin = strtotime('+30 day', strtotime($fecha));
-                    $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+                    $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $obj->payment_id]);
                 } elseif ($obj->tipo == 3) {
                     $user_id = $obj->user_id;
                     $subasta_id = $obj->id;
@@ -2453,14 +2468,15 @@ class Front extends CI_Controller
                         'user_id' => $user_id,
                         'subasta_id' => $subasta_id,
                         'is_active' => 1,
-                        'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id
+                        'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+                        'payment_id' => $obj->payment_id
                     ];
                     $this->subasta->create_subasta_user($data);
                 }
             }
         }
     }
-    function update_request_id()
+    public function update_request_id()
     {
         $this->load->model('payment_model', 'payment');
         $request_id = $this->input->post('request_id');
@@ -2472,6 +2488,20 @@ class Front extends CI_Controller
             echo json_encode(['status' => 200]);
         } else {
             echo json_encode(['status' => 404]);
+        }
+
+        exit();
+    }
+    public function get_payments_user()
+    {
+        $this->load->model('payment_model', 'payment');
+        $user_id = $this->input->post('user_id');
+        $obj = $this->payment->get_by_payment_user_id($user_id);
+
+        if (count($obj) > 0) {
+            echo json_encode(['status' => 500]);
+        } else {
+            echo json_encode(['status' => 200]);
         }
 
         exit();

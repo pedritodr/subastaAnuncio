@@ -220,6 +220,10 @@
                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
                   <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
                </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+
+
+               </div>
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
                <button id="btn_destacar" type="button" onclick="pagar_destacar()" class="btn btn-theme btn-block"><?= translate('featured_ads_lang') ?></button>
@@ -390,6 +394,10 @@
                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
                   <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
                </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+
+
+               </div>
             </div>
 
             <div class="clearfix"></div>
@@ -519,6 +527,10 @@
                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
                   <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
                </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+
+
+               </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -617,6 +629,13 @@
                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
                   <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
                </div>
+
+
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+
+
+               </div>
+
 
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -1174,6 +1193,23 @@
    function cargar_modal_destacar(object) {
       object = atob(object);
       object = JSON.parse(object);
+      $('.transaccion_pendiente').hide();
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_payments_user') ?>",
+
+         data: {
+            user_id: user_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
+               $('.transaccion_pendiente').show();
+            }
+         }
+      });
       $('#modal_destacar').modal("show");
       $('#anuncio_id_destacar').val(object.anuncio_id);
       $('#anuncio_detalle_destacar').val(object.titulo);
@@ -1218,6 +1254,23 @@
          precio_piso_subata = precio;
          $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio).toFixed(2) + "</span>");
       }
+      $('.transaccion_pendiente').hide();
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_payments_user') ?>",
+
+         data: {
+            user_id: user_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
+               $('.transaccion_pendiente').show();
+            }
+         }
+      });
 
       $('#subasta_id').val(id);
       $('#name_subasta').text(nombre);
@@ -1510,7 +1563,23 @@
       var user_id = "<?= $this->session->userdata('user_id'); ?>";
       var phone = "<?= $this->session->userdata('phone'); ?>";
       var email = "<?= $this->session->userdata('email'); ?>";
+      $('.transaccion_pendiente').hide();
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_payments_user') ?>",
 
+         data: {
+            user_id: user_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
+               $('.transaccion_pendiente').show();
+            }
+         }
+      });
       $('#nombre_membresia').text(object.nombre);
       $('#precio_membresia').text("$" + parseFloat(object.precio).toFixed(2));
       $('#membresia_id').val(object.membresia_id);
@@ -1805,6 +1874,23 @@
    function pagar_subasta_inversa(object) {
       object = atob(object);
       object = JSON.parse(object);
+      $('.transaccion_pendiente').hide();
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_payments_user') ?>",
+
+         data: {
+            user_id: user_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
+               $('.transaccion_pendiente').show();
+            }
+         }
+      });
       $('#name_subasta_inversa').text(object.nombre_espa);
       $('#pagar_valor_inversa').val(parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
       $('#valor_inversa').text("$" + parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));

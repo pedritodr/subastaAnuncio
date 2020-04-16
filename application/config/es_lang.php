@@ -65,8 +65,8 @@ $config['qty_wins_lang'] = "Cantidad de ganadores";
 $config['precios_lang'] = "Precio";
 
 $config['preguntas_lang'] = "Preguntas frecuentes ";
+$config['faq_lang'] = "FAQS";
 
-$config['preguntas_lang'] = "Preguntas frecuentes ";
 
 $config['compra_exitosa_lang'] = "Compra exitosa";
 
@@ -230,9 +230,10 @@ $config['date_delivery_lang'] = "Fecha de envio";
 $config['date_purchase_lang'] = "Fecha del pedido";
 $config['date_reception_lang'] = "Fecha de recepción";
 $config['date_vuelo_lang'] = "Fecha de vuelo";
-
+$config['manage_payment_lang'] = "Gestionar transacciones";
+$config['listar_payment_lang'] = "Listar de relacionados";
 $config['send_menssage_lang'] = "Envie su mensaje";
-
+$config['historial_payment_lang'] = "Historial de pagos";
 
 $config['state_lang'] = "Estado";
 $config['pujar_lang'] = "Pujar";

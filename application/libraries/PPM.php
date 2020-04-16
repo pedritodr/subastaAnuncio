@@ -148,13 +148,14 @@ class PPM
     {
         $response = $this->place_to_pay_object->query($order_id);
         if (isset($response)) {
-            $cant = count($response->payment());
-
-            $internal = $response->payment()[$cant - 1]->internalReference();
+            // $cant = count($response->payment());
+            //$internal = $response->payment()[$cant - 1]->internalReference();
+            $internal = $response->payment()[0]->internalReference();
             //var_dump($internal);exit();
             $response = $this->place_to_pay_object->reverse($internal);
+            return $response;
             //var_dump($response); exit();
-            $response = $this->place_to_pay_object->query($order_id);
+            /*   $response = $this->place_to_pay_object->query($order_id);
 
             if ($response->isSuccessful()) {
                 return $response;
@@ -165,7 +166,7 @@ class PPM
                 }
             } else {
                 return [-1, $response->status()->message() . "\n"];
-            }
+            } */
         }
     }
 }
