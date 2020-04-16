@@ -2371,8 +2371,9 @@ class Front extends CI_Controller
     public function pago_exitoso()
     {
         $this->load->model('payment_model', 'payment');
-        $datos = file_get_contents('php://input');
-        $data = json_decode($datos, true);
+        // $datos = file_get_contents('php://input');
+        $this->payment->create_prueba(['data' => "hola"]);
+        /*   $data = json_decode($datos, true);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
         // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
@@ -2456,7 +2457,7 @@ class Front extends CI_Controller
                     $this->subasta->create_subasta_user($data);
                 }
             }
-        }
+        } */
     }
     function update_request_id()
     {
