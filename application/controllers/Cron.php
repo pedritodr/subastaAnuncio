@@ -184,83 +184,84 @@ class Cron  extends CI_Controller
     {
 
         $transacciones = $this->payment->get_all_transaccion();
-        var_dump($transacciones);
-        die();
+
         $ppm = new PPM();
         foreach ($transacciones as $item) {
-            $response = $ppm->consultar_respuesta($item->request_id);
+            if ($item->request_id != "a") {
+                $response = $ppm->consultar_respuesta($item->request_id);
 
-            if ($response) {
-                if ($response->status()->status() == "APPROVED") {
-                    $this->payment->update($item->payment_id, ['status' => 1]);
-                    if ($item->tipo == 0) { //membresia
+                if ($response) {
+                    if ($response->status()->status() == "APPROVED") {
+                        $this->payment->update($item->payment_id, ['status' => 1]);
+                        if ($item->tipo == 0) { //membresia
 
-                        $user_id = $item->user_id;
-                        $this->load->model('Membresia_model', 'membresia');
-                        $object_membresia = $this->membresia->get_by_id($item->id);
-                        $fecha = date('Y-m-d H:i:s');
-                        $fecha_fin = strtotime('+364 day', strtotime($fecha));
-                        $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
-                        $fecha_mes = strtotime('+30 day', strtotime($fecha));
-                        $fecha_mes = date('Y-m-d', $fecha_mes);
-                        $data = [
-                            'user_id' => $user_id,
-                            'membresia_id' => $item->id,
-                            'fecha_inicio' => $fecha,
-                            'fecha_fin' => $fecha_fin,
-                            'fecha_mes' => $fecha_mes,
-                            'anuncios_publi' => (int) $object_membresia->cant_anuncio,
-                            'qty_subastas' => (int) $object_membresia->qty_subastas,
-                            'estado' => 1,
-                            'mes' => 1
-                        ];
-                        $this->membresia->create_membresia_user($data);
-                    } elseif ($item->tipo == 1) {
-                        $user_id = $item->user_id;
-                        $subasta_id = $item->id;
-                        $this->load->model('Subasta_model', 'subasta');
-                        $this->load->model('Membresia_model', 'membresia');
-                        $membresia = $this->membresia->get_membresia_by_user_id($user_id);
-                        if ($membresia) {
-                            $qty = (int) $membresia->qty_subastas;
-                            if ($qty > 0) {
-                                $resta = $qty - 1;
-                                $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
+                            $user_id = $item->user_id;
+                            $this->load->model('Membresia_model', 'membresia');
+                            $object_membresia = $this->membresia->get_by_id($item->id);
+                            $fecha = date('Y-m-d H:i:s');
+                            $fecha_fin = strtotime('+364 day', strtotime($fecha));
+                            $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+                            $fecha_mes = strtotime('+30 day', strtotime($fecha));
+                            $fecha_mes = date('Y-m-d', $fecha_mes);
+                            $data = [
+                                'user_id' => $user_id,
+                                'membresia_id' => $item->id,
+                                'fecha_inicio' => $fecha,
+                                'fecha_fin' => $fecha_fin,
+                                'fecha_mes' => $fecha_mes,
+                                'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+                                'qty_subastas' => (int) $object_membresia->qty_subastas,
+                                'estado' => 1,
+                                'mes' => 1
+                            ];
+                            $this->membresia->create_membresia_user($data);
+                        } elseif ($item->tipo == 1) {
+                            $user_id = $item->user_id;
+                            $subasta_id = $item->id;
+                            $this->load->model('Subasta_model', 'subasta');
+                            $this->load->model('Membresia_model', 'membresia');
+                            $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+                            if ($membresia) {
+                                $qty = (int) $membresia->qty_subastas;
+                                if ($qty > 0) {
+                                    $resta = $qty - 1;
+                                    $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
+                                }
                             }
+                            $data = [
+                                'user_id' => $user_id,
+                                'subasta_id' => $subasta_id,
+                                'is_active' => 1
+                            ];
+                            $this->subasta->create_subasta_user($data);
+                        } elseif ($item->tipo == 2) {
+                            $this->load->model('Anuncio_model', 'anuncio');
+                            $anuncio_id = $item->id;
+                            $fecha = date('Y-m-d');
+                            $fecha_fin = strtotime('+30 day', strtotime($fecha));
+                            $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+                        } elseif ($item->tipo == 3) {
+                            $user_id = $item->user_id;
+                            $subasta_id = $item->id;
+                            $this->load->model('Subasta_model', 'subasta');
+                            $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+                            $count = count($subasta);
+                            $cantidad = (int) $subasta[$count - 1]->cantidad - 1;
+                            if ($cantidad == 0) {
+                                $this->subasta->update($subasta_id, ['is_open' => 0]);
+                            }
+                            $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]);
+                            $data = [
+                                'user_id' => $user_id,
+                                'subasta_id' => $subasta_id,
+                                'is_active' => 1,
+                                'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id
+                            ];
+                            $this->subasta->create_subasta_user($data);
                         }
-                        $data = [
-                            'user_id' => $user_id,
-                            'subasta_id' => $subasta_id,
-                            'is_active' => 1
-                        ];
-                        $this->subasta->create_subasta_user($data);
-                    } elseif ($item->tipo == 2) {
-                        $this->load->model('Anuncio_model', 'anuncio');
-                        $anuncio_id = $item->id;
-                        $fecha = date('Y-m-d');
-                        $fecha_fin = strtotime('+30 day', strtotime($fecha));
-                        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
-                    } elseif ($item->tipo == 3) {
-                        $user_id = $item->user_id;
-                        $subasta_id = $item->id;
-                        $this->load->model('Subasta_model', 'subasta');
-                        $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
-                        $count = count($subasta);
-                        $cantidad = (int) $subasta[$count - 1]->cantidad - 1;
-                        if ($cantidad == 0) {
-                            $this->subasta->update($subasta_id, ['is_open' => 0]);
-                        }
-                        $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]);
-                        $data = [
-                            'user_id' => $user_id,
-                            'subasta_id' => $subasta_id,
-                            'is_active' => 1,
-                            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id
-                        ];
-                        $this->subasta->create_subasta_user($data);
+                    } elseif ($response->status()->status() == "REJECTED") {
+                        $this->payment->update($item->payment_id, ['status' => 2]);
                     }
-                } elseif ($response->status()->status() == "REJECTED") {
-                    $this->payment->update($item->payment_id, ['status' => 2]);
                 }
             }
         }
