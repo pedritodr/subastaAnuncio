@@ -2096,8 +2096,8 @@
                         $('#body_cronometro').hide();
                         $("#body_pujar").hide();
                      } else {
-                        /* if (result[i].puja.valor != "null") {
-                           if (result[i].puja_user.valor == "null") {
+                        if (result[i].puja.valor != "null") {
+                           if (result[i].puja_user.valor == null) {
 
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
@@ -2110,7 +2110,7 @@
 
                               $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
                            }
-                        } */
+                        }
                      }
 
 
