@@ -55,12 +55,12 @@
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <select name="category" class="category form-control">
                         <option label="<?= translate("select_category_lang"); ?>"></option>
-                        <?php if ($categories) { ?>
-                            <?php foreach ($categories as $item) { ?>
-                                <?php if ($this->session->userdata('session_categoria')) { ?>
-                                    <option <?php if ($this->session->userdata('session_categoria') == $item->categoria_id) { ?> selected <?php } ?> value="<?= $item->categoria_id ?>"><?= $item->name_espa ?></option>
+                        <?php if ($all_ciudad) { ?>
+                            <?php foreach ($all_ciudad as $item) { ?>
+                                <?php if ($this->session->userdata('session_ciudad')) { ?>
+                                    <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php  } else { ?>
-                                    <option value="<?= $item->categoria_id ?>"><?= $item->name_espa ?></option>
+                                    <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php } ?>
 
                             <?php } ?>
@@ -99,7 +99,7 @@
             <!-- Row -->
             <div class="row">
                 <!-- Middle Content Area -->
-                <div class="col-md-12 col-lg-12 col-sx-12">
+                <div class="col-md-9 col-md-push-3 col-lg-9 col-sx-12 white-bg">
                     <!-- Row -->
 
                     <div class="row">
@@ -115,7 +115,7 @@
                                 <div style="margin-top:1%" class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                        <div style="margin-top:2%" class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
+                                        <div style="margin-top:2%" class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
                                             <?php if ($this->session->userdata('session_palabra') || $this->session->userdata('session_categoria')) { ?>
                                                 <a href="<?= site_url('search_subasta_directa') ?>" id="btn_subasta_directa_2" class="btn btn-block active btn-theme">
                                                     <span><i style="color:#fff" class="fa fa-arrow-up"></i></span>
@@ -136,7 +136,7 @@
                                                 </a>
                                             <?php } ?>
                                         </div>
-                                        <div style="margin-top:2%" class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center">
+                                        <div style="margin-top:2%" class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
                                             <?php if ($this->session->userdata('session_palabra') || $this->session->userdata('session_categoria')) { ?>
                                                 <a href="<?= site_url('search_subasta_inversa') ?>" id="btn_subasta_inversa_2" class="btn btn-block btn-theme">
                                                     <span><i style="color:#fff" class="fa fa-exchange"></i></span>
@@ -217,7 +217,7 @@
                                                                             <li> <i class="fa fa-map-marker"></i><a><?= $item->ciudad ?></a> </li>
                                                                             <li> <i class="fa fa-clock-o"></i><?= $item->fecha_cierre ?> </li>
                                                                         </ul>
-                                                                        <div class="row" id="cronometro_subasta_<?= $item->subasta_id ?>">
+                                                                        <!--     <div class="row" id="cronometro_subasta_<?= $item->subasta_id ?>">
                                                                             <div class="col-md-12">
                                                                                 <div style="margin-left:-19px" class="timer col-md-2 col-xs-3">
                                                                                     <div class="timer conte">
@@ -244,7 +244,7 @@
                                                                                     <div class="smalltext"><?= translate("segundos_lang"); ?></div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
 
                                                                         <!-- Ad Description-->
                                                                         <div class="ad-details">
@@ -257,7 +257,7 @@
                                                                             <div class="row" id="btn_subastas_<?= $item->subasta_id ?>">
 
                                                                                 <?php if (!$item->subasta_user) { ?>
-                                                                                    <div class="col-md-6">
+                                                                                    <div class="col-md-8">
                                                                                         <button id="btn_entrar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_entrar('<?= $item->subasta_id ?>','<?= $item->nombre_espa ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
 
                                                                                     </div>
@@ -265,19 +265,19 @@
                                                                                 <?php if ($item->subasta_user) { ?>
                                                                                     <?php if ($item->puja_user) { ?>
                                                                                         <?php if ((float) $item->puja_user->valor < (float) $item->puja->valor) { ?>
-                                                                                            <div class="col-md-6">
+                                                                                            <div class="col-md-8">
                                                                                                 <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
 
                                                                                             </div>
                                                                                         <?php } else { ?>
-                                                                                            <div class="col-md-6">
+                                                                                            <div class="col-md-8">
                                                                                                 <button style="display:none" id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
 
                                                                                             </div>
                                                                                         <?php } ?>
                                                                                     <?php } else { ?>
 
-                                                                                        <div class="col-md-6">
+                                                                                        <div class="col-md-8">
                                                                                             <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
 
                                                                                         </div>
@@ -301,7 +301,7 @@
                                                                         <div class="price text-center"><span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
                                                                         <!-- Ad View Button -->
 
-                                                                        <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                        <button style="width: 96%; font-size: 11px;" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= '' ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
 
                                                                     </div>
                                                                 </div>
@@ -418,7 +418,7 @@
                                                                             <div class="category-title text-center">Stock: <span> <?= $item->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
 
                                                                             <!-- Ad View Button -->
-                                                                            <button onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                            <button style="width: 96%; font-size: 11px;" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -455,6 +455,51 @@
                     <!-- Row End -->
                 </div>
                 <!-- Middle Content Area  End -->
+                <!-- Left Sidebar -->
+                <div class="col-md-3 col-md-pull-9 col-sx-12">
+                    <!-- Sidebar Widgets -->
+                    <div class="sidebar">
+                        <!-- Panel group -->
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Categories Panel -->
+                            <div class="panel panel-default">
+                                <!-- Heading -->
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <!-- Title -->
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <i class="more-less glyphicon glyphicon-plus"></i>
+                                            <?= translate("categories_lang"); ?>
+                                        </a>
+                                    </h4>
+                                    <!-- Title End -->
+                                </div>
+                                <!-- Content -->
+                                <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body categories">
+                                        <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+                                        <ul>
+                                            <?php if ($categories) { ?>
+                                                <?php foreach ($categories as $item) { ?>
+                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                <?php } ?>
+                                                <input name="category" id="category" class="" type="hidden" value="">
+                                            <?php } ?>
+                                        </ul>
+                                        <?= form_close(); ?>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Categories Panel End -->
+
+                        </div>
+                        <!-- panel-group end -->
+                    </div>
+                    <!-- Sidebar Widgets End -->
+                </div>
+                <!-- Left Sidebar End -->
             </div>
             <!-- Row End -->
         </div>

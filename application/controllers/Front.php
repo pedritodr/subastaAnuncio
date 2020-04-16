@@ -1126,7 +1126,7 @@ class Front extends CI_Controller
     {
         $this->session->set_userdata('session_categoria', null);
         $this->session->set_userdata('session_palabra', null);
-
+        $this->load->model('Pais_model', 'pais');
         $this->session->set_userdata('page', 'subasta_directa');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
@@ -1228,7 +1228,8 @@ class Front extends CI_Controller
             $item->puja_user = $puja_user;
             $item->user_win = $user_win;
         }
-
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
+        $data['all_ciudad'] = $all_ciudad;
         $data['all_subastas'] = $all_subastas;
         $data['resultados'] = $contador;
         if ($offset == 0) {
@@ -1258,6 +1259,7 @@ class Front extends CI_Controller
         $this->session->set_userdata('page', 'subasta_inversa');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
+        $this->load->model('Pais_model', 'pais');
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
         $this->load->model('Banner_model', 'banner');
@@ -1341,7 +1343,8 @@ class Front extends CI_Controller
             $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
             $item->puja =  $this->subasta->get_puja_alta($item->subasta_id);
         }
-
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
+        $data['all_ciudad'] = $all_ciudad;
         $data['all_subastas'] = $all_subastas;
         $data['resultados'] = $contador;
         if ($offset == 0) {
@@ -1524,31 +1527,52 @@ class Front extends CI_Controller
 
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
+
         $ciudad_id = $this->input->post('ciudad_id');
         if ($ciudad_id != NULL) {
-            $this->session->set_userdata('session_ciudad', $ciudad_id);
+            if ($ciudad_id == 0) {
+                $this->session->set_userdata('session_ciudad', NULL);
+            } else {
+                $this->session->set_userdata('session_ciudad', $ciudad_id);
+            }
         } else {
-
-            $ciudad_id = 0;
+            if ($this->session->userdata('session_ciudad')) {
+                $ciudad_id = $this->session->userdata('session_ciudad');
+            } else {
+                $ciudad_id = 0;
+            }
+        }
+        if ($category != NULL) {
+            if ($category == 0) {
+                $this->session->set_userdata('session_categoria', NULL);
+            } else {
+                $this->session->set_userdata('session_categoria', $category);
+            }
+        } else {
+            if ($this->session->userdata('session_categoria')) {
+                $category = $this->session->userdata('session_categoria');
+            } else {
+                $category = 0;
+            }
         }
 
-        $ok = false;
-        $valida_city = false;
-        if ($category != NULL) {
-            $contador = count($this->anuncio->get_anuncios_by_category_city($category, $ciudad_id));
+        $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id, $category));
 
+        /*     $ok = false;
+        $valida_city = false;
+        if ($category >= 0) {
+
+            $contador = count($this->anuncio->get_anuncios_by_category_city($category, $ciudad_id));
             $ok = true;
         } elseif ($anuncio_palabra != '' && $ciudad_id >= 0) {
-
             $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id));
             $ok = false;
         } elseif ($anuncio_palabra == '' && $ciudad_id >= 0) {
-
             $contador = count($this->anuncio->get_anuncio_city($ciudad_id));
             $valida_city = true;
             $ok = false;
         }
-
+ */
 
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('anuncios/page/');
@@ -1600,18 +1624,18 @@ class Front extends CI_Controller
 
         $offset = !$page ? 0 : $page;
 
-        if ($ok) {
+        /*  if ($ok) {
 
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category, $ciudad_id);
         } else {
             if ($valida_city) {
-                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_city($config['per_page'], $offset, $ciudad_id);
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_city($config['per_page'], $offset, $ciudad_id,$category);
             } else {
-                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id);
+                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id,$category);
             }
-        }
+        } */
 
-
+        $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id, $category);
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
 

@@ -1960,7 +1960,7 @@
       }
 
    }
-   let y = setInterval(function() {
+   let y = setInterval(function() { 
 
       if ($('#modal_detalle').hasClass('in')) {
 
@@ -2073,7 +2073,7 @@
             success: function(result) {
                result = JSON.parse(result);
                if (result) {
-                  console.log(result);
+
                   for (let i = 0; i < result.length; i++) {
                      if (result[i].puja.valor == "null") {
                         $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));

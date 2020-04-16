@@ -52,6 +52,7 @@
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <select name="ciudad_id" class="category form-control">
                         <option label="<?= translate("select_category_lang"); ?>"></option>
+                        <option value="0">TODAS LAS CIUDADES </option>
                         <?php if ($all_ciudad) { ?>
                             <?php foreach ($all_ciudad as $item) { ?>
                                 <?php if ($this->session->userdata('session_ciudad')) { ?>
@@ -257,12 +258,32 @@
                                     <div class="panel-body categories">
                                         <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                         <ul>
-                                            <?php if ($categories) { ?>
-                                                <?php foreach ($categories as $item) { ?>
-                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                            <?php $category_id = $this->session->userdata('session_categoria'); ?>
+                                            <?php if (!$category_id) { ?>
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                            <?php } else { ?>
+                                                <li><a style="cursor:pointer" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                            <?php } ?>
+                                            <?php if (!$category_id) { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
 
+                                                    <?php } ?>
+                                                    <input name="category" id="category" class="" type="hidden" value="">
                                                 <?php } ?>
-                                                <input name="category" id="category" class="" type="hidden" value="">
+                                            <?php } else { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        <?php if ($item->cate_anuncio_id == $category_id) { ?>
+                                                            <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                        <?php } else { ?>
+                                                            <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <input name="category" id="category" class="" type="hidden" value="">
+                                                <?php } ?>
+
                                             <?php } ?>
                                         </ul>
                                         <?= form_close(); ?>
