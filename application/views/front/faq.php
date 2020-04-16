@@ -54,7 +54,7 @@
                 <div class="col-md-8 col-xs-12 col-sm-12">
                     <ul class="accordion">
                         <li class="">
-                            <h3 class="accordion-title"><a href="#">Pagos electrónicos?</a></h3>
+                            <h3 class="accordion-title"><a href="#">¿Pagos electrónicos?</a></h3>
                             <div class="accordion-content">
                                 <h5>1. ¿Qué es PlacetoPay?</h5>
                                 <p>
