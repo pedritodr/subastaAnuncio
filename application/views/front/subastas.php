@@ -276,6 +276,7 @@
                                                                                             </div>
                                                                                         <?php } ?>
                                                                                     <?php } else { ?>
+                                                                                        aqui
                                                                                         <div class="col-md-6">
                                                                                             <button id="btn_pujar_subasta_<?= $item->subasta_id ?>" onclick=" cargarmodal_pujar('<?= $item->subasta_user->subasta_user_id ?>','<?= $item->nombre_espa ?>','<?= $item->puja->valor ?>','<?= $item->valor_inicial ?>');" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
 
