@@ -827,34 +827,35 @@ class Front extends CI_Controller
 
         $category = $this->input->post('category');
         $subasta_palabra = $this->input->post('subasta_palabra');
-
-        if ($category == "" && $subasta_palabra == "") {
-            $session_categoria = $this->session->userdata('session_categoria');
-            if ($session_categoria) {
-                $category = $session_categoria;
+        $ciudad_id = $this->input->post('ciudad_id');
+        if ($ciudad_id != NULL) {
+            if ($ciudad_id == 0) {
+                $this->session->set_userdata('session_ciudad_subasta', NULL);
+            } else {
+                $this->session->set_userdata('session_ciudad_subasta', $ciudad_id);
             }
-            $session_palabra = $this->session->userdata('session_palabra');
-            if ($session_palabra) {
-                $subasta_palabra = $session_palabra;
+        } else {
+            if ($this->session->userdata('session_ciudad_subasta')) {
+                $ciudad_id = $this->session->userdata('session_ciudad_subasta');
+            } else {
+                $ciudad_id = 0;
+            }
+        }
+        if ($category != NULL) {
+            if ($category == 0) {
+                $this->session->set_userdata('session_categoria_subasta', NULL);
+            } else {
+                $this->session->set_userdata('session_categoria_subasta', $category);
+            }
+        } else {
+            if ($this->session->userdata('session_categoria_subasta')) {
+                $category = $this->session->userdata('session_categoria_subasta');
+            } else {
+                $category = 0;
             }
         }
 
-
-        $ok = null;
-        if ($category != '' && $subasta_palabra != '') {
-            $this->session->set_userdata('session_categoria', $category);
-            $this->session->set_userdata('session_palabra', $subasta_palabra);
-            $contador = count($this->subasta->get_search_all($category, $subasta_palabra, 1));
-            $ok = 1;
-        } elseif ($category != '' && $subasta_palabra == '') {
-            $this->session->set_userdata('session_categoria', $category);
-            $contador = count($this->subasta->get_subastas_category($category, 1));
-            $ok = 2;
-        } else if ($category == '' && $subasta_palabra != '') {
-            $this->session->set_userdata('session_palabra', $subasta_palabra);
-            $contador = count($this->subasta->get_subastas_palabra($subasta_palabra, 1));
-            $ok = 3;
-        }
+        $contador = count($this->subasta->get_search_all($category, $subasta_palabra, 2, $ciudad_id));
 
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('front/subasta/');
@@ -1558,22 +1559,6 @@ class Front extends CI_Controller
 
         $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id, $category));
 
-        /*     $ok = false;
-        $valida_city = false;
-        if ($category >= 0) {
-
-            $contador = count($this->anuncio->get_anuncios_by_category_city($category, $ciudad_id));
-            $ok = true;
-        } elseif ($anuncio_palabra != '' && $ciudad_id >= 0) {
-            $contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id));
-            $ok = false;
-        } elseif ($anuncio_palabra == '' && $ciudad_id >= 0) {
-            $contador = count($this->anuncio->get_anuncio_city($ciudad_id));
-            $valida_city = true;
-            $ok = false;
-        }
- */
-
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('anuncios/page/');
 
@@ -1623,17 +1608,6 @@ class Front extends CI_Controller
         $page = $this->uri->segment(3);
 
         $offset = !$page ? 0 : $page;
-
-        /*  if ($ok) {
-
-            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_categoria($config['per_page'], $offset, $category, $ciudad_id);
-        } else {
-            if ($valida_city) {
-                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_city($config['per_page'], $offset, $ciudad_id,$category);
-            } else {
-                $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id,$category);
-            }
-        } */
 
         $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id, $category);
         foreach ($all_anuncios as $item) {

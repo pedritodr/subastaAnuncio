@@ -55,10 +55,11 @@
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <select name="category" class="category form-control">
                         <option label="<?= translate("select_category_lang"); ?>"></option>
+                        <option value="0">TODAS LAS CIUDADES </option>
                         <?php if ($all_ciudad) { ?>
                             <?php foreach ($all_ciudad as $item) { ?>
-                                <?php if ($this->session->userdata('session_ciudad')) { ?>
-                                    <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php if ($this->session->userdata('session_ciudad_subasta')) { ?>
+                                    <option <?php if ($this->session->userdata('session_ciudad_subasta') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php  } else { ?>
                                     <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php } ?>
@@ -71,11 +72,9 @@
                 </div>
                 <!-- Search Field -->
                 <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
-                    <?php if ($this->session->userdata('session_palabra')) { ?>
-                        <input name="subasta_palabra" type="text" class="form-control" value="<?= $this->session->userdata('session_palabra') ?>" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
-                    <?php } else { ?>
-                        <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
-                    <?php  } ?>
+
+                    <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+
                 </div>
                 <!-- Search Button -->
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
@@ -479,12 +478,35 @@
                                     <div class="panel-body categories">
                                         <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                         <ul>
-                                            <?php if ($categories) { ?>
-                                                <?php foreach ($categories as $item) { ?>
-                                                    <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
-                                                <?php } ?>
-                                                <input name="category" id="category" class="" type="hidden" value="">
+                                            <?php $category_id = $this->session->userdata('categoria_subasta'); ?>
+                                            <?php if (!$category_id) { ?>
+
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
+                                            <?php } else { ?>
+                                                <li><a style="cursor:pointer" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
                                             <?php } ?>
+                                            <?php if (!$category_id) { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+
+                                                    <?php } ?>
+                                                    <input name="category" id="category" class="" type="hidden" value="">
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        <?php if ($item->categoria_id == $category_id) { ?>
+                                                            <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                        <?php } else { ?>
+                                                            <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <input name="category" id="category" class="" type="hidden" value="">
+                                                <?php } ?>
+
+                                            <?php } ?>
+
                                         </ul>
                                         <?= form_close(); ?>
                                     </div>
