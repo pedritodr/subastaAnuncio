@@ -236,7 +236,8 @@
                      <input type="hidden" id="lat" name="lat" value="<?= $anuncio_object->lat ?>" />
                      <input type="hidden" id="lng" name="lng" value="<?= $anuncio_object->lng ?>" />
                      <input type="hidden" id="city_main" name="city_main" value="<?= $ciudad->name_ciudad ?>" />
-                     <button type="submit" class="btn btn-theme pull-right"><?= translate('update_publi_lang') ?></button>
+                     <input type="hidden" id="pais" />
+                     <button id="btn_update_anuncio" type="submit" class="btn btn-theme pull-right"><?= translate('update_publi_lang') ?></button>
 
 
 
@@ -272,6 +273,18 @@
          var lat = '<?php echo $anuncio_object->lat; ?>';
          var lng = '<?php echo $anuncio_object->lng; ?>';
          cargar_city(city = "", lat, lng);
+      });
+      $('#btn_update_anuncio').click(function() {
+         var seleccion_pais = $('#pais').val().trim();
+         if (seleccion_pais == "Ecuador") {
+            $("#form_add_anuncio").submit();
+         } else if (seleccion_pais == "") {
+            $('#pac-input').val("");
+         } else {
+            $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+            $('#modal_error_ciudad').modal('show');
+         }
+
       });
 
       function change_categoria() {
@@ -549,8 +562,25 @@
                      if (status == google.maps.GeocoderStatus.OK) {
 
                         var address = (results[0].formatted_address);
-
+                        var arrayDeCadenas = address.split(",");
                         $('#pac-input').val(address);
+                        if (arrayDeCadenas) {
+                           if (arrayDeCadenas.length > 0) {
+                              var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
+                              $('#pais').val(pais);
+
+                           }
+                        }
+
+                        var nombre_pais = 'Ecuador';
+                        var seleccion_pais = $('#pais').val().trim();
+
+                        if (nombre_pais != seleccion_pais) {
+                           $('#pac-input').val("");
+                           $('#pais').val("");
+                           $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                           $('#modal_error_ciudad').modal('show');
+                        }
 
                      }
                   });
