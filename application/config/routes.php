@@ -96,11 +96,24 @@ for ($i = 0; $i < 30; $i++) {
     $route[strtolower('anuncios/page/' . $page3)] = 'front/anuncios_index/' . $page3;
     $page3 += 8;
 }
+
 $page4 = 6;
 $route[strtolower('perfil/page')] = 'front/perfil';
 for ($i = 0; $i < 20; $i++) {
     $route[strtolower('perfil/page/' . $page4)] = 'front/perfil/' . $page4;
     $page4 += 6;
+}
+$route[strtolower('search_anuncios/page')] = 'front/buscar_anuncio';
+$page5 = 8;
+for ($i = 0; $i < 30; $i++) {
+    $route[strtolower('search_anuncios/page/' . $page5)] = 'front/buscar_anuncio/' . $page5;
+    $page5 += 8;
+}
+$route[strtolower('search_subastas/page')] = 'front/buscar_subasta_directa';
+$page6 = 8;
+for ($i = 0; $i < 30; $i++) {
+    $route[strtolower('search_subastas/page/' . $page6)] = 'front/buscar_subasta_directa/' . $page6;
+    $page6 += 8;
 }
 
 $query = $db->get('anuncio');

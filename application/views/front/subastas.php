@@ -53,7 +53,7 @@
 
 
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
-                    <select name="category" class="category form-control">
+                    <select name="subasta_ciudad_id" class="category form-control">
                         <option label="<?= translate("select_category_lang"); ?>"></option>
                         <option value="0">TODAS LAS CIUDADES </option>
                         <?php if ($all_ciudad) { ?>
@@ -72,7 +72,7 @@
                 </div>
                 <!-- Search Field -->
                 <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
-
+                    <input name="tipo_subasta" id="tipo_subasta" type="hidden" value="<?= $tipo ?>">
                     <input name="subasta_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
 
                 </div>
@@ -476,9 +476,10 @@
                                 <!-- Content -->
                                 <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body categories">
-                                        <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+                                        <?= form_open_multipart("search_subasta_directa", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+
                                         <ul>
-                                            <?php $category_id = $this->session->userdata('categoria_subasta'); ?>
+                                            <?php $category_id = $this->session->userdata('session_categoria_subasta'); ?>
                                             <?php if (!$category_id) { ?>
 
                                                 <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
@@ -491,7 +492,7 @@
                                                         <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
 
                                                     <?php } ?>
-                                                    <input name="category" id="category" class="" type="hidden" value="">
+
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <?php if ($categories) { ?>
@@ -502,11 +503,12 @@
                                                             <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
                                                         <?php } ?>
                                                     <?php } ?>
-                                                    <input name="category" id="category" class="" type="hidden" value="">
+
                                                 <?php } ?>
 
                                             <?php } ?>
-
+                                            <input name="category_subasta" id="category_subasta" type="hidden" value="">
+                                            <input name="tipo_subasta_2" id="tipo_subasta_2" type="hidden" value="<?= $tipo ?>">
                                         </ul>
                                         <?= form_close(); ?>
                                     </div>
@@ -530,6 +532,11 @@
     <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
 
     <script>
+        function cargar_input_2(params) {
+            $('#category_subasta').val(params);
+            $("#buscar_categoria").submit();
+        }
+
         contador_inversa = <?= $contador_inversa ?>;
         contador_directa = <?= $contador_directa ?>;
         let subastas_2 = <?= json_encode($all_subastas); ?>;
