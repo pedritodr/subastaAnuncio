@@ -44,6 +44,7 @@
         </span></a>
 </div>
 <div class="main-content-area clearfix">
+
     <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
     <section class="section-padding error-page pattern-bg ">
         <!-- Main Container -->

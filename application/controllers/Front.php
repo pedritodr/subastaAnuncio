@@ -119,6 +119,20 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $this->load_view_front('front/faq', $data);
     }
+    public function condiciones()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/condiciones', $data);
+    }
+    public function politicas()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data['all_banners'] = $all_banners;
+        $this->load_view_front('front/politicas', $data);
+    }
     public function registrar()
     {
         $this->load->model('Banner_model', 'banner');

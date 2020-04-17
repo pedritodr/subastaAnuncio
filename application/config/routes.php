@@ -74,6 +74,8 @@ $route['faqs'] = 'front/faq';
 //$route['payment/(:any)'] = 'front/pago_exitoso/$1';
 $route['payment'] = 'front/pago_exitoso';
 $route['transaccion_cancelada'] = 'front/pago_cancelada';
+$route['condiciones-de-uso'] = 'front/condiciones';
+$route['politicas-de-privacidad'] = 'front/politicas';
 
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();
