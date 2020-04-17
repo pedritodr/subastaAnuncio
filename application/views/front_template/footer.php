@@ -2129,7 +2129,7 @@
 
                         if (user_id != "") {
 
-                           if (result.subasta_user == null && user_id) {
+                           if (result.subasta_user == null) {
 
                               $("#body_entrar_subasta").show();
                               $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
@@ -2179,6 +2179,8 @@
                         if (result[i].user_win) {
 
                            let name_win = result[i].user_win.name;
+                           $('#user_win_title_' + result[i].subasta_id).show();
+                           $('#user_win' + result[i].subasta_id).show();
                            $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
                         }
 
@@ -2197,7 +2199,7 @@
                         if (result[i].puja.valor != "null") {
 
                            if (result[i].puja_user.valor == null) {
-
+                              $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
                               if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
