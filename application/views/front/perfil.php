@@ -213,7 +213,7 @@
                                             <div class="ad-info-1">
 
                                                 <ul class="pull-right">
-                                                    <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))));  ?>"><i class="fa fa-pencil edit"></i></a> </li>
+                                                    <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><i class="fa fa-pencil edit"></i></a> </li>
                                                     <?php if ($item->is_active == 1) { ?>
                                                         <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
                                                     <?php } else { ?>

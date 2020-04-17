@@ -66,7 +66,8 @@
                   <!-- Titulo anuncio  -->
                   <div class="row">
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                        <?php echo form_open_multipart("front/add_anuncio") ?>
+                        <?= form_open_multipart("front/add_anuncio", array('id' => 'form_add_anuncio')); ?>
+
                         <div id="alert-message" class="alert alert-danger alert-dismissable" style="display: none;">
                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                            <h4><i class="icon fa fa-ban"></i> <?= translate('title_alert_message_lang'); ?></h4>
@@ -230,8 +231,9 @@
 
                      <input type="hidden" id="lat" name="lat" />
                      <input type="hidden" id="lng" name="lng" />
+                     <input type="hidden" id="pais" />
                      <input type="hidden" id="city_main" name="city_main" />
-                     <button type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
+                     <button id="btn_add_anuncio" type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
 
 
 
@@ -264,11 +266,24 @@
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
 
    <script type="text/javascript">
-      let latitude = 0;
-      let longitude = 0;
+      var latitude = 0;
+      var longitude = 0;
+
       $(document).ready(function() {
 
          initMap();
+
+      });
+      $('#btn_add_anuncio').click(function() {
+         var seleccion_pais = $('#pais').val().trim();
+         if (seleccion_pais == "Ecuador") {
+            $("#form_add_anuncio").submit();
+         } else if (seleccion_pais == "") {
+            $('#pac-input').val("");
+         } else {
+            $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+            $('#modal_error_ciudad').modal('show');
+         }
 
       });
 
@@ -324,12 +339,12 @@
       function initMap() {
 
          $('#pac-input').val("");
-         let country = "ecuador"
+         var country = "ecuador"
          $.ajax({
             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + country + ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
             dataType: 'json',
             success: function(response) {
-               //  console.log(response);
+               //console.log(response);
                var pos = {
                   lat: parseFloat(response.results[0].geometry.location.lat),
 
@@ -428,6 +443,7 @@
                   google.maps.event.addListener(marker, 'dragend', function(event) {
 
                      var currentLocation = marker.getPosition();
+
                      var lat = currentLocation.lat(); //latitude
                      var lng = currentLocation.lng(); //longitude
                      $('#lat').val(lat);
@@ -458,6 +474,7 @@
                         // markerLocation();.
 
                         var currentLocation = marker.getPosition();
+
                         var lat = currentLocation.lat(); //latitude
                         var lng = currentLocation.lng(); //longitude
 
@@ -510,10 +527,28 @@
                      if (status == google.maps.GeocoderStatus.OK) {
 
                         var address = (results[0].formatted_address);
+                        var arrayDeCadenas = address.split(",");
                         var ciudad = results[0].address_components;
 
                         $('#pac-input').val(address);
 
+                        if (arrayDeCadenas) {
+                           if (arrayDeCadenas.length > 0) {
+                              var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
+                              $('#pais').val(pais);
+
+                           }
+                        }
+
+                        var nombre_pais = 'Ecuador';
+                        var seleccion_pais = $('#pais').val().trim();
+
+                        if (nombre_pais != seleccion_pais) {
+                           $('#pac-input').val("");
+                           $('#pais').val("");
+                           $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                           $('#modal_error_ciudad').modal('show');
+                        }
                      }
                   });
                }
@@ -599,7 +634,7 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
 
             //get the file size and file type from file input field
-            let fileUpload = e.target.files[0];
+            var fileUpload = e.target.files[0];
 
             // Validate type file
             if (!validFileType(fileUpload)) {
@@ -633,7 +668,7 @@
 
       function validFileType(file) {
          console.log(FILETYPES);
-         for (let i = 0; i < FILETYPES.length; i++) {
+         for (var i = 0; i < FILETYPES.length; i++) {
             if (file.type === FILETYPES[i]) {
                return true;
             }

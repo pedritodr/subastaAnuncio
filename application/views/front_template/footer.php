@@ -599,7 +599,22 @@
       </div>
    </div>
 </div>
+<div class="modal fade price-quote" id="modal_error_ciudad" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("mensaje_lang"); ?></h3>
+         </div>
+         <div class="modal-body">
 
+            <p id="error_ubicacion" class="text-center"></p>
+
+
+         </div>
+      </div>
+   </div>
+</div>
 <div id="modal_membresia_gratis" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -2097,19 +2112,20 @@
                         $("#body_pujar").hide();
                      } else {
                         if (result[i].puja.valor != "null") {
-                           if (result[i].puja_user.valor == "null") {
+
+                           if (result[i].puja_user.valor == null) {
 
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
-                              $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
-                           }
-                           if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
+                              if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
 
-                              $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                           } else {
+                                 $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                              } else {
 
-                              $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                                 $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                              }
                            }
+
                         }
                      }
 

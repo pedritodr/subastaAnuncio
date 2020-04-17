@@ -39,6 +39,7 @@ $config['acerca_lang'] = "Acerca de";
 $config['subasta_lang'] = "Subastas";
 $config['Anuncios_lang'] = "Anuncios";
 $config['menbresi_lang'] = "Membresia";
+$config['mensaje_lang'] = "Mensaje";
 $config['contact_lang'] = "Contacto";
 $config['titulo_contact_lang'] = "Ponerse en contacto";
 
@@ -84,6 +85,7 @@ $config['registrarse_lang'] = "Registrarse";
 $config['login_error'] = "Error de autenticación";
 $config['piso_error'] = "Error al pagar la entrada de la subasta";
 $config['entrar_lang'] = "Entrar";
+
 $config['pizarra_resumen_lang'] = "Pizarra resumen";
 $config['panel_lang'] = "Panel Principal";
 $config['manage_users'] = "Gestionar usuarios";
