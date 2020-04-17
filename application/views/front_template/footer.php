@@ -55,9 +55,13 @@
                      <div class="footer-widget about-widget">
 
                         <ul class="contact-info">
-                           <?php if ($empresa_object->telefonos) { ?>
-                              <li style="color:#fff"><span style="color:#fff" class="icon fa fa-envelope-o footer-hover"></span> <?= $empresa_object->email ?></li>
+                           <?php if ($empresa_object->email) { ?>
+                              <li style="color:#fff"><span style="color:#fff" class="icon fa fa-envelope-o footer-hover"></span> <a style="color:#fff !important" href="<?= $empresa_object->email ?>"><?= $empresa_object->email ?></a></li>
+
                            <?php } ?>
+                           <li style="color:#fff"><span style="color:#fff" class="icon fa fa-shield footer-hover"></span><a style="color:#fff !important" href="<?= site_url('politicas-de-privacidad') ?>"><?= translate('politicas_lang') ?></a></li>
+                           <li style="color:#fff"><span style="color:#fff" class="icon fa fa-check footer-hover"></span><a style="color:#fff !important" href="<?= site_url('condiciones-de-uso') ?>"><?= translate('condiciones_lang') ?></a></li>
+                           <li style="color:#fff"><span style="color:#fff" class="icon fa fa-sticky-note-o footer-hover"></span> <a style="color:#fff !important" href="<?= site_url('aviso-legal') ?>"><?= translate('aviso_legal_lang') ?></a></li>
 
                         </ul>
 
@@ -221,6 +225,17 @@
                   <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
                </div>
                <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+
+
+               </div>
+               <div class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condiciones_destacar" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
 
 
                </div>
@@ -398,6 +413,17 @@
 
 
                </div>
+               <div class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condiciones_piso" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
+
+
+               </div>
             </div>
 
             <div class="clearfix"></div>
@@ -531,6 +557,17 @@
 
 
                </div>
+               <div class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condiciones_inversa" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
+
+
+               </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -651,10 +688,21 @@
 
                </div>
 
+               <div class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condiciones_membresia" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
+
+
+               </div>
 
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button id="btn_modal_membresia" onclick="payment()" type="button" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
+               <button style="border-color: #2a3681;" id="btn_modal_membresia" onclick="payment()" type="button" class="btn btn-theme btn-block"><?= translate('pagar_lang'); ?></button>
                <button type="button" class="btn btn-dark btn-block" data-dismiss="modal"><?= translate('cancelar_lang'); ?></button>
 
             </div>
@@ -742,8 +790,10 @@
 <script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
 <script type="text/javascript">
    $('#btn_modal_membresia').click(function() {
-      $('#btn_modal_membresia').hide();
-      $('#modal_membresia_gratis').modal('hide');
+      if ($('#condiciones_membresia').prop('checked') == true) {
+         $('#btn_modal_membresia').hide();
+         $('#modal_membresia_gratis').modal('hide');
+      }
    });
    let contador_directa = 0;
    let vacio = null;
@@ -757,249 +807,273 @@
    let membresia_seleccionada = null;
 
    function payment() {
-
+      $(".btn-theme").css("background-color", "#8c1822");
+      $(".btn-theme").css("color", "#fff");
       membresia_seleccionada = $('#membresia_id').val();
       nombre_membresia = $('#nombre_membresia').text();
       valor_membresia = $('#precio_membresia').text();
-
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/checkout') ?>",
-         data: {
-            monto: valor_membresia,
-            detalle: nombre_membresia,
-            id: membresia_seleccionada,
-            tipo: 0
-         },
-         success: function(data) {
-            data = JSON.parse(data);
-            //console.log(data.requestId);
-            var processUrl = data.processUrl;
-
-            P.init(processUrl);
-            $("#processUrl").val(processUrl);
-         },
-         error: function(data) {
-            data = JSON.parse(data);
-            alert(data.status.message);
-         }
-      });
-      P.on('response', function(data) {
-         let requestId = data.requestId;
-         let reference = data.reference;
-         let estado_payment = 0
-         if (data.status.status == "APPROVED") {
-            estado_payment = 1;
-            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-            $('#status_notificacion').text("Transacción Aprobada");
-            $('#product_adquirido').html("<strong>Membresia adquirida : </strong>" + nombre_membresia);
-         } else if (data.status.status == "REJECTED") {
-            estado_payment = 2;
-            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-            $('#status_notificacion').text("El pago ha sido rechazado");
-         } else if (data.status.status == "PENDING") {
-            estado_payment = 3;
-            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-            $('#status_notificacion').text("El proceso de pago está pendiente");
-         }
+      if ($('#condiciones_membresia').prop('checked') == true) {
          $.ajax({
             type: 'POST',
-            url: "<?= site_url('front/update_request_id') ?>",
+            url: "<?= site_url('front/checkout') ?>",
             data: {
-               request_id: requestId,
-               reference: reference,
-               status: estado_payment
+               monto: valor_membresia,
+               detalle: nombre_membresia,
+               id: membresia_seleccionada,
+               tipo: 0
             },
-            success: function(result) {
-               result = JSON.parse(result);
-               if (result.status == 200) {
-                  $('#mensaje_notificacion').text(data.status.message);
-                  $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                  $('#modal_notificacion').modal('show');
-                  setTimeout(() => {
-                     location.href = "<?= site_url("perfil/page/") ?>";
-                  }, 4000);
+            success: function(data) {
+               data = JSON.parse(data);
+               //console.log(data.requestId);
+               var processUrl = data.processUrl;
 
-               } else {
-                  alert("Ocurrio un error en el servidor");
-               }
-
+               P.init(processUrl);
+               $("#processUrl").val(processUrl);
             },
-            error: function(result) {
-
-               alert("Ocurrio un error en el servidor");
+            error: function(data) {
+               data = JSON.parse(data);
+               alert(data.status.message);
             }
          });
+         P.on('response', function(data) {
+            let requestId = data.requestId;
+            let reference = data.reference;
+            let estado_payment = 0
+            if (data.status.status == "APPROVED") {
+               estado_payment = 1;
+               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+               $('#status_notificacion').text("Transacción Aprobada");
+               $('#product_adquirido').html("<strong>Membresia adquirida : </strong>" + nombre_membresia);
+            } else if (data.status.status == "REJECTED") {
+               estado_payment = 2;
+               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+               $('#status_notificacion').text("El pago ha sido rechazado");
+            } else if (data.status.status == "PENDING") {
+               estado_payment = 3;
+               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+               $('#status_notificacion').text("El proceso de pago está pendiente");
+            }
+            $.ajax({
+               type: 'POST',
+               url: "<?= site_url('front/update_request_id') ?>",
+               data: {
+                  request_id: requestId,
+                  reference: reference,
+                  status: estado_payment
+               },
+               success: function(result) {
+                  result = JSON.parse(result);
+                  if (result.status == 200) {
+                     $('#mensaje_notificacion').text(data.status.message);
+                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+                     $('#modal_notificacion').modal('show');
+                     setTimeout(() => {
+                        location.href = "<?= site_url("perfil/page/") ?>";
+                     }, 4000);
 
-      });
+                  } else {
+                     alert("Ocurrio un error en el servidor");
+                  }
 
-      $("#lightboxIt").on('click', function() {
+               },
+               error: function(result) {
 
-         P.init($("#processUrl").val());
-      });
+                  alert("Ocurrio un error en el servidor");
+               }
+            });
+
+         });
+
+         $("#lightboxIt").on('click', function() {
+
+            P.init($("#processUrl").val());
+         });
+
+      } else {
+         $('#condiciones_membresia').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+         $('.noficacion_error').show();
+      }
+
    }
 
    function pagar_inversa() {
-
+      $(".btn-theme").css("background-color", "#8c1822");
+      $(".btn-theme").css("color", "#fff");
       var name_subasta = $('#name_subasta_inversa').text();
       var valor_subasta_inversa = $('#pagar_valor_inversa').val();
       var inversa_subasta_id = $('#invresa_subasta_id').val();
-      $('#modal_pagar_inversa').modal("hide");
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/checkout') ?>",
-         data: {
-            monto: valor_subasta_inversa,
-            detalle: name_subasta,
-            id: inversa_subasta_id,
-            tipo: 3
-         },
-         success: function(data) {
-            data = JSON.parse(data);
 
-            var processUrl = data.processUrl;
-
-            P.init(processUrl);
-            $("#processUrl").val(processUrl);
-         },
-         error: function(data) {
-            data = JSON.parse(data);
-            alert(data.status.message);
-         }
-      });
-      P.on('response', function(data) {
-         let requestId = data.requestId;
-         let reference = data.reference;
-         let estado_payment = 0
-         if (data.status.status == "APPROVED") {
-            estado_payment = 1;
-            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-            $('#status_notificacion').text("Transacción Aprobada");
-            $('#product_adquirido').html("<strong>Subasta adquirida : </strong>" + name_subasta);
-         } else if (data.status.status == "REJECTED") {
-            estado_payment = 2;
-            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-            $('#status_notificacion').text("El pago ha sido rechazado");
-         } else if (data.status.status == "PENDING") {
-            estado_payment = 3;
-            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-            $('#status_notificacion').text("El proceso de pago está pendiente");
-         }
+      if ($('#condiciones_inversa').prop('checked') == true) {
+         $('#modal_pagar_inversa').modal("hide");
          $.ajax({
             type: 'POST',
-            url: "<?= site_url('front/update_request_id') ?>",
+            url: "<?= site_url('front/checkout') ?>",
             data: {
-               request_id: requestId,
-               reference: reference,
-               status: estado_payment
+               monto: valor_subasta_inversa,
+               detalle: name_subasta,
+               id: inversa_subasta_id,
+               tipo: 3
             },
-            success: function(result) {
-               result = JSON.parse(result);
-               if (result.status == 200) {
-                  $('#mensaje_notificacion').text(data.status.message);
-                  $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                  $('#modal_notificacion').modal('show');
-                  setTimeout(() => {
-                     location.reload();
-                  }, 4000);
-               } else {
-                  alert("Ocurrio un error en el servidor");
-               }
+            success: function(data) {
+               data = JSON.parse(data);
 
+               var processUrl = data.processUrl;
+
+               P.init(processUrl);
+               $("#processUrl").val(processUrl);
             },
-            error: function(result) {
-
-               alert("Ocurrio un error en el servidor");
+            error: function(data) {
+               data = JSON.parse(data);
+               alert(data.status.message);
             }
          });
-      });
+         P.on('response', function(data) {
+            let requestId = data.requestId;
+            let reference = data.reference;
+            let estado_payment = 0
+            if (data.status.status == "APPROVED") {
+               estado_payment = 1;
+               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+               $('#status_notificacion').text("Transacción Aprobada");
+               $('#product_adquirido').html("<strong>Subasta adquirida : </strong>" + name_subasta);
+            } else if (data.status.status == "REJECTED") {
+               estado_payment = 2;
+               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+               $('#status_notificacion').text("El pago ha sido rechazado");
+            } else if (data.status.status == "PENDING") {
+               estado_payment = 3;
+               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+               $('#status_notificacion').text("El proceso de pago está pendiente");
+            }
+            $.ajax({
+               type: 'POST',
+               url: "<?= site_url('front/update_request_id') ?>",
+               data: {
+                  request_id: requestId,
+                  reference: reference,
+                  status: estado_payment
+               },
+               success: function(result) {
+                  result = JSON.parse(result);
+                  if (result.status == 200) {
+                     $('#mensaje_notificacion').text(data.status.message);
+                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+                     $('#modal_notificacion').modal('show');
+                     setTimeout(() => {
+                        location.reload();
+                     }, 4000);
+                  } else {
+                     alert("Ocurrio un error en el servidor");
+                  }
 
-      $("#lightboxIt").on('click', function() {
+               },
+               error: function(result) {
 
-         P.init($("#processUrl").val());
-      });
+                  alert("Ocurrio un error en el servidor");
+               }
+            });
+         });
+
+         $("#lightboxIt").on('click', function() {
+
+            P.init($("#processUrl").val());
+         });
+      } else {
+         $('#condiciones_inversa').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+         $('.noficacion_error').show();
+      }
    }
 
    function pagar_destacar() {
+      $(".btn-theme").css("background-color", "#8c1822");
+      $(".btn-theme").css("color", "#fff");
 
       var name_destacado = $('#anuncio_detalle_destacar').val();
       var valor_destacado = 3.99;
       var anuncio_destacado_id = $('#anuncio_id_destacar').val();
-      $('#modal_destacar').modal("hide");
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/checkout') ?>",
-         data: {
-            monto: valor_destacado,
-            detalle: name_destacado,
-            id: anuncio_destacado_id,
-            tipo: 2
-         },
-         success: function(data) {
-            data = JSON.parse(data);
-
-            var processUrl = data.processUrl;
-
-            P.init(processUrl);
-            $("#processUrl").val(processUrl);
-         },
-         error: function(data) {
-            data = JSON.parse(data);
-            alert(data.status.message);
-         }
-      });
-      P.on('response', function(data) {
-         let requestId = data.requestId;
-         let reference = data.reference;
-         let estado_payment = 0
-         if (data.status.status == "APPROVED") {
-            estado_payment = 1;
-            $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-            $('#status_notificacion').text("Transacción Aprobada");
-            $('#product_adquirido').html("<strong>Anuncio detacado : </strong>" + name_destacado);
-         } else if (data.status.status == "REJECTED") {
-            estado_payment = 2;
-            $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-            $('#status_notificacion').text("El pago ha sido rechazado");
-         } else if (data.status.status == "PENDING") {
-            estado_payment = 3;
-            $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-            $('#status_notificacion').text("El proceso de pago está pendiente");
-         }
+      if ($('#condiciones_destacar').prop('checked') == true) {
+         $('#modal_destacar').modal("hide");
          $.ajax({
             type: 'POST',
-            url: "<?= site_url('front/update_request_id') ?>",
+            url: "<?= site_url('front/checkout') ?>",
             data: {
-               request_id: requestId,
-               reference: reference,
-               status: estado_payment
+               monto: valor_destacado,
+               detalle: name_destacado,
+               id: anuncio_destacado_id,
+               tipo: 2
             },
-            success: function(result) {
-               result = JSON.parse(result);
-               if (result.status == 200) {
-                  $('#mensaje_notificacion').text(data.status.message);
-                  $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                  $('#modal_notificacion').modal('show');
-                  setTimeout(() => {
-                     location.reload();
-                  }, 4000);
-               } else {
-                  alert("Ocurrio un error en el servidor");
-               }
+            success: function(data) {
+               data = JSON.parse(data);
 
+               var processUrl = data.processUrl;
+
+               P.init(processUrl);
+               $("#processUrl").val(processUrl);
             },
-            error: function(result) {
-
-               alert("Ocurrio un error en el servidor");
+            error: function(data) {
+               data = JSON.parse(data);
+               alert(data.status.message);
             }
          });
+         P.on('response', function(data) {
+            let requestId = data.requestId;
+            let reference = data.reference;
+            let estado_payment = 0
+            if (data.status.status == "APPROVED") {
+               estado_payment = 1;
+               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+               $('#status_notificacion').text("Transacción Aprobada");
+               $('#product_adquirido').html("<strong>Anuncio detacado : </strong>" + name_destacado);
+            } else if (data.status.status == "REJECTED") {
+               estado_payment = 2;
+               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+               $('#status_notificacion').text("El pago ha sido rechazado");
+            } else if (data.status.status == "PENDING") {
+               estado_payment = 3;
+               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+               $('#status_notificacion').text("El proceso de pago está pendiente");
+            }
+            $.ajax({
+               type: 'POST',
+               url: "<?= site_url('front/update_request_id') ?>",
+               data: {
+                  request_id: requestId,
+                  reference: reference,
+                  status: estado_payment
+               },
+               success: function(result) {
+                  result = JSON.parse(result);
+                  if (result.status == 200) {
+                     $('#mensaje_notificacion').text(data.status.message);
+                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+                     $('#modal_notificacion').modal('show');
+                     setTimeout(() => {
+                        location.reload();
+                     }, 4000);
+                  } else {
+                     alert("Ocurrio un error en el servidor");
+                  }
 
-      });
+               },
+               error: function(result) {
 
-      $("#lightboxIt").on('click', function() {
+                  alert("Ocurrio un error en el servidor");
+               }
+            });
 
-         P.init($("#processUrl").val());
-      });
+         });
+
+         $("#lightboxIt").on('click', function() {
+
+            P.init($("#processUrl").val());
+         });
+      } else {
+         $('#condiciones_destacar').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+         $('.noficacion_error').show();
+      }
    }
 
    //  console.log(subastas_2);
@@ -1579,6 +1653,7 @@
       var phone = "<?= $this->session->userdata('phone'); ?>";
       var email = "<?= $this->session->userdata('email'); ?>";
       $('.transaccion_pendiente').hide();
+      $('.noficacion_error').hide();
       $.ajax({
          type: 'POST',
          url: "<?= site_url('front/get_payments_user') ?>",
@@ -1604,122 +1679,130 @@
    }
 
    function pagar_piso() {
-      let subasta_id = $('#subasta_id').val();
-      $("#modal_entrar").modal("hide");
-      if (precio_piso_subata == 0) {
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/pagar_entrada_ajax') ?>",
-
-            data: {
-               subasta_id: subasta_id,
-            },
-            success: function(result) {
-               result = JSON.parse(result);
-               // console.log(result);
-               if (result.status == 500) {
-                  let message = "<?= translate('piso_error') ?>";
-                  $('#mensaje_error_piso').text(message);
-                  $('#mensaje_piso').show();
-                  $('#btn_pagar_piso').prop('disabled', false);
-                  setTimeout(() => {
-                     $('#mensaje_piso').fadeOut(2000)
-                  }, 3000);
-
-               } else if (result.status == 200) {
-
-                  let message = "<?= translate('piso_pagado_lang') ?>";
-                  $('#mensaje_error_piso_2').text(message);
-                  $('#mensaje_piso_2').show();
-                  $('#btn_pagar_piso').prop('disabled', true);
-                  $('#btn_entrar_subasta_' + subasta_id).hide();
-                  setTimeout(() => {
-                     $('#modal_entrar').modal('hide');
-                     cargarmodal_subasta(subasta_id, "");
-                  }, 2500);
-               }
-
-            }
-         });
-      } else {
-         let detalle = "Pago de piso de la subasta";
-
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/checkout') ?>",
-            data: {
-               monto: precio_piso_subata,
-               detalle: detalle,
-               id: subasta_id,
-               tipo: 1
-            },
-            success: function(data) {
-               data = JSON.parse(data);
-
-               var processUrl = data.processUrl;
-
-               P.init(processUrl);
-               $("#processUrl").val(processUrl);
-            },
-            error: function(data) {
-               data = JSON.parse(data);
-               alert(data.status.message);
-            }
-         });
-         P.on('response', function(data) {
-
-            let requestId = data.requestId;
-            let reference = data.reference;
-            let estado_payment = 0
-            if (data.status.status == "APPROVED") {
-               estado_payment = 1;
-               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-               $('#status_notificacion').text("Transacción Aprobada");
-               $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
-            } else if (data.status.status == "REJECTED") {
-               estado_payment = 2;
-               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-               $('#status_notificacion').text("El pago ha sido rechazado");
-            } else if (data.status.status == "PENDING") {
-               estado_payment = 3;
-               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-               $('#status_notificacion').text("El proceso de pago está pendiente");
-            }
+      $(".btn-theme").css("background-color", "#8c1822");
+      $(".btn-theme").css("color", "#fff");
+      if ($('#condiciones_piso').prop('checked') == true) {
+         let subasta_id = $('#subasta_id').val();
+         $("#modal_entrar").modal("hide");
+         if (precio_piso_subata == 0) {
             $.ajax({
                type: 'POST',
-               url: "<?= site_url('front/update_request_id') ?>",
+               url: "<?= site_url('front/pagar_entrada_ajax') ?>",
+
                data: {
-                  request_id: requestId,
-                  reference: reference,
-                  status: estado_payment
+                  subasta_id: subasta_id,
                },
                success: function(result) {
                   result = JSON.parse(result);
-                  if (result.status == 200) {
-                     $('#mensaje_notificacion').text(data.status.message);
-                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                     $('#modal_notificacion').modal('show');
+                  // console.log(result);
+                  if (result.status == 500) {
+                     let message = "<?= translate('piso_error') ?>";
+                     $('#mensaje_error_piso').text(message);
+                     $('#mensaje_piso').show();
+                     $('#btn_pagar_piso').prop('disabled', false);
                      setTimeout(() => {
-                        $('#modal_notificacion').modal('hide');
+                        $('#mensaje_piso').fadeOut(2000)
+                     }, 3000);
+
+                  } else if (result.status == 200) {
+
+                     let message = "<?= translate('piso_pagado_lang') ?>";
+                     $('#mensaje_error_piso_2').text(message);
+                     $('#mensaje_piso_2').show();
+                     $('#btn_pagar_piso').prop('disabled', true);
+                     $('#btn_entrar_subasta_' + subasta_id).hide();
+                     setTimeout(() => {
+                        $('#modal_entrar').modal('hide');
                         cargarmodal_subasta(subasta_id, "");
-                     }, 4000);
-                  } else {
-                     alert("Ocurrio un error en el servidor");
+                     }, 2500);
                   }
 
-               },
-               error: function(result) {
-
-                  alert("Ocurrio un error en el servidor");
                }
             });
+         } else {
+            let detalle = "Pago de piso de la subasta";
 
-         });
+            $.ajax({
+               type: 'POST',
+               url: "<?= site_url('front/checkout') ?>",
+               data: {
+                  monto: precio_piso_subata,
+                  detalle: detalle,
+                  id: subasta_id,
+                  tipo: 1
+               },
+               success: function(data) {
+                  data = JSON.parse(data);
 
-         $("#lightboxIt").on('click', function() {
+                  var processUrl = data.processUrl;
 
-            P.init($("#processUrl").val());
-         });
+                  P.init(processUrl);
+                  $("#processUrl").val(processUrl);
+               },
+               error: function(data) {
+                  data = JSON.parse(data);
+                  alert(data.status.message);
+               }
+            });
+            P.on('response', function(data) {
+
+               let requestId = data.requestId;
+               let reference = data.reference;
+               let estado_payment = 0
+               if (data.status.status == "APPROVED") {
+                  estado_payment = 1;
+                  $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                  $('#status_notificacion').text("Transacción Aprobada");
+                  $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
+               } else if (data.status.status == "REJECTED") {
+                  estado_payment = 2;
+                  $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+                  $('#status_notificacion').text("El pago ha sido rechazado");
+               } else if (data.status.status == "PENDING") {
+                  estado_payment = 3;
+                  $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+                  $('#status_notificacion').text("El proceso de pago está pendiente");
+               }
+               $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/update_request_id') ?>",
+                  data: {
+                     request_id: requestId,
+                     reference: reference,
+                     status: estado_payment
+                  },
+                  success: function(result) {
+                     result = JSON.parse(result);
+                     if (result.status == 200) {
+                        $('#mensaje_notificacion').text(data.status.message);
+                        $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+                        $('#modal_notificacion').modal('show');
+                        setTimeout(() => {
+                           $('#modal_notificacion').modal('hide');
+                           cargarmodal_subasta(subasta_id, "");
+                        }, 4000);
+                     } else {
+                        alert("Ocurrio un error en el servidor");
+                     }
+
+                  },
+                  error: function(result) {
+
+                     alert("Ocurrio un error en el servidor");
+                  }
+               });
+
+            });
+
+            $("#lightboxIt").on('click', function() {
+
+               P.init($("#processUrl").val());
+            });
+         }
+      } else {
+         $('#condiciones_piso').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+         $('.noficacion_error').show();
       }
 
       /*  */

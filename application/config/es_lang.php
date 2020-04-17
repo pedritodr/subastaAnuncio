@@ -14,7 +14,7 @@ $config['feb'] = "Feb";
 $config['jan'] = "Ene";
 $config['condiciones_lang'] = "Condiciones de uso";
 $config['politicas_lang'] = "Políticas de privacidad";
-
+$config['aviso_legal_lang'] = "Aviso legal";
 $config['facebook_lang'] = "Facebook";
 $config['intervalo_lang'] = "Intervalo";
 $config['pinterest_lang'] = "Pinterest";
