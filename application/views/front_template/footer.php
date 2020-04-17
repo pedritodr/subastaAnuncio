@@ -2171,7 +2171,7 @@
             success: function(result) {
                result = JSON.parse(result);
                if (result) {
-                  console.log(result);
+
                   for (let i = 0; i < result.length; i++) {
                      if (result[i].puja.valor == "null") {
                         $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));
@@ -2196,10 +2196,16 @@
                         $('#body_cronometro').hide();
                         $("#body_pujar").hide();
                      } else {
+                        if (result[i].subasta_user) {
+                           $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
+                        } else {
+                           $('#btn_entrar_subasta_' + result[i].subasta_id).show()();
+                        }
+
                         if (result[i].puja.valor != "null") {
 
                            if (result[i].puja_user.valor == null) {
-                              //  $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
+
                               $('#btn_pujar_subasta_' + result[i].subasta_id).show();
                            } else {
                               if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
