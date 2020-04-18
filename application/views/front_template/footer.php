@@ -2180,7 +2180,7 @@
 
                            let name_win = result[i].user_win.name;
                            $('#user_win_title_' + result[i].subasta_id).show();
-                           $('#user_win' + result[i].subasta_id).show();
+                           $('#user_win_' + result[i].subasta_id).show();
                            $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
                         }
 
