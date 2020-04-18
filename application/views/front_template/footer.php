@@ -2199,7 +2199,7 @@
                         if (result[i].subasta_user) {
                            $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
                         } else {
-                           $('#btn_entrar_subasta_' + result[i].subasta_id).show()();
+                           $('#btn_entrar_subasta_' + result[i].subasta_id).show();
                         }
 
                         if (result[i].puja.valor != "null") {
