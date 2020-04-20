@@ -20,9 +20,6 @@ class Payment extends CI_Controller
     public function index()
     {
 
-
-        var_dump("hola");
-        die();
         $all_payment = $this->payment->get_all();
         foreach ($all_payment as $item) {
             $item->user = $this->user->get_by_id($item->user_id);
