@@ -20,10 +20,7 @@ class Payment extends CI_Controller
     public function index()
     {
 
-        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-            $this->log_out();
-            redirect('login');
-        }
+
 
         $all_payment = $this->payment->get_all();
         foreach ($all_payment as $item) {
