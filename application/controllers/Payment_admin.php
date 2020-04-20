@@ -1,6 +1,6 @@
 <?php
 require(APPPATH . "libraries/PPM.php");
-class Payment extends CI_Controller
+class Payment_admin extends CI_Controller
 {
 
     public function __construct()

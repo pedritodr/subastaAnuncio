@@ -106,7 +106,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= site_url('payment/index'); ?>">
+                    <a href="<?= site_url('payment_admin/index'); ?>">
                         <i class="fa fa-money" aria-hidden="true"></i> <span><?= translate('manage_payment_lang'); ?></span>
                     </a>
                 </li>
