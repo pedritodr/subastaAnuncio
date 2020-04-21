@@ -1360,7 +1360,7 @@
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
                } else {
                   precio = parseFloat(precio);
-                  base_deduccion = precio * 1 * descuento;
+                  base_deduccion = precio * (1 * descuento);
                   console.log(base_deduccion);
                   let total = precio - base_deduccion;
                   precio_piso_subata = total;
