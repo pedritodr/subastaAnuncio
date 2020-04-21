@@ -1372,6 +1372,8 @@
                } else {
 
                   precio = parseFloat(precio);
+                  console.log(precio);
+                  console.log(descuento);
                   let total = precio - (precio * (1 * descuento));
                   console.log(total);
                   precio_piso_subata = total;
