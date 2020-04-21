@@ -1383,46 +1383,46 @@
 
 
       $('.transaccion_pendiente').hide();
-      /*     $.ajax({
-             type: 'POST',
-             url: "<?= site_url('front/get_payments_user') ?>",
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_payments_user') ?>",
 
-             data: {
-                user_id: user_id,
-             },
-             success: function(result) {
-                result = JSON.parse(result);
-                // console.log(result);
-                if (result.status == 500) {
-                   if (result.data.length > 0) {
+         data: {
+            user_id: user_id,
+         },
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               if (result.data.length > 0) {
 
-                      let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
-                      for (let i = 0; i < result.data.length; i++) {
-                         trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
-                      }
+                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                  for (let i = 0; i < result.data.length; i++) {
+                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                  }
 
-                      $('#body_condiciones_piso').hide();
-                      $('#btn_pagar_piso').hide();
-                      $('.transaccion_pendiente').html(trans_pendiente);
-                      $('.transaccion_pendiente').show();
+                  $('#body_condiciones_piso').hide();
+                  $('#btn_pagar_piso').hide();
+                  $('.transaccion_pendiente').html(trans_pendiente);
+                  $('.transaccion_pendiente').show();
 
-                   } else {
-                      $('#body_condiciones_piso').show();
-                      $('#btn_pagar_piso').show();
-                   }
+               } else {
+                  $('#body_condiciones_piso').show();
+                  $('#btn_pagar_piso').show();
+               }
 
 
-                } else if (result.status == 200) {
-                   $('#body_condiciones_piso').show();
-                   $('#btn_pagar_piso').show();
-                }
-             }
-          });
+            } else if (result.status == 200) {
+               $('#body_condiciones_piso').show();
+               $('#btn_pagar_piso').show();
+            }
+         }
+      });
 
-          $('#subasta_id').val(id);
-          $('#name_subasta').text(nombre);
-          $("#modal_entrar").modal("show");
-          $("#modal_detalle").modal("hide"); */
+      $('#subasta_id').val(id);
+      $('#name_subasta').text(nombre);
+      $("#modal_entrar").modal("show");
+      $("#modal_detalle").modal("hide");
    }
    let puja_mayor_subasta = 0;
 
