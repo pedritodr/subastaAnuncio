@@ -2776,7 +2776,7 @@ class Front extends CI_Controller
         $this->load->model('Membresia_model', 'membresia');
         $user_id = $this->session->userdata('user_id');
         if ($user_id) {
-            $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+            $membresia = $this->membresia->get_by_user_id($user_id);
             if ($membresia) {
                 echo json_encode(['status' => 500, 'data' => $membresia]);
             } else {
