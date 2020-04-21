@@ -2285,9 +2285,10 @@ class Front extends CI_Controller
             $this->load->model('Subasta_model', 'subasta');
             $this->load->model('Membresia_model', 'membresia');
             $membresia = $this->membresia->get_membresia_by_user_id($user_id);
-            echo json_encode($membresia);
-            exit();
+
             if ($membresia) {
+                echo json_encode($membresia);
+                exit();
                 $qty = (int) $membresia->qty_subastas;
                 if ($qty > 0) {
                     $resta = $qty - 1;
