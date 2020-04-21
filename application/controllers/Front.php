@@ -779,8 +779,8 @@ class Front extends CI_Controller
             $this->log_out();
             redirect('login');
         }
+        require(APPPATH . "libraries/validar_cedula.php");
         $this->load->model('User_model', 'user');
-
         $name = $this->input->post('name');
         $surname = $this->input->post('surname');
         $phone = $this->input->post('phone');
@@ -795,7 +795,7 @@ class Front extends CI_Controller
             // validar CI
             if (!$validador->validarCedula($nro_documento)) {
                 $this->response->set_message("El cédula introducida no es correcta.", ResponseMessage::SUCCESS);
-                redirect("registrarse");
+                redirect("perfil/page/");
             }
         }
 
@@ -805,7 +805,7 @@ class Front extends CI_Controller
         $this->form_validation->set_rules('surname', translate('primer_apellido_lang'), 'required');
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("perfil");
+            redirect("perfil/page/");
         } else { //en caso de que todo este bien
 
             $name_file = $_FILES['archivo']['name'];

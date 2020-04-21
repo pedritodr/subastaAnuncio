@@ -567,12 +567,13 @@
                                             <input type="text" value="<?= $user_data->phone ?>" name="phone" class="form-control margin-bottom-20 input-number">
                                         </div>
                                         <div class="col-lg-12">
+
                                             <div style="background: none;" id="search-section">
 
                                                 <div class="row">
                                                     <div class="col-sm-12 col-xs-12 col-md-12">
                                                         <div class="col-md-5 col-xs-12 col-sm-5 no-padding">
-                                                            <select class="form-control" id="tipo_documento" required>
+                                                            <select class="form-control" name="tipo_documento" id="tipo_documento" required>
 
                                                                 <option <?php if ($user_data->tipo_documento == 1) { ?> selected <?php } ?> value="1">Cédula</option>
                                                                 <option <?php if ($user_data->tipo_documento == 2) { ?> selected <?php } ?> value="2">Pasaporte</option>
@@ -729,16 +730,30 @@
             this.value = this.value.replace(/[^0-9]/g, '');
         });
         $('.input-text').on('input', function() {
-            this.value = this.value.replace(/[^a-zA-Záéíóúñüàè ]/g, '');
+            this.value = this.value.replace(/[^a-zA-ZáéíóúñüàèÑ ]/g, '');
 
         });
         $('#name').change(function() {
             let texto = $('#name').val();
-            $('#name').val(texto.trim());
+            texto = texto.trim();
+            texto = texto.split(" ");
+            if (texto.length > 1) {
+                texto = texto[0];
+            } else {
+                texto = texto[0];
+            }
+            $('#name').val(texto);
         });
         $('#surname').change(function() {
             let texto = $('#surname').val();
-            $('#surname').val(texto.trim());
+            texto = texto.trim();
+            texto = texto.split(" ");
+            if (texto.length > 2) {
+                texto = texto[0] + " " + texto[1];
+            } else {
+                texto = texto[0] + " " + texto[1];
+            }
+            $('#surname').val(texto);
         });
         $(function() {
             let validando = <?= $this->session->userdata('validando') ?>;

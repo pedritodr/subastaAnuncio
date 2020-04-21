@@ -68,13 +68,13 @@
                         <div class="col-lg-6">
                            <div class="form-group">
                               <label><?= translate("primer_nombre_lang"); ?></label>
-                              <input required placeholder="Ej. Jesus" class="form-control input-text" type="text" name="name">
+                              <input required placeholder="Ej. Jesus" class="form-control input-text" type="text" id="name" name="name">
                            </div>
                         </div>
                         <div class="col-lg-6">
                            <div class="form-group">
                               <label><?= translate("primer_apellido_lang"); ?></label>
-                              <input required placeholder="Ej. Perez" class="form-control input-text" type="text" name="surname">
+                              <input required placeholder="Ej. Perez" class="form-control input-text" type="text" id="surname" name="surname">
                            </div>
                         </div>
                         <div class="col-lg-12">
@@ -83,7 +83,7 @@
                               <div class="row">
                                  <div class="col-sm-12 col-xs-12 col-md-12">
                                     <div class="col-md-5 col-xs-12 col-sm-5 no-padding">
-                                       <select class="form-control" id="tipo_documento" required>
+                                       <select class="form-control" name="tipo_documento" id="tipo_documento" required>
 
                                           <option value="1">Cédula</option>
                                           <option value="2">Pasaporte</option>
@@ -103,7 +103,7 @@
                         <div class="col-lg-6">
                            <div class="form-group">
                               <label><?= translate("email_lang"); ?></label>
-                              <input placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" name="email" required>
+                              <input placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" name="email" id="email" required>
                            </div>
                         </div>
                         <div class="col-lg-6">
@@ -142,9 +142,6 @@
       <!-- Main Container End -->
    </section>
    <style>
-      /* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
       /* Carousel base class */
       .carousel {
          margin-bottom: 58px;
@@ -173,9 +170,7 @@
       }
 
       @media screen and (max-width: 992px) {
-         /*      .banner2 {
-            margin-top: 0
-         } */
+
 
          .carousel .item {
             height: 300px;
@@ -191,9 +186,6 @@
       }
 
       @media screen and (max-width: 400px) {
-         /*   .banner2 {
-   margin-top: 29% !important
-} */
 
          .carousel .item {
             height: 300px;
@@ -213,21 +205,46 @@
    <script>
       function validar_email(email) {
          expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-         if (!expr.test(email))
-            $('input[name=email]').val("");
-         $('input[name=email]').focus();
-
+         if (!expr.test(email)) {
+            $('#email').val("");
+            $('#email').focus();
+         } else {
+            $('#email').val(email.trim());
+         }
       }
 
       $('.input-number').on('input', function() {
          this.value = this.value.replace(/[^0-9]/g, '');
       });
       $('.input-text').on('input', function() {
-         this.value = this.value.replace(/[^a-zA-Záéíóúñüàè ]/i, '');
+         this.value = this.value.replace(/[^a-zA-ZáéíóúñüàèÑ ]/i, '');
       });
 
       $("#email").change(function() {
-         var email = $('input[name=email]').val();
+         var email = $('#email').val();
+         $('#email').val(email.trim());
          validar_email(email);
+      });
+      $('#name').change(function() {
+         let texto = $('#name').val();
+         texto = texto.trim();
+         texto = texto.split(" ");
+         if (texto.length > 1) {
+            texto = texto[0];
+         } else {
+            texto = texto[0];
+         }
+         $('#name').val(texto);
+      });
+      $('#surname').change(function() {
+         let texto = $('#surname').val();
+         texto = texto.trim();
+         texto = texto.split(" ");
+         if (texto.length > 2) {
+            texto = texto[0] + " " + texto[1];
+         } else {
+            texto = texto[0] + " " + texto[1];
+         }
+         $('#surname').val(texto);
       });
    </script>
