@@ -2284,14 +2284,15 @@
                         $('#body_cronometro').hide();
                         $("#body_pujar").hide();
                      } else {
-                        if (result[i].subasta_user) {
-                           console.log("aqui");
+                        if (result[i].subasta_user != null) {
+
                            $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
                            $('#btn_entrar_subasta_' + result[i].subasta_id).after("<button id='btn_pujar_subasta_" + result[i].subasta_id + "' onclick='' class='btn btn-block btn-success'><i class='fa fa-hand-paper-o'></i> <?= translate("pujar_lang"); ?></button>");
                            //  $("#btn_pujar_subasta_" + result[i].subasta_id).attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
 
 
                         } else {
+                           console.log("aqui");
                            $('#btn_entrar_subasta_' + result[i].subasta_id).show();
                         }
 
