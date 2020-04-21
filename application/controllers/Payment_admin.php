@@ -19,7 +19,10 @@ class Payment_admin extends CI_Controller
 
     public function index()
     {
-
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $all_payment = $this->payment->get_all();
         foreach ($all_payment as $item) {
             $item->user = $this->user->get_by_id($item->user_id);
@@ -114,6 +117,10 @@ class Payment_admin extends CI_Controller
     }
     public function reverso_manual()
     {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
         $request_id = $this->input->post('request_id');
         //   $request_id = "155866";
         $object = $this->payment->get_by_request_id($request_id);
@@ -196,6 +203,10 @@ class Payment_admin extends CI_Controller
     }
     public function reverso_nuevo() //funciona consumiendo la api
     {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
         require(APPPATH . "libraries/Curl.php");
         $payment = $this->payment->get_by_credenciales();
 
