@@ -42,7 +42,7 @@ class Membresia_model extends CI_Model
     }
     function get_by_user_id($id)
     {
-        $this->db->select('*');
+        $this->db->select('membresia_user.membre_user_id,membresia_user.qty_subastas,membresia.descuento');
         $this->db->from('membresia_user');
         $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
         $this->db->where('membresia_user.user_id', $id);
