@@ -1370,9 +1370,10 @@
                   precio_piso_subata = 0
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
                } else {
-                  console.log("aqui");
+
                   precio = parseFloat(precio);
                   let total = precio - (precio * (1 * descuento));
+                  console.log(total);
                   precio_piso_subata = total;
                   $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio_piso_subata).toFixed(2) + "</span>");
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
