@@ -1351,9 +1351,9 @@
             console.log(result);
 
             if (result.status == 500) {
-               qty_subastas = parseInt(result.qty_subastas);
-               descuento = parseFloat(result.descuento);
-               membresia_id = result.membre_user_id;
+               qty_subastas = parseInt(result.data.qty_subastas);
+               descuento = parseFloat(result.data.descuento);
+               membresia_id = result.data.membre_user_id;
                if (qty_subastas > 0) {
                   $('#inicial').html("<span class='label label-primary'>$0.00</span>");
                   precio_piso_subata = 0
