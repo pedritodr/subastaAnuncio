@@ -2258,6 +2258,7 @@
             },
             success: function(result) {
                result = JSON.parse(result);
+               console.log(result);
                if (result) {
 
                   for (let i = 0; i < result.length; i++) {
