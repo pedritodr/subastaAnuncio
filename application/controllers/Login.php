@@ -71,9 +71,67 @@ class Login extends CI_Controller
                 redirect(site_url());
             }
         } else {
-            $this->response->set_message(translate('autenticacion_lang'), ResponseMessage::ERROR);
+            $user_obj = $this->user->get_user_by_email($email);
+            if ($user_obj) {
+                if ($user_obj->status == 0 && $user_obj->is_active == 0) {
+                    $fecha = date("Y-m-d H:i:s");
+                    $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+                    $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
 
-            redirect("login");
+                    $codigo_seguridad = '';
+                    $caracteres = '0123456789';
+
+                    for ($i = 0; $i < 4; $i++) {
+                        $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+                    }
+
+                    $this->user->update($user_obj->user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+
+                    $html = '<div style="width:100%;border:2px solid #034C75">';
+                    $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $auth->name . '</h4></div>';
+                    $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
+                    $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
+                    $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
+                    $html .= '<div style="font-weight:bold;">Equipo APP</div>';
+                    $html .= '</div>';
+
+
+                    $this->load->library('email');
+
+                    $config['protocol'] = 'smtp';
+                    $config['smtp_host'] = 'smtp.zoho.com';
+                    $config['smtp_user'] = 'pedro@datalabcenter.com';
+                    $config['smtp_pass'] = "01420109811";
+                    $config['smtp_port'] = '465';
+                    //$config['smtp_timeout'] = '5';
+                    //$config['smtp_keepalive'] = TRUE;
+                    $config['smtp_crypto'] = 'ssl';
+                    $config['charset'] = 'utf-8';
+                    $config['newline'] = "\r\n";
+                    $config['mailtype'] = 'html';
+                    $config['wordwrap'] = TRUE;
+                    $this->email->initialize($config);
+
+                    $this->email->set_newline("\r\n");
+
+                    $this->email->from('pedro@datalabcenter.com', 'Info APP');
+                    $this->email->to($email);
+                    $this->email->subject('Validación de usuario APP');
+                    $this->email->message($html);
+                    $this->email->send();
+                    //   $session_data = object_to_array($user);
+                    //  $this->session->set_userdata($session_data);
+                    $this->response->set_message('El código de verificación ha sido generado correctamente', ResponseMessage::SUCCESS);
+                    // $this->session->set_userdata('validando', 1);
+                    redirect("activacion");
+                } else {
+                    $this->response->set_message(translate('autenticacion_lang'), ResponseMessage::ERROR);
+                    redirect("login");
+                }
+            } else {
+                $this->response->set_message(translate('autenticacion_lang'), ResponseMessage::ERROR);
+                redirect("login");
+            }
         }
     }
     public function auth_ajax()

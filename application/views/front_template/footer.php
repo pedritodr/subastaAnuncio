@@ -228,7 +228,7 @@
 
 
                </div>
-               <div class="col-lg-12">
+               <div id="body_condiciones_destacar" class="col-lg-12">
                   <div class="form-group">
                      <label style="margin-left: 25%" class="text-center">
                         <input style="margin-top: 5%;" required id="condiciones_destacar" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
@@ -413,7 +413,7 @@
 
 
                </div>
-               <div class="col-lg-12">
+               <div id="body_condiciones_piso" class="col-lg-12">
                   <div class="form-group">
                      <label style="margin-left: 25%" class="text-center">
                         <input style="margin-top: 5%;" required id="condiciones_piso" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
@@ -557,7 +557,7 @@
 
 
                </div>
-               <div class="col-lg-12">
+               <div id="body_condiciones_inversa" class="col-lg-12">
                   <div class="form-group">
                      <label style="margin-left: 25%" class="text-center">
                         <input style="margin-top: 5%;" required id="condiciones_inversa" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
@@ -571,7 +571,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button type="button" onclick="pagar_inversa()" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
+               <button id="btn_pagar_inversa" type="button" onclick="pagar_inversa()" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
             </div>
 
          </div>
@@ -688,7 +688,7 @@
 
                </div>
 
-               <div class="col-lg-12">
+               <div id="body_condiciones_membresia" class="col-lg-12">
                   <div class="form-group">
                      <label style="margin-left: 25%" class="text-center">
                         <input style="margin-top: 5%;" required id="condiciones_membresia" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
@@ -1294,8 +1294,27 @@
             result = JSON.parse(result);
             // console.log(result);
             if (result.status == 500) {
-               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
-               $('.transaccion_pendiente').show();
+               if (result.data.length > 0) {
+
+                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                  for (let i = 0; i < result.data.length; i++) {
+                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                  }
+
+                  $('#body_condiciones_destacar').hide();
+                  $('#btn_destacar').hide();
+                  $('.transaccion_pendiente').html(trans_pendiente);
+                  $('.transaccion_pendiente').show();
+
+               } else {
+                  $('#body_condiciones_destacar').show();
+                  $('#btn_destacar').show();
+               }
+
+
+            } else if (result.status == 200) {
+               $('#body_condiciones_destacar').show();
+               $('#btn_destacar').show();
             }
          }
       });
@@ -1355,8 +1374,27 @@
             result = JSON.parse(result);
             // console.log(result);
             if (result.status == 500) {
-               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
-               $('.transaccion_pendiente').show();
+               if (result.data.length > 0) {
+
+                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                  for (let i = 0; i < result.data.length; i++) {
+                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                  }
+
+                  $('#body_condiciones_piso').hide();
+                  $('#btn_pagar_piso').hide();
+                  $('.transaccion_pendiente').html(trans_pendiente);
+                  $('.transaccion_pendiente').show();
+
+               } else {
+                  $('#body_condiciones_piso').show();
+                  $('#btn_pagar_piso').show();
+               }
+
+
+            } else if (result.status == 200) {
+               $('#body_condiciones_piso').show();
+               $('#btn_pagar_piso').show();
             }
          }
       });
@@ -1642,16 +1680,20 @@
 
    }
 
-   let trakey = null;
-   let nonce = null;
+
+
 
    function seleccionar_membresia(object) {
 
       object = atob(object);
       object = JSON.parse(object);
+      let id_pendiente = false;
+      let contador_trans = 0;
       var user_id = "<?= $this->session->userdata('user_id'); ?>";
       var phone = "<?= $this->session->userdata('phone'); ?>";
       var email = "<?= $this->session->userdata('email'); ?>";
+      $('#body_condiciones_membresia').hide();
+      $('#btn_modal_membresia').hide();
       $('.transaccion_pendiente').hide();
       $('.noficacion_error').hide();
       $.ajax({
@@ -1663,17 +1705,35 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+
             if (result.status == 500) {
-               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
-               $('.transaccion_pendiente').show();
+               if (result.data.length > 0) {
+
+                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                  for (let i = 0; i < result.data.length; i++) {
+                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                  }
+
+                  $('#body_condiciones_membresia').hide();
+                  $('#btn_modal_membresia').hide();
+                  $('.transaccion_pendiente').html(trans_pendiente);
+                  $('.transaccion_pendiente').show();
+
+               } else {
+                  $('#body_condiciones_membresia').show();
+                  $('#btn_modal_membresia').show();
+               }
+
+
+            } else if (result.status == 200) {
+               $('#body_condiciones_membresia').show();
+               $('#btn_modal_membresia').show();
             }
          }
       });
       $('#nombre_membresia').text(object.nombre);
       $('#precio_membresia').text("$" + parseFloat(object.precio).toFixed(2));
       $('#membresia_id').val(object.membresia_id);
-      $('#btn_modal_membresia').show();
       $('#modal_membresia_gratis').modal('show');
 
    }
@@ -1732,6 +1792,7 @@
                   tipo: 1
                },
                success: function(data) {
+                  // console.log(data);
                   data = JSON.parse(data);
 
                   var processUrl = data.processUrl;
@@ -1984,8 +2045,27 @@
             result = JSON.parse(result);
             // console.log(result);
             if (result.status == 500) {
-               $('.transaccion_pendiente').html("<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>")
-               $('.transaccion_pendiente').show();
+               if (result.data.length > 0) {
+
+                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                  for (let i = 0; i < result.data.length; i++) {
+                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                  }
+
+                  $('#body_condiciones_inversa').hide();
+                  $('#btn_pagar_inversa').hide();
+                  $('.transaccion_pendiente').html(trans_pendiente);
+                  $('.transaccion_pendiente').show();
+
+               } else {
+                  $('#body_condiciones_inversa').show();
+                  $('#btn_pagar_inversa').show();
+               }
+
+
+            } else if (result.status == 200) {
+               $('#body_condiciones_inversa').show();
+               $('#btn_pagar_inversa').show();
             }
          }
       });

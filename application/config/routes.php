@@ -77,6 +77,8 @@ $route['transaccion_cancelada'] = 'front/pago_cancelada';
 $route['condiciones-de-uso'] = 'front/condiciones';
 $route['politicas-de-privacidad'] = 'front/politicas';
 $route['aviso-legal'] = 'front/aviso_legal';
+$route['activacion'] = 'front/activacion_user';
+
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();
 $page = 5;

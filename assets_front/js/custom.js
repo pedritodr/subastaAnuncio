@@ -106,6 +106,11 @@ Designed and Development by: ScriptsBundle
         allowClear: true,
         width: '100%'
     });
+    $("#tipo_documento").select2({
+        placeholder: 'Seleccione el documento',
+        allowClear: true,
+        width: '100%'
+    });
 
     /* ======= Profile Image Upload ======= */
     $(document).on('change', '.btn-file :file', function () {

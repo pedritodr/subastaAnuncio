@@ -417,7 +417,7 @@ $config['names_usuer_lang'] = "Nombre de Usuario";
 $config['autenticacion_lang'] = "Error de autenticación";
 $config['phone_person__lang'] = "Numero de Contacto";
 
-$config['phone_user__lang'] = "Numero de telefono";
+$config['phone_user__lang'] = "Numero de teléfono";
 
 $config['name_publi_lang'] = "Publicar anuncio";
 $config['update_publi_lang'] = "Actualizar mi anuncio";
@@ -581,6 +581,9 @@ $config['listar_categoria_lang'] = "Listar categorías";
 $config['categories_lang'] = "Categorías";
 
 $config['nombre_lang'] = "Nombre";
+$config['primer_nombre_lang'] = "Primer nombre";
+$config['primer_apellido_lang'] = "Primer apellido";
+$config['documento_id_lang'] = "Documento de identidad";
 $config['add_category_lang'] = "Adicionar categoría";
 $config['update_category_lang'] = "Editar categoría";
 $config['manage_tipo_evento_lang'] = "Gestionar tipos de eventos";

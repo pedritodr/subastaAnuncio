@@ -184,13 +184,13 @@
         let request_id = $('#requestID').val();
         $.ajax({
             type: 'POST',
-            url: "<?= site_url('payment/reverso') ?>",
+            url: "<?= site_url('payment_admin/reverso_nuevo') ?>",
 
             data: {
                 request_id: request_id,
             },
             success: function(result) {
-                console.log(result);
+                //   console.log(result);
                 result = JSON.parse(result);
                 // console.log(result);
                 if (result.status == 500) {

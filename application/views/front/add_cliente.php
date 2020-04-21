@@ -64,43 +64,70 @@
                            <strong><?= get_message_from_operation(); ?></strong>
                         </div>
                      <?php } ?>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate("primer_nombre_lang"); ?></label>
+                              <input required placeholder="Ej. Jesus" class="form-control input-text" type="text" name="name">
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate("primer_apellido_lang"); ?></label>
+                              <input required placeholder="Ej. Perez" class="form-control input-text" type="text" name="surname">
+                           </div>
+                        </div>
+                        <div class="col-lg-12">
+                           <div style="background: none;" id="search-section">
 
-                     <div class="form-group">
-                        <label><?= translate("nombre_lang"); ?></label>
-                        <input required placeholder="<?= translate('nombre_lang'); ?>" class="form-control" type="text" name="name">
-                     </div>
-                     <div class="form-group">
-                        <label><?= translate("phone_person__lang"); ?></label>
-                        <input placeholder="<?= translate("phone_person__lang"); ?>" class="form-control" type="text" name="phone">
-                     </div>
-                     <div class="form-group">
-                        <label><?= translate("email_lang"); ?></label>
-                        <input placeholder="<?= translate("email_lang"); ?>" class="form-control" type="email" name="email">
-                     </div>
-                     <div class="form-group">
-                        <label><?= translate('password_lang'); ?></label>
-                        <input placeholder="<?= translate('password_lang'); ?>" class="form-control" type="password" name="password">
-                     </div>
+                              <div class="row">
+                                 <div class="col-sm-12 col-xs-12 col-md-12">
+                                    <div class="col-md-5 col-xs-12 col-sm-5 no-padding">
+                                       <select class="form-control" id="tipo_documento" required>
 
-                     <div class="form-group">
-                        <label><?= translate('repeat_password_lang'); ?></label>
-                        <input placeholder="<?= translate('repeat_password_lang'); ?>" class="form-control" type="password" name="repeat_password">
-                     </div>
-                     <div class="form-group">
-                        <div class="row">
-                           <div class="col-xs-12 col-sm-7">
-                              <div class="skin-minimal">
-                                 <ul class="list">
-                                    <li>
-
-
-                                    </li>
-                                 </ul>
+                                          <option value="1">Cédula</option>
+                                          <option value="2">Pasaporte</option>
+                                       </select>
+                                    </div>
+                                    <div class="col-md-7 col-xs-12 col-sm-7 no-padding">
+                                       <input name="nro_documento" type="number" class="form-control input-number" placeholder="Nro de documento de identidad" required />
+                                    </div>
+                                 </div>
                               </div>
                            </div>
+                        </div>
 
+                     </div>
+
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate("email_lang"); ?></label>
+                              <input placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" name="email" required>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate("phone_user__lang"); ?></label>
+                              <input placeholder="Ej. 986547800" class="form-control input-number" type="number" name="phone" required>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate('password_lang'); ?></label>
+                              <input placeholder="<?= translate('password_lang'); ?>" class="form-control" type="password" name="password" required>
+                           </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label><?= translate('repeat_password_lang'); ?></label>
+                              <input placeholder="<?= translate('repeat_password_lang'); ?>" class="form-control" type="password" name="repeat_password" required>
+                           </div>
                         </div>
                      </div>
+
+
                      <button type="submit" class="btn btn-theme btn-lg btn-block"><?= translate('registrarse_lang'); ?></button>
                   </form>
                </div>
@@ -181,3 +208,26 @@
          }
       }
    </style>
+   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+   <script>
+      function validar_email(email) {
+         expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+         if (!expr.test(email))
+            $('input[name=email]').val("");
+         $('input[name=email]').focus();
+
+      }
+
+      $('.input-number').on('input', function() {
+         this.value = this.value.replace(/[^0-9]/g, '');
+      });
+      $('.input-text').on('input', function() {
+         this.value = this.value.replace(/[^a-zA-Záéíóúñüàè ]/i, '');
+      });
+
+      $("#email").change(function() {
+         var email = $('input[name=email]').val();
+         validar_email(email);
+      });
+   </script>

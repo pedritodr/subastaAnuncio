@@ -38,6 +38,13 @@ class Payment_model extends CI_Model
 
         return $query->row();
     }
+    function get_by_credenciales()
+    {
+        $this->db->where('id', 1);
+        $query = $this->db->get('credenciales');
+
+        return $query->row();
+    }
 
     function get_by_reference_id($id)
     {

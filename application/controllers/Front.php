@@ -15,8 +15,7 @@ class Front extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-
-        //$this->load->model('User_model', 'user');
+        $this->load->model('User_model', 'user');
         $this->load->library(array('session'));
         // Load the library
         $this->load->library('recaptcha');
@@ -579,21 +578,31 @@ class Front extends CI_Controller
 
     public function add_cliente()
     {
-
-        $this->load->model('User_model', 'user');
+        require(APPPATH . "libraries/validar_cedula.php");
 
         $name = $this->input->post('name');
+        $apellido = $this->input->post('surname');
         $email = $this->input->post('email');
         $password = $this->input->post('password');
         $phone = $this->input->post('phone');
         $repeat_password = $this->input->post('repeat_password');
-        //  $lat = $this->input->post('lat');
-        // $lng = $this->input->post('lng');
+        $tipo_documento = $this->input->post('tipo_documento');
+        $nro_documento = $this->input->post('nro_documento');
+
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($nro_documento)) {
+                $this->response->set_message("El cédula introducida no es correcta.", ResponseMessage::SUCCESS);
+                redirect("registrarse");
+            }
+        }
 
         //establecer reglas de validacion
-        $this->form_validation->set_rules('name', translate('nombre_lang'), 'required');
+        $this->form_validation->set_rules('name', translate('primer_nombre_lang'), 'required');
+        $this->form_validation->set_rules('surname', translate('primer_apellido_lang'), 'required');
         $this->form_validation->set_rules('email', translate('email_lang'), 'required|is_unique[user.email]');
-        //  $this->form_validation->set_rules('password', translate('password_lang'), 'required|matches[repeat_password]');
         if ($password !=  $repeat_password) {
             $this->response->set_message("El campo contraseña no coinciden con el repetir contraseña", ResponseMessage::SUCCESS);
             redirect("registrarse");
@@ -609,20 +618,161 @@ class Front extends CI_Controller
                 'password' => md5($password),
                 'phone' => $phone,
                 'role_id' => 2,
-                'status' => 1
-
+                'status' => 0,
+                'is_active' => 0,
+                'surname' => $apellido,
+                'cedula' => $nro_documento,
+                'tipo_documento' => $tipo_documento
             ];
 
             $user_id =  $this->user->create($data_user);
-            $user = $this->user->get_by_id($user_id);
-            $session_data = object_to_array($user);
-            $this->session->set_userdata($session_data);
-            $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-            $this->session->set_userdata('validando', 1);
-            redirect("portada");
+            $fecha = date("Y-m-d H:i:s");
+            $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+            $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+
+            $codigo_seguridad = '';
+            $caracteres = '0123456789';
+
+            for ($i = 0; $i < 4; $i++) {
+                $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+            }
+
+            $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+
+            $html = '<div style="width:100%;border:2px solid #034C75">';
+            $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $auth->name . '</h4></div>';
+            $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
+            $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
+            $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
+            $html .= '<div style="font-weight:bold;">Equipo APP</div>';
+            $html .= '</div>';
+
+
+            $this->load->library('email');
+
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'smtp.zoho.com';
+            $config['smtp_user'] = 'pedro@datalabcenter.com';
+            $config['smtp_pass'] = "01420109811";
+            $config['smtp_port'] = '465';
+            //$config['smtp_timeout'] = '5';
+            //$config['smtp_keepalive'] = TRUE;
+            $config['smtp_crypto'] = 'ssl';
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = 'html';
+            $config['wordwrap'] = TRUE;
+            $this->email->initialize($config);
+
+            $this->email->set_newline("\r\n");
+
+            $this->email->from('pedro@datalabcenter.com', 'Info APP');
+            $this->email->to($email);
+            $this->email->subject('Validación de usuario APP');
+            $this->email->message($html);
+            $this->email->send();
+            //   $session_data = object_to_array($user);
+            //  $this->session->set_userdata($session_data);
+            $this->response->set_message('Solo te queda un paso para completar tu registro', ResponseMessage::SUCCESS);
+            // $this->session->set_userdata('validando', 1);
+            redirect("activacion");
         }
     }
+    public function activacion_user()
+    {
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $data_object['all_banners'] = $all_banners;
 
+        $this->load_view_front('front/activacion_user', $data_object);
+    }
+    public function generar_codigo()
+    {
+        $email = $this->input->post('email');
+        $user = $this->user->get_user_by_email($email);
+        $fecha = date("Y-m-d H:i:s");
+        $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+
+        $codigo_seguridad = '';
+        $caracteres = '0123456789';
+
+        for ($i = 0; $i < 4; $i++) {
+            $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+        }
+
+        $this->user->update($user->user_id, [
+            'codigo_seguridad' => $codigo_seguridad,
+            'fecha_vencimiento_codigo' => $fecha_vencimiento
+        ]);
+
+        $html = '<div style="width:100%;border:2px solid #034C75">';
+        $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $auth->name . '</h4></div>';
+        $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
+        $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
+        $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
+        $html .= '<div style="font-weight:bold;">Equipo APP</div>';
+        $html .= '</div>';
+
+
+        $this->load->library('email');
+
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'smtp.zoho.com';
+        $config['smtp_user'] = 'pedro@datalabcenter.com';
+        $config['smtp_pass'] = "01420109811";
+        $config['smtp_port'] = '465';
+        //$config['smtp_timeout'] = '5';
+        //$config['smtp_keepalive'] = TRUE;
+        $config['smtp_crypto'] = 'ssl';
+        $config['charset'] = 'utf-8';
+        $config['newline'] = "\r\n";
+        $config['mailtype'] = 'html';
+        $config['wordwrap'] = TRUE;
+        $this->email->initialize($config);
+
+        $this->email->set_newline("\r\n");
+
+        $this->email->from('pedro@datalabcenter.com', 'Info APP');
+        $this->email->to($email);
+        $this->email->subject('Validación de usuario APP');
+        $this->email->message($html);
+        $this->email->send();
+        //   $session_data = object_to_array($user);
+        //  $this->session->set_userdata($session_data);
+        $this->response->set_message('El código de verificación ha sido generado correctamente', ResponseMessage::SUCCESS);
+        // $this->session->set_userdata('validando', 1);
+        redirect("activacion");
+    }
+    public function activacion_final()
+    {
+        $email = $this->input->post('email_valido');
+        $codigo = $this->input->post('codigo');
+        $user_object = $this->user->get_user_by_email($email);
+        if ($user_object) {
+            $now = date("Y-m-d H:i:s");
+            if ($now > $user_object->fecha_vencimiento_codigo) {
+                $this->response->set_message("El código de verificación ya caducó. Por favor, mande a generar otró código.", ResponseMessage::SUCCESS);
+                redirect("activacion");
+            } else {
+                if ($codigo == $user_object->codigo_seguridad) {
+                    $this->user->update($user_object->user_id, ['is_active' => 1, 'status' => 1]);
+                    $session_data = object_to_array($user_object);
+                    $this->session->set_userdata($session_data);
+                    $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+                    $this->session->set_userdata('validando', 1);
+                    $this->session->set_userdata('login', "ok");
+                    redirect("portada");
+                } else {
+                    $this->response->set_message("El código de verificación no coincide.", ResponseMessage::SUCCESS);
+                    redirect("activacion");
+                }
+            }
+        } else {
+            $this->response->set_message("El email esta incorrecto.", ResponseMessage::SUCCESS);
+            redirect("activacion");
+        }
+    }
     public function update_cliente()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
@@ -632,15 +782,27 @@ class Front extends CI_Controller
         $this->load->model('User_model', 'user');
 
         $name = $this->input->post('name');
-
+        $surname = $this->input->post('surname');
         $phone = $this->input->post('phone');
         $ciudad = $this->input->post('ciudad');
         $direccion = $this->input->post('direccion');
+        $tipo_documento = $this->input->post('tipo_documento');
+        $nro_documento = $this->input->post('nro_documento');
+
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($nro_documento)) {
+                $this->response->set_message("El cédula introducida no es correcta.", ResponseMessage::SUCCESS);
+                redirect("registrarse");
+            }
+        }
 
         $user_id = $this->session->userdata('user_id');
         //establecer reglas de validacion
-        $this->form_validation->set_rules('name', translate('nombre_lang'), 'required');
-
+        $this->form_validation->set_rules('name', translate('primer_nombre_lang'), 'required');
+        $this->form_validation->set_rules('surname', translate('primer_apellido_lang'), 'required');
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("perfil");
@@ -662,7 +824,10 @@ class Front extends CI_Controller
                             'ciudad_id' => $ciudad,
                             'direccion' => $direccion,
                             'phone' => $phone,
-                            'photo' => $result[1]
+                            'photo' => $result[1],
+                            'surname' => $surname,
+                            'cedula' => $nro_documento,
+                            'tipo_documento' => $tipo_documento
 
                         ];
                         $this->user->update($user_id, $data);
@@ -687,7 +852,10 @@ class Front extends CI_Controller
                     'name' => $name,
                     'ciudad_id' => $ciudad,
                     'direccion' => $direccion,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'surname' => $surname,
+                    'cedula' => $nro_documento,
+                    'tipo_documento' => $tipo_documento
 
                 ];
                 $this->user->update($user_id, $data_user);
@@ -2299,16 +2467,10 @@ class Front extends CI_Controller
 
     public function checkout()
     {
+        require(APPPATH . "libraries/Curl.php");
+        $this->load->model('payment_model', 'payment');
+        $payment = $this->payment->get_by_credenciales();
 
-        function placetopay()
-        {
-            return new PlacetoPay([
-                'login' => '6dd79d14d110adedc41f3fbab8e58461',
-                'tranKey' => 'h61ByK5IO930k2T8',
-                'url' => 'https://test.placetopay.ec/redirection/',
-                'type' => getenv('P2P_TYPE') ?: PlacetoPay::TP_REST
-            ]);
-        }
         $detalle = $this->input->post('detalle');
         $id =  $this->input->post('id');
         $tipo = (int) $this->input->post('tipo');
@@ -2317,23 +2479,25 @@ class Front extends CI_Controller
             $this->load->model('Membresia_model', 'membresia');
             $obj = $this->membresia->get_by_id($id);
             $monto = (float) $obj->precio;
-            $iva = $monto * 0.12;
-            $base = $monto - $iva;
+            $base = $monto / 1.12;
+            $iva = $monto - $base;
         } elseif ($tipo == 1) {
             $this->load->model('Subasta_model', 'subasta');
             $obj = $this->subasta->get_by_id($id);
 
             $monto = $valor;
-            $iva = $monto * 0.12;
-            $base = $monto - $iva;
+            $base = $monto / 1.12;
+            $iva = $monto - $base;
         } elseif ($tipo == 2) {
+
             $monto = $valor;
-            $iva = $monto * 0.12;
-            $base = $monto - $iva;
+            $base = $monto / 1.12;
+            $iva = $monto - $base;
         } elseif ($tipo == 3) {
+
             $monto = $valor;
-            $iva = $monto * 0.12;
-            $base = $monto - $iva;
+            $base = $monto / 1.12;
+            $iva = $monto - $base;
         }
         $this->load->model('payment_model', 'payment');
         $unico = $this->payment->create_unico(['status' => 1]);
@@ -2348,15 +2512,38 @@ class Front extends CI_Controller
         $fecha_vencimiento = strtotime('+20 minute', strtotime($fecha));
         $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
         // Request Information
+        if ($obj_user->tipo_documento == 1) {
+            $tipo_documento = "CI";
+        } else {
+            $tipo_documento = "PPN";
+        }
+        $length = 8;
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $nonce = '';
+        for ($i = 0; $i < $length; $i++) {
+            $nonce .= $characters[rand(0, $charactersLength - 1)];
+        }
 
+        $login = $payment->login;
+        $secretkey = $payment->secret_key;
+        $seed = Date("Y-m-d\TH:i:sP");
+        $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
+        $nonce = base64_encode($nonce);
         $request = [
 
+            "auth" => [
+                "login" => $login,
+                "seed" => "$seed",
+                "nonce" => $nonce,
+                "tranKey" => $tranKey
+            ],
             "buyer" => [
                 "name" => $obj_user->name,
-                "surname" => "",
+                "surname" => "$obj_user->surname",
                 "email" => $obj_user->email,
-                "documentType" => "",
-                "document" => "",
+                "documentType" => $tipo_documento,
+                "document" => $obj_user->cedula,
                 "mobile" => $obj_user->phone,
             ],
             "payment" => [
@@ -2388,29 +2575,15 @@ class Front extends CI_Controller
             "captureAddress" => false,
             "paymentMethod" => null
         ];
-        $placetopay = placetopay();
 
-        $response = $placetopay->request($request);
-        $this->load->model('payment_model', 'payment');
+        $json = json_encode($request);
+        $url = $payment->end_ponit . 'api/session';
+        $curl = new Curl();
+        $response = $curl->full_consulta_post($url, $json);
         $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
         $this->payment->update($payment_id, ['request_id' => $response->requestId]);
         echo json_encode($response);
         exit();
-        /*   try {
-
-
-
-            if ($response->isSuccessful()) {
-                // Redirect the client to the processUrl or display it on the JS extension
-                // $response->processUrl();
-            } else {
-                // There was some error so check the message
-                // $response->status()->message();
-            }
-            var_dump($response);
-        } catch (Exception $e) {
-            var_dump($e->getMessage());
-        } */
     }
     //Método con rand()
     function generando_codigo()
@@ -2554,11 +2727,25 @@ class Front extends CI_Controller
         $obj = $this->payment->get_by_payment_user_id($user_id);
 
         if (count($obj) > 0) {
-            echo json_encode(['status' => 500]);
+            echo json_encode(['status' => 500, 'data' => $obj]);
         } else {
             echo json_encode(['status' => 200]);
         }
 
         exit();
+    }
+    public function validaced()
+    {
+        require(APPPATH . "libraries/validar_cedula.php");
+
+        // Crear nuevo objecto
+        $validador = new validar_cedula();
+
+        // validar CI
+        if ($validador->validarCedula('1759056904')) {
+            echo 'Cédula válida';
+        } else {
+            echo 'Cédula incorrecta: ';
+        }
     }
 }
