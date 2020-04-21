@@ -2300,13 +2300,16 @@ class Front extends CI_Controller
             $id = $this->subasta->create_subasta_user($data);
             if ($id) {
                 $data['status'] = 200;
+                $data['membresia'] = $membresia;
             } else {
+                $data['membresia'] = $membresia;
                 $data['status'] = 500;
             }
             echo json_encode($data);
             exit();
         } else {
             $data['status'] = 500;
+            $data['membresia'] = $membresia;
             echo json_encode($data);
             exit();
         }
@@ -2763,5 +2766,21 @@ class Front extends CI_Controller
         } else {
             echo 'Cédula incorrecta: ';
         }
+    }
+    public function get_membresia_user_ajax()
+    {
+        $this->load->model('Membresia_model', 'membresia');
+        $user_id = $this->session->userdata('user_id');
+        if ($user_id) {
+            $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+            if ($membresia) {
+                echo json_encode(['status' => 500, 'data' => $membresia]);
+            } else {
+                echo json_encode(['status' => 200]);
+            }
+        } else {
+            echo json_encode(['status' => 200]);
+        }
+        exit();
     }
 }

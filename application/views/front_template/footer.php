@@ -1341,6 +1341,25 @@
       let qty_subastas = '<?= $this->session->userdata('qty_subastas') ?>';
       let descuento = '<?= $this->session->userdata('descuento') ?>';
       let membresia_id = '<?= $this->session->userdata('membresia_id') ?>';
+
+      $.ajax({
+         type: 'POST',
+         url: "<?= site_url('front/get_membresia_user_ajax') ?>",
+
+         success: function(result) {
+            result = JSON.parse(result);
+            // console.log(result);
+            if (result.status == 500) {
+               qty_subastas = parse_int(result.qty_subastas);
+               descuento = parseFloat(result.descuento);
+               membresia_id = result.membre_user_id
+            } else if (result.status == 200) {
+               qty_subastas = 0;
+               descuento = 0;
+               membresia_id = "";
+            }
+         }
+      });
       descuento = parseFloat(descuento) / 100;
       qty_subastas = parseInt(qty_subastas);
       $('#condiciones_piso').prop('checked', false);
