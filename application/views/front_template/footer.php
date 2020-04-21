@@ -1360,12 +1360,9 @@
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
                } else {
                   precio = parseFloat(precio);
-                  console.log(precio);
-                  console.log(descuento);
                   let total = precio - (precio * (1 * descuento));
-                  console.log(total);
                   precio_piso_subata = total;
-                  $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio_piso_subata).toFixed(2) + "</span>");
+                  $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(total).toFixed(2) + "</span>");
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
 
                }
