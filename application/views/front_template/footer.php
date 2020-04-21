@@ -1359,7 +1359,6 @@
                   precio_piso_subata = 0
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
                } else {
-
                   precio = parseFloat(precio);
                   console.log(precio);
                   console.log(descuento);
