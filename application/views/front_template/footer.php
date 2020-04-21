@@ -2222,8 +2222,8 @@
                               $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
 
                            } else {
-                              if (!result.puja_user.valor) {
-
+                              if (result.puja_user.valor == null) {
+                                 $('#btn_pujar_subasta_' + result.subasta_id).show();
                                  $("#body_pujar").show();
                                  $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
                               } else {
