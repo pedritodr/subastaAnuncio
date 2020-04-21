@@ -1771,7 +1771,12 @@
                   } else if (result.status == 200) {
 
                      let message = "<?= translate('piso_pagado_lang') ?>";
-
+                     $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                     $('#status_notificacion').text("Transacción Aprobada");
+                     $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
+                     $('#mensaje_notificacion').text(message);
+                     $('#referencia_notificacion').html("");
+                     $('#modal_notificacion').modal('show');
                      $('#btn_entrar_subasta_' + subasta_id).hide();
                      setTimeout(() => {
                         $('#modal_notificacion').modal('hide');
