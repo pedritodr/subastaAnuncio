@@ -1360,6 +1360,7 @@
                   $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
                } else {
                   precio = parseFloat(precio);
+                  descuento = descuenoto / 100;
                   base_deduccion = precio * (1 * descuento);
                   console.log(base_deduccion);
                   let total = precio - base_deduccion;
