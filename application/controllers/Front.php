@@ -2289,16 +2289,13 @@ class Front extends CI_Controller
             if ($membresia) {
 
                 $qty = (int) $membresia->qty_subastas;
-                echo json_encode($qty);
-                exit();
+
                 if ($qty > 0) {
                     $resta = $qty - 1;
-                    $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
+                    $this->membresia->update_membresia_user($membresia->membre_user_id, ['qty_subastas' => $resta]);
                 }
             }
-            $membresia = $this->membresia->get_membresia_by_user_id($user_id);
-            echo json_encode($membresia);
-            exit();
+
             $data = [
                 'user_id' => $user_id,
                 'subasta_id' => $subasta_id,
@@ -2691,7 +2688,7 @@ class Front extends CI_Controller
                         $qty = (int) $membresia->qty_subastas;
                         if ($qty > 0) {
                             $resta = $qty - 1;
-                            $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
+                            $this->membresia->update_membresia_user($membresia->membre_user_id, ['qty_subastas' => $resta]);
                         }
                     }
                     $data = [
