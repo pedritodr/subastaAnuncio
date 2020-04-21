@@ -1343,7 +1343,7 @@
       let membresia_id = '<?= $this->session->userdata('membresia_id') ?>';
       descuento = parseFloat(descuento) / 100;
       qty_subastas = parseInt(qty_subastas);
-
+      $('#condiciones_piso').prop('checked', false);
       if (membresia_id != "") {
          if (qty_subastas > 0) {
             $('#inicial').html("<span class='label label-primary'>$0.00</span>");
