@@ -1349,9 +1349,7 @@
          success: function(result) {
             result = JSON.parse(result);
             console.log(result);
-            let qty_subastas = 0;
-            let descuento = 0;
-            let membresia_id = "";
+
             if (result.status == 500) {
                qty_subastas = result.qty_subastas;
                descuento = result.descuento;
