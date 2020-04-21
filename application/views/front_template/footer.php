@@ -1774,34 +1774,34 @@
                },
                success: function(result) {
                   result = JSON.parse(result);
-                  // console.log(result);
-                  if (result.status == 500) {
-                     let message = "<?= translate('piso_error') ?>";
-                     $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-                     $('#status_notificacion').text("Transacción Aprobada");
-                     $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
-                     $('#mensaje_notificacion').text(message);
-                     $('#referencia_notificacion').html("");
-                     $('#modal_notificacion').modal('show');
-                     setTimeout(() => {
-                        $('#modal_notificacion').modal('hide');
-                     }, 6000);
+                  console.log(result);
+                  /*     if (result.status == 500) {
+                         let message = "<?= translate('piso_error') ?>";
+                         $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                         $('#status_notificacion').text("Transacción Aprobada");
+                         $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
+                         $('#mensaje_notificacion').text(message);
+                         $('#referencia_notificacion').html("");
+                         $('#modal_notificacion').modal('show');
+                         setTimeout(() => {
+                            $('#modal_notificacion').modal('hide');
+                         }, 6000);
 
-                  } else if (result.status == 200) {
+                      } else if (result.status == 200) {
 
-                     let message = "<?= translate('piso_pagado_lang') ?>";
-                     $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-                     $('#status_notificacion').text("Transacción Aprobada");
-                     $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
-                     $('#mensaje_notificacion').text(message);
-                     $('#referencia_notificacion').html("");
-                     $('#modal_notificacion').modal('show');
-                     $('#btn_entrar_subasta_' + subasta_id).hide();
-                     setTimeout(() => {
-                        $('#modal_notificacion').modal('hide');
-                        cargarmodal_subasta(subasta_id, "");
-                     }, 6000);
-                  }
+                         let message = "<?= translate('piso_pagado_lang') ?>";
+                         $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                         $('#status_notificacion').text("Transacción Aprobada");
+                         $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
+                         $('#mensaje_notificacion').text(message);
+                         $('#referencia_notificacion').html("");
+                         $('#modal_notificacion').modal('show');
+                         $('#btn_entrar_subasta_' + subasta_id).hide();
+                         setTimeout(() => {
+                            $('#modal_notificacion').modal('hide');
+                            cargarmodal_subasta(subasta_id, "");
+                         }, 6000);
+                      } */
 
                }
             });
