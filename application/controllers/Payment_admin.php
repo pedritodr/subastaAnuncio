@@ -252,8 +252,8 @@ class Payment_admin extends CI_Controller
 
                 if ($response) {
                     if ($response->status->status == "APPROVED") {
-
-                        $this->payment->update($object->payment_id, ['status' => 4]);
+                        //estado_reverso==1 reverso automatico
+                        $this->payment->update($object->payment_id, ['status' => 4, 'estado_reverso' => 1]);
                         $this->load->model('Membresia_model', 'membresia');
                         $this->load->model('Anuncio_model', 'anuncio');
                         $this->load->model('Subasta_model', 'subasta');
@@ -278,17 +278,23 @@ class Payment_admin extends CI_Controller
 
                         echo json_encode(['status' => 500, 'mensaje' => $response->status->message, 'estado' => $response->status->status]);
                     } else {
+                        $this->payment->update($object->payment_id, ['estado_reverso' => 2]);
                         echo json_encode(['status' => 404]);
                     }
                 } else {
+                    $this->payment->update($object->payment_id, ['estado_reverso' => 2]);
                     echo json_encode(['status' => 200]);
                 }
                 exit();
             } else {
+                //estado_reverso==2 reverso manueal
+                $this->payment->update($object->payment_id, ['estado_reverso' => 2]);
+
                 echo json_encode(['status' => 200]);
                 exit();
             }
         } else {
+            $this->payment->update($object->payment_id, ['estado_reverso' => 2]);
             echo json_encode(['status' => 200]);
         }
         exit();

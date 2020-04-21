@@ -73,8 +73,11 @@
                                                         Acciones <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a style="cursor:pointer" onclick="cargar_modal_reverso('<?= base64_encode(json_encode($item)) ?>','0')"><i class="fa fa-edit"></i> <?= "Reverso" ?></a></li>
-                                                        <li><a style="cursor:pointer" onclick="cargar_modal_reverso('<?= base64_encode(json_encode($item)) ?>','1')"><i class="fa fa-edit"></i> <?= "Reverso manual" ?></a></li>
+                                                        <?php if ($item->estado_reverso == 0) { ?>
+                                                            <li><a style="cursor:pointer" onclick="cargar_modal_reverso('<?= base64_encode(json_encode($item)) ?>','0')"><i class="fa fa-edit"></i> <?= "Reverso" ?></a></li>
+                                                        <?php } else if ($item->estado_reverso == 2) { ?>
+                                                            <li><a style="cursor:pointer" onclick="cargar_modal_reverso('<?= base64_encode(json_encode($item)) ?>','1')"><i class="fa fa-edit"></i> <?= "Reverso manual" ?></a></li>
+                                                        <?php } ?>
                                                     </ul>
                                                 </div>
                                             <?php } ?>
@@ -202,9 +205,15 @@
                 } else if (result.status == 404) {
                     $('#cargando_reverso').hide();
                     $('#mensaje_reverso').html("<h3 class='text-center'>Negada</h3><p class='text-center'>No se pudo proceder porque ya exite un reverso ó esta cancelada.</p>");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 4000);
                 } else if (result.status == 200) {
                     $('#cargando_reverso').hide();
                     $('#mensaje_reverso').html("<h3 class='text-center'>Negada</h3><p class='text-center'>No se pudo proceder, iniciar proceso de reverso manual.</p>");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 4000);
                 }
             }
         });
@@ -235,6 +244,9 @@
                 } else if (result.status == 200) {
                     $('#cargando_reverso').hide();
                     $('#mensaje_reverso').html("<h3 class='text-center'>Negada</h3><p class='text-center'>No se pudo proceder, iniciar proceso de reverso manual.</p>");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 4000);
                 }
             }
         });

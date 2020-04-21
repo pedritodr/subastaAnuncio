@@ -2596,7 +2596,7 @@ class Front extends CI_Controller
         $url = $payment->end_ponit . 'api/session';
         $curl = new Curl();
         $response = $curl->full_consulta_post($url, $json);
-        $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha]);
+        $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha, 'estado_reverso' => 0]);
         $this->payment->update($payment_id, ['request_id' => $response->requestId]);
         echo json_encode($response);
         exit();

@@ -2184,8 +2184,7 @@
                },
                success: function(result) {
                   result = JSON.parse(result);
-                  console.log('detalle_subastas_directas');
-                  console.log(result);
+
                   if (result) {
 
                      if (result.all_detalle.tipo_subasta == 1) {
@@ -2283,8 +2282,7 @@
             },
             success: function(result) {
                result = JSON.parse(result);
-               console.log('subastas_directas');
-               console.log(result);
+
                if (result) {
 
                   for (let i = 0; i < result.length; i++) {
@@ -2361,8 +2359,7 @@
             },
             success: function(result) {
                result = JSON.parse(result);
-               console.log('subastas_ajax');
-               console.log(result);
+
                if (result) {
 
                   for (let i = 0; i < result.length; i++) {
