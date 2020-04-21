@@ -74,6 +74,7 @@ $route['faqs'] = 'front/faq';
 //$route['payment/(:any)'] = 'front/pago_exitoso/$1';
 $route['payment'] = 'front/pago_exitoso';
 $route['transaccion_cancelada'] = 'front/pago_cancelada';
+$route['transaccion'] = 'front/transaccion';
 $route['condiciones-de-uso'] = 'front/condiciones';
 $route['politicas-de-privacidad'] = 'front/politicas';
 $route['aviso-legal'] = 'front/aviso_legal';

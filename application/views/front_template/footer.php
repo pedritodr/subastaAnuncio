@@ -869,7 +869,7 @@
                      $('#modal_notificacion').modal('show');
                      setTimeout(() => {
                         location.href = "<?= site_url("perfil/page/") ?>";
-                     }, 4000);
+                     }, 6000);
 
                   } else {
                      alert("Ocurrio un error en el servidor");
@@ -962,7 +962,7 @@
                      $('#modal_notificacion').modal('show');
                      setTimeout(() => {
                         location.reload();
-                     }, 4000);
+                     }, 6000);
                   } else {
                      alert("Ocurrio un error en el servidor");
                   }
@@ -1051,7 +1051,7 @@
                      $('#modal_notificacion').modal('show');
                      setTimeout(() => {
                         location.reload();
-                     }, 4000);
+                     }, 6000);
                   } else {
                      alert("Ocurrio un error en el servidor");
                   }
@@ -1745,6 +1745,7 @@
          let subasta_id = $('#subasta_id').val();
          $("#modal_entrar").modal("hide");
          if (precio_piso_subata == 0) {
+            let detalle = "Pago de piso de la subasta";
             $.ajax({
                type: 'POST',
                url: "<?= site_url('front/pagar_entrada_ajax') ?>",
@@ -1757,24 +1758,25 @@
                   // console.log(result);
                   if (result.status == 500) {
                      let message = "<?= translate('piso_error') ?>";
-                     $('#mensaje_error_piso').text(message);
-                     $('#mensaje_piso').show();
-                     $('#btn_pagar_piso').prop('disabled', false);
+                     $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                     $('#status_notificacion').text("Transacción Aprobada");
+                     $('#product_adquirido').html("<strong>Descripción : </strong>" + detalle);
+                     $('#mensaje_notificacion').text(message);
+                     $('#referencia_notificacion').html("");
+                     $('#modal_notificacion').modal('show');
                      setTimeout(() => {
-                        $('#mensaje_piso').fadeOut(2000)
-                     }, 3000);
+                        $('#modal_notificacion').modal('hide');
+                     }, 6000);
 
                   } else if (result.status == 200) {
 
                      let message = "<?= translate('piso_pagado_lang') ?>";
-                     $('#mensaje_error_piso_2').text(message);
-                     $('#mensaje_piso_2').show();
-                     $('#btn_pagar_piso').prop('disabled', true);
+
                      $('#btn_entrar_subasta_' + subasta_id).hide();
                      setTimeout(() => {
-                        $('#modal_entrar').modal('hide');
+                        $('#modal_notificacion').modal('hide');
                         cargarmodal_subasta(subasta_id, "");
-                     }, 2500);
+                     }, 6000);
                   }
 
                }
@@ -1841,7 +1843,7 @@
                         setTimeout(() => {
                            $('#modal_notificacion').modal('hide');
                            cargarmodal_subasta(subasta_id, "");
-                        }, 4000);
+                        }, 6000);
                      } else {
                         alert("Ocurrio un error en el servidor");
                      }
