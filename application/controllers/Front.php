@@ -2289,6 +2289,8 @@ class Front extends CI_Controller
             if ($membresia) {
 
                 $qty = (int) $membresia->qty_subastas;
+                echo json_encode($qty);
+                exit();
                 if ($qty > 0) {
                     $resta = $qty - 1;
                     $this->membresia->update_membresia_user($membresia->membresia_user_id, ['qty_subastas' => $resta]);
