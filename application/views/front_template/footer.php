@@ -1361,8 +1361,8 @@
                } else {
                   precio = parseFloat(precio);
                   descuento = descuento / 100;
-                  base_deduccion = precio * (1 * descuento);
-                  console.log(base_deduccion);
+                  base_deduccion = precio * descuento;
+
                   let total = precio - base_deduccion;
                   precio_piso_subata = total;
                   $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(total).toFixed(2) + "</span>");
