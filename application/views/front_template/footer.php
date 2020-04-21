@@ -1350,7 +1350,7 @@
             result = JSON.parse(result);
             // console.log(result);
             if (result.status == 500) {
-               qty_subastas = parse_int(result.qty_subastas);
+               qty_subastas = parse_Int(result.qty_subastas);
                descuento = parseFloat(result.descuento);
                membresia_id = result.membre_user_id
             } else if (result.status == 200) {
