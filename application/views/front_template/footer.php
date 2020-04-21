@@ -1338,9 +1338,9 @@
    function cargarmodal_entrar(id, nombre, precio) {
 
       //  var cant = "<?php echo translate('cant_anuncios_lang') ?>";
-      let qty_subastas = '<?= $this->session->userdata('qty_subastas') ?>';
-      let descuento = '<?= $this->session->userdata('descuento') ?>';
-      let membresia_id = '<?= $this->session->userdata('membresia_id') ?>';
+      let qty_subastas = 0;
+      let descuento = 0;
+      let membresia_id = "";
 
       $.ajax({
          type: 'POST',
