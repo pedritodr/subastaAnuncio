@@ -484,6 +484,7 @@ class Subasta_model extends CI_Model
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
         $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('subasta_user.subasta_id', $subasta_id);
+        $this->db->where('subasta_user.is_active', 1);
         $query = $this->db->get();
         return $query->row();
     }
@@ -495,6 +496,7 @@ class Subasta_model extends CI_Model
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
         $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('subasta_user.subasta_id', $subasta_id);
+        $this->db->where('subasta_user.is_active', 1);
         $this->db->order_by('puja.valor', 'desc');
         $query = $this->db->get();
         return $query->row();
@@ -507,6 +509,7 @@ class Subasta_model extends CI_Model
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
         $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('subasta_user.subasta_id', $subasta_id);
+        $this->db->where('subasta_user.is_active', 1);
         $this->db->order_by('puja.valor', 'desc');
         $query = $this->db->get();
         return $query->result();
@@ -518,6 +521,7 @@ class Subasta_model extends CI_Model
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
         $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('puja.valor =', $monto);
+        $this->db->where('subasta_user.is_active', 1);
         $query = $this->db->get();
         return $query->row();
     }
@@ -537,6 +541,7 @@ class Subasta_model extends CI_Model
         $this->db->join('subasta_user', 'subasta_user.subasta_user_id = puja.subasta_user_id');
         $this->db->where('subasta_user.subasta_id', $subasta_id);
         $this->db->where('subasta_user.user_id', $user_id);
+        $this->db->where('subasta_user.is_active', 1);
         $query = $this->db->get();
         return $query->row();
     }
