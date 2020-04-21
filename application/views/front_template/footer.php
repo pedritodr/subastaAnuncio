@@ -1348,7 +1348,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            console.log(result);
+            //  console.log(result);
 
             if (result.status == 500) {
                qty_subastas = parseInt(result.data.qty_subastas);
