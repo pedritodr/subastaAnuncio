@@ -72,7 +72,7 @@ class Payment_model extends CI_Model
     function get_by_payment_user_id_all($id)
     {
         $this->db->where('user_id', $id);
-        $this->db->order_by('payment_id', 'asc');
+        $this->db->order_by('payment_id', 'desc');
         $query = $this->db->get('payment');
 
         return $query->result();
