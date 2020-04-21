@@ -1345,7 +1345,9 @@
       $.ajax({
          type: 'POST',
          url: "<?= site_url('front/get_membresia_user_ajax') ?>",
-
+         data: {
+            user_id: 0,
+         },
          success: function(result) {
             result = JSON.parse(result);
             console.log(result);
