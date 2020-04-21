@@ -1338,10 +1338,8 @@
    function cargarmodal_entrar(id, nombre, precio) {
 
       //  var cant = "<?php echo translate('cant_anuncios_lang') ?>";
-      let qty_subastas = 0;
-      let descuento = 0;
-      let membresia_id = "";
 
+      $('#condiciones_piso').prop('checked', false);
       $.ajax({
          type: 'POST',
          url: "<?= site_url('front/get_membresia_user_ajax') ?>",
@@ -1351,41 +1349,46 @@
          success: function(result) {
             result = JSON.parse(result);
             console.log(result);
+            let qty_subastas = 0;
+            let descuento = 0;
+            let membresia_id = "";
             if (result.status == 500) {
                qty_subastas = result.qty_subastas;
                descuento = result.descuento;
-               membresia_id = result.membre_user_id
+               membresia_id = result.membre_user_id;
+
             } else if (result.status == 200) {
                qty_subastas = 0;
                descuento = 0;
                membresia_id = "";
             }
+            descuento = parseFloat(descuento) / 100;
+            qty_subastas = parseInt(qty_subastas);
+            if (membresia_id != "") {
+               if (qty_subastas > 0) {
+                  $('#inicial').html("<span class='label label-primary'>$0.00</span>");
+                  precio_piso_subata = 0
+                  $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
+               } else {
+                  console.log("aqui");
+                  precio = parseFloat(precio);
+                  let total = precio - (precio * (1 * descuento));
+                  precio_piso_subata = total;
+                  $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(total).toFixed(2) + "</span>");
+                  $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
+
+               }
+
+            } else {
+               precio_piso_subata = precio;
+               $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio).toFixed(2) + "</span>");
+            }
          }
       });
-      descuento = parseFloat(descuento) / 100;
-      console.log(descuento);
-      qty_subastas = parseInt(qty_subastas);
-      console.log(qty_subastas);
-      $('#condiciones_piso').prop('checked', false);
-      if (membresia_id != "") {
-         if (qty_subastas > 0) {
-            $('#inicial').html("<span class='label label-primary'>$0.00</span>");
-            precio_piso_subata = 0
-            $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
-         } else {
-            console.log("aqui");
-            precio = parseFloat(precio);
-            let total = precio - (precio * (1 * descuento));
-            precio_piso_subata = total;
-            $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(total).toFixed(2) + "</span>");
-            $('#descuento').html('Antes <span  class="label label-success strikethrough">$' + parseFloat(precio).toFixed(2) + ' </span>');
 
-         }
 
-      } else {
-         precio_piso_subata = precio;
-         $('#inicial').html("Total a pagar <span class='label label-primary'>$" + parseFloat(precio).toFixed(2) + "</span>");
-      }
+
+
       $('.transaccion_pendiente').hide();
       $.ajax({
          type: 'POST',
