@@ -208,8 +208,9 @@ class Payment_admin extends CI_Controller
             redirect('login');
         }
         require(APPPATH . "libraries/Curl.php");
+        //carga de credenciales.
         $payment = $this->payment->get_by_credenciales();
-
+        //Genera codigo aleatorio para el trankey
         $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -217,7 +218,7 @@ class Payment_admin extends CI_Controller
         for ($i = 0; $i < $length; $i++) {
             $nonce .= $characters[rand(0, $charactersLength - 1)];
         }
-
+        //carga las credenciales de login,secretkey, para luego crear el trankey y las variables necesarias para realizar la peticion.
         $login = $payment->login;
         $secretkey = $payment->secret_key;
         $seed = Date("Y-m-d\TH:i:sP");

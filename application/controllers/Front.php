@@ -2485,6 +2485,8 @@ class Front extends CI_Controller
     {
         require(APPPATH . "libraries/Curl.php");
         $this->load->model('payment_model', 'payment');
+        $this->load->model('User_model', 'user');
+        //carga de credenciales.
         $payment = $this->payment->get_by_credenciales();
 
         $detalle = $this->input->post('detalle');
@@ -2515,24 +2517,20 @@ class Front extends CI_Controller
             $base = $monto / 1.12;
             $iva = $monto - $base;
         }
-        $this->load->model('payment_model', 'payment');
         $unico = $this->payment->create_unico(['status' => 1]);
-
         $user_id = $this->session->userdata('user_id');
         $reference = 'RF-' . time() . "-" . $unico;
-
-        $this->load->model('User_model', 'user');
         $ip = empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"];
         $obj_user = $this->user->get_by_id($user_id);
         $fecha = date("Y-m-d H:i:s");
         $fecha_vencimiento = strtotime('+20 minute', strtotime($fecha));
         $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
-        // Request Information
         if ($obj_user->tipo_documento == 1) {
             $tipo_documento = "CI";
         } else {
             $tipo_documento = "PPN";
         }
+        //Genera codigo aleatorio para el trankey
         $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -2540,7 +2538,7 @@ class Front extends CI_Controller
         for ($i = 0; $i < $length; $i++) {
             $nonce .= $characters[rand(0, $charactersLength - 1)];
         }
-
+        //carga las credenciales de login,secretkey, para luego crear el trankey y las variables necesarias para realizar la peticion.
         $login = $payment->login;
         $secretkey = $payment->secret_key;
         $seed = Date("Y-m-d\TH:i:sP");
