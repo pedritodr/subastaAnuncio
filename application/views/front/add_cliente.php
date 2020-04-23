@@ -238,7 +238,6 @@
       });
       $('#surname').change(function() {
          let texto = $('#surname').val();
-         alert(texto);
          texto = texto.trim();
          texto = texto.split(" ");
          if (texto.length > 2) {
