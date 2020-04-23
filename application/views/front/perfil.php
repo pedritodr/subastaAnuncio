@@ -751,7 +751,7 @@
             if (texto.length > 2) {
                 texto = texto[0] + " " + texto[1];
             } else {
-                texto = texto[0] + " " + texto[1];
+                texto = texto[0];
             }
             $('#surname').val(texto);
         });

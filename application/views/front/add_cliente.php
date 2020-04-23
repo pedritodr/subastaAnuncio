@@ -238,12 +238,13 @@
       });
       $('#surname').change(function() {
          let texto = $('#surname').val();
+         alert(texto);
          texto = texto.trim();
          texto = texto.split(" ");
          if (texto.length > 2) {
             texto = texto[0] + " " + texto[1];
          } else {
-            texto = texto[0] + " " + texto[1];
+            texto = texto[0];
          }
          $('#surname').val(texto);
       });
