@@ -748,7 +748,7 @@
             let texto = $('#surname').val();
             texto = texto.trim();
             texto = texto.split(" ");
-            if (texto.length > 2) {
+            if (texto.length >= 2) {
                 texto = texto[0] + " " + texto[1];
             } else {
                 texto = texto[0];
