@@ -22,7 +22,6 @@ class Rest_user extends REST_Controller
     public function index_post()
     {
 
-
         $email = $this->input->post('email');
         $password = $this->input->post('password');
 
@@ -273,8 +272,10 @@ class Rest_user extends REST_Controller
 
     public function register_post()
     {
-
+        require(APPPATH . "libraries/validar_cedula.php");
         $name = $this->input->post('name');
+        $surname = $this->input->post('surname');
+        $tipo_documento = $this->input->post('tipo_documento');
         $cedula = $this->input->post('cedula');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
@@ -283,7 +284,14 @@ class Rest_user extends REST_Controller
         //  $platform = $this->input->post('platform_id');
         //  $imei = $this->input->post('imei');
         //  $photo = $this->input->post('photo');
-
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($nro_documento)) {
+                $this->response(['status' => 500, 'msg' => 'la cédula no cumple con el formato establecido en Ecuador'], 200);
+            }
+        }
 
         if ($password == $repeat_password) {
 
@@ -291,14 +299,14 @@ class Rest_user extends REST_Controller
 
 
             if (!$exist_email) {
-
-
                 //Notificar a alignet el usuario
 
                 $token = md5($email . $password);
                 // $user_id = uniqid('client-');
                 $user_id =   $this->user->create([
                     'name' => $name,
+                    'surname' => $surname,
+                    'tipo_documento' => $tipo_documento,
                     'email' => $email,
                     'password' => md5($password),
                     'role_id' => 2,
