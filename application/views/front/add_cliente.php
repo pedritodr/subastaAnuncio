@@ -90,7 +90,7 @@
                                        </select>
                                     </div>
                                     <div class="col-md-7 col-xs-12 col-sm-7 no-padding">
-                                       <input name="nro_documento" type="number" class="form-control input-number" placeholder="Nro de documento de identidad" required />
+                                       <input name="nro_documento" type="text" class="form-control" placeholder="Nro de documento de identidad" required />
                                     </div>
                                  </div>
                               </div>

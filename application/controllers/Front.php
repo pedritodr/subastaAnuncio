@@ -592,8 +592,11 @@ class Front extends CI_Controller
         if ($tipo_documento == 1) {
             // Crear nuevo objecto
             $validador = new validar_cedula();
+
             // validar CI
-            if (!$validador->validarCedula($nro_documento)) {
+            if ($validador->validarCedula($nro_documento)) {
+                //valida
+            } else {
                 $this->response->set_message("El cédula introducida no es correcta.", ResponseMessage::SUCCESS);
                 redirect("registrarse");
             }

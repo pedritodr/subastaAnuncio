@@ -288,7 +288,7 @@ class Rest_user extends REST_Controller
             // Crear nuevo objecto
             $validador = new validar_cedula();
             // validar CI
-            if (!$validador->validarCedula($nro_documento)) {
+            if (!$validador->validarCedula($cedula)) {
                 $this->response(['status' => 500, 'msg' => 'la cédula no cumple con el formato establecido en Ecuador'], 200);
             }
         }
