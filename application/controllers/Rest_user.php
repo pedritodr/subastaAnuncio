@@ -406,8 +406,8 @@ class Rest_user extends REST_Controller
             } else {
                 if ($codigo == $user_object->codigo_seguridad) {
                     $this->user->update($user_object->user_id, ['is_active' => 1, 'status' => 1]);
-                    $user_object = $this->user->get_user_by_email($email);
-                    $this->response(['status' => 200, 'msg' => 'Validación correcta', 'user_obj' => $user_object], 200);
+                    $user_obj = $this->user->get_by_id($user_object->user_id);
+                    $this->response(['status' => 200, 'msg' => 'Validación correcta', 'user_obj' => $user_obj], 200);
                 } else {
                     $this->response(['status' => 404, 'msg' => 'El código de verificación no coincide.'], 200);
                 }
