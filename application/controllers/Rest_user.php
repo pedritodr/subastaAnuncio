@@ -26,7 +26,7 @@ class Rest_user extends REST_Controller
         $password = $this->input->post('password');
 
         $auth = $this->user->login($email, md5($password));
-        $this->response(['ok' => $auth]);
+        $this->response(['ok' => $auth->email]);
         if ($auth) {
             if ($auth->is_active == 1) {
                 $token = md5($email . $password);
