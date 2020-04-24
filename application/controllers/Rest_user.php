@@ -28,9 +28,10 @@ class Rest_user extends REST_Controller
         $auth = $this->user->login($email, md5($password));
 
         if ($auth) {
-            $this->response(['ok' => "si"]);
+
             if ($auth->is_active == 1) {
                 $token = md5($email . $password);
+                $this->response(['ok' => $token]);
                 $this->user->update($auth->user_id, ['security_token' => $token]);
                 $this->response(['user_object' => $auth, 'status' => 200, 'security_token' => $token, 'user_id' => $auth->user_id, 'email' => $email, 'role_id' => $auth->role_id, 'name' => $auth->name, 'cedula' => $auth->cedula, 'phone' => $auth->phone, 'photo' => $auth->photo]);
             } else {
