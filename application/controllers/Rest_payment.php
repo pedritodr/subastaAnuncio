@@ -170,7 +170,7 @@ class Rest_payment extends REST_Controller
             $response = $curl->full_consulta_post($url, $json);
             $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha, 'estado_reverso' => 0]);
             $this->payment->update($payment_id, ['request_id' => $response->requestId]);
-            $this->response(['status' => 200, 'data' => $response]);
+            $this->response(['status' => 200, 'result' => $response]);
         } else {
             $this->response(['status' => 500]);
         }
