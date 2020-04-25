@@ -32,7 +32,7 @@ class Rest_user extends REST_Controller
             if ($auth->is_active == 1) {
                 $token = md5($email . $password);
                 $this->user->update($auth->user_id, ['security_token' => $token]);
-                $this->response(['user_object' => $auth, 'status' => 200, 'security_token' => $token, 'user_id' => $auth->user_id, 'email' => $email, 'role_id' => $auth->role_id, 'name' => $auth->name, 'cedula' => $auth->cedula, 'phone' => $auth->phone, 'photo' => $auth->photo]);
+                $this->response(['user_object' => $auth, 'status' => 200, 'security_token' => $token, 'user_id' => $auth->user_id, 'email' => $email, 'role_id' => $auth->role_id, 'name' => $auth->name, 'cedula' => $auth->cedula, 'phone' => $auth->phone, 'photo' => $auth->photo, 'surname' => $auth->surname, 'tipo_documento' => $auth->tipo_documento]);
             } else {
 
                 $fecha = date("Y-m-d H:i:s");
