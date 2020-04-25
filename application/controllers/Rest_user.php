@@ -690,6 +690,7 @@ class Rest_user extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $photo = $this->input->post('photo');
+        $this->response(["ok" => $surname], 200);
         if ($tipo_documento == 1) {
             // Crear nuevo objecto
             $validador = new validar_cedula();
