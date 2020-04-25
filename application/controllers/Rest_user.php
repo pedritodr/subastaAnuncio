@@ -681,15 +681,26 @@ class Rest_user extends REST_Controller
 
     public function update_datos_perfil_post()
     {
+        require(APPPATH . "libraries/validar_cedula.php");
         $name = $this->input->post('name');
+        $surname = $this->input->post('surname');
+        $tipo_documento = $this->input->post('tipo$tipo_documento');
         $cedula = $this->input->post('cedula');
         $phone = $this->input->post('phone');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $photo = $this->input->post('photo');
-        $photo = "data:image/jpeg;base64," . $photo;
-
-
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($cedula)) {
+                $this->response(['status' => 500, 'msg' => 'la cédula no cumple con el formato establecido en Ecuador'], 200);
+            }
+        }
+        if ($photo != "") {
+            $photo = "data:image/jpeg;base64," . $photo;
+        }
         $valid_auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($valid_auth) {
@@ -697,12 +708,25 @@ class Rest_user extends REST_Controller
             $user_object = $this->user->get_by_id($user_id);
 
             if ($user_object) {
-                $this->user->update($user_id, [
-                    'name' => $name,
-                    'phone' => $phone,
-                    'cedula' => $cedula,
-                    'photo' => $photo
-                ]);
+                if ($photo != "") {
+                    $this->user->update($user_id, [
+                        'name' => $name,
+                        'phone' => $phone,
+                        'cedula' => $cedula,
+                        'photo' => $photo,
+                        'tipo_documento' => $tipo_documento,
+                        'surname' => $surname
+                    ]);
+                } else {
+                    $this->user->update($user_id, [
+                        'name' => $name,
+                        'phone' => $phone,
+                        'cedula' => $cedula,
+                        'tipo_documento' => $tipo_documento,
+                        'surname' => $surname
+                    ]);
+                }
+
 
                 $user_object = $this->user->get_by_id($user_id);
                 $this->response(['status' => 200, 'msg' => 'Datos de usuario editados correctamente', 'user_object' => $user_object]);
