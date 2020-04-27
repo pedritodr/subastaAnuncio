@@ -170,7 +170,29 @@ class Rest_payment extends REST_Controller
             $response = $curl->full_consulta_post($url, $json);
             $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha, 'estado_reverso' => 0]);
             $this->payment->update($payment_id, ['request_id' => $response->requestId]);
-            $this->response(['status' => 200, 'result' => $response]);
+            $payment_obj = $this->payment->get_by_id($payment_id);
+            $this->response(['status' => 200, 'result' => $response, 'payment' => $payment_obj]);
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
+    public function update_request_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $request_id = $this->input->post('request_id');
+        $reference = $this->input->post('reference');
+        $status = $this->input->post('status');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $obj = $this->payment->get_by_reference_id($reference);
+            if ($obj) {
+                $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
+                $obj = $this->payment->get_by_id($obj->payment_id);
+                $this->response(['status' => 200, 'payment' => $obj]);
+            } else {
+                $this->response(['status' => 500]);
+            }
         } else {
             $this->response(['status' => 500]);
         }

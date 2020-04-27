@@ -1702,9 +1702,6 @@
 
    }
 
-
-
-
    function seleccionar_membresia(object) {
 
       object = atob(object);
