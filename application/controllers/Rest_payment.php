@@ -197,7 +197,7 @@ class Rest_payment extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-    public function get_payments_user_post()
+    public function payments_user_post()
     {
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
