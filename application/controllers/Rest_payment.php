@@ -205,7 +205,7 @@ class Rest_payment extends REST_Controller
         if ($auth) {
             $obj = $this->payment->get_by_payment_user_id($user_id);
             if (count($obj) > 0) {
-                $this->response(['status' => 200]);
+                $this->response(['status' => 200, 'obj' => $obj]);
             } else {
                 $this->response(['status' => 404]);
             }
