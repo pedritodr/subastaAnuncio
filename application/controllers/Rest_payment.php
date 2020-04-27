@@ -197,4 +197,20 @@ class Rest_payment extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function get_payments_user_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $obj = $this->payment->get_by_payment_user_id($user_id);
+            if (count($obj) > 0) {
+                $this->response(['status' => 200]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
 }
