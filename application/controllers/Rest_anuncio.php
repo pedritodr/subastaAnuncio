@@ -67,6 +67,8 @@ class Rest_anuncio extends REST_Controller
                 $long = strlen($item->descripcion);
                 if ($long > 99) {
                     $item->corta = substr($item->descripcion, 0, 96) . "...";
+                } else {
+                    $item->corta = $item->descripcion;
                 }
             }
             if ($all_anuncios) {
