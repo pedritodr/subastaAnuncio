@@ -330,4 +330,34 @@ class Rest_anuncio extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function cargar__mis_anuncios_post()
+    {
+
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $limite = $this->input->post('limite');
+        $comienza = $this->input->post('comienza');
+
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+
+        if ($auth) {
+            $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_user($limite, $comienza, $user_id);
+            foreach ($all_anuncios as $item) {
+                $long = strlen($item->descripcion);
+                if ($long > 99) {
+                    $item->corta = substr($item->descripcion, 0, 96) . "...";
+                } else {
+                    $item->corta = $item->descripcion;
+                }
+            }
+            if ($all_anuncios) {
+
+                $this->response(['status' => 200, 'lista' => $all_anuncios]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
 }
