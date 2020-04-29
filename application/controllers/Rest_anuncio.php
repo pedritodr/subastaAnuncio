@@ -330,7 +330,7 @@ class Rest_anuncio extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-    public function cargar__mis_anuncios_post()
+    public function cargar_mis_anuncios_post()
     {
 
         $user_id = $this->input->post('user_id');
