@@ -126,12 +126,9 @@ class Rest_anuncio extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         // $this->response(['error' => $auth]);
         if ($auth) {
-
-
             $all_detalle = $this->anuncio->anuncio_by_id($anuncio_id);
             $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
             if ($all_detalle) {
-
                 $this->response(['status' => 200, 'detalle' => $all_detalle, 'foto_object' => $foto_object]);
             } else {
                 $this->response(['status' => 404]);
