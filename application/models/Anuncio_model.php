@@ -407,7 +407,7 @@ class Anuncio_model extends CI_Model
 
     function anuncio_by_id($id)
     {
-        $this->db->select('anuncio.user_id,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->select('anuncio.destacado,anuncio.user_id,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
         $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
         $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
