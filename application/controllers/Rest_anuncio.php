@@ -71,8 +71,8 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->corta = $item->descripcion;
                 }
-                if ($title > 30) {
-                    $item->titulo = substr($item->titulo, 0, 27) . "...";
+                if ($title > 27) {
+                    $item->titulo = substr($item->titulo, 0, 24) . "...";
                 } else {
                     $item->titulo = $item->titulo;
                 }
@@ -356,8 +356,8 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->corta = $item->descripcion;
                 }
-                if ($title > 30) {
-                    $item->titulo = substr($item->titulo, 0, 27) . "...";
+                if ($title > 27) {
+                    $item->titulo = substr($item->titulo, 0, 24) . "...";
                 } else {
                     $item->titulo = $item->titulo;
                 }
