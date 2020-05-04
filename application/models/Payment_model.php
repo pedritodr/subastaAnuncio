@@ -40,7 +40,7 @@ class Payment_model extends CI_Model
     }
     function    get_by_credenciales()
     {
-        $this->db->where('id', 2);
+        $this->db->where('id', 1);
         $query = $this->db->get('credenciales');
 
         return $query->row();
