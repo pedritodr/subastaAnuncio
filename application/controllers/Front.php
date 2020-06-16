@@ -2802,14 +2802,15 @@ class Front extends CI_Controller
         //establecer reglas de validacion
         $this->form_validation->set_rules('password', "contraseña anterior", 'required');
         $this->form_validation->set_rules('nueva_password', "nueva contraseña", 'required');
-        if ($obj_user->password != md5($password)) {
-            $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::SUCCESS);
-            redirect("perfil");
-        }
+
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::SUCCESS);
             redirect("perfil");
         } else {
+            if ($obj_user->password != md5($password)) {
+                $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::SUCCESS);
+                redirect("perfil");
+            }
             $data = [
                 'password' => md5($new_password),
             ];
