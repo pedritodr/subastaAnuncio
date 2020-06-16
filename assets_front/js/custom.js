@@ -111,6 +111,11 @@ Designed and Development by: ScriptsBundle
         allowClear: true,
         width: '100%'
     });
+    $("#subcategoria").select2({
+        placeholder: 'Seleccione la subcategoria',
+        allowClear: true,
+        width: '100%'
+    });
 
     /* ======= Profile Image Upload ======= */
     $(document).on('change', '.btn-file :file', function () {

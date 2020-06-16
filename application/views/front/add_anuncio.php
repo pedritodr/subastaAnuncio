@@ -89,7 +89,7 @@
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
                            </span>
-                           <select onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2">
+                           <select required onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2">
 
                               <?php
                               if (isset($all_cate_anuncio))
@@ -106,7 +106,7 @@
                         <div class="input-group">
                            <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
                            </span>
-                           <select id="subcategoria" name="subcategoria" class="form-control select2">
+                           <select required id="subcategoria" name="subcategoria" class="form-control select2">
 
                               <?php
                               if (isset($all_subcate))
