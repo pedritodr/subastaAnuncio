@@ -191,8 +191,8 @@ class Login extends CI_Controller
 
             $config['protocol'] = 'smtp';
             $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'desarrollo@datalabcenter.com';
-            $config['smtp_pass'] = "Datalabcenter.2018";
+            $config['smtp_user'] = 'pedro@datalabcenter.com';
+            $config['smtp_pass'] = "01420109811";
             $config['smtp_port'] = '465';
             //$config['smtp_timeout'] = '5';
             //$config['smtp_keepalive'] = TRUE;
@@ -204,10 +204,10 @@ class Login extends CI_Controller
 
             $this->email->initialize($config);
 
-            $this->email->from('desarrollo@datalabcenter.com', 'Cambio de contraseña Julio Verne');
+            $this->email->from('pedro@datalabcenter.com', 'Cambio de contraseña Subasta anuncios');
             $this->load->model('Empresa_model', 'empresa');
-            $empresa_object = $this->empresa->get_by_id(1);
-            $correo_empresa = $empresa_object->email;
+            //  $empresa_object = $this->empresa->get_by_id(1);
+            // $correo_empresa = $empresa_object->email;
             $this->email->to($email);
 
             $this->email->subject("Cambio de clave");
