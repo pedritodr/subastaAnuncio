@@ -578,7 +578,7 @@ $config['update_anuncio_lang'] = "Editar anuncio";
 $config['anuncio_lang'] = "Anuncio";
 
 
-$config['manage_categories_lang'] = "Gestionar categorías de subastas";
+$config['manage_categories_lang'] = "Gestionar categorías subastas";
 $config['listar_categoria_lang'] = "Listar categorías";
 $config['categories_lang'] = "Categorías";
 
