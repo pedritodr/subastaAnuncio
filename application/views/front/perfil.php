@@ -725,7 +725,7 @@
     </section>
     <!-- Mostrando y ocultando vistas-->
     <div class="modal fade price-quote" id="modal_cambiar_password" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -738,11 +738,11 @@
                     <div class="clearfix"></div>
                     <div class="form-group">
                         <label for="password"><?= translate("anterior_password_lang"); ?></label>
-                        <input placeholder="<?= translate("anterior_password_lang"); ?>" class="form-control" type="text" name="password" id="password">
+                        <input placeholder="<?= translate("anterior_password_lang"); ?>" class="form-control" type="password" name="password" id="password">
                     </div>
                     <div class="form-group">
                         <label for="nueva_password"><?= translate("nueva_password_lang"); ?></label>
-                        <input placeholder="<?= translate("nueva_password_lang"); ?>" class="form-control" type="text" name="nueva_password" id="nueva_password">
+                        <input placeholder="<?= translate("nueva_password_lang"); ?>" class="form-control" type="password" name="nueva_password" id="nueva_password">
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-md-12 margin-bottom-20 margin-top-20">
