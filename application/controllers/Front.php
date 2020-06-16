@@ -2805,18 +2805,18 @@ class Front extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::SUCCESS);
-            redirect("perfil");
+            redirect("perfil/page/");
         } else {
             if ($obj_user->password != md5($password)) {
                 $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::SUCCESS);
-                redirect("perfil");
+                redirect("perfil/page/");
             }
             $data = [
                 'password' => md5($new_password),
             ];
             $this->user->update($user_id, $data);
             $this->response->set_message('La contraseña se actualizo correctamente', ResponseMessage::SUCCESS);
-            redirect("perfil");
+            redirect("perfil/page/");
         }
     }
 }
