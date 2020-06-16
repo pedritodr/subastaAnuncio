@@ -753,6 +753,7 @@
       </div>
    </div>
 </div>
+
 <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
 <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
 <!-- Bootstrap Core Css  -->

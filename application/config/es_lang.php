@@ -79,6 +79,8 @@ $config['escriba_email_lang'] = "Ingrese el e-mail";
 $config['escriba_valor_lang'] = "Ingrese el valor";
 $config['password_lang'] = "Contraseña";
 $config['recuperar_password_lang'] = "Recuperar contraseña";
+$config['anterior_password_lang'] = "Contraseña anterior";
+$config['nueva_password_lang'] = "Contraseña nueva";
 $config['or_lang'] = "O";
 $config['login_using_face'] = "Autenticar usando Facebook";
 $config['login_using_google'] = "Autenticar usando Google+";
@@ -474,7 +476,7 @@ $config['anuncio_relacionado_lang'] = "Anuncios relacionados";
 $config['create_cuenta_lang'] = "Crea tu cuenta";
 
 $config['subcategoria_lang'] = "Subcategoria";
-
+$config['update_password_lang'] = "Cambiar contraseña";
 $config['number_account_lang'] = "Número de cuenta";
 $config['repeat_password_lang'] = "Repetir contraseña";
 $config['administrador_lang'] = "Administrador";

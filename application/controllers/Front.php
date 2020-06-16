@@ -2788,4 +2788,34 @@ class Front extends CI_Controller
         }
         exit();
     }
+    public function update_password_cliente()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $user_id = $this->session->userdata('user_id');
+        $password = $this->input->post('password');
+        $new_password = $this->input->post('nueva_password');
+        $obj_user = $this->user->get_by_id($user_id);
+        if ($obj_user->password != md5($password)) {
+            $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::ERROR);
+            redirect("perfil");
+        }
+        //establecer reglas de validacion
+        $this->form_validation->set_rules('password', "contraseña anterior", 'required');
+        $this->form_validation->set_rules('nueva_password', "nueva contraseña", 'required');
+        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
+            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
+            redirect("perfil");
+        } else {
+            $data = [
+                'password' => md5($new_password),
+            ];
+            $this->user->update($user_id, $data);
+            $this->response->set_message('La contraseña se actualizo correctamente', ResponseMessage::SUCCESS);
+            redirect("perfil");
+        }
+    }
 }

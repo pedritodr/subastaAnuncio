@@ -90,6 +90,7 @@
                         </div>
                         <ul>
                             <li class="forever active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
+                            <li class="forever" id="update_password" style="cursor:pointer"><a><?= translate('update_password_lang') ?></a></li>
                             <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs_inversas" style="cursor:pointer"><a><?= translate('mis_subastas_inversas_lang') ?><span class="badge"><?php if ($mis_subastas_inversas) { ?> <?= (count($mis_subastas_inversas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
@@ -723,9 +724,43 @@
         <!-- Main Container End -->
     </section>
     <!-- Mostrando y ocultando vistas-->
+    <div class="modal fade price-quote" id="modal_cambiar_password" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("update_password_lang"); ?></h3>
+                </div>
+                <div class="modal-body">
+                    <!-- content goes here -->
+                    <?php echo form_open_multipart("front/update_password_cliente") ?>
+
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <label for="password"><?= translate("anterior_password_lang"); ?></label>
+                        <input placeholder="<?= translate("anterior_password_lang"); ?>" class="form-control" type="text" name="password" id="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="nueva_password"><?= translate("nueva_password_lang"); ?></label>
+                        <input placeholder="<?= translate("nueva_password_lang"); ?>" class="form-control" type="text" name="nueva_password" id="nueva_password">
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20">
+                        <button type="submit" class="btn btn-theme btn-block"><?= translate('update_password_lang') ?></button>
+                    </div>
+                    <?= form_close(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
     <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
     <script type="text/javascript">
+        $('#update_password').click(function() {
+            $('#modal_cambiar_password').modal('show');
+        });
+
+
         $('.input-number').on('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
