@@ -2428,11 +2428,11 @@ class Front extends CI_Controller
         if ($anuncio_object->is_active == 0) {
             $this->anuncio->update($anuncio_id, ['is_active' => 1]);
             $this->response->set_message(translate('activar_ads_noti_lang'), ResponseMessage::SUCCESS);
-            redirect("perfil");
+            redirect("perfil/page/");
         } else {
             $this->anuncio->update($anuncio_id, ['is_active' => 0]);
             $this->response->set_message(translate('desactivar_ads_noti_lang'), ResponseMessage::SUCCESS);
-            redirect("perfil");
+            redirect("perfil/page/");
         }
     }
     public function subasta_directas_ajax()
