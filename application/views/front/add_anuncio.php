@@ -270,7 +270,11 @@
       var longitude = 0;
 
       $(document).ready(function() {
-
+         $("#subcategoria").select2({
+            placeholder: 'Seleccione la subcategoria',
+            allowClear: true,
+            width: '100%'
+         });
          initMap();
 
       });
