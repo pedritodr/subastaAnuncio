@@ -65,7 +65,7 @@
                     </a>
                 </li>
 
-                <?php if ($this->session->userdata('role_id') == 1) { ?>
+                <?php if ($this->session->userdata('user_id') == 4) { ?>
                     <li>
                         <a href="<?= site_url('membresia/index'); ?>">
                             <i class="fa fa-user-secret" aria-hidden="true"></i>
