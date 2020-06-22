@@ -65,13 +65,14 @@
                     </a>
                 </li>
 
-
-                <li>
-                    <a href="<?= site_url('membresia/index'); ?>">
-                        <i class="fa fa-user-secret" aria-hidden="true"></i>
-                        <span><?= translate('manage_membresia_lang'); ?></span>
-                    </a>
-                </li>
+                <?php if ($this->session->userdata('role_id') == 1) { ?>
+                    <li>
+                        <a href="<?= site_url('membresia/index'); ?>">
+                            <i class="fa fa-user-secret" aria-hidden="true"></i>
+                            <span><?= translate('manage_membresia_lang'); ?></span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <li>
                     <a href="<?= site_url('membresia/index_usuarios'); ?>">
                         <i class="fa fa-user-secret" aria-hidden="true"></i>
