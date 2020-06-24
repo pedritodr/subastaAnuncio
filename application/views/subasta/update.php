@@ -127,7 +127,7 @@
                                     ?>
                                     <?php if ($subasta_object->fecha_inicio != NULL) { ?>
                                         <?php $date_inicio = new DateTime($subasta_object->fecha_inicio); ?>
-                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>">
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="">
                                     <?php } else { ?>
                                         <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>">
                                     <?php } ?>
