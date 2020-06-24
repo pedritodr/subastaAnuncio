@@ -120,12 +120,10 @@
                                 <label><?= "Fecha Inicio" ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                    <?php
-                                    $date_actutal_1 = date('Y-m-d');
+                                    <?php $date_actutal1 = date('Y-m-d');
                                     $d1 = new DateTime($date_actutal1);
                                     $d1->modify('+0 day');
-                                    ?>
-                                    <?php if ($subasta_object->fecha_inicio) { ?>
+                                    if ($subasta_object->fecha_inicio) { ?>
                                         <?php $date_inicio = new DateTime($subasta_object->fecha_inicio); ?>
                                         <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>">
                                     <?php } else { ?>
