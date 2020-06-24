@@ -119,7 +119,6 @@
 
                             </div>
                             <div id="fecha_publicacion" class="col-lg-3">
-
                                 <label><?= "Fecha Inicio" ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
