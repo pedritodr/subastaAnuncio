@@ -280,7 +280,7 @@
             $('#articulos').show();
         }
     });
-    
+
     function guardar_subasta() {
         var fecha_cierre = $('#fecha_cierre').val();
         var fecha_inicio = $('#fecha_inicio').val();
