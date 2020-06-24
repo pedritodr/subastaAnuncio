@@ -22,17 +22,17 @@ class Rest_user extends REST_Controller
     public function index_post()
     {
 
-
         $email = $this->input->post('email');
         $password = $this->input->post('password');
 
         $auth = $this->user->login($email, md5($password));
 
         if ($auth) {
+
             if ($auth->is_active == 1) {
                 $token = md5($email . $password);
                 $this->user->update($auth->user_id, ['security_token' => $token]);
-                $this->response(['user_object' => $auth, 'status' => 200, 'security_token' => $token, 'user_id' => $auth->user_id, 'email' => $email, 'role_id' => $auth->role_id, 'name' => $auth->name, 'cedula' => $auth->cedula, 'phone' => $auth->phone, 'photo' => $auth->photo]);
+                $this->response(['user_object' => $auth, 'status' => 200, 'security_token' => $token, 'user_id' => $auth->user_id, 'email' => $email, 'role_id' => $auth->role_id, 'name' => $auth->name, 'cedula' => $auth->cedula, 'phone' => $auth->phone, 'photo' => $auth->photo, 'surname' => $auth->surname, 'tipo_documento' => $auth->tipo_documento]);
             } else {
 
                 $fecha = date("Y-m-d H:i:s");
@@ -64,8 +64,8 @@ class Rest_user extends REST_Controller
 
                 $config['protocol'] = 'smtp';
                 $config['smtp_host'] = 'smtp.zoho.com';
-                $config['smtp_user'] = 'desarrollo@datalabcenter.com';
-                $config['smtp_pass'] = "Datalabcenter.2018";
+                $config['smtp_user'] = 'pedro@datalabcenter.com';
+                $config['smtp_pass'] = "01420109811";
                 $config['smtp_port'] = '465';
                 //$config['smtp_timeout'] = '5';
                 //$config['smtp_keepalive'] = TRUE;
@@ -78,7 +78,7 @@ class Rest_user extends REST_Controller
 
                 $this->email->set_newline("\r\n");
 
-                $this->email->from('desarrollo@datalabcenter.com', 'Info APP');
+                $this->email->from('pedro@datalabcenter.com', 'Info APP');
                 $this->email->to($email);
                 $this->email->subject('Validación de usuario APP');
                 $this->email->message($html);
@@ -273,8 +273,10 @@ class Rest_user extends REST_Controller
 
     public function register_post()
     {
-
+        require(APPPATH . "libraries/validar_cedula.php");
         $name = $this->input->post('name');
+        $surname = $this->input->post('surname');
+        $tipo_documento = $this->input->post('tipo_documento');
         $cedula = $this->input->post('cedula');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
@@ -283,7 +285,14 @@ class Rest_user extends REST_Controller
         //  $platform = $this->input->post('platform_id');
         //  $imei = $this->input->post('imei');
         //  $photo = $this->input->post('photo');
-
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($cedula)) {
+                $this->response(['status' => 500, 'msg' => 'la cédula no cumple con el formato establecido en Ecuador'], 200);
+            }
+        }
 
         if ($password == $repeat_password) {
 
@@ -291,14 +300,14 @@ class Rest_user extends REST_Controller
 
 
             if (!$exist_email) {
-
-
                 //Notificar a alignet el usuario
 
                 $token = md5($email . $password);
                 // $user_id = uniqid('client-');
                 $user_id =   $this->user->create([
                     'name' => $name,
+                    'surname' => $surname,
+                    'tipo_documento' => $tipo_documento,
                     'email' => $email,
                     'password' => md5($password),
                     'role_id' => 2,
@@ -334,13 +343,12 @@ class Rest_user extends REST_Controller
                 $html .= '<div style="font-weight:bold;">Equipo APP</div>';
                 $html .= '</div>';
 
-
                 $this->load->library('email');
 
                 $config['protocol'] = 'smtp';
                 $config['smtp_host'] = 'smtp.zoho.com';
-                $config['smtp_user'] = 'desarrollo@datalabcenter.com';
-                $config['smtp_pass'] = "Datalabcenter.2018";
+                $config['smtp_user'] = 'pedro@datalabcenter.com';
+                $config['smtp_pass'] = "01420109811";
                 $config['smtp_port'] = '465';
                 //$config['smtp_timeout'] = '5';
                 //$config['smtp_keepalive'] = TRUE;
@@ -354,7 +362,7 @@ class Rest_user extends REST_Controller
 
                 $this->email->set_newline("\r\n");
 
-                $this->email->from('desarrollo@datalabcenter.com', 'Info APP');
+                $this->email->from('pedro@datalabcenter.com', 'Info APP');
                 $this->email->to($email);
                 $this->email->subject('Registro de usuario APP');
                 $this->email->message($html);
@@ -397,8 +405,9 @@ class Rest_user extends REST_Controller
                 $this->response(['status' => 404, 'msg' => 'El código de verificación ya caducó. Por favor, mande a generar otró código.'], 200);
             } else {
                 if ($codigo == $user_object->codigo_seguridad) {
-                    $this->user->update($user_object->user_id, ['is_active' => 1]);
-                    $this->response(['status' => 200, 'msg' => 'Validación correcta'], 200);
+                    $this->user->update($user_object->user_id, ['is_active' => 1, 'status' => 1]);
+                    $user_obj = $this->user->get_by_id($user_object->user_id);
+                    $this->response(['status' => 200, 'msg' => 'Validación correcta', 'user_obj' => $user_obj], 200);
                 } else {
                     $this->response(['status' => 404, 'msg' => 'El código de verificación no coincide.'], 200);
                 }
@@ -444,8 +453,8 @@ class Rest_user extends REST_Controller
 
             $config['protocol'] = 'smtp';
             $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'desarrollo@datalabcenter.com';
-            $config['smtp_pass'] = "Datalabcenter.2018";
+            $config['smtp_user'] = 'pedro@datalabcenter.com';
+            $config['smtp_pass'] = "01420109811";
             $config['smtp_port'] = '465';
             //$config['smtp_timeout'] = '5';
             //$config['smtp_keepalive'] = TRUE;
@@ -458,7 +467,7 @@ class Rest_user extends REST_Controller
 
             $this->email->set_newline("\r\n");
 
-            $this->email->from('desarrollo@datalabcenter.com', 'Info APP');
+            $this->email->from('pedro@datalabcenter.com', 'Info APP');
             $this->email->to($email);
             $this->email->subject('Generación Código de Verificación');
             $this->email->message($html);
@@ -672,15 +681,27 @@ class Rest_user extends REST_Controller
 
     public function update_datos_perfil_post()
     {
+        require(APPPATH . "libraries/validar_cedula.php");
         $name = $this->input->post('name');
+        $surname = $this->input->post('surname');
+        $tipo_documento = $this->input->post('tipo_documento');
         $cedula = $this->input->post('cedula');
         $phone = $this->input->post('phone');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $photo = $this->input->post('photo');
-        $photo = "data:image/jpeg;base64," . $photo;
-
-
+        //  $this->response(["ok" => $surname], 200);
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if (!$validador->validarCedula($cedula)) {
+                $this->response(['status' => 500, 'msg' => 'la cédula no cumple con el formato establecido en Ecuador'], 200);
+            }
+        }
+        if ($photo != "") {
+            $photo = "data:image/jpeg;base64," . $photo;
+        }
         $valid_auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($valid_auth) {
@@ -688,12 +709,25 @@ class Rest_user extends REST_Controller
             $user_object = $this->user->get_by_id($user_id);
 
             if ($user_object) {
-                $this->user->update($user_id, [
-                    'name' => $name,
-                    'phone' => $phone,
-                    'cedula' => $cedula,
-                    'photo' => $photo
-                ]);
+                if ($photo != "") {
+                    $this->user->update($user_id, [
+                        'name' => $name,
+                        'phone' => $phone,
+                        'cedula' => $cedula,
+                        'photo' => $photo,
+                        'tipo_documento' => $tipo_documento,
+                        'surname' => $surname
+                    ]);
+                } else {
+                    $this->user->update($user_id, [
+                        'name' => $name,
+                        'phone' => $phone,
+                        'cedula' => $cedula,
+                        'tipo_documento' => $tipo_documento,
+                        'surname' => $surname
+                    ]);
+                }
+
 
                 $user_object = $this->user->get_by_id($user_id);
                 $this->response(['status' => 200, 'msg' => 'Datos de usuario editados correctamente', 'user_object' => $user_object]);
@@ -870,8 +904,8 @@ class Rest_user extends REST_Controller
 
             $config['protocol'] = 'smtp';
             $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'desarrollo@datalabcenter.com';
-            $config['smtp_pass'] = "Datalabcenter.2018";
+            $config['smtp_user'] = 'pedro@datalabcenter.com';
+            $config['smtp_pass'] = "01420109811";
             $config['smtp_port'] = '465';
             //$config['smtp_timeout'] = '5';
             //$config['smtp_keepalive'] = TRUE;
@@ -884,7 +918,7 @@ class Rest_user extends REST_Controller
 
             $this->email->set_newline("\r\n");
 
-            $this->email->from('info@pagahoy.com', 'Info Paga Hoy');
+            $this->email->from('pedro@datalabcenter.com', 'Info subastanucios.com');
             $this->email->to($email);
             $this->email->subject('Recuperación de contraseña');
             $this->email->message($html);

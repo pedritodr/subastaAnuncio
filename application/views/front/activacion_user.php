@@ -8,6 +8,8 @@
             <li data-target="#carousel-example-generic" data-slide-to="<?= $i ?>"></li>
          <?php } ?>
       <?php } ?>
+
+
    </ol>
    <div class="carousel-inner">
       <?php if (count($all_banners) > 0) { ?>
@@ -34,11 +36,16 @@
             </div>
          <?php } ?>
       <?php } ?>
+
+
    </div>
    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
       </span></a>
 </div>
+<!-- Small Breadcrumb -->
+<!-- =-=-=-=-=-=-= Transparent Breadcrumb End =-=-=-=-=-=-= -->
+<!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
 <div class="main-content-area clearfix">
    <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
    <section class="section-padding error-page pattern-bg ">
@@ -47,49 +54,60 @@
          <!-- Row -->
          <div class="row">
             <!-- Middle Content Area -->
-            <h3 class="text-center">Iniciar sesión</h3>
             <div class="col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 col-sm-12 col-xs-12">
                <!--  Form -->
                <div class="">
-                  <?= form_open('login/auth'); ?>
+
+                  <?= form_open('front/activacion_final'); ?>
                   <?php if (get_message_from_operation()) { ?>
-                     <div role="alert" class="alert alert-danger alert-dismissible">
+                     <div role="alert" class="alert alert-success alert-dismissible">
                         <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
                         <strong><?= get_message_from_operation(); ?></strong>
                      </div>
                   <?php } ?>
-
-                  <div class="form-group">
-                     <label><?= translate("email_lang"); ?></label>
-                     <input required placeholder="<?= translate("email_lang"); ?>" class="form-control" type="email" name="email">
-                  </div>
-                  <div class="form-group">
-                     <label><?= translate('password_lang'); ?></label>
-                     <input required placeholder="<?= translate('password_lang'); ?>" class="form-control" type="password" name="password">
-                  </div>
-                  <div class="form-group">
-                     <div class="row">
-                        <div class="col-xs-12">
-                           <div class="skin-minimal">
-
-                              <div class="col-xs-12 col-sm-5 text-right">
-                                 <p class="help-block"><a data-target="#myModal" data-toggle="modal"><?= translate('i_forgot_password_lang'); ?></a>
-                                 </p>
-                              </div>
-                           </div>
+                  <h4 class="text-center">Verificación de usuario</h4>
+                  <p class="text-center">Revisa tu correo electrónico y coloca el código de 4 dígitos
+                     que te llegó y escribe tu email. </p>
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <div class="form-group">
+                           <label><?= translate("email_lang"); ?></label>
+                           <input required placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" name="email_valido">
+                        </div>
+                     </div>
+                     <div class="col-lg-6">
+                        <div class="form-group">
+                           <label>Código de verificación</label>
+                           <input required placeholder="Ej. 0000" class="form-control input-number" type="number" name="codigo">
                         </div>
                      </div>
                   </div>
-                  <button type="submit" class="btn btn-theme btn-lg btn-block"><?= translate('entrar_lang'); ?></button>
+
+
+                  <button type="submit" class="btn btn-theme btn-lg btn-block"><?= translate('enviar_lang'); ?></button>
 
                </div>
                <!-- Form -->
                <?= form_close(); ?>
-               <!-- Middle Content Area  End -->
+               <br><br>
+               <?= form_open('front/generar_codigo'); ?>
+               <p class="text-center">Si no te llegó el código, puedes generar otro escribiendo tu email y presionar el
+                  botón: Generar código</p>
+               <div class="form-group">
+                  <label><?= translate("email_lang"); ?></label>
+                  <input required placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" name="email">
+               </div>
+
+               <button type="submit" class="btn btn-theme btn-lg btn-block">Generar código</button>
+
             </div>
-            <!-- Row End -->
+            <!-- Form -->
+            <?= form_close(); ?>
+            <!-- Middle Content Area  End -->
          </div>
-         <!-- Main Container End -->
+         <!-- Row End -->
+      </div>
+      <!-- Main Container End -->
    </section>
    <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
 </div>
@@ -121,6 +139,39 @@
    </div>
 </div>
 <!-- =-=-=-=-=-=-= Share Modal =-=-=-=-=-=-= -->
+<!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+<script>
+   function validar_email(email, ok) {
+      expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      if (!expr.test(email))
+         if (ok == 1) {
+            $('input[name=email_valido]').val("");
+            $('input[name=email_valido]').focus();
+         } else {
+            $('input[name=email]').val("");
+            $('input[name=email]').focus();
+         }
+
+
+   }
+
+   $('.input-number').on('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+   });
+   $('.input-text').on('input', function() {
+      this.value = this.value.replace(/[^a-zA-Záéíóúñüàè]/i, '');
+   });
+
+   $("#email").change(function() {
+      var email = $('input[name=email]').val();
+      validar_email(email, 2);
+   });
+   $("#email_valido").change(function() {
+      var email = $('input[name=email]').val();
+      validar_email(email, 1);
+   });
+</script>
 <style>
    /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */

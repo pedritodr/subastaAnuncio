@@ -65,13 +65,14 @@
                     </a>
                 </li>
 
-
-                <li>
-                    <a href="<?= site_url('membresia/index'); ?>">
-                        <i class="fa fa-user-secret" aria-hidden="true"></i>
-                        <span><?= translate('manage_membresia_lang'); ?></span>
-                    </a>
-                </li>
+                <?php if ($this->session->userdata('user_id') == 4) { ?>
+                    <li>
+                        <a href="<?= site_url('membresia/index'); ?>">
+                            <i class="fa fa-user-secret" aria-hidden="true"></i>
+                            <span><?= translate('manage_membresia_lang'); ?></span>
+                        </a>
+                    </li>
+                <?php } ?>
                 <li>
                     <a href="<?= site_url('membresia/index_usuarios'); ?>">
                         <i class="fa fa-user-secret" aria-hidden="true"></i>
@@ -106,7 +107,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= site_url('payment/index'); ?>">
+                    <a href="<?= site_url('payment_admin/index'); ?>">
                         <i class="fa fa-money" aria-hidden="true"></i> <span><?= translate('manage_payment_lang'); ?></span>
                     </a>
                 </li>

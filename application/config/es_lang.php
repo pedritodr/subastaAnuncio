@@ -12,7 +12,9 @@ $config['apr'] = "Abr";
 $config['mar'] = "Mar";
 $config['feb'] = "Feb";
 $config['jan'] = "Ene";
-
+$config['condiciones_lang'] = "Condiciones de uso";
+$config['politicas_lang'] = "Políticas de privacidad";
+$config['aviso_legal_lang'] = "Aviso legal";
 $config['facebook_lang'] = "Facebook";
 $config['intervalo_lang'] = "Intervalo";
 $config['pinterest_lang'] = "Pinterest";
@@ -77,6 +79,8 @@ $config['escriba_email_lang'] = "Ingrese el e-mail";
 $config['escriba_valor_lang'] = "Ingrese el valor";
 $config['password_lang'] = "Contraseña";
 $config['recuperar_password_lang'] = "Recuperar contraseña";
+$config['anterior_password_lang'] = "Contraseña anterior";
+$config['nueva_password_lang'] = "Contraseña nueva";
 $config['or_lang'] = "O";
 $config['login_using_face'] = "Autenticar usando Facebook";
 $config['login_using_google'] = "Autenticar usando Google+";
@@ -415,7 +419,7 @@ $config['names_usuer_lang'] = "Nombre de Usuario";
 $config['autenticacion_lang'] = "Error de autenticación";
 $config['phone_person__lang'] = "Numero de Contacto";
 
-$config['phone_user__lang'] = "Numero de telefono";
+$config['phone_user__lang'] = "Numero de teléfono";
 
 $config['name_publi_lang'] = "Publicar anuncio";
 $config['update_publi_lang'] = "Actualizar mi anuncio";
@@ -472,7 +476,7 @@ $config['anuncio_relacionado_lang'] = "Anuncios relacionados";
 $config['create_cuenta_lang'] = "Crea tu cuenta";
 
 $config['subcategoria_lang'] = "Subcategoria";
-
+$config['update_password_lang'] = "Cambiar contraseña";
 $config['number_account_lang'] = "Número de cuenta";
 $config['repeat_password_lang'] = "Repetir contraseña";
 $config['administrador_lang'] = "Administrador";
@@ -574,11 +578,14 @@ $config['update_anuncio_lang'] = "Editar anuncio";
 $config['anuncio_lang'] = "Anuncio";
 
 
-$config['manage_categories_lang'] = "Gestionar categorías";
+$config['manage_categories_lang'] = "Gestionar categorías subastas";
 $config['listar_categoria_lang'] = "Listar categorías";
 $config['categories_lang'] = "Categorías";
 
 $config['nombre_lang'] = "Nombre";
+$config['primer_nombre_lang'] = "Primer nombre";
+$config['primer_apellido_lang'] = "Primer apellido";
+$config['documento_id_lang'] = "Documento de identidad";
 $config['add_category_lang'] = "Adicionar categoría";
 $config['update_category_lang'] = "Editar categoría";
 $config['manage_tipo_evento_lang'] = "Gestionar tipos de eventos";

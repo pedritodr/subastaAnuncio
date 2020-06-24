@@ -90,6 +90,7 @@
                         </div>
                         <ul>
                             <li class="forever active" id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
+                            <li class="forever" id="update_password" style="cursor:pointer"><a><?= translate('update_password_lang') ?></a></li>
                             <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs_inversas" style="cursor:pointer"><a><?= translate('mis_subastas_inversas_lang') ?><span class="badge"><?php if ($mis_subastas_inversas) { ?> <?= (count($mis_subastas_inversas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
@@ -497,15 +498,31 @@
                                     <dl class="dl-horizontal">
                                         <dt><strong><?= translate('name_cliente_lang') ?></strong></dt>
                                         <dd>
-                                            <?= $this->session->userdata('name'); ?>
+                                            <?= $user_data->name; ?>
+                                        </dd>
+                                        <dt><strong>Tu Apellido</strong></dt>
+                                        <dd>
+                                            <?= $user_data->surname; ?>
                                         </dd>
                                         <dt><strong> <?= translate('email_lang') ?> </strong></dt>
                                         <dd>
-                                            <?= $this->session->userdata('email'); ?>
+                                            <?= $user_data->email; ?>
                                         </dd>
+                                        <?php if ($user_data->tipo_documento == 1) { ?>
+                                            <dt><strong> <?= "Nro de Cédula" ?> </strong></dt>
+                                            <dd>
+                                                <?= $user_data->cedula; ?>
+                                            </dd>
+                                        <?php } else { ?>
+                                            <dt><strong> <?= "Nro de Pasaporte" ?> </strong></dt>
+                                            <dd>
+                                                <?= $user_data->cedula; ?>
+                                            </dd>
+
+                                        <?php } ?>
                                         <dt><strong> <?= translate('phone_user__lang') ?> </strong></dt>
                                         <dd>
-                                            <?= $this->session->userdata('phone'); ?>
+                                            <?= $user_data->phone ?>
                                         </dd>
                                         <dt><strong> <?= translate('country_lang') ?> </strong></dt>
                                         <dd>
@@ -522,7 +539,7 @@
 
                                         <dt><strong> <?= translate('direccion_lang') ?> </strong></dt>
                                         <dd>
-                                            <?= $this->session->userdata('direccion'); ?>
+                                            <?= $user_data->direccion; ?>
                                         </dd>
                                     </dl>
                                 </div>
@@ -536,16 +553,39 @@
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label><?= translate('name_cliente_lang') ?></label>
-
-                                            <input type="text" value="<?= $this->session->userdata('name'); ?>" name="name" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $user_data->name; ?>" name="name" id="name" class="form-control margin-bottom-20 input-text">
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label><?= "Tu Apellido" ?></label>
+                                            <input type="text" value="<?= $user_data->surname; ?>" name="surname" id="surname" class="form-control margin-bottom-20 input-text">
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label> <?= translate('email_lang') ?> <span class="color-red">*</span></label>
                                             <input disabled type="text" value="<?= $this->session->userdata('email'); ?>" class="form-control margin-bottom-20">
                                         </div>
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label> <?= translate('phone_user__lang') ?> <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $this->session->userdata('phone'); ?>" name="phone" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $user_data->phone ?>" name="phone" class="form-control margin-bottom-20 input-number">
+                                        </div>
+                                        <div class="col-lg-12">
+
+                                            <div style="background: none;" id="search-section">
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-xs-12 col-md-12">
+                                                        <div class="col-md-5 col-xs-12 col-sm-5 no-padding">
+                                                            <select class="form-control" name="tipo_documento" id="tipo_documento" required>
+
+                                                                <option <?php if ($user_data->tipo_documento == 1) { ?> selected <?php } ?> value="1">Cédula</option>
+                                                                <option <?php if ($user_data->tipo_documento == 2) { ?> selected <?php } ?> value="2">Pasaporte</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-7 col-xs-12 col-sm-7 no-padding">
+                                                            <input name="nro_documento" type="number" class="form-control input-number" value="<?= $user_data->cedula ?>" placeholder="Nro de documento de identidad" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -598,7 +638,7 @@
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <label> <?= translate('direccion_lang') ?> <span class="color-red">*</span></label>
-                                            <textarea name="direccion" class="form-control margin-bottom-20" rows="2"><?= $this->session->userdata('direccion'); ?></textarea>
+                                            <textarea name="direccion" class="form-control margin-bottom-20" rows="2"><?= $user_data->direccion ?></textarea>
                                         </div>
                                     </div>
                                     <div class="row margin-bottom-20">
@@ -684,9 +724,72 @@
         <!-- Main Container End -->
     </section>
     <!-- Mostrando y ocultando vistas-->
+    <div class="modal fade price-quote" id="modal_cambiar_password" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("update_password_lang"); ?></h3>
+                </div>
+                <div class="modal-body">
+                    <!-- content goes here -->
+                    <?php echo form_open_multipart("front/update_password_cliente") ?>
+
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <label for="password"><?= translate("anterior_password_lang"); ?></label>
+                        <input placeholder="<?= translate("anterior_password_lang"); ?>" class="form-control" type="password" name="password" id="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="nueva_password"><?= translate("nueva_password_lang"); ?></label>
+                        <input placeholder="<?= translate("nueva_password_lang"); ?>" class="form-control" type="password" name="nueva_password" id="nueva_password">
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20">
+                        <button type="submit" class="btn btn-theme btn-block"><?= translate('update_password_lang') ?></button>
+                    </div>
+                    <?= form_close(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
     <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
     <script type="text/javascript">
+        $('#update_password').click(function() {
+            $('#modal_cambiar_password').modal('show');
+        });
+
+
+        $('.input-number').on('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        $('.input-text').on('input', function() {
+            this.value = this.value.replace(/[^a-zA-ZáéíóúñüàèÑ ]/g, '');
+
+        });
+        $('#name').change(function() {
+            let texto = $('#name').val();
+            texto = texto.trim();
+            texto = texto.split(" ");
+            if (texto.length > 1) {
+                texto = texto[0];
+            } else {
+                texto = texto[0];
+            }
+            $('#name').val(texto);
+        });
+        $('#surname').change(function() {
+            let texto = $('#surname').val();
+            texto = texto.trim();
+            texto = texto.split(" ");
+            if (texto.length >= 2) {
+                texto = texto[0] + " " + texto[1];
+            } else {
+                texto = texto[0];
+            }
+            $('#surname').val(texto);
+        });
         $(function() {
             let validando = <?= $this->session->userdata('validando') ?>;
             let subastas_directas_perfil = <?= json_encode($mis_subastas_directas); ?>;
@@ -719,8 +822,6 @@
                     }
 
                 }, 1000);
-
-
 
             }
             if (validando == 1) {

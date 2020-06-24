@@ -196,7 +196,7 @@ class Banner extends CI_Controller
         $banner_object = $this->banner->get_by_id($banner_id);
 
         if ($banner_object) {
-            $this->banner->update($banner_id, ['is_active' => 0]);
+            $this->banner->delete($banner_id);
             $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
             redirect("banner/index");
         } else {

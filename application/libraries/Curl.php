@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CodeIgniter Curl Class
@@ -34,7 +34,7 @@ class Curl
             log_message('error', 'cURL Class - PHP was not built with cURL enabled. Rebuild PHP with --with-curl to use cURL.');
         }
 
-        $url AND $this->create($url);
+        $url and $this->create($url);
     }
 
     public function __call($method, $arguments)
@@ -97,6 +97,39 @@ class Curl
         $this->option(CURLOPT_VERBOSE, TRUE);
 
         return $this->execute();
+    }
+
+    public function full_consulta_post($url, $json)
+    {
+        // curl initiate
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+        // SET Method as a POST
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        // Pass user data in POST command
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Execute curl and assign returned data
+        $response  = curl_exec($ch);
+
+        // Close curl
+        curl_close($ch);
+
+        // See response if data is posted successfully or any error
+        // print_r($response);
+        $result = json_decode($response);
+        if ($result) {
+            return $result;
+        } else {
+            return NULL;
+        }
     }
 
     /* =================================================================================
@@ -360,7 +393,6 @@ class Curl
         $this->error_string = '';
         $this->session = NULL;
     }
-
 }
 
 /* End of file Curl.php */

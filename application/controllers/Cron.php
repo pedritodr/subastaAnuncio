@@ -182,16 +182,43 @@ class Cron  extends CI_Controller
     }
     public function update_transacciones()
     {
-
+        require(APPPATH . "libraries/Curl.php");
+        $this->load->model('payment_model', 'payment');
         $transacciones = $this->payment->get_all_transaccion();
+        //carga de credenciales.
+        $payment = $this->payment->get_by_credenciales();
+        //Genera codigo aleatorio para el trankey
+        $length = 8;
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $nonce = '';
+        for ($i = 0; $i < $length; $i++) {
+            $nonce .= $characters[rand(0, $charactersLength - 1)];
+        }
+        //carga las credenciales de login,secretkey, para luego crear el trankey y las variables necesarias para realizar la peticion.
+        $login = $payment->login;
+        $secretkey = $payment->secret_key;
+        $seed = Date("Y-m-d\TH:i:sP");
+        $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
+        $nonce = base64_encode($nonce);
 
-        $ppm = new PPM();
         foreach ($transacciones as $item) {
+            $json = '{
+                "auth": {
+                    "login": "' . $login . '",
+                    "seed": "' . $seed . '",
+                    "nonce": "' . $nonce . '",
+                    "tranKey": "' . $tranKey . '"
+                }
+            }';
+            $url = $payment->end_ponit . 'api/session/' . $item->request_id;
 
-            $response = $ppm->consultar_respuesta($item->request_id);
+            $curl = new Curl();
+            $response = $curl->full_consulta_post($url, $json);
+
 
             if ($response) {
-                if ($response->status()->status() == "APPROVED") {
+                if ($response->status->status == "APPROVED") {
                     $this->payment->update($item->payment_id, ['status' => 1]);
                     if ($item->tipo == 0) { //membresia
 
@@ -262,7 +289,7 @@ class Cron  extends CI_Controller
                         ];
                         $this->subasta->create_subasta_user($data);
                     }
-                } elseif ($response->status()->status() == "REJECTED") {
+                } elseif ($response->status->status == "REJECTED") {
                     $this->payment->update($item->payment_id, ['status' => 2]);
                 }
             }
