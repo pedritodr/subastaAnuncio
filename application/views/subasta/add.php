@@ -40,7 +40,7 @@
 
                         <?= get_message_from_operation(); ?>
 
-                        <?= form_open_multipart("subasta/add"); ?>
+                        <?= form_open_multipart("subasta/add", array('id' => 'form_add_subasta')); ?>
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -117,13 +117,24 @@
                                         <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>" required>
                                     </div>
                                 </div>
-
                                 <div id="inicial" style="display:none" class="col-lg-3">
                                     <label><?= translate("valor_inical_lang"); ?></label>
                                     <div class="input-group">
 
                                         <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
                                         <input type="number" class="form-control input-sm" name="valor_inicial" placeholder="<?= translate('valor_inical_lang'); ?>">
+                                    </div>
+                                </div>
+                                <div id="fecha_publicacion" class="col-lg-3">
+                                    <?php
+                                    $date = date('Y-m-d');
+                                    $d = new DateTime($date);
+                                    $d->modify('+0 day');
+                                    ?>
+                                    <label><?= "Fecha de inicio" ?></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" value="<?= $d->format('Y-m-d\TH:i:s') ?>" min="<?= $d->format('Y-m-d\TH:i:s') ?>" placeholder="Fecha de inicio" required>
                                     </div>
 
                                 </div>
@@ -136,15 +147,10 @@
                                     <label><?= translate("date_cierre_lang"); ?></label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-
-                                        <input type="datetime-local" class="form-control input-sm" name="fecha_cierre" value="<?= $d->format('Y-m-d\TH:i:s') ?>" min="<?= $d->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_cierre" name="fecha_cierre" value="<?= $d->format('Y-m-d\TH:i:s') ?>" min="<?= $d->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
                                     </div>
 
                                 </div>
-
-
-
-
                                 <div id="entrada" style="display:none" class="col-lg-3">
                                     <label><?= translate("valor_pagado_lang"); ?></label>
                                     <div class="input-group">
@@ -197,14 +203,11 @@
                                         <input type="number" class="form-control input-sm" min="1" name="qty_articles" placeholder="<?= translate('qty_article_lang'); ?>">
                                     </div>
                                 </div>
-
-
-
                                 <div id="descripcion" style="display:none" class="col-lg-12">
 
                                     <div class="form-group">
                                         <label class="control-label"><?= translate('description_lang'); ?></label>
-                                        <textarea name="descrip_espa" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>">
+                                        <textarea name="descrip_espa" class="form-control textarea" placeholder="<?= translate('description_lang'); ?>">
 
                             </textarea>
                                     </div>
@@ -218,15 +221,8 @@
 
                         <div class="col-lg-12" style="text-align: right;">
                             <br>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                            <button onclick="guardar_subasta()" type="button" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
                         </div>
-
-
-
-
-
-
-
                         <?= form_close(); ?>
 
 
@@ -253,11 +249,7 @@
         $('#entrada').show();
         $('#descripcion').show();
         //Date picker
-
-
     });
-
-
 
     $('#tipo_subasta').change(function(e) {
         var tipo = $('#tipo_subasta').val();
@@ -287,6 +279,15 @@
             $('#porcentaje').show();
             $('#articulos').show();
         }
-
     });
+    
+    function guardar_subasta() {
+        var fecha_cierre = $('#fecha_cierre').val();
+        var fecha_inicio = $('#fecha_inicio').val();
+        if (Date.parse(fecha_cierre) < Date.parse(fecha_inicio)) {
+            $('#error_fechas').modal('show');
+        } else {
+            $('#form_add_subasta').submit();
+        }
+    }
 </script>

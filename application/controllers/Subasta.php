@@ -90,7 +90,7 @@ class Subasta  extends CI_Controller
         $valor_minimo = $this->input->post('valor_minimo');
         $porcentaje_dias = $this->input->post('porcentaje_dias');
         $qty_articles = $this->input->post('qty_articles');
-
+        $fecha_inicio = $this->input->post('fecha_inicio');
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre_espa', translate('nombre_lang'), 'required');
@@ -125,7 +125,8 @@ class Subasta  extends CI_Controller
                             'intervalo' => null,
                             'porcentaje' => null,
                             'valor_maximo' => null,
-                            'valor_minimo' => null
+                            'valor_minimo' => null,
+                            'fecha_inicio' => $fecha_inicio
                         ];
                     } else {
                         $fecha = date('Y-m-d H:i:s');
@@ -149,7 +150,8 @@ class Subasta  extends CI_Controller
                             'porcentaje' => $porcentaje_dias,
                             'valor_maximo' => $valor_maximo,
                             'valor_minimo' => $valor_minimo,
-                            'qty_articles' => $qty_articles
+                            'qty_articles' => $qty_articles,
+                            'fecha_inicio' => $fecha_inicio
                         ];
                     }
 
@@ -219,6 +221,7 @@ class Subasta  extends CI_Controller
         $ciudad = $this->input->post('ciudad');
         $is_open = $this->input->post('is_open');
         $tipo = $this->input->post('tipo_subasta');
+        $fecha_inicio = $this->input->post('fecha_inicio');
         //directa
         $valor_pago = $this->input->post('valor_pago');
         $valor_inicial = $this->input->post('valor_inicial');
@@ -264,7 +267,8 @@ class Subasta  extends CI_Controller
                             'intervalo' => null,
                             'porcentaje' => null,
                             'valor_maximo' => null,
-                            'valor_minimo' => null
+                            'valor_minimo' => null,
+                            'fecha_inicio' => $fecha_inicio
                         ];
                     } else {
                         $data = [
@@ -283,7 +287,8 @@ class Subasta  extends CI_Controller
                             'porcentaje' => $porcentaje_dias,
                             'valor_maximo' => $valor_maximo,
                             'valor_minimo' => $valor_minimo,
-                            'qty_articles' => $qty_articles
+                            'qty_articles' => $qty_articles,
+                            'fecha_inicio' => $fecha_inicio
                         ];
                     }
 
@@ -311,7 +316,7 @@ class Subasta  extends CI_Controller
                                     'valor_pago' => $valor_pago,
                                     'ciudad_id' => $ciudad,
                                     'tipo_subasta' => $tipo,
-
+                                    'fecha_inicio' => $fecha_inicio
                                 ];
                             } else {
                                 $data = [
@@ -326,7 +331,8 @@ class Subasta  extends CI_Controller
                                     'intervalo' => $intervalo_dias,
                                     'porcentaje' => $porcentaje_dias,
                                     'valor_maximo' => $valor_maximo,
-                                    'valor_minimo' => $valor_minimo
+                                    'valor_minimo' => $valor_minimo,
+                                    'fecha_inicio' => $fecha_inicio
                                 ];
                             }
 

@@ -8,8 +8,6 @@
             <li data-target="#carousel-example-generic" data-slide-to="<?= $i ?>"></li>
          <?php } ?>
       <?php } ?>
-
-
    </ol>
    <div class="carousel-inner">
       <?php if (count($all_banners) > 0) { ?>
@@ -36,16 +34,11 @@
             </div>
          <?php } ?>
       <?php } ?>
-
-
    </div>
    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
       </span></a>
 </div>
-<!-- Small Breadcrumb -->
-<!-- =-=-=-=-=-=-= Transparent Breadcrumb End =-=-=-=-=-=-= -->
-<!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
 <div class="main-content-area clearfix">
    <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
    <section class="section-padding error-page pattern-bg ">
@@ -54,13 +47,13 @@
          <!-- Row -->
          <div class="row">
             <!-- Middle Content Area -->
+            <h3 class="text-center">Iniciar sesión</h3>
             <div class="col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 col-sm-12 col-xs-12">
                <!--  Form -->
                <div class="">
-
                   <?= form_open('login/auth'); ?>
                   <?php if (get_message_from_operation()) { ?>
-                     <div role="alert" class="alert alert-success alert-dismissible">
+                     <div role="alert" class="alert alert-danger alert-dismissible">
                         <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
                         <strong><?= get_message_from_operation(); ?></strong>
                      </div>

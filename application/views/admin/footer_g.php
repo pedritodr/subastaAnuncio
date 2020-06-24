@@ -22,7 +22,23 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="error_fechas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <pclass="text-center">
+                    La fecha de cierre no puede ser menor que la fecha de inicio.
+                    </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--fin modal error-->
 
 

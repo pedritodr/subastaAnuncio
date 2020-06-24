@@ -17,8 +17,6 @@
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
             <li class="active"><?= translate('update_subasta_lang'); ?></li>
-
-
         </ol>
     </section>
 
@@ -35,7 +33,7 @@
                         <div class="row">
                             <?= get_message_from_operation(); ?>
 
-                            <?= form_open_multipart("subasta/update"); ?>
+                            <?= form_open_multipart("subasta/update", array('id' => 'form_add_subasta')); ?>
                             <div class="col-lg-3">
                                 <label><?= translate("tipo_subasta_lang"); ?></label>
                                 <div class="input-group">
@@ -120,14 +118,33 @@
                                 </div>
 
                             </div>
+                            <div id="fecha_publicacion" class="col-lg-3">
+
+                                <label><?= "Fecha Inicio" ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                    <?php
+                                    $date_actutal = date('Y-m-d');
+                                    $d = new DateTime($date_actutal);
+                                    $d->modify('+0 day');
+                                    ?>
+                                    <?php $date = new DateTime($subasta_object->fecha_inicio); ?>
+                                    <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= "Fecha Inicio" ?>" required>
+                                </div>
+
+                            </div>
                             <div id="fecha" style="display:none" class="col-lg-3">
 
                                 <label><?= translate("date_cierre_lang"); ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-
+                                    <?php
+                                    $date_actutal = date('Y-m-d');
+                                    $d = new DateTime($date_actutal);
+                                    $d->modify('+1 day');
+                                    ?>
                                     <?php $date = new DateTime($subasta_object->fecha_cierre); ?>
-                                    <input type="datetime-local" class="form-control input-sm" name="fecha_cierre" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                    <input type="datetime-local" class="form-control input-sm" id="fecha_cierre" name="fecha_cierre" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
                                 </div>
 
                             </div>
@@ -204,13 +221,8 @@
 
                     <div class="col-lg-12" style="text-align: right;">
                         <br>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                        <button type="button" onclick="guardar_subasta()" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
                     </div>
-
-
-
-
-
                     <?= form_close(); ?>
 
 
@@ -278,6 +290,16 @@
         }
 
     });
+
+    function guardar_subasta() {
+        var fecha_cierre = $('#fecha_cierre').val();
+        var fecha_inicio = $('#fecha_inicio').val();
+        if (Date.parse(fecha_cierre) < Date.parse(fecha_inicio)) {
+            $('#error_fechas').modal('show');
+        } else {
+            $('#form_add_subasta').submit();
+        }
+    }
 </script>
 <!-- Select2 -->
 <script src="<?= base_url(); ?>admin_lte/plugins/select2/select2.full.min.js"></script>

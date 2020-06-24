@@ -34,7 +34,7 @@
                                     <th><?= translate("valor_inical_lang"); ?></th>
                                     <th><?= translate('name_cate_lang'); ?></th>
                                     <th><?= translate("photos_lang"); ?></th>
-                                    <th><?= translate("date_cierre_lang"); ?></th>
+                                    <th><?= translate("date_lang"); ?></th>
                                     <th><?= translate("valor_pagado_lang"); ?></th>
                                     <th><?= translate("state_subasta"); ?></th>
                                     <th><?= translate('name_city_lang'); ?></th>
@@ -73,7 +73,10 @@
                                         <td> <label class="label label-info">$<?= number_format($item->valor_inicial, 2); ?></label></td>
                                         <td> <?= $item->categoria->name_espa; ?></td>
                                         <td style="width:20%"><img style="width:250px;height:100px;" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>
-                                        <td> <?= $item->fecha_cierre; ?></td>
+                                        <td>
+                                            <p><strong><?= "Fecha de inicio" ?>: </strong></p><label class="label label-success"><?= $item->fecha_inicio; ?></label>
+                                            <p><strong><?= translate("date_cierre_lang"); ?>: </strong></p><label class="label label-danger"><?= $item->fecha_cierre; ?></label>
+                                        </td>
 
                                         <td> <label class="label label-warning">$<?= number_format($item->valor_pago, 2); ?></label></td>
                                         <td> <?php if ($item->is_open == 1) { ?>
@@ -115,7 +118,7 @@
                                     <th><?= translate("valor_inical_lang"); ?></th>
                                     <th><?= translate('name_cate_lang'); ?></th>
                                     <th><?= translate("photos_lang"); ?></th>
-                                    <th><?= translate("date_cierre_lang"); ?></th>
+                                    <th><?= translate("date_lang"); ?></th>
                                     <th><?= translate("valor_pagado_lang"); ?></th>
                                     <th><?= translate("state_subasta"); ?></th>
                                     <th><?= translate('name_city_lang'); ?></th>
