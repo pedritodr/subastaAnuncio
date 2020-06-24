@@ -128,8 +128,8 @@
                                     $d = new DateTime($date_actutal);
                                     $d->modify('+0 day');
                                     ?>
-                                    <?php $date = new DateTime($subasta_object->fecha_inicio); ?>
-                                    <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= "Fecha Inicio" ?>" required>
+                                    <?php $date_inicio = new DateTime($subasta_object->fecha_inicio); ?>
+                                    <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>" placeholder="<?= "Fecha Inicio" ?>" required>
                                 </div>
 
                             </div>
