@@ -54,8 +54,6 @@
                                 </div>
 
                             </div>
-
-
                             <div id="categoria" style="display:none" class="col-lg-3">
                                 <label><?= translate("cate_list_lang"); ?></label>
                                 <div class="input-group">
@@ -130,9 +128,21 @@
                                     <?php $date_inicio = new DateTime($subasta_object->fecha_inicio); ?>
                                     <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>" placeholder="<?= "Fecha Inicio" ?>" required>
                                 </div>
+                            </div>
+                            <div id="fecha" style="display:none" class="col-lg-3">
+                                <label><?= translate("date_cierre_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                    <?php
+                                    $date_actutal = date('Y-m-d');
+                                    $d = new DateTime($date_actutal);
+                                    $d->modify('+1 day');
+                                    ?>
+                                    <?php $date = new DateTime($subasta_object->fecha_cierre); ?>
+                                    <input type="datetime-local" class="form-control input-sm" id="fecha_cierre" name="fecha_cierre" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                </div>
 
                             </div>
-
 
                             <div id="entrada" style="display:none" class="col-lg-3">
                                 <label><?= translate("valor_pagado_lang"); ?></label>
