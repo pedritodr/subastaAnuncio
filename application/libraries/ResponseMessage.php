@@ -25,10 +25,10 @@ class ResponseMessage
 
     public function __construct()
     {
-        $this->success_prefix = "<div class='alert alert-success msg-info message_info'>";
+        $this->success_prefix = "<div role='alert' class='alert alert-success alert-dismissible'>";
         $this->success_suffix = '</div>';
 
-        $this->error_prefix = "<div class='alert alert-error msg-info message_info'>";
+        $this->error_prefix = "<div role='alert' class='alert alert-danger alert-dismissible'>";
         $this->error_suffix = '</div>';
     }
 

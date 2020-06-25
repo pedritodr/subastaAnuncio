@@ -36,8 +36,6 @@
             </div>
          <?php } ?>
       <?php } ?>
-
-
    </div>
    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
@@ -59,12 +57,7 @@
                <div class="">
 
                   <?= form_open('front/activacion_final'); ?>
-                  <?php if (get_message_from_operation()) { ?>
-                     <div role="alert" class="alert alert-success alert-dismissible">
-                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
-                        <strong><?= get_message_from_operation(); ?></strong>
-                     </div>
-                  <?php } ?>
+                  <?= get_message_from_operation() ?>
                   <h4 class="text-center">Verificación de usuario</h4>
                   <p class="text-center">Revisa tu correo electrónico y coloca el código de 4 dígitos
                      que te llegó y escribe tu email. </p>
