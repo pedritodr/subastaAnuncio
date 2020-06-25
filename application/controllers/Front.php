@@ -642,38 +642,18 @@ class Front extends CI_Controller
 
             $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
 
-            $html = '<div style="width:100%;border:2px solid #034C75">';
-            $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $auth->name . '</h4></div>';
-            $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
-            $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
-            $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
-            $html .= '<div style="font-weight:bold;">Equipo APP</div>';
-            $html .= '</div>';
-
-
-            $this->load->library('email');
-
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'pedro@datalabcenter.com';
-            $config['smtp_pass'] = "01420109811";
-            $config['smtp_port'] = '465';
-            //$config['smtp_timeout'] = '5';
-            //$config['smtp_keepalive'] = TRUE;
-            $config['smtp_crypto'] = 'ssl';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = 'html';
-            $config['wordwrap'] = TRUE;
-            $this->email->initialize($config);
-
-            $this->email->set_newline("\r\n");
-
-            $this->email->from('pedro@datalabcenter.com', 'Info APP');
-            $this->email->to($email);
-            $this->email->subject('Validación de usuario APP');
-            $this->email->message($html);
-            $this->email->send();
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Validación de usuario";
+            $motivo = 'Validación de usuario Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
+            $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
+            $mensaje .= "" . $codigo_seguridad . "<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
             //   $session_data = object_to_array($user);
             //  $this->session->set_userdata($session_data);
             $this->response->set_message('Solo te queda un paso para completar tu registro', ResponseMessage::SUCCESS);
@@ -693,59 +673,43 @@ class Front extends CI_Controller
     {
         $email = $this->input->post('email');
         $user = $this->user->get_user_by_email($email);
-        $fecha = date("Y-m-d H:i:s");
-        $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
-        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+        if ($user) {
+            $fecha = date("Y-m-d H:i:s");
+            $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+            $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
 
-        $codigo_seguridad = '';
-        $caracteres = '0123456789';
+            $codigo_seguridad = '';
+            $caracteres = '0123456789';
 
-        for ($i = 0; $i < 4; $i++) {
-            $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+            for ($i = 0; $i < 4; $i++) {
+                $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+            }
+
+            $this->user->update($user->user_id, [
+                'codigo_seguridad' => $codigo_seguridad,
+                'fecha_vencimiento_codigo' => $fecha_vencimiento
+            ]);
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Validación de usuario";
+            $motivo = 'Validación de usuario Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
+            $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
+            $mensaje .= "" . $codigo_seguridad . "<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
+            //   $session_data = object_to_array($user);
+            //  $this->session->set_userdata($session_data);
+            $this->response->set_message('El código de verificación ha sido generado correctamente', ResponseMessage::SUCCESS);
+            // $this->session->set_userdata('validando', 1);
+            redirect("activacion");
+        } else {
+            $this->response->set_message("El email esta incorrecto.", ResponseMessage::ERROR);
+            redirect("activacion");
         }
-
-        $this->user->update($user->user_id, [
-            'codigo_seguridad' => $codigo_seguridad,
-            'fecha_vencimiento_codigo' => $fecha_vencimiento
-        ]);
-
-        $html = '<div style="width:100%;border:2px solid #034C75">';
-        $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $auth->name . '</h4></div>';
-        $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
-        $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
-        $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
-        $html .= '<div style="font-weight:bold;">Equipo APP</div>';
-        $html .= '</div>';
-
-
-        $this->load->library('email');
-
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'smtp.zoho.com';
-        $config['smtp_user'] = 'pedro@datalabcenter.com';
-        $config['smtp_pass'] = "01420109811";
-        $config['smtp_port'] = '465';
-        //$config['smtp_timeout'] = '5';
-        //$config['smtp_keepalive'] = TRUE;
-        $config['smtp_crypto'] = 'ssl';
-        $config['charset'] = 'utf-8';
-        $config['newline'] = "\r\n";
-        $config['mailtype'] = 'html';
-        $config['wordwrap'] = TRUE;
-        $this->email->initialize($config);
-
-        $this->email->set_newline("\r\n");
-
-        $this->email->from('pedro@datalabcenter.com', 'Info APP');
-        $this->email->to($email);
-        $this->email->subject('Validación de usuario APP');
-        $this->email->message($html);
-        $this->email->send();
-        //   $session_data = object_to_array($user);
-        //  $this->session->set_userdata($session_data);
-        $this->response->set_message('El código de verificación ha sido generado correctamente', ResponseMessage::SUCCESS);
-        // $this->session->set_userdata('validando', 1);
-        redirect("activacion");
     }
     public function activacion_final()
     {
@@ -755,7 +719,7 @@ class Front extends CI_Controller
         if ($user_object) {
             $now = date("Y-m-d H:i:s");
             if ($now > $user_object->fecha_vencimiento_codigo) {
-                $this->response->set_message("El código de verificación ya caducó. Por favor, mande a generar otró código.", ResponseMessage::SUCCESS);
+                $this->response->set_message("El código de verificación ya caducó. Por favor genere otró código.", ResponseMessage::ERROR);
                 redirect("activacion");
             } else {
                 if ($codigo == $user_object->codigo_seguridad) {
@@ -767,12 +731,12 @@ class Front extends CI_Controller
                     $this->session->set_userdata('login', "ok");
                     redirect("portada");
                 } else {
-                    $this->response->set_message("El código de verificación no coincide.", ResponseMessage::SUCCESS);
+                    $this->response->set_message("El código de verificación no coincide.", ResponseMessage::ERROR);
                     redirect("activacion");
                 }
             }
         } else {
-            $this->response->set_message("El email esta incorrecto.", ResponseMessage::SUCCESS);
+            $this->response->set_message("El email esta incorrecto.", ResponseMessage::ERROR);
             redirect("activacion");
         }
     }
@@ -892,6 +856,7 @@ class Front extends CI_Controller
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
         $user_id = $this->session->userdata('user_id');
+        $email = $this->session->userdata('email');
         $direccion = $this->input->post('pac-input');
         $city = $this->input->post('city_main');
         if ($city != null) {
@@ -961,10 +926,48 @@ class Front extends CI_Controller
                                 $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                                 $this->anuncio->update($id, ['destacado' => 1]);
                             }
+                            $obj_anuncio = $this->anuncio->get_by_id($id);
+                            $this->load->model("Correo_model", "correo");
+                            $asunto = "Anuncio creado";
+                            $motivo = 'Anuncio creado Subasta anuncios';
+                            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                            $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                            $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                            $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                            $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                            $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                            $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                            $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                            $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                            $mensaje .= "Saludos,<br>";
+                            $mensaje .= "El equipo de SUBASTANUNCIOS";
+                            $this->correo->sent($email, $mensaje, $asunto, $motivo);
                         }
                     } else {
 
-                        $this->anuncio->create($data);
+                        $id = $this->anuncio->create($data);
+                        if ($id) {
+                            $obj_anuncio = $this->anuncio->get_by_id($id);
+                            $this->load->model("Correo_model", "correo");
+                            $asunto = "Anuncio creado";
+                            $motivo = 'Anuncio creado Subasta anuncios';
+                            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                            $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                            $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                            $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                            $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                            $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                            $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                            $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                            $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                            $mensaje .= "Saludos,<br>";
+                            $mensaje .= "El equipo de SUBASTANUNCIOS";
+                            $this->correo->sent($email, $mensaje, $asunto, $motivo);
+                        }
                     }
 
                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -2231,6 +2234,7 @@ class Front extends CI_Controller
     public function pagar_membresia()
     {
         $user_id = $this->session->userdata('user_id');
+        $email = $this->session->userdata('email');
         $membresia = $this->input->post('membresia_id');
         $this->load->model('Membresia_model', 'membresia');
         $object_membresia = $this->membresia->get_by_id($membresia);
@@ -2250,7 +2254,23 @@ class Front extends CI_Controller
             'estado' => 1,
             'mes' => 1
         ];
-        $this->membresia->create_membresia_user($data);
+        $id = $this->membresia->create_membresia_user($data);
+        if ($id) {
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Membresia adquirida";
+            $motivo = 'Membresia adquirida Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+            $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+            $mensaje .= "" . $object_membresia->descripcion . "<br>";
+            $mensaje .= "Tu usuario " . $email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
+        }
+
         $this->response->set_message(translate('adquirir_membresia_lang'), ResponseMessage::SUCCESS);
         $this->session->set_userdata('validando', 1);
         redirect("perfil/page/");
@@ -2657,8 +2677,9 @@ class Front extends CI_Controller
             $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
             if ($status == 1) {
                 if ($obj->tipo == 0) { //membresia
-
                     $user_id = $obj->user_id;
+                    $this->load->model('User_model', 'user');
+                    $user_obj = $this->user->get_by_id($user_id);
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
                     $fecha = date('Y-m-d H:i:s');
@@ -2678,7 +2699,22 @@ class Front extends CI_Controller
                         'mes' => 1,
                         'payment_id' => $obj->payment_id
                     ];
-                    $this->membresia->create_membresia_user($data);
+                    $id = $this->membresia->create_membresia_user($data);
+                    if ($id) {
+                        $this->load->model("Correo_model", "correo");
+                        $asunto = "Membresia adquirida";
+                        $motivo = 'Membresia adquirida Subasta anuncios';
+                        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                        $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+                        $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+                        $mensaje .= "" . $object_membresia->descripcion . "<br>";
+                        $mensaje .= "Tu usuario " . $user_obj->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+                        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                        $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                        $mensaje .= "Saludos,<br>";
+                        $mensaje .= "El equipo de SUBASTANUNCIOS";
+                        $this->correo->sent($user_obj->email, $mensaje, $asunto, $motivo);
+                    }
                 } elseif ($obj->tipo == 1) {
                     $user_id = $obj->user_id;
                     $subasta_id = $obj->id;
@@ -2808,15 +2844,16 @@ class Front extends CI_Controller
             redirect("perfil/page/");
         } else {
             if ($obj_user->password != md5($password)) {
-                $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::SUCCESS);
+                $this->response->set_message('La contraseña anterior no coincide con la alamacenada en el sistema', ResponseMessage::ERROR);
+                redirect("perfil/page/");
+            } else {
+                $data = [
+                    'password' => md5($new_password),
+                ];
+                $this->user->update($user_id, $data);
+                $this->response->set_message('La contraseña se actualizo correctamente', ResponseMessage::SUCCESS);
                 redirect("perfil/page/");
             }
-            $data = [
-                'password' => md5($new_password),
-            ];
-            $this->user->update($user_id, $data);
-            $this->response->set_message('La contraseña se actualizo correctamente', ResponseMessage::SUCCESS);
-            redirect("perfil/page/");
         }
     }
 }

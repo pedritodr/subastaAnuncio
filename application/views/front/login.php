@@ -52,13 +52,7 @@
                <!--  Form -->
                <div class="">
                   <?= form_open('login/auth'); ?>
-                  <?php if (get_message_from_operation()) { ?>
-                     <div role="alert" class="alert alert-danger alert-dismissible">
-                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
-                        <strong><?= get_message_from_operation(); ?></strong>
-                     </div>
-                  <?php } ?>
-
+                  <?= get_message_from_operation(); ?>
                   <div class="form-group">
                      <label><?= translate("email_lang"); ?></label>
                      <input required placeholder="<?= translate("email_lang"); ?>" class="form-control" type="email" name="email">

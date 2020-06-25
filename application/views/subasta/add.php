@@ -127,14 +127,14 @@
                                 </div>
                                 <div id="fecha_publicacion" class="col-lg-3">
                                     <?php
-                                    $date = date('Y-m-d');
-                                    $d = new DateTime($date);
-                                    $d->modify('+0 day');
+                                    $date1 = date('Y-m-d');
+                                    $d1 = new DateTime($date1);
+                                    $d1->modify('+0 day');
                                     ?>
                                     <label><?= "Fecha de inicio" ?></label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" value="<?= $d->format('Y-m-d\TH:i:s') ?>" min="<?= $d->format('Y-m-d\TH:i:s') ?>" placeholder="Fecha de inicio" required>
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" value="<?= $d1->format('Y-m-d\TH:i:s') ?>" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" placeholder="Fecha de inicio" required>
                                     </div>
 
                                 </div>
@@ -280,7 +280,7 @@
             $('#articulos').show();
         }
     });
-    
+
     function guardar_subasta() {
         var fecha_cierre = $('#fecha_cierre').val();
         var fecha_inicio = $('#fecha_inicio').val();

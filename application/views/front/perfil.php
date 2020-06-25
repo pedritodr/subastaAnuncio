@@ -102,12 +102,7 @@
 
                 </div>
                 <div class="col-md-8 col-sm-12 col-xs-12">
-                    <?php if (get_message_from_operation()) { ?>
-                        <div class="alert">
-
-                            <?= get_message_from_operation(); ?>
-                        </div>
-                    <?php } ?>
+                    <?= get_message_from_operation(); ?>
                     <?php if ($payments) { ?>
                         <!-- lista de anuncios -->
                         <div id="listado_payments" class="row">

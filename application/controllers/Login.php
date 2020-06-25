@@ -179,51 +179,28 @@ class Login extends CI_Controller
     public function recover_password()
     {
         $email = $this->input->post("email");
-
         $this->load->model("User_model", "user");
         $user_object = $this->user->get_user_by_email($email);
         if ($user_object) {
-
             $new_password = time();
             $this->user->update($user_object->user_id, ["password" => md5($new_password)]);
-
-            $this->load->library('email');
-
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'pedro@datalabcenter.com';
-            $config['smtp_pass'] = "01420109811";
-            $config['smtp_port'] = '465';
-            //$config['smtp_timeout'] = '5';
-            //$config['smtp_keepalive'] = TRUE;
-            $config['smtp_crypto'] = 'ssl';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = 'html';
-            $config['wordwrap'] = TRUE;
-
-            $this->email->initialize($config);
-
-            $this->email->from('pedro@datalabcenter.com', 'Cambio de contraseña Subasta anuncios');
-            $this->load->model('Empresa_model', 'empresa');
-            //  $empresa_object = $this->empresa->get_by_id(1);
-            // $correo_empresa = $empresa_object->email;
-            $this->email->to($email);
-
-            $this->email->subject("Cambio de clave");
-            $mensaje = "Estimado usuario: <br /> La contraseña ha sido generada satisfactoriamente.  <br /> Su nueva contraseña es: <b>" . $new_password . "</b>. <br /> Muchas gracias";
-            $this->email->message($mensaje);
-
-            // $result = $this->email->send();
-
-            $this->email->send();
-
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Cambio de clave";
+            $motivo = 'Cambio de contraseña Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Has solicitado el restablecimiento de tu contraseña para acceder al perfil: (" . $email . ").<br>";
+            $mensaje .= "Con el objetivo de proteger tus datos en todo momento, hemos generado una nueva contraseña para que puedas acceder de manera adecuada a la plataforma.<br>";
+            $mensaje .= "Nueva Contraseña:" . $new_password . "<br>";
+            $mensaje .= "Si usted presentara algún problema para la ejecución del procedimiento indicado, debe comunicarse con nuestro equipo de soporte a través del mail info@suabastanuncios.com.<br>";
+            $mensaje .= "Ha sido un placer ayudarte. Continúa utilizando nuestras herramientas.<br>";
+            $mensaje .= "Gracias por preferirnos<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
             $this->response->set_message(translate('cambiada_lang'), ResponseMessage::SUCCESS);
-            //  var_dump( $this->response->set_message("El correo electrónico no existe", ResponseMessage::SUCCESS));die();
             redirect("login");
         } else {
             $this->response->set_message(translate('correo_no_lang'), ResponseMessage::ERROR);
-
             redirect("login");
         }
     }
