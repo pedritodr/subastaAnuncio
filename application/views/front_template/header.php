@@ -49,6 +49,11 @@
    <!-- JavaScripts -->
    <script src="<?= base_url('assets_front/js/modernizr.js') ?>"></script>
 
+   <!-- Base MasterSlider style sheet -->
+   <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/masterslider.css') ?>" />
+   <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/skins/default/style.css') ?>" />
+   <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/style.css') ?>" />
+
    <!-- HTML5 Shim and Respond.js IE8 support  of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
    <!--[if lt IE 9]>

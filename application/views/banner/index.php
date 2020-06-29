@@ -44,7 +44,7 @@
                                 <?php foreach ($all_banners as $item) { ?>
                                     <tr>
 
-                                        <td style="width: 30%;"><img class="img img-rounded img-responsive" src="<?= base_url($item->foto); ?>" style="width: 200px; height: 150px;" /></td>
+                                        <td style="width: 30%;"><img class="img img-rounded img-responsive" src="<?= base_url($item->foto); ?>" style="width:100%;" /></td>
                                         <td><?= $item->titulo; ?></td>
                                         <td><?= $item->subtitulo; ?></td>
 
