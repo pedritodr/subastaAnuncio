@@ -789,6 +789,33 @@
 <!-- Template Core JS -->
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
 <script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
+<!-- MasterSlider -->
+<script src="<?= base_url('assets_front/js/masterslider/masterslider.min.js') ?>"></script>
+<script type="text/javascript">
+   (function($) {
+      "use strict";
+      var slider = new MasterSlider();
+
+      // adds Arrows navigation control to the slider.
+      slider.control('arrows');
+      slider.control('timebar', {
+         insertTo: '#masterslider'
+      });
+      slider.control('bullets');
+
+      slider.setup('masterslider', {
+         width: 1400, // slider standard width
+         height: 650, // slider standard height
+         space: 1,
+         layout: 'fullwidth',
+         loop: true,
+         preload: 0,
+         instantStartLayers: true,
+         autoplay: true
+      });
+   })(jQuery);
+</script>
+
 <script type="text/javascript">
    $('#btn_modal_membresia').click(function() {
       if ($('#condiciones_membresia').prop('checked') == true) {
