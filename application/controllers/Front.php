@@ -151,7 +151,7 @@ class Front extends CI_Controller
 
     public function anuncio()
     {
-        if (!in_array($this->session->userdata('role_id'), [2])) {
+        if (!in_array($this->session->userdata('role_id'), [1,2])) {
             $this->log_out();
             redirect('login');
         }
@@ -171,14 +171,11 @@ class Front extends CI_Controller
         $all_ciudad = $this->pais->get_by_pais_id_object($all_pais[0]->pais_id);
 
 
-
         $data['all_ciudad'] = $all_ciudad;
-
         $data['all_subcate'] = $all_subcate;
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-
 
 
         $this->load_view_front('front/add_anuncio', $data);
@@ -198,7 +195,8 @@ class Front extends CI_Controller
         $anuncio_object = $this->anuncio->get_by_id($anuncio_id);
         if ($anuncio_object) {
             $ciudad = $this->pais->get_by_city_all($anuncio_object->ciudad_id);
-            $categoria = $this->cate_anuncio->get_categoria_by_sub($anuncio_object->subcate_id);
+            $categoria = $this->cate_anuncio->get_sub_categoria_by_sub($anuncio_object->subcate_id);
+            
             $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
             $data['categoria'] =  $categoria;
             $data['ciudad'] =  $ciudad;
@@ -369,6 +367,18 @@ class Front extends CI_Controller
 
         $all_sub_categorias = $this->cate_anuncio->get_by_Cate_anuncio_id($categoria_id);
 
+        echo json_encode($all_sub_categorias);
+        exit();
+    }
+
+    public function get_subcate_subasta() //buscar subcategoria
+    {
+
+        $this->load->model('Cate_anuncio_model', 'cate_anuncio');
+
+        $categoria_id = $this->input->post('categoria_id');
+        $all_sub_categorias = $this->cate_anuncio->get_by_Cate_subasta_id($categoria_id);
+        
         echo json_encode($all_sub_categorias);
         exit();
     }
@@ -1020,13 +1030,13 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
-
         $category = $this->input->post('category_subasta');
         $subasta_palabra = $this->input->post('subasta_palabra');
         $ciudad_id = $this->input->post('subasta_ciudad_id');
         $tipo_subasta = $this->input->post('tipo_subasta');
         $tipo_subasta_2 = $this->input->post('tipo_subasta_2');
-
+        $subcat = $this->category->get_all_subasta_subcat();
+        $data['subcat'] = $subcat;
         if ($tipo_subasta != NULL) {
             $tipo = $tipo_subasta;
         }
@@ -1110,6 +1120,7 @@ class Front extends CI_Controller
         //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
         $all_subastas = $this->subasta->get_all_by_subastas_with_pagination_search($config['per_page'], $offset, $category, $subasta_palabra, $tipo, $ciudad_id);
+        
         if ($tipo == 1) {
             foreach ($all_subastas as $item) {
                 $long = strlen($item->descrip_espa);
@@ -1361,8 +1372,12 @@ class Front extends CI_Controller
         $this->session->set_userdata('page', 'subasta_directa');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
+        
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
+        
+        $subcat = $this->category->get_all_subasta_subcat();
+        $data['subcat'] = $subcat;
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 2]); //todos los banners
         $data['all_banners'] = $all_banners;
@@ -1480,6 +1495,9 @@ class Front extends CI_Controller
             }
         }
         $data['tipo'] = 1;
+
+       
+        
         $this->load_view_front('front/subastas', $data);
     }
     public function subasta_inversa()
@@ -1497,7 +1515,8 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('subastas_inversas/page/');
-
+        $subcat = $this->category->get_all_subasta_subcat();
+        $data['subcat'] = $subcat;
         /*Obtiene el total de registros a paginar */
 
         $contador = count($this->subasta->get_subastas_inversas());
@@ -1610,6 +1629,7 @@ class Front extends CI_Controller
         foreach ($categories as $item) {
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
+      
         $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('anuncios/page/');
@@ -1712,6 +1732,12 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
+        
+        
+        $subcategoria = $this->category->get_all_subcate();
+       
+        $data['subcategoria'] = $subcategoria;
+        
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
 
         $data['all_ciudad'] = $all_ciudad;
@@ -1755,6 +1781,9 @@ class Front extends CI_Controller
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
         $data['categories'] = $categories;
+        $subcategoria = $this->category->get_all_subcate();
+     
+        $data['subcategoria'] = $subcategoria;
 
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
@@ -2151,8 +2180,9 @@ class Front extends CI_Controller
             }
         }
 
-        $all_membresia = $this->membresia->get_by_user_id($user_id);
-
+        $user_membresia = $this->membresia->get_membresia_by_user_id($user_id);
+        $all_membresia = $this->membresia->get_by_id($user_membresia->membresia_id);
+        
         $city = $this->pais->get_by_city_all($ciudad_id);
         $all_pais = $this->pais->get_all();
         $data['all_pais'] = $all_pais;
@@ -2165,6 +2195,9 @@ class Front extends CI_Controller
         $data['user_data'] = $this->user->get_by_id($user_id);
         $data['mis_subastas_inversas'] = $subastas_inversas;
         $data['mis_subastas_directas'] = $mis_subastas;
+        $data['user_membresia'] = $user_membresia;
+
+
         $this->load_view_front('front/perfil', $data);
     }
     public function contacto_mensaje()

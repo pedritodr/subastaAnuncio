@@ -4,8 +4,9 @@
         <h1>
             <?= translate('manage_anuncio_lang'); ?>
             <small><?= translate('listar_anuncio_lang'); ?></small>
-            <!--  | <a href="<?= site_url('cate_anuncio/add_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
-            </a> -->
+            | <a href="<?= site_url('front/anuncio'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
+            </a> 
+
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>

@@ -120,6 +120,7 @@
                            <!--usuario autenticado-->
 
                            <?php if ($this->session->userdata('role_id') != 1) { ?>
+                              
                               <li class="dropdown">
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
                                  <ul class="dropdown-menu">
@@ -129,6 +130,7 @@
                                  </ul>
                               </li>
                            <?php } else { ?>
+                              
                               <li class="dropdown">
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
                                  <ul class="dropdown-menu">

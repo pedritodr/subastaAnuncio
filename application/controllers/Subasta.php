@@ -33,10 +33,14 @@ class Subasta  extends CI_Controller
             $categoria_object = $this->categoria->get_by_id($item->categoria_id);
             $item->categoria = $categoria_object;
 
+            $subcategoria_object = $this->categoria->get_subcat_by_id($item->subcat_id);
+            $item->subcategoria = $subcategoria_object;
+            
             $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
             $item->ciudad = $ciudad_object;
         }
 
+       
 
         $data['all_subasta'] = $all_subasta;
         $this->load_view_admin_g("subasta/index", $data);
@@ -75,7 +79,8 @@ class Subasta  extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $nombre_espa = $this->input->post('nombre_espa');
         $descrip_espa = $this->input->post('descrip_espa');
-        $name_espa = $this->input->post('name_espa'); //nombre categoria
+        $name_espa = $this->input->post('categoria'); //nombre categoria (cambiado de name_espa a categoria por josé)
+        $subcat_id_subasta = $this->input->post('subcategoria'); //Variable creada por jose
         $is_open = $this->input->post('is_open');
         $ciudad = $this->input->post('ciudad');
         $tipo = $this->input->post('tipo_subasta');
@@ -113,6 +118,7 @@ class Subasta  extends CI_Controller
                             'descrip_espa' => $descrip_espa,
                             'valor_inicial' => $valor_inicial,
                             'categoria_id' => $name_espa,
+                            'subcat_id' => $subcat_id_subasta,
                             'photo' => $result[1],
                             'fecha_cierre' => $fecha_cierre,
                             'valor_pago' => $valor_pago,
@@ -137,6 +143,7 @@ class Subasta  extends CI_Controller
                             'descrip_espa' => $descrip_espa,
                             'valor_inicial' => null,
                             'categoria_id' => $name_espa,
+                            'subcat_id' => $subcat_id_subasta,
                             'photo' => $result[1],
                             'fecha_cierre' => $nuevafecha,
                             'valor_pago' => null,
@@ -193,9 +200,16 @@ class Subasta  extends CI_Controller
             $all_categoria = $this->categoria->get_all();
             $data['all_categoria'] = $all_categoria;
 
+
+
             $all_ciudad = $this->pais->get_by_pais_id_object(4);
             $data['all_ciudad'] = $all_ciudad;
 
+
+            $find_subcat = $this->categoria->get_subcat_by_id($subasta_object->subcat_id);
+            $data['find_subcat'] = $find_subcat;
+
+            
 
             $data['subasta_object'] = $subasta_object;
 
@@ -217,7 +231,11 @@ class Subasta  extends CI_Controller
 
         $nombre_espa = $this->input->post('nombre_espa');
         $descrip_espa = $this->input->post('descrip_espa');
-        $name_espa = $this->input->post('name_espa'); //nombre categoria
+        $name_espa = $this->input->post('categoria'); //nombre categoria
+
+        $subcategoria = $this->input->post('subcategoria');
+        
+
         $ciudad = $this->input->post('ciudad');
         $is_open = $this->input->post('is_open');
         $tipo = $this->input->post('tipo_subasta');
@@ -258,6 +276,7 @@ class Subasta  extends CI_Controller
                             'descrip_espa' => $descrip_espa,
                             'valor_inicial' => $valor_inicial,
                             'categoria_id' => $name_espa,
+                            'subcat_id' => $subcategoria,
                             'fecha_cierre' => $fecha_cierre,
                             'valor_pago' => $valor_pago,
                             'ciudad_id' => $ciudad,
@@ -276,6 +295,8 @@ class Subasta  extends CI_Controller
                             'descrip_espa' => $descrip_espa,
                             'valor_inicial' => null,
                             'categoria_id' => $name_espa,
+                            'subcat_id' => $subcategoria,
+
                             'fecha_cierre' => null,
                             'valor_pago' => null,
                             'is_open' => $is_open,
@@ -311,6 +332,8 @@ class Subasta  extends CI_Controller
                                     'descrip_espa' => $descrip_espa,
                                     'valor_inicial' => $valor_inicial,
                                     'categoria_id' => $name_espa,
+                                    'subcat_id' => $subcategoria,
+
                                     'photo' => $result[1],
                                     'fecha_cierre' => $fecha_cierre,
                                     'valor_pago' => $valor_pago,
@@ -324,6 +347,8 @@ class Subasta  extends CI_Controller
                                     'is_open' => $is_open,
                                     'descrip_espa' => $descrip_espa,
                                     'categoria_id' => $name_espa,
+                                    'subcat_id' => $subcategoria,
+
                                     'photo' => $result[1],
                                     'ciudad_id' => $ciudad,
                                     'tipo_subasta' => $tipo,

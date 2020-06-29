@@ -378,193 +378,260 @@
 
                                                                                         </div>
                                                                                     <?php } ?> -->
-                                                                                          <!--   -->
-                                                                                      </div>
-                                                                                  <?php } ?>
-                                                                              </div>
-                                                                              <div class="col-md-3 col-xs-12 col-sm-12">
-                                                                                  <!-- Ad Stats -->
+                                                                                    <!--   -->
+                                                                                </div>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                        <div class="col-md-3 col-xs-12 col-sm-12">
+                                                                            <!-- Ad Stats -->
 
-                                                                                  <!-- Price -->
-                                                                                  <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
-                                                                                      <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
-                                                                                      <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
-                                                                                  <?php } ?>
-                                                                                  <h6 class="text-center"><?= "Precio" ?></h6>
-                                                                                  <?php if ($count_intervalo >= 2) { ?>
-                                                                                      <div class="price text-center"> <span style="font-size:18px !important; color:#2a3681 !important;" class="strikethrough">$ <?= number_format($item->intervalo[$count_intervalo - 2]->valor, 2) ?></span> </div>
-                                                                                      <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
-                                                                                  <?php } else { ?>
-                                                                                      <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
-                                                                                  <?php } ?>
-                                                                                  <div class="category-title text-center">Stock: <span> <?= $item->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
+                                                                            <!-- Price -->
+                                                                            <?php if ($item->subasta_user &&  $item->puja->valor > 0) { ?>
+                                                                                <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
+                                                                                <h5 class="text-center"><span id="valor_inicial_subasta" class="label label-success">$<?= number_format($item->puja->valor, 2) ?></span></h5>
+                                                                            <?php } ?>
+                                                                            <h6 class="text-center"><?= "Precio" ?></h6>
+                                                                            <?php if ($count_intervalo >= 2) { ?>
+                                                                                <div class="price text-center"> <span style="font-size:18px !important; color:#2a3681 !important;" class="strikethrough">$ <?= number_format($item->intervalo[$count_intervalo - 2]->valor, 2) ?></span> </div>
+                                                                                <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
+                                                                            <?php } else { ?>
+                                                                                <div class="price text-center"> <span>$ <?= number_format($item->intervalo[$count_intervalo - 1]->valor, 2) ?></span> </div>
+                                                                            <?php } ?>
+                                                                            <div class="category-title text-center">Stock: <span> <?= $item->intervalo[$count_intervalo - 1]->cantidad ?> </span> </div>
 
-                                                                                  <!-- Ad View Button -->
-                                                                                  <button style="width: 96%; font-size: 11px;" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                      <!-- Ad Content End -->
-                                                                  </div>
-                                                              </div>
-                                                          </li>
-                                                      <?php } ?>
-                                                  <?php } ?>
+                                                                            <!-- Ad View Button -->
+                                                                            <button style="width: 96%; font-size: 11px;" onclick="cargarmodal_subasta('<?= $item->subasta_id ?>','<?= base64_encode(json_encode($item)) ?>');" class="btn btn-block btn-success"><i class="fa fa-eye" aria-hidden="true"></i><?= translate("ver_info_lang"); ?></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Ad Content End -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php } ?>
+                                            <?php } ?>
 
-                                              <?php } ?>
-                                              <!-- Listing Grid -->
-                                          <?php } else { ?>
-                                              <p class="text-center"><?= translate("n_resultados"); ?></p>
-                                          <?php } ?>
-
-
-
-                                      </ul>
-                                  </div>
+                                        <?php } ?>
+                                        <!-- Listing Grid -->
+                                    <?php } else { ?>
+                                        <p class="text-center"><?= translate("n_resultados"); ?></p>
+                                    <?php } ?>
 
 
-                              </div>
-                              <!-- Ads Archive End -->
-                              <div class="clearfix"></div>
-                              <!-- Pagination -->
-                              <div class="col-md-12 col-xs-12 col-sm-12">
-                                  <ul class="pagination pagination-lg">
-                                      <?php echo $this->pagination->create_links(); ?>
-                                  </ul>
-                              </div>
-                              <!-- Pagination End -->
-                          </div>
-                          <!-- Row End -->
-                      </div>
-                      <!-- Middle Content Area  End -->
-                      <!-- Left Sidebar -->
-                      <div class="col-md-3 col-md-pull-9 col-sx-12">
-                          <!-- Sidebar Widgets -->
-                          <div class="sidebar">
-                              <!-- Panel group -->
-                              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                  <!-- Categories Panel -->
-                                  <div class="panel panel-default">
-                                      <!-- Heading -->
-                                      <div class="panel-heading" role="tab" id="headingOne">
-                                          <!-- Title -->
-                                          <h4 class="panel-title">
-                                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                  <i class="more-less glyphicon glyphicon-plus"></i>
-                                                  <?= translate("categories_lang"); ?>
-                                              </a>
-                                          </h4>
-                                          <!-- Title End -->
-                                      </div>
-                                      <!-- Content -->
-                                      <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
-                                          <div class="panel-body categories">
-                                              <?= form_open_multipart("search_subasta_directa", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
 
-                                              <ul>
-                                                  <?php $category_id = $this->session->userdata('session_categoria_subasta'); ?>
-                                                  <?php if (!$category_id) { ?>
-
-                                                      <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
-                                                  <?php } else { ?>
-                                                      <li><a style="cursor:pointer" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
-                                                  <?php } ?>
-                                                  <?php if (!$category_id) { ?>
-                                                      <?php if ($categories) { ?>
-                                                          <?php foreach ($categories as $item) { ?>
-                                                              <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
-
-                                                          <?php } ?>
-
-                                                      <?php } ?>
-                                                  <?php } else { ?>
-                                                      <?php if ($categories) { ?>
-                                                          <?php foreach ($categories as $item) { ?>
-                                                              <?php if ($item->categoria_id == $category_id) { ?>
-                                                                  <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
-                                                              <?php } else { ?>
-                                                                  <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
-                                                              <?php } ?>
-                                                          <?php } ?>
-
-                                                      <?php } ?>
-
-                                                  <?php } ?>
-                                                  <input name="category_subasta" id="category_subasta" type="hidden" value="">
-                                                  <input name="tipo_subasta_2" id="tipo_subasta_2" type="hidden" value="<?= $tipo ?>">
-                                              </ul>
-                                              <?= form_close(); ?>
-                                          </div>
-                                      </div>
-                                  </div>
+                                </ul>
+                            </div>
 
 
-                                  <!-- Categories Panel End -->
+                        </div>
+                        <!-- Ads Archive End -->
+                        <div class="clearfix"></div>
+                        <!-- Pagination -->
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <ul class="pagination pagination-lg">
+                                <?php echo $this->pagination->create_links(); ?>
+                            </ul>
+                        </div>
+                        <!-- Pagination End -->
+                    </div>
+                    <!-- Row End -->
+                </div>
+                <!-- Middle Content Area  End -->
+                <!-- Left Sidebar -->
+                <div class="col-md-3 col-md-pull-9 col-sx-12">
+                    <!-- Sidebar Widgets -->
+                    <div class="sidebar">
+                        <!-- Panel group -->
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Categories Panel -->
+                            <div class="panel panel-default">
+                                <!-- Heading -->
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <!-- Title -->
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <i class="more-less glyphicon glyphicon-plus"></i>
+                                            <?= translate("categories_lang"); ?>
+                                        </a>
+                                    </h4>
+                                    <!-- Title End -->
+                                </div>
+                                <!-- Content -->
+                                <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body categories">
+                                        <?= form_open_multipart("search_subasta_directa", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
 
-                              </div>
-                              <!-- panel-group end -->
-                          </div>
-                          <!-- Sidebar Widgets End -->
-                      </div>
-                      <!-- Left Sidebar End -->
-                  </div>
-                  <!-- Row End -->
-              </div>
-              <!-- Main Container End -->
-          </section>
-          <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
+                                        <ul>
+                                            <?php $category_id = $this->session->userdata('session_categoria_subasta'); ?>
+                                            <?php if (!$category_id) { ?>
 
-          <script>
-              function cargar_input_2(params) {
-                  $('#category_subasta').val(params);
-                  $("#buscar_categoria").submit();
-              }
-
-              contador_inversa = <?= $contador_inversa ?>;
-              contador_directa = <?= $contador_directa ?>;
-              let subastas_2 = <?= json_encode($all_subastas); ?>;
-
-              for (let i = 0; i < subastas_2.length; i++) {
-
-                  if (subastas_2[i].tipo_subasta == 1) {
-
-                      var x = setInterval(function() {
-                          var fecha = subastas_2[i].fecha_cierre;
-                          var deadline = new Date(fecha).getTime();
-                          var currentTime = new Date().getTime();
-                          var t = deadline - currentTime;
-                          var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                          var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                          var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                          var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                          $('#day_' + subastas_2[i].subasta_id).html(days);
-                          $('#hour_' + subastas_2[i].subasta_id).html(hours);
-                          $('#minute_' + subastas_2[i].subasta_id).html(minutes);
-                          $('#second_' + subastas_2[i].subasta_id).html(seconds);
-
-                          if (t < 0) {
-
-                              clearInterval(x);
-
-                              $('#day_' + subastas_2[i].subasta_id).html(0);
-                              $('#hour_' + subastas_2[i].subasta_id).html(0);
-                              $('#minute_' + subastas_2[i].subasta_id).html(0);
-                              $('#second_' + subastas_2[i].subasta_id).html(0);
-
-                          }
-
-                      }, 1000);
-                  }
+                                               
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                            <?php } else { ?>
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                            <?php } ?>
+                                            <?php if (!$category_id) { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        
+                                                        <li class="dropdown">
+                                                            <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php
+                                                                    foreach($subcat as $result)
+                                                                        {
+                                                                            if($result->categoria_id == $item->categoria_id)
+                                                                                {
+                                                                                ?>
+                                                                                <li>
+                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <?php 
+                                                                                }
+                                                                        }
+                                                                    ?>
+                                                                </ul>                                                            
+                                                            
+                                                        </li>
+                                                        
+                                                       
 
 
-              }
-          </script>
-          <style>
-              .active_subasta {
-                  display: none;
-              }
+                                                    <?php } ?>
 
-              /* CUSTOMIZE THE CAROUSEL
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($categories) { ?>
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        
+                                                        <?php if ($item->categoria_id == $category_id) { ?>
+                                                            <li class="dropdown">
+                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                    <ul class="dropdown-menu">
+                                                                        <?php
+                                                                        foreach($subcat as $result)
+                                                                            {
+                                                                                if($result->categoria_id == $item->categoria_id)
+                                                                                    {
+                                                                                    ?>
+                                                                                    <li>
+                                                                                        <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <?php 
+                                                                                    }
+                                                                            }
+                                                                        ?>
+                                                                    </ul>                                                            
+                                                            
+                                                            </li>
+                                                           
+                                                        <?php } else { ?>
+                                                            <li class="dropdown">
+                                                            <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php
+                                                                    foreach($subcat as $result)
+                                                                        {
+                                                                            if($result->categoria_id == $item->categoria_id)
+                                                                                {
+                                                                                ?>
+                                                                                <li>
+                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <?php 
+                                                                                }
+                                                                        }
+                                                                    ?>
+                                                                </ul>                                                            
+                                                            
+                                                        </li>
+                                                        <?php } ?>
+                                                    <?php } ?>
+
+                                                <?php } ?>
+
+                                            <?php } ?>
+                                            <input name="category_subasta" id="category_subasta" type="hidden" value="">
+                                            <input name="tipo_subasta_2" id="tipo_subasta_2" type="hidden" value="<?= $tipo ?>">
+                                        </ul>
+                                        <?= form_close(); ?>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Categories Panel End -->
+
+                        </div>
+                        <!-- panel-group end -->
+                    </div>
+                    <!-- Sidebar Widgets End -->
+                </div>
+                <!-- Left Sidebar End -->
+            </div>
+            <!-- Row End -->
+        </div>
+        <!-- Main Container End -->
+    </section>
+    <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
+
+    <script>
+        function cargar_input_2(params) {
+            $('#category_subasta').val(params);
+            $("#buscar_categoria").submit();
+        }
+
+        contador_inversa = <?= $contador_inversa ?>;
+        contador_directa = <?= $contador_directa ?>;
+        let subastas_2 = <?= json_encode($all_subastas); ?>;
+
+        for (let i = 0; i < subastas_2.length; i++) {
+
+            if (subastas_2[i].tipo_subasta == 1) {
+
+                var x = setInterval(function() {
+                    var fecha = subastas_2[i].fecha_cierre;
+                    var deadline = new Date(fecha).getTime();
+                    var currentTime = new Date().getTime();
+                    var t = deadline - currentTime;
+                    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                    $('#day_' + subastas_2[i].subasta_id).html(days);
+                    $('#hour_' + subastas_2[i].subasta_id).html(hours);
+                    $('#minute_' + subastas_2[i].subasta_id).html(minutes);
+                    $('#second_' + subastas_2[i].subasta_id).html(seconds);
+
+                    if (t < 0) {
+
+                        clearInterval(x);
+
+                        $('#day_' + subastas_2[i].subasta_id).html(0);
+                        $('#hour_' + subastas_2[i].subasta_id).html(0);
+                        $('#minute_' + subastas_2[i].subasta_id).html(0);
+                        $('#second_' + subastas_2[i].subasta_id).html(0);
+
+                    }
+
+                }, 1000);
+            }
+
+
+        }
+    </script>
+    <style>
+        .active_subasta {
+            display: none;
+        }
+
+        /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
               /* Carousel base class */

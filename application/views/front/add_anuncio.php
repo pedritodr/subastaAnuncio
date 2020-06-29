@@ -182,13 +182,12 @@
 
 
 
-                           <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
-                              <div id="google-maps-inner" class="google-maps-inner">
-
-                                 <label><?= translate("direccion_lang"); ?></label>
-                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
+                     <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
+                        <div id="google-maps-inner" class="google-maps-inner">
+                           <label><?= translate("direccion_lang"); ?></label>
+                           <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
 
                                  </div>
 

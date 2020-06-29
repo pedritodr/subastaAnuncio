@@ -421,29 +421,30 @@
                                     </div>
                                 </div>
                             </div> -->
-                                  <!-- Featured Ads Panel End -->
-                                  <!-- Latest Ads Panel -->
+                            <!-- Featured Ads Panel End -->
+                            <!-- Latest Ads Panel -->
 
-                                  <!-- Latest Ads Panel End -->
-                              </div>
-                              <!-- panel-group end -->
-                          </div>
-                          <!-- Sidebar Widgets End -->
-                      </div>
-                      <!-- Left Sidebar End -->
-                  </div>
-                  <!-- Row End -->
-              </div>
-              <!-- Main Container End -->
-          </section>
-          <script>
-              function cargar_input(params) {
-                  $('#category').val(params);
-                  $("#buscar_categoria").submit();
-              }
-          </script>
-          <style>
-              /* CUSTOMIZE THE CAROUSEL
+                            <!-- Latest Ads Panel End -->
+                        </div>
+                        <!-- panel-group end -->
+                    </div>
+                    <!-- Sidebar Widgets End -->
+                </div>
+                <!-- Left Sidebar End -->
+            </div>
+            <!-- Row End -->
+        </div>
+        <!-- Main Container End -->
+    </section>
+    <script>
+        function cargar_input(params) {
+            $('#category').val(params);
+            $('#subcategory').val(params);
+            $("#buscar_categoria").submit();
+        }
+    </script>
+    <style>
+        /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
               /* Carousel base class */
