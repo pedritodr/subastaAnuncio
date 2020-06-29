@@ -2435,7 +2435,7 @@
 
    .banner2 {
       padding-top: 107px !important
-   }
+   }  
 </style>
 
 
