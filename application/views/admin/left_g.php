@@ -44,6 +44,12 @@
                 </li>
 
                 <li>
+                    <a href="<?= site_url('user/cliente'); ?>">
+                        <i class="fa  fa-smile-o"></i> <span>Gestionar Clientes</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="<?= site_url('categoria/index'); ?>">
                         <i class="fa fa-thumb-tack"></i> <span><?= translate('manage_categories_lang'); ?></span>
                     </a>

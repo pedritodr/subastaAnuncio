@@ -9,32 +9,7 @@
          <?php } ?>
       <?php } ?>
    </ol>
-   <div class="carousel-inner">
-      <?php if (count($all_banners) > 0) { ?>
-         <div class="item active">
-            <img style="width:100% !important" class="img-responsive" src="<?= base_url($all_banners[0]->foto) ?>" alt="First slide">
-            <!--   <div class="carousel-caption">
-               <h3>
-                  First slide</h3>
-               <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div> -->
-         </div>
-      <?php } ?>
-      <?php if (count($all_banners) > 1) { ?>
-         <?php for ($j = 1; $j < count($all_banners); $j++) { ?>
-            <div class="item">
-               <img style="width:100% !important" src="<?= base_url($all_banners[$j]->foto) ?>" alt="Second slide">
-               <!--  <div class="carousel-caption">
-               <h3>
-                  Second slide</h3>
-               <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div> -->
-            </div>
-         <?php } ?>
-      <?php } ?>
-   </div>
+   
    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
       </span></a>
@@ -47,7 +22,7 @@
          <!-- Row -->
          <div class="row">
             <!-- Middle Content Area -->
-            <h3 class="text-center">Iniciar sesión</h3>
+            <h3 class="text-center" style="color:#202836;">Iniciar sesión</h3>
             <div class="col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 col-sm-12 col-xs-12">
                <!--  Form -->
                <div class="">

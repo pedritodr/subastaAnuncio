@@ -13,7 +13,7 @@ class User_model  extends CI_Model
 
 
 
-    function    create($data)
+    function create($data)
     {
 
         $this->db->insert('user', $data);
@@ -42,6 +42,15 @@ class User_model  extends CI_Model
         return ($get_as_row) ? $query->row() : $query->result();
     }
 
+    function get_all_client()
+    {
+        $this->db->where('role_id', '2');
+        $query = $this->db->get('user');
+        return  $query->result();
+
+    }
+
+   
     function update($id, $data)
     {
         $old = $this->get_by_id($id);

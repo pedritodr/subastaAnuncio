@@ -491,14 +491,39 @@
                                             <?php $category_id = $this->session->userdata('session_categoria_subasta'); ?>
                                             <?php if (!$category_id) { ?>
 
-                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
+                                               
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
                                             <?php } else { ?>
-                                                <li><a style="cursor:pointer" onclick="cargar_input_2('0')"><strong>- </strong>Todas las catergorias</a></li>
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
                                             <?php } ?>
                                             <?php if (!$category_id) { ?>
                                                 <?php if ($categories) { ?>
                                                     <?php foreach ($categories as $item) { ?>
-                                                        <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                        
+                                                        <li class="dropdown">
+                                                            <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php
+                                                                    foreach($subcat as $result)
+                                                                        {
+                                                                            if($result->categoria_id == $item->categoria_id)
+                                                                                {
+                                                                                ?>
+                                                                                <li>
+                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <?php 
+                                                                                }
+                                                                        }
+                                                                    ?>
+                                                                </ul>                                                            
+                                                            
+                                                        </li>
+                                                        
+                                                       
+
 
                                                     <?php } ?>
 
@@ -506,10 +531,52 @@
                                             <?php } else { ?>
                                                 <?php if ($categories) { ?>
                                                     <?php foreach ($categories as $item) { ?>
+                                                        
                                                         <?php if ($item->categoria_id == $category_id) { ?>
-                                                            <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                            <li class="dropdown">
+                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                    <ul class="dropdown-menu">
+                                                                        <?php
+                                                                        foreach($subcat as $result)
+                                                                            {
+                                                                                if($result->categoria_id == $item->categoria_id)
+                                                                                    {
+                                                                                    ?>
+                                                                                    <li>
+                                                                                        <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <?php 
+                                                                                    }
+                                                                            }
+                                                                        ?>
+                                                                    </ul>                                                            
+                                                            
+                                                            </li>
+                                                           
                                                         <?php } else { ?>
-                                                            <li><a style="cursor:pointer" onclick="cargar_input_2('<?= $item->categoria_id ?>')"><strong>- </strong><?= $item->name_espa ?></a></li>
+                                                            <li class="dropdown">
+                                                            <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->name_espa); ?> </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <?php
+                                                                    foreach($subcat as $result)
+                                                                        {
+                                                                            if($result->categoria_id == $item->categoria_id)
+                                                                                {
+                                                                                ?>
+                                                                                <li>
+                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <?php 
+                                                                                }
+                                                                        }
+                                                                    ?>
+                                                                </ul>                                                            
+                                                            
+                                                        </li>
                                                         <?php } ?>
                                                     <?php } ?>
 

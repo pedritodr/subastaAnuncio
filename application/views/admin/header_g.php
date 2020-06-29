@@ -165,14 +165,14 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="<?= site_url('user/profile_index'); ?>" class="btn btn-default btn-flat"><?= translate("profile_lang"); ?></a>
+                                        <a href="<?= site_url('user/profile_index'); ?>" style="background-color:darkgreen; color:white;" class="btn btn-default btn-flat"><?= translate("profile_lang"); ?></a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="<?= site_url('user/credenciales_index'); ?>" class="btn btn-default btn-flat"><?= translate("credenciales_lang"); ?></a>
+                                        <a href="<?= site_url('user/credenciales_index'); ?>" style="background-color:darkturquoise; color:black;" class="btn btn-default btn-flat"><?= translate("credenciales_lang"); ?></a>
                                     </div>
 
                                     <div style="margin-top:42px" class="text-center">
-                                        <a href="<?= site_url('login/logout'); ?>" class="btn btn-default btn-flat"><?= translate("sign_out_lang"); ?></a>
+                                        <a href="<?= site_url('login/logout'); ?>" class="btn btn-default btn-flat" style="color:white; background-color:red;"><?= translate("sign_out_lang"); ?></a>
                                     </div>
                                 </li>
                             </ul>

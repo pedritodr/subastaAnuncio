@@ -210,7 +210,6 @@
 
                      <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
                         <div id="google-maps-inner" class="google-maps-inner">
-
                            <label><?= translate("direccion_lang"); ?></label>
                            <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -704,7 +703,7 @@
 
       /* Declare heights because of positioning of img element */
       .carousel .item {
-         height: 500px;
+         height: 200px;
          background-color: #555;
       }
 

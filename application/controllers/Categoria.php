@@ -8,6 +8,7 @@ class Categoria extends CI_Controller
         parent::__construct();
 
         $this->load->model('Categoria_model', 'categoria');
+        
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 
@@ -29,6 +30,21 @@ class Categoria extends CI_Controller
         $this->load_view_admin_g("categoria/index", $data);
     }
 
+    public function subcategoria($id)
+    {
+
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $all_categorias = $this->categoria->get_all_subcat_from_idcat($id);
+        
+        $data['all_categorias'] = $all_categorias;
+        $data['idcategoria'] = $id;
+        $this->load_view_admin_g("categoria/subcategoria", $data);
+    }
+
 
 
     public function add_index()
@@ -39,6 +55,16 @@ class Categoria extends CI_Controller
         }
 
         $this->load_view_admin_g('categoria/add');
+    }
+
+    public function add_index2()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $this->load_view_admin_g('categoria/add2');
     }
 
 
@@ -86,6 +112,27 @@ class Categoria extends CI_Controller
                 redirect("categoria/add_index", "location", 301);
             }
         }
+    }
+
+    public function add2()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $name_espa = $this->input->post('name_espa');
+        $idcategoria = $this->input->post('idcategoria');
+
+        $data = ['nombre' => $name_espa, 'categoria_id' => $idcategoria];
+            
+                    $this->categoria->create2($data);
+                    $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+                    redirect("categoria/subcategoria/".$idcategoria);
+                
+        
+            
+        
     }
 
 
@@ -190,6 +237,19 @@ class Categoria extends CI_Controller
         } else {
             show_404();
         }
+    }
+
+    public function delete2($categoria_id = 0)
+    {
+
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+            $this->categoria->delete2($categoria_id);
+            $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
+            redirect("categoria/index");
+        
     }
 
 

@@ -35,7 +35,7 @@
 
                         <?= get_message_from_operation(); ?>
 
-                        <?= form_open_multipart("categoria/add"); ?>
+                        <?= form_open_multipart("categoria/add2"); ?>
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -95,7 +95,7 @@
     $(function() {
         $("#example1").DataTable();
         
-           
+
         });
-   
+
 </script>

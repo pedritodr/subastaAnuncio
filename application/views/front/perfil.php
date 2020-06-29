@@ -11,34 +11,7 @@
 
 
     </ol>
-    <div class="carousel-inner">
-        <?php if (count($all_banners) > 0) { ?>
-            <div class="item active">
-                <img style="width:100% !important" class="img-responsive" src="<?= base_url($all_banners[0]->foto) ?>" alt="First slide">
-                <!--   <div class="carousel-caption">
-               <h3>
-                  First slide</h3>
-               <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div> -->
-            </div>
-        <?php } ?>
-        <?php if (count($all_banners) > 1) { ?>
-            <?php for ($j = 1; $j < count($all_banners); $j++) { ?>
-                <div class="item">
-                    <img style="width:100% !important" src="<?= base_url($all_banners[$j]->foto) ?>" alt="Second slide">
-                    <!--  <div class="carousel-caption">
-               <h3>
-                  Second slide</h3>
-               <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div> -->
-                </div>
-            <?php } ?>
-        <?php } ?>
-
-
-    </div>
+    
     <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
         </span></a>
@@ -670,20 +643,28 @@
                                             </dd>
                                             <dt><strong><?= translate('date_compra_lang') ?>: </strong></dt>
                                             <dd>
-                                                <?= $all_membresia->fecha_inicio ?>
+                                                <?= $user_membresia->fecha_inicio ?>
                                             </dd>
                                             <dt><strong><?= translate('fecha_vencimiento_lang') ?>: </strong></dt>
                                             <dd>
-                                                <?= $all_membresia->fecha_fin ?>
+                                                <?= $user_membresia->fecha_fin ?>
                                             </dd>
 
-                                        </dl>
-                                        <strong><?= translate('cant_anuncios_lang') ?> </strong>
-                                        <?= $all_membresia->cant_anuncio ?>
-                                        <br>
-                                        <strong><?= translate('descripcion_lang') ?> </strong>
-                                        <?= $all_membresia->descripcion ?>
+                                            <dt><strong>Subastas Disponibles: </strong></dt>
+                                            <dd>
+                                                <?= $all_membresia->qty_subastas; ?>
+                                            </dd>
 
+                                            <dt><strong>Anuncios Disponibles: </strong></dt>
+                                            <dd>
+                                                <?= $all_membresia->cant_anuncio - $user_membresia->anuncios_publi;  ?>
+                                            </dd>
+
+                                            <dt><strong><?= translate('descripcion_lang') ?>: </strong></dt>
+                                           
+                                           
+                                        </dl>
+                                        <p><?= $all_membresia->descripcion; ?></p>
                                     </div>
                                 <?php } else { ?>
                                     <div class="profile-edit tab-pane fade" id="membresia">

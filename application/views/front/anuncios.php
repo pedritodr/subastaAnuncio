@@ -266,17 +266,62 @@
                                             <?php } ?>
                                             <?php if (!$category_id) { ?>
                                                 <?php if ($categories) { ?>
-                                                    <?php foreach ($categories as $item) { ?>
-                                                        <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
 
+                                                    
+                                                    <?php foreach ($categories as $item) { ?>
+                                                        <li class="dropdown">
+                                                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= $item->nombre; ?> </a>
+                                                        <ul class="dropdown-menu">
+<?php
+                                                            foreach($subcategoria as $result)
+                                                                {
+                                                                    if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                        {
+                                                                        ?>
+                                                                            <li>
+                                                                                <a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                </a>
+                                                                            </li>
+                                                                       
+                                                                        <?php 
+                                                                        }
+
+                                                                }
+                                                            ?>
+                                                        </ul>
+                                                    </li>
                                                     <?php } ?>
                                                     <input name="category" id="category" class="" type="hidden" value="">
+                                                    <input name="subcategory" id="subcategory" class="" type="hidden" value="">
+
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <?php if ($categories) { ?>
                                                     <?php foreach ($categories as $item) { ?>
                                                         <?php if ($item->cate_anuncio_id == $category_id) { ?>
-                                                            <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
+                                                            
+                                                            <li class="dropdown">
+                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= $item->nombre; ?> </a>
+                                                                    <ul class="dropdown-menu">
+                                                                        <?php
+                                                                        foreach($subcategoria as $result)
+                                                                            {
+                                                                                if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                    {
+                                                                                    ?>
+                                                                                    <li>
+                                                                                        <a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <?php 
+                                                                                    }
+                                                                            }
+                                                                        ?>
+                                                                    </ul>                                                            
+                                                            
+                                                                </li>
                                                         <?php } else { ?>
                                                             <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i><?= $item->nombre ?><span>(<?= $item->count ?>)</span></a></li>
                                                         <?php } ?>
@@ -465,6 +510,7 @@
     <script>
         function cargar_input(params) {
             $('#category').val(params);
+            $('#subcategory').val(params);
             $("#buscar_categoria").submit();
         }
     </script>
