@@ -59,7 +59,7 @@ class Banner extends CI_Controller
             redirect("banner/add_index");
         } else { //en caso de que todo este bien
             $name_file = $_FILES['archivo']['name'];
-            $w = 1300;
+            $w = 1919;
             $h = 500;
 
             $separado = explode('.', $name_file);
@@ -127,7 +127,7 @@ class Banner extends CI_Controller
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("banner/update_index/" . $banner_id);
         } else { //en caso de que todo este bien
-            $w = 1300;
+            $w = 1919;
             $h = 500;
 
             $name_file = $_FILES['archivo']['name'];

@@ -33,7 +33,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-3">
-                                        <label><?= translate("image_lang"); ?> (1300X500)</label>
+                                        <label><?= translate("image_lang"); ?> (1919X500)</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-image"></i></span>
                                             <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
