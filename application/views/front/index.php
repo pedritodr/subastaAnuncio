@@ -2,16 +2,15 @@
       <?php if (count($all_banners) > 0) { ?>
          <div class="master-slider ms-skin-default banner2" id="masterslider">
             <?php foreach ($all_banners as $item) { ?>
-               <div class="ms-slide slide-1" data-delay="5">
-                  <img src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="<?= base_url($item->foto) ?>" alt="<?= $item->foto ?>" />
+               <!--    <div class="ms-slide slide-1 imagen-banner" data-delay="5">
+                  <img style="margin-top: 0px;" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="" alt="<?= $item->foto ?>" />
+               </div> -->
 
-                  <!--  <h3 class="ms-layer title4 font-white font-uppercase font-thin-xs" style="left:90px; top:170px;" data-type="text" data-delay="2000" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)">2017 Ducati Panigale 959 </h3>
-                  <h3 class="ms-layer title4 font-white font-thin-xs" style="left:90px; top:220px;" data-type="text" data-delay="2500" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)"><span class="font-color">Brand new 0 kms</span></h3>
+               <div class="ms-slide">
 
-                  <h5 class="ms-layer text1 font-white" style="left: 92px; top: 295px;" data-type="text" data-effect="bottom(45)" data-duration="2500" data-delay="3000" data-ease="easeOutExpo">Lorem Ipsum is simply dummy text of the printing typesetting<br>
-                     industry is proident sunt in culpa officia deserunt mollit.
-                  </h5>
-                  <a class="ms-layer btn3 uppercase" style="left:95px; top: 405px;" data-type="text" data-delay="3500" data-ease="easeOutExpo" data-duration="2000" data-effect="scale(1.5,1.6)"> Get Started Now!</a> -->
+                  <!-- slide background -->
+                  <img class="img-master" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="<?= base_url($item->foto) ?>" />
+
                </div>
             <?php } ?>
          </div>
@@ -393,6 +392,7 @@
                transform: rotate(-10deg);
             }
 
+            /*
             .bg-img {
 
                background: rgba(0, 0, 0, 0.6) url("<?= base_url($all_banners[0]->foto) ?>") no-repeat;
@@ -402,7 +402,7 @@
                -o-background-size: cover;
                background-size: cover;
                clear: both;
-            }
+            } */
 
             p a:hover {
                color: #8c1822 !important;
@@ -412,61 +412,7 @@
                color: #fff !important;
             }
 
-            .carousel {
-               margin-bottom: 58px;
-            }
-
-            .carousel-caption {
-               z-index: 1;
-            }
-
-            .carousel .item {
-               height: 500px;
-               background-color: #555;
-            }
-
-            .carousel img {
-               position: absolute;
-               top: 0;
-               left: 0;
-               min-height: 500px;
-            }
-
-            .banner2 {
-               padding-top: 107px !important
-            }
-
-            @media screen and (max-width: 992px) {
-
-
-               .carousel .item {
-                  height: 300px;
-                  background-color: #555;
-               }
-
-               .carousel img {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  min-height: 300px;
-               }
-            }
-
-            @media screen and (max-width: 400px) {
-
-
-               .carousel .item {
-                  height: 300px;
-                  background-color: #555;
-               }
-
-               .carousel img {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  min-height: 300px;
-               }
-            }
+        
          </style>
          <script>
             /*     var subastas = <?= json_encode($all_subastas); ?>;
