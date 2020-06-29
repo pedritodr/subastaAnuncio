@@ -17,7 +17,7 @@
       <?php } ?>
       <!-- end Master Slider -->
 
-      <div class="main-content-area clearfix">
+      <div style="margin-top: 4%;" class="main-content-area clearfix">
          <!-- =-=-=-=-=-=-= Home Tabs =-=-=-=-=-=-= -->
          <section class="home-tabs">
             <!-- Carousel
@@ -411,8 +411,6 @@
             p a {
                color: #fff !important;
             }
-
-        
          </style>
          <script>
             /*     var subastas = <?= json_encode($all_subastas); ?>;
