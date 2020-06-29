@@ -17,9 +17,9 @@
       <?php } ?>
       <!-- end Master Slider -->
 
-      <div style="margin-top: 4%;" class="main-content-area clearfix">
+      <div class="main-content-area clearfix">
          <!-- =-=-=-=-=-=-= Home Tabs =-=-=-=-=-=-= -->
-         <section class="home-tabs">
+         <section style="margin-top: 1%;" class="home-tabs">
             <!-- Carousel
 ================================================== -->
             <!-- /.carousel -->
