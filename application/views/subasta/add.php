@@ -12,7 +12,7 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    
+
     <section class="content-header">
         <h1>
             <?= translate('manage_subasta_lang'); ?>
@@ -71,7 +71,7 @@
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-tag"></i></span>
                                         <select onchange="change_categoria();" id="categoria" name="categoria" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%" required>
-                                        <option selected disabled>Seleccione una categoria</option>
+                                            <option selected disabled>Seleccione una categoria</option>
                                             <?php
                                             if (isset($all_categoria))
                                                 foreach ($all_categoria as $item) { ?>
@@ -83,20 +83,20 @@
                                 <div id="cuerpo_subcategoria" class="col-lg-3">
                                     <label><?= translate("listar_subcate_lang"); ?></label>
                                     <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
-                                    </span>
-                                    <select required id="subcategoria"  name="subcategoria" class="form-control select3">
+                                        <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
+                                        </span>
+                                        <select required id="subcategoria" name="subcategoria" class="form-control select2 input-sm">
 
-                                        <?php
-                                        if (isset($all_subcate))
-                                            foreach ($all_subcate as $item) { ?>
-                                            <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
-                                        <?php } ?>
-                                    </select>
+                                            <?php
+                                            if (isset($all_subcate))
+                                                foreach ($all_subcate as $item) { ?>
+                                                <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
 
                                 </div>
-                                
+
 
                                 <div id="city" style="display:none" class="col-lg-3">
 
@@ -253,11 +253,6 @@
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 <script>
-
-
-
-
-    
     function change_categoria() {
 
         var a = $("select[name=categoria]").val();
@@ -266,23 +261,23 @@
             type: 'POST',
             url: "<?= site_url('front/get_subcate_subasta') ?>",
             data: {
-            categoria_id: a
-            
+                categoria_id: a
+
             },
 
             success: function(result) {
-            result = JSON.parse(result);
-            var cadena = "";
-            for (let i = 0; i < result.length; i++) {
-                cadena = cadena + "<option value='" + result[i].subcat_id + "'>" + result[i].nombre + "</option>";
-            }
-            $('#subcategoria').html(cadena);
+                result = JSON.parse(result);
+                var cadena = "";
+                for (let i = 0; i < result.length; i++) {
+                    cadena = cadena + "<option value='" + result[i].subcat_id + "'>" + result[i].nombre + "</option>";
+                }
+                $('#subcategoria').html(cadena);
             }
 
 
-            
-            
-            
+
+
+
         });
 
     }
@@ -300,7 +295,7 @@
         $('#fecha').show();
         $('#entrada').show();
         $('#descripcion').show();
-        
+
         //Date picker
     });
 
