@@ -54,11 +54,11 @@
                                 </div>
 
                             </div>
-                            <div id="categoria" style="display:none" class="col-lg-3">
+                            <div id="categoria2" style="display:show" class="col-lg-3">
                                 <label><?= translate("cate_list_lang"); ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                    <select required id="name_espa" name="name_espa" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
+                                    <select required id="categoria" name="categoria" onchange="change_categoria();" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
 
                                         <?php
                                         if (isset($all_categoria))
@@ -67,6 +67,25 @@
                                         <?php } ?>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div id="cuerpo_subcategoria" class="col-lg-3">
+                                <label><?= translate("listar_subcate_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
+                                    </span>
+                                    <select required id="subcategoria" name="subcategoria" class="form-control select2 input-sm">
+                                        <?php if ($find_subcat) { ?>
+                                            <option selected value="<?= $find_subcat->subcat_id ?>"><?= $find_subcat->nombre; ?></option>
+                                        <?php } ?>
+                                        <?php
+                                        if (isset($all_subcate))
+                                            foreach ($all_subcate as $item) { ?>
+                                            <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+
                             </div>
 
                             <div id="city" style="display:none" class="col-lg-3">
@@ -231,7 +250,36 @@
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
+
 <script>
+    function change_categoria() {
+
+        var a = $("select[name=categoria]").val();
+        $('#subcategoria').empty();
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/get_subcate_subasta') ?>",
+            data: {
+                categoria_id: a
+
+            },
+
+            success: function(result) {
+                result = JSON.parse(result);
+                var cadena = "";
+                for (let i = 0; i < result.length; i++) {
+                    cadena = cadena + "<option value='" + result[i].subcat_id + "'>" + result[i].nombre + "</option>";
+                }
+                $('#subcategoria').html(cadena);
+            }
+
+
+
+
+
+        });
+
+    }
     $(function() {
         $("#example1").DataTable();
         $(".textarea").wysihtml5();

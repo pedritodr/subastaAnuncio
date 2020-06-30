@@ -26,9 +26,10 @@ class Membresia_model extends CI_Model
 
     function get_by_id($id)
     {
+
         $this->db->where('membresia_id', $id);
         $query = $this->db->get('membresia');
-
+        
         return $query->row();
     }
 

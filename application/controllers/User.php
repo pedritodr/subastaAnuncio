@@ -2,12 +2,19 @@
 
 class User extends CI_Controller
 {
+    private const WIDTH = 100;
+    private const HEIGHT = 100;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->load->model('User_model', 'user');
+        $this->load->model('Pais_model', 'pais');
+        $this->load->model('Payment_model', 'payment');
+        $this->load->model('Membresia_model', 'membresia');
+        $this->data['img_width'] = $this::WIDTH;
+        $this->data['img_height'] = $this::HEIGHT;
         $this->load->library(array('session'));
         $this->load->helper("mabuya");
 
@@ -24,7 +31,7 @@ class User extends CI_Controller
             redirect('login');
         }
 
-        $all_users = $this->user->get_all(['status' => 1]);
+        $all_users = $this->user->get_all_2(['status' => 1]);
 
 
         $data['all_users'] = $all_users;
@@ -32,6 +39,47 @@ class User extends CI_Controller
         $this->load_view_admin_g("user/index", $data);
     }
 
+    public function cliente() //econtrando usuario
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2, 3, 4])) {
+
+            $this->log_out();
+            redirect('login');
+        }
+
+        $all_users = $this->user->get_all(['role_id' => 2]);
+        
+        $data['all_users'] = $all_users;
+
+        $this->load_view_admin_g("user/cliente", $data);
+    }
+
+    public function detalles($id)
+        {
+            if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+                $this->log_out();
+                redirect('login');
+            }
+
+            $usuarios = $this->user->get_by_id($id);
+            $city = $this->pais->get_ciudad_by_id($usuarios->ciudad_id);
+            foreach($city as $result)
+            $ciudad = $result->name_ciudad;
+            
+            $all_payment = $this->payment->get_by_payment_user_id_all($usuarios->user_id);
+            $membresia = $this->membresia->get_membresia_by_user_id($usuarios->user_id);
+            $tipomembresia = $this->membresia->get_by_id($membresia->membresia_id);
+            
+            $data['usuarios'] = $usuarios;
+            $data['ciudad'] = $ciudad;
+            $data['allpay'] = $all_payment;
+            $data['membresia'] = $membresia;
+            $data['tipomembresia'] = $tipomembresia;
+
+            
+
+            $this->load_view_admin_g('user/detalles', $data);
+        }
     public function add_index()
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2, 3, 4])) {
@@ -150,4 +198,136 @@ class User extends CI_Controller
             show_404();
         }
     }
+
+
+    public function profile_index()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login/index');
+        }
+
+        $user_id = $this->session->userdata('user_id');
+
+        $user_object = $this->user->get_by_id($user_id);
+        $city = $this->pais->get_by_ciudad_id_object($user_object->ciudad_id);
+        $cityall = $this->pais->get_all_ciudad();
+       
+
+        if ($user_object) {
+
+            $data['user_object'] = $user_object;
+            $data['city'] = $city;
+            $data['cityall'] = $cityall;
+            $this->load_view_admin_g('user/profile', $data);
+        } else {
+            show_404();
+        }
+    }
+
+    public function execute_edit_profile()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login/index');
+        }
+        $name_file = $_FILES['archivo']['name'];
+        $separado = explode('.', $name_file);
+        $ext = end($separado); // me quedo con la extension
+        $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
+        $allow_extension = in_array($ext, $allow_extension_array);
+        $name = $this->input->post('fullname');
+        $surname= $this->input->post('surname');
+        $phone = $this->input->post('phone');
+        $cedula = $this->input->post('cedula');
+        $ciudad= $this->input->post('ciudad');
+        $direccion = $this->input->post('direccion');
+        $user_id = $this->input->post('user_id');
+
+        if ($allow_extension)
+            {
+            $result = save_image_from_post('archivo', './uploads/Cliente', time(), $this::WIDTH, $this::HEIGHT);
+          
+            if ($result[0]) 
+                {
+                    $data_user = [
+                        'name' => $name,
+                        'surname' => $surname,
+                        'phone' => $phone,
+                        'cedula' => $cedula,
+                        'ciudad_id' => $ciudad,
+                        'direccion' => $direccion,
+                        'photo' => $result[1]
+                        
+                    ];
+                    $this->user->update($user_id, $data_user);
+                }
+               
+            }
+            else{
+                $data_user = [
+                    'name' => $name,
+                    'surname' => $surname,
+                    'phone' => $phone,
+                    'cedula' => $cedula,
+                    'ciudad_id' => $ciudad,
+                    'direccion' => $direccion
+                       
+                        
+                ];
+                $this->user->update($user_id, $data_user);   
+            }
+
+            $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+            redirect("user/profile_index");
+        
+    }
+
+    public function credenciales_index()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login/index');
+        }
+        $user_id = $this->session->userdata('user_id');
+
+        $user_object = $this->user->get_by_id($user_id);
+
+
+
+        if ($user_object) {
+            $data['user_object'] = $user_object;
+            $this->load_view_admin_g('user/credenciales', $data);
+        } else {
+            show_404();
+        }
+    }
+    public function execute_edit_credencial()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login/index');
+        }
+
+        $email = $this->input->post("email");
+        $password = $this->input->post("newpassword");
+        $oldpassword = $this->input->post("oldpassword");
+        $user_id = $this->input->post("user_id");
+        $validacion = $this->input->post("validacion");
+        $user_object =  $this->user->get_by_id($user_id);
+        if($user_object->password == md5($oldpassword))
+        {
+            $data_user = [
+                "password" => md5($password)
+            ];
+            $this->user->update($user_id, $data_user);
+            $this->response->set_message("Actualizado", ResponseMessage::SUCCESS);
+            redirect("user/credenciales_index/");
+        }
+        else{
+            $this->response->set_message("Compruebe sus contraseñas", ResponseMessage::ERROR);
+            redirect("user/credenciales_index/");   
+        }
+    }
+
 }

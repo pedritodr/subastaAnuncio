@@ -34,18 +34,29 @@
 
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                            <input type="text" name="email" value="<?= $user_object->email; ?>" class="form-control">
+                                            <input type="text" readonly name="email" value="<?= $user_object->email; ?>" class="form-control">
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-3">
                                     <div class="form-group">
-                                        <label class="control-label"><?= translate("password_lang"); ?></label>
+                                        <label class="control-label">Contraseña Actual</label>
 
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                            <input type="password" id="password" name="password" value="<?= $user_object->password; ?>" class="form-control">
+                                            <input type="password" id="oldpassword" name="oldpassword" value="" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Nueva Contraseña</label>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                            <input type="password" id="newpassword" name="oldpassword" value="" class="form-control">
                                         </div>
 
                                     </div>

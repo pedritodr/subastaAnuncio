@@ -13,7 +13,7 @@ class User_model  extends CI_Model
 
 
 
-    function    create($data)
+    function create($data)
     {
 
         $this->db->insert('user', $data);
@@ -38,10 +38,30 @@ class User_model  extends CI_Model
             $this->db->where($key, $value);
         }
         $query = $this->db->get('user');
-
+        
         return ($get_as_row) ? $query->row() : $query->result();
     }
 
+    function get_all_2()
+    {
+        $this->db->select('user.name,user.surname, user.photo, user.cedula, user.direccion, user.email, user.phone,user.role_id,user.user_id, ciudad.name_ciudad as ciudad,ciudad.ciudad_id');
+        $this->db->from('user');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = user.ciudad_id');
+        
+        $query = $this->db->get();
+       
+        return $query->result();
+    }
+
+    function get_all_client()
+    {
+        $this->db->where('role_id', '2');
+        $query = $this->db->get('user');
+        return  $query->result();
+
+    }
+
+   
     function update($id, $data)
     {
         $old = $this->get_by_id($id);

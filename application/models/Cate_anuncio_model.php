@@ -66,6 +66,15 @@ class Cate_anuncio_model extends CI_Model
 
         return $query->result();
     }
+
+    function get_by_Cate_subasta_id($id)
+    {
+
+        $this->db->where('categoria_id', $id);
+        $query = $this->db->get('subcategoria_subasta');
+
+        return $query->result();
+    }
     function get_all_categorias($id)
     {
         $this->db->select('sub_categoria.nombre as sub,cate_anuncio.nombre as categoria');
@@ -86,6 +95,16 @@ class Cate_anuncio_model extends CI_Model
         return $query->row();
     }
 
+    function get_sub_categoria_by_sub($id)
+    {
+        $this->db->select('subcategoria_subasta.nombre as sub,subasta.nombre as categoria, categoria.categoria_id');
+        $this->db->from('subcategoria_subasta');
+        $this->db->join('categoria', 'categoria.categoria_id=subcategoria_subasta.categoria_id');
+        $this->db->where('subcategoria_subasta.subcat_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     function get_all($conditions = [], $get_as_row = FALSE)
     {
         foreach ($conditions as $key => $value) {
@@ -98,15 +117,13 @@ class Cate_anuncio_model extends CI_Model
 
 
 
-    function get_all_subcate($conditions = [], $get_as_row = FALSE)
+    function get_all_subcate()
     {
 
-        foreach ($conditions as $key => $value) {
-            $this->db->where($key, $value);
-        }
+       
         $query = $this->db->get('sub_categoria');
 
-        return ($get_as_row) ? $query->row() : $query->result();
+        return  $query->result();
     }
 
 

@@ -38,26 +38,22 @@
                                 <?php foreach ($all_categorias as $item) { ?>
                                 <tr>
 
-                               
                                     <td> <?= $item->name_espa; ?></td>
                                     <td style="width:5%; background:#000000;"><img style="width:60px;height:60px;" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>
                                     <td>
-                                           <!-- Single button -->
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Acciones <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                            <li><a href="<?= site_url('categoria/subcategoria/' .$item->categoria_id); ?>"><i class="fa fa-check"></i> Gestionar Subcategorias</a></li>
                                                 <li><a href="<?= site_url('categoria/update_index/' . $item->categoria_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
                                                 <li><a href="<?= site_url('categoria/delete/' .$item->categoria_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
-                                               
                                             </ul>
                                         </div>
-                                        </td>
+                                    </td>
                                 </tr>
-
                                 
-
                                 <?php } ?>
 
                             </tbody>

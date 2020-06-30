@@ -37,7 +37,6 @@ class Pais_model extends CI_Model
     {
         $this->db->like('name_ciudad', $name);
         $query = $this->db->get('ciudad');
-
         return $query->row();
     }
     function get_by_pais_id($id) //pais
@@ -173,7 +172,14 @@ class Pais_model extends CI_Model
     }
 
 
-
+function get_ciudad_by_id($id)
+{
+    $this->db->select('name_ciudad');
+    $this->db->from('ciudad');
+    $this->db->where('ciudad_id', $id);
+    $query = $this->db->get();
+    return $query->result();
+}
 
 
 
