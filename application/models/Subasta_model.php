@@ -358,7 +358,7 @@ class Subasta_model extends CI_Model
     function get_all_by_subastas_with_pagination($limit, $start, $tipo)
     {
         $this->db->limit($limit, $start);
-        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->select('subasta.tipo_subasta, subasta.categoria_id, subasta.subcat_id, subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
@@ -389,15 +389,17 @@ class Subasta_model extends CI_Model
         $this->db->limit($limit, $start);
        
         
-        $this->db->select('subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago, subcategoria_subasta.nombre as categoria, ciudad.name_ciudad as ciudad,ciudad.ciudad_id, subcategoria_subasta.subcat_id');
+        $this->db->select('subasta.tipo_subasta,subasta.categoria_id, subasta.subcat_id, subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago, subcategoria_subasta.nombre as categoria, ciudad.name_ciudad as ciudad,ciudad.ciudad_id, subcategoria_subasta.subcat_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('subcategoria_subasta', 'subcategoria_subasta.subcat_id = subasta.subcat_id');
         $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
 
+
         if ($id > 0) {
-            $this->db->where('subcategoria_subasta.subcat_id', $id); //Campo anterior, categoria_id
+        
+            $this->db->where('subasta.subcat_id', $id); //Campo anterior, categoria_id
         }
         if ($ciudad_id > 0) {
             $this->db->where('subasta.ciudad_id', $ciudad_id);
@@ -407,7 +409,7 @@ class Subasta_model extends CI_Model
         }
         $this->db->where('subasta.tipo_subasta', $tipo);
         $query = $this->db->get();
-        
+       
         return $query->result();
     }
     function get_all_by_subastas_with_pagination_palabra($limit, $start, $palabra, $tipo)
