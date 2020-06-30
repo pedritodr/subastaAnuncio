@@ -2889,4 +2889,9 @@ class Front extends CI_Controller
             }
         }
     }
+    public function kusky()
+    {
+
+        $this->load_view_front('front/kusky');
+    }
 }

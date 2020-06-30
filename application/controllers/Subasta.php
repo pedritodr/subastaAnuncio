@@ -35,12 +35,12 @@ class Subasta  extends CI_Controller
 
             $subcategoria_object = $this->categoria->get_subcat_by_id($item->subcat_id);
             $item->subcategoria = $subcategoria_object;
-            
+
             $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
             $item->ciudad = $ciudad_object;
         }
 
-       
+
 
         $data['all_subasta'] = $all_subasta;
         $this->load_view_admin_g("subasta/index", $data);
@@ -209,7 +209,7 @@ class Subasta  extends CI_Controller
             $find_subcat = $this->categoria->get_subcat_by_id($subasta_object->subcat_id);
             $data['find_subcat'] = $find_subcat;
 
-            
+
 
             $data['subasta_object'] = $subasta_object;
 
@@ -234,7 +234,7 @@ class Subasta  extends CI_Controller
         $name_espa = $this->input->post('categoria'); //nombre categoria
 
         $subcategoria = $this->input->post('subcategoria');
-        
+
 
         $ciudad = $this->input->post('ciudad');
         $is_open = $this->input->post('is_open');
@@ -254,7 +254,7 @@ class Subasta  extends CI_Controller
 
 
         //establecer reglas de validacion
-        $this->form_validation->set_rules('name_espa', translate('nombre_lang'), 'required');
+        $this->form_validation->set_rules('nombre_espa', translate('nombre_lang'), 'required');
         //$this->form_validation->set_rules('price', translate('price_lang'), 'required|numeric');
 
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron

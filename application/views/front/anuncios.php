@@ -491,6 +491,7 @@
         /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
+<<<<<<< HEAD
             /* Carousel base class */
             .carousel {
                 margin-bottom: 58px;
@@ -563,3 +564,77 @@ margin-top: 29% !important
                 width: 100px;
             }
         </style>
+=======
+              /* Carousel base class */
+              .carousel {
+                  margin-bottom: 58px;
+              }
+
+              /* Since positioning the image, we need to help out the caption */
+              .carousel-caption {
+                  z-index: 1;
+              }
+
+              /* Declare heights because of positioning of img element */
+              .carousel .item {
+                  height: 500px;
+                  background-color: #555;
+              }
+
+              .carousel img {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  min-height: 500px;
+              }
+
+              .banner2 {
+                  padding-top: 107px !important
+              }
+
+              @media screen and (max-width: 992px) {
+                  /*      .banner2 {
+            margin-top: 0
+         } */
+
+                  .carousel .item {
+                      height: 300px;
+                      background-color: #555;
+                  }
+
+                  .carousel img {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      min-height: 300px;
+                  }
+              }
+
+              @media screen and (max-width: 400px) {
+                  /*   .banner2 {
+   margin-top: 29% !important
+} */
+
+                  .carousel .item {
+                      height: 300px;
+                      background-color: #555;
+                  }
+
+                  .carousel img {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      min-height: 300px;
+                  }
+              }
+
+              .recent-ads .recent-ads-list-image-inner {
+                  background-color: rgba(0, 0, 0, 0.0) !important;
+                  display: block;
+                  height: 60px;
+                  margin: 0 16px 0 0;
+                  position: relative;
+                  width: 100px;
+              }
+          </style>
+>>>>>>> 123c9dd715e1cf95639733736169d3cecac28efd

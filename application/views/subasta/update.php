@@ -72,16 +72,18 @@
                             <div id="cuerpo_subcategoria" class="col-lg-3">
                                 <label><?= translate("listar_subcate_lang"); ?></label>
                                 <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
-                                </span>
-                                <select required id="subcategoria"  name="subcategoria" class="form-control select3">
+                                    <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i>
+                                    </span>
+                                    <select required id="subcategoria" name="subcategoria" class="form-control select2 input-sm">
+                                        <?php if ($find_subcat) { ?>
                                             <option selected value="<?= $find_subcat->subcat_id ?>"><?= $find_subcat->nombre; ?></option>
-                                            <?php
-                                    if (isset($all_subcate))
-                                        foreach ($all_subcate as $item) { ?>
-                                        <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
-                                    <?php } ?>
-                                </select>
+                                        <?php } ?>
+                                        <?php
+                                        if (isset($all_subcate))
+                                            foreach ($all_subcate as $item) { ?>
+                                            <option value="<?= $item->subcate_id; ?>"><?= $item->nombre; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
 
                             </div>
@@ -252,32 +254,32 @@
 <script>
     function change_categoria() {
 
-var a = $("select[name=categoria]").val();
-$('#subcategoria').empty();
-$.ajax({
-    type: 'POST',
-    url: "<?= site_url('front/get_subcate_subasta') ?>",
-    data: {
-    categoria_id: a
-    
-    },
+        var a = $("select[name=categoria]").val();
+        $('#subcategoria').empty();
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/get_subcate_subasta') ?>",
+            data: {
+                categoria_id: a
 
-    success: function(result) {
-    result = JSON.parse(result);
-    var cadena = "";
-    for (let i = 0; i < result.length; i++) {
-        cadena = cadena + "<option value='" + result[i].subcat_id + "'>" + result[i].nombre + "</option>";
+            },
+
+            success: function(result) {
+                result = JSON.parse(result);
+                var cadena = "";
+                for (let i = 0; i < result.length; i++) {
+                    cadena = cadena + "<option value='" + result[i].subcat_id + "'>" + result[i].nombre + "</option>";
+                }
+                $('#subcategoria').html(cadena);
+            }
+
+
+
+
+
+        });
+
     }
-    $('#subcategoria').html(cadena);
-    }
-
-
-    
-    
-    
-});
-
-}
     $(function() {
         $("#example1").DataTable();
         $(".textarea").wysihtml5();
