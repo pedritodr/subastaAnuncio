@@ -1,4 +1,7 @@
-      <!-- Master Slider -->
+<?php
+
+?>
+     <!-- Master Slider -->
       <?php if (count($all_banners) > 0) { ?>
           <div class="master-slider ms-skin-default banner2" id="masterslider">
               <?php foreach ($all_banners as $item) { ?>
@@ -466,9 +469,9 @@
                                             <?php if (!$category_id) { ?>
 
                                                
-                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
                                             <?php } else { ?>
-                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                                <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input_2('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
                                             <?php } ?>
                                             <?php if (!$category_id) { ?>
                                                 <?php if ($categories) { ?>
@@ -484,9 +487,25 @@
                                                                                 {
                                                                                 ?>
                                                                                 <li>
-                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
-                                                                                        <?= ucwords($result->nombre); ?>
-                                                                                    </a>
+                                                                                <?php
+                                                                                    if($result->subcat_id == $subcat_id)
+                                                                                        {
+                                                                                            ?>
+                                                                                            <a style="color:red;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                            </a>
+                                                                                            <?php
+                                                                                            
+                                                                                        }
+                                                                                    else{
+                                                                                        ?>
+                                                                                        <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                        </a>
+                                                                                        <?php
+                                                                                    }
+                                                                                    ?>
+                                                                                    
                                                                                 </li>
                                                                                 <?php 
                                                                                 }
@@ -516,10 +535,27 @@
                                                                                 if($result->categoria_id == $item->categoria_id)
                                                                                     {
                                                                                     ?>
+                                                                                    
                                                                                     <li>
-                                                                                        <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
-                                                                                            <?= ucwords($result->nombre); ?>
-                                                                                        </a>
+                                                                                        <?php
+                                                                                            if($result->subcat_id == $subcat_id)
+                                                                                                {
+                                                                                                    ?>
+                                                                                                    <a style="color:red;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                    </a>
+                                                                                                    <?php
+                                                                                            
+                                                                                                }
+                                                                                            else{
+                                                                                                ?>
+                                                                                                <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                                </a>
+                                                                                                <?php
+                                                                                            }
+                                                                                            ?>
+                                                                                    
                                                                                     </li>
                                                                                     <?php 
                                                                                     }
@@ -539,10 +575,27 @@
                                                                             if($result->categoria_id == $item->categoria_id)
                                                                                 {
                                                                                 ?>
+                                                                                
                                                                                 <li>
-                                                                                    <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
-                                                                                        <?= ucwords($result->nombre); ?>
-                                                                                    </a>
+                                                                                <?php
+                                                                                    if($result->subcat_id == $subcat_id)
+                                                                                        {
+                                                                                            ?>
+                                                                                            <a style="color:red;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                            </a>
+                                                                                            <?php
+                                                                                            
+                                                                                        }
+                                                                                    else{
+                                                                                        ?>
+                                                                                        <a style="color:black;" onclick="cargar_input_2('<?= $result->subcat_id ?>')">
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                        </a>
+                                                                                        <?php
+                                                                                    }
+                                                                                    ?>
+                                                                                    
                                                                                 </li>
                                                                                 <?php 
                                                                                 }

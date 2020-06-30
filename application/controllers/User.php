@@ -31,14 +31,13 @@ class User extends CI_Controller
             redirect('login');
         }
 
-        $all_users = $this->user->get_all(['status' => 1]);
+        $all_users = $this->user->get_all_2(['status' => 1]);
 
 
         $data['all_users'] = $all_users;
 
         $this->load_view_admin_g("user/index", $data);
     }
-
 
     public function cliente() //econtrando usuario
     {

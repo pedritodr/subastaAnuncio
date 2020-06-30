@@ -23,14 +23,15 @@
 
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title"><?= translate('user_list_lang'); ?></h3>
+                        <h3 class="box-title"></h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <?= get_message_from_operation(); ?>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th><?= translate("fullname_lang"); ?></th>
+                                <th style="width:10%">&nbsp;</th>
+                                    <th>Información del Usuario</th>
                                     <th><?= translate("email_lang"); ?></th>
 
 
@@ -41,7 +42,28 @@
                             <tbody>
                                 <?php foreach ($all_users as $item) { ?>
                                     <tr>
-                                        <td><?= $item->name; ?></td>
+                                    <?php
+                                            if($item->photo == "")
+                                                {
+                                                    ?>
+                                                    <td>&nbsp;</td>
+                                                    <?php
+                                                }
+                                            else
+                                            {
+                                                ?>
+                                                <td> <img style="width: 75%; margin: 0 auto;" class="img img-rounded img-responsive" src="<?= site_url($item->photo); ?>"></td>
+                                                <?php
+                                            }
+                                        ?>
+                                        <td >
+                                           <b> <?= $item->name; ?> 
+                                        <?=$item->surname; ?> </b> 
+                                        <br>Cedula: <?= $item->cedula; ?>
+                                        <br>Teléfono: <?= $item->phone ?> 
+                                        <br>Ciudad: <?= $item->ciudad ?> 
+                                        <br>Dirección: <?= $item->direccion ?>
+                                    </td>
                                         <td><?= $item->email; ?></td>
 
 
@@ -85,7 +107,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th><?= translate("fullname_lang"); ?></th>
+                                <th>&nbsp;</th>
+                                    
+                                <th>Información del Usuario</th>
                                     <th><?= translate("email_lang");  ?></th>
 
                                     <th><?= translate("role_lang"); ?></th>

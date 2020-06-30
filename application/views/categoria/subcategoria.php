@@ -3,8 +3,8 @@
     <section class="content-header">
         <h1>
             Gestionar Subcategorías 
-            <small><?= translate('listar_categoria_lang'); ?></small>
-            | 
+            <small>Listar Subcategorías</small>
+            | <a href="<?= site_url('categoria/index'); ?>" class="btn btn-primary">Ir Atras </a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>

@@ -1,3 +1,4 @@
+
 <!-- Master Slider -->
 <?php if (count($all_banners) > 0) { ?>
         <div class="master-slider ms-skin-default banner2" id="masterslider">
@@ -85,7 +86,9 @@
                             <!-- Sorting Filters End-->
                             <div class="clearfix"></div>
                             <!-- Ads Archive --><?php if ($all_anuncios) { ?>
-                                <?php foreach ($all_anuncios as $item) { ?>
+                                <?php foreach ($all_anuncios as $item) { 
+                                    
+                                    ?>
                                     <div class="ads-list-archive">
                                         <!-- Image Block -->
                                         <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
@@ -233,77 +236,129 @@
                                         <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                             <ul>
                                                 <?php $category_id = $this->session->userdata('session_categoria'); ?>
+
+
                                                     <?php if (!$category_id) { ?>
-                                                    <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
-                                                        <?php } else { ?>
-                                                        <li><a style="cursor:pointer" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las catergorias</a></li>
+                                                    
+                                                        <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
+                                                        <?php }
+                                                         else { ?>
+                                                        <li><a style="cursor:pointer" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
                                                         <?php } ?>
                                                         <?php if (!$category_id) { ?>
                                                         <?php if ($categories) { ?>
+                                                            
                                                             <?php foreach ($categories as $item) { ?>
                                                                 <li class="dropdown">
-                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= $item->nombre; ?> </a>
-                                                                <ul class="dropdown-menu">
-                                                                <?php
-                                                                foreach($subcategoria as $result)
-                                                                    {
-                                                                    if($result->cate_anuncio_id == $item->cate_anuncio_id)
-                                                                        {
-                                                                        ?>
-                                                                        <li>
-                                                                        <a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
-                                                                        <?= ucwords($result->nombre); ?>
-                                                                        </a>
-                                                                        </li>
-                                                                       
-                                                                        <?php 
-                                                                        }
-                                                                    }
-                                                                    ?>
-                                                                    </ul>
-                                                                    </li>
-                                                                    <?php } ?>
-                                                                    <input name="category" id="category" class="" type="hidden" value="">
-                                                                    <input name="subcategory" id="subcategory" class="" type="hidden" value="">
-
-                                                                    <?php } ?>
-                                                                <?php } else { ?>
-                                                                <?php if ($categories) { ?>
-                                                                <?php foreach ($categories as $item) { ?>
-                                                                <?php if ($item->cate_anuncio_id == $category_id) { ?>
-                                                                    <?php foreach ($categories as $item) { ?>
-                                                                    <li class="dropdown">
-                                                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= $item->nombre; ?> </a>
+                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
                                                                     <ul class="dropdown-menu">
                                                                     <?php
                                                                     foreach($subcategoria as $result)
                                                                         {
                                                                         if($result->cate_anuncio_id == $item->cate_anuncio_id)
                                                                             {
+                                                                            //Busqueda por todas las categorias
                                                                             ?>
                                                                             <li>
-                                                                            <a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                           
+                                                                            <a style=" color:black;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
                                                                             <?= ucwords($result->nombre); ?>
                                                                             </a>
                                                                             </li>
-                                                                       
+                                                                        
                                                                             <?php 
                                                                             }
                                                                         }
                                                                         ?>
-                                                                        </ul>
-                                                                        </li>
-                                                                        <?php } ?>
-                                                                        <input name="category" id="category" class="" type="hidden" value="">
-                                                                        <input name="subcategory" id="subcategory" class="" type="hidden" value="">
-                                                                    <?php }  ?>
-                                                                   
+                                                                    </ul>
+                                                                </li>
                                                                     <?php } ?>
-                                                                <?php } ?>
-                                                                <input name="category" id="category" class="" type="hidden" value="">
-                                                                <input name="subcategory" id="subcategory" class="" type="hidden" value="">                                                            <?php } ?>
+                                                                  
+
+                                                                    <?php } ?>
+                                                                <?php } else { ?>
+                                                                <?php foreach ($categories as $item) { ?>
+                                                                <?php if ($item->cate_anuncio_id == $category_id) { ?>
+                                                                    <li class="dropdown">
+                                                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
+                                                                        <ul class="dropdown-menu">
+                                                                        <?php
+                                                                        foreach($subcategoria as $result)
+                                                                            {
+                                                                            if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                {
+                                                                                ?>
+                                                                                <li>
+                                                                               
+                                                                                <a style="background-color:red; color:white;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
+                                                                                </li>
+                                                                        
+                                                                                <?php 
+                                                                                //No hace falta else, sospechoso.
+                                                                                }
+                                                                            }
+                                                                            ?>
+                                                                        </ul>
+                                                                    </li>
+                                                                       
+                                                                    <?php }
+                                                                    else{
+                                                                        ?>
+                                                                        
+                                                                        <li class="dropdown">
+                                                                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
+                                                                        <ul class="dropdown-menu">
+                                                                               
+                                                                                    <?php
+                                                                                    foreach($subcategoria as $result)
+                                                                                        {
+                                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                            {
+                                                                                            //Busqueda por todas las categorias
+                                                                                            if($result->subcate_id == $subcate)
+                                                                                            {
+                                                                                            ?>
+                                                                                            <li>
+                                                                           
+                                                                                            <a style=" color:red;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                            </a>
+                                                                                            </li>
+                                                                                            <?php
+                                                                                            }
+                                                                                            else{
+                                                                                            ?>
+                                                                                            <li>
+                                                                       
+                                                                                            <a style=" color:black;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
+                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                            </a>
+                                                                                            </li>
+                                                                                            <?php
+                                                                                            
+                                                                                            }
+                                                                                            ?>
+                                                                                           
+                                                                        
+                                                                                            <?php 
+                                                                                            }
+                                                                                        }
+                                                                                        ?>
+                                                                                    </ul>
+                                                                                </li>
+                                                                                    <?php } ?>
+                                                                            
+                                                                        <?php
+                                                                           
+                                                                            
+                                                                    }  
+                                                                   
+                                                                    
+                                                                 } ?>
                                                        
                                                                 </ul>
+                                                                <input name="category" id="category" class="" type="hidden" value="">
+
                                                 <?= form_close(); ?>
                                         </div>
                                     </div>
@@ -481,9 +536,11 @@
         <!-- Main Container End -->
     </section>
     <script>
+     
+            $('#category').val('');
+       
         function cargar_input(params) {
             $('#category').val(params);
-            $('#subcategory').val(params);
             $("#buscar_categoria").submit();
         }
     </script>
@@ -491,80 +548,6 @@
         /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
-<<<<<<< HEAD
-            /* Carousel base class */
-            .carousel {
-                margin-bottom: 58px;
-            }
-
-            /* Since positioning the image, we need to help out the caption */
-            .carousel-caption {
-                z-index: 1;
-            }
-
-            /* Declare heights because of positioning of img element */
-            .carousel .item {
-                height: 500px;
-                background-color: #555;
-            }
-
-            .carousel img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                min-height: 500px;
-            }
-
-            .banner2 {
-                padding-top: 107px !important
-            }
-
-            @media screen and (max-width: 992px) {
-                /*      .banner2 {
-            margin-top: 0
-        } */
-
-                .carousel .item {
-                    height: 300px;
-                    background-color: #555;
-                }
-
-                .carousel img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    min-height: 300px;
-                }
-            }
-
-            @media screen and (max-width: 400px) {
-                /*   .banner2 {
-margin-top: 29% !important
-} */
-
-                .carousel .item {
-                    height: 300px;
-                    background-color: #555;
-                }
-
-                .carousel img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    min-height: 300px;
-                }
-            }
-
-            .recent-ads .recent-ads-list-image-inner {
-                background-color: rgba(0, 0, 0, 0.0) !important;
-                display: block;
-                height: 60px;
-                margin: 0 16px 0 0;
-                position: relative;
-                width: 100px;
-            }
-        </style>
-=======
               /* Carousel base class */
               .carousel {
                   margin-bottom: 58px;
@@ -637,4 +620,3 @@ margin-top: 29% !important
                   width: 100px;
               }
           </style>
->>>>>>> 123c9dd715e1cf95639733736169d3cecac28efd
