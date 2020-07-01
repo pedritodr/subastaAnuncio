@@ -80,6 +80,9 @@ class Rest_subasta extends REST_Controller
                 } else {
                     $item->nombre_espa = $item->nombre_espa;
                 }
+                if ($item->intervalo) {
+                    $item->valido = true;
+                }
             }
             if ($all_subasta) {
 
