@@ -72,8 +72,8 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->corta = $item->descripcion;
                 }
-                if ($title > 20) {
-                    $item->titulo = substr($item->titulo, 0, 20) . "...";
+                if ($title > 19) {
+                    $item->titulo = substr($item->titulo, 0, 18) . "...";
                 } else {
                     $item->titulo = $item->titulo;
                 }
@@ -369,5 +369,29 @@ class Rest_anuncio extends REST_Controller
         } else {
             $this->response(['status' => 500]);
         }
+    }
+    function remplace_title($cadena)
+    {
+        $cadena = utf8_decode($cadena);
+        $cadena = str_replace('?', '', $cadena);
+        $cadena = str_replace('+', '', $cadena);
+        $cadena = str_replace('%', '', $cadena);
+        $cadena = str_replace(',', '', $cadena);
+        $cadena = str_replace('?', '', $cadena);
+        $cadena = str_replace('/', '', $cadena);
+        $cadena = str_replace(':', '', $cadena);
+        $cadena = str_replace('(', '', $cadena);
+        $cadena = str_replace(')', '', $cadena);
+        $cadena = str_replace('??', '', $cadena);
+        $cadena = str_replace('`', '', $cadena);
+        $cadena = str_replace('!', '', $cadena);
+        $cadena = str_replace('¿', '', $cadena);
+        $cadena = str_replace("'", "-", $cadena);
+        $cadena = str_replace("´", "-", $cadena);
+        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
+        $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+
+        return $cadena;
     }
 }
