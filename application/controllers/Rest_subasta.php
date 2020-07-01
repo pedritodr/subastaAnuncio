@@ -81,6 +81,7 @@ class Rest_subasta extends REST_Controller
                     $item->nombre_espa = $item->nombre_espa;
                 }
                 if ($item->intervalo) {
+                    $item->intervalo = $item->intervalo[count($item->intervalo) - 1];
                     $item->valido = true;
                 }
             }
