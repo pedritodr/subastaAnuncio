@@ -64,7 +64,7 @@ class Rest_anuncio extends REST_Controller
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($limite, $comienza);
             foreach ($all_anuncios as $item) {
-                $item->titulo = str_replace("´", "'", $item->titulo);
+                $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
                 $long = strlen($item->descripcion);
                 if ($long > 99) {
