@@ -72,6 +72,9 @@ class Rest_subasta extends REST_Controller
                 $item->categoria = $categoria_object;
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
+                if ($item->tipo_subasta == 2) {
+                    $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
+                }
                 if ($title > 19) {
                     $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
                 } else {
