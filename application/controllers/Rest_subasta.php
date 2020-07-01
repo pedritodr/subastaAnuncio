@@ -67,11 +67,16 @@ class Rest_subasta extends REST_Controller
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             foreach ($all_subasta as $item) {
+                $title = strlen($item->nombre_espa);
                 $categoria_object = $this->categoria->get_by_id($item->categoria_id);
                 $item->categoria = $categoria_object;
-
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
+                if ($title > 19) {
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                } else {
+                    $item->nombre_espa = $item->nombre_espa;
+                }
             }
             if ($all_subasta) {
 
