@@ -72,9 +72,9 @@ class Rest_anuncio extends REST_Controller
                     $item->corta = $item->descripcion;
                 }
                 if ($title > 20) {
-                    $item->titulo = substr($item->titulo, 0, 20) . "...";
+                    $item->titulo = seo_url(substr($item->titulo, 0, 20)) . "...";
                 } else {
-                    $item->titulo = $item->titulo;
+                    $item->titulo = seo_url($item->titulo);
                 }
             }
             if ($all_anuncios) {
