@@ -72,9 +72,9 @@ class Rest_anuncio extends REST_Controller
                     $item->corta = $item->descripcion;
                 }
                 if ($title > 20) {
-                    $item->titulo = str_replace("´", " ", substr($item->titulo, 0, 20)) . "...";
+                    $item->titulo = str_replace("´", "'", substr($item->titulo, 0, 20)) . "...";
                 } else {
-                    $item->titulo = str_replace("´", " ", $item->titulo);
+                    $item->titulo = str_replace("´", "'", $item->titulo);
                 }
             }
             if ($all_anuncios) {
