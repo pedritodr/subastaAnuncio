@@ -62,8 +62,8 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
-            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza);
-
+            $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza, $fecha);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             foreach ($all_subasta as $item) {
