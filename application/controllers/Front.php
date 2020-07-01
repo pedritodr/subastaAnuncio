@@ -151,7 +151,7 @@ class Front extends CI_Controller
 
     public function anuncio()
     {
-        if (!in_array($this->session->userdata('role_id'), [1,2])) {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
             $this->log_out();
             redirect('login');
         }
@@ -178,7 +178,7 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
 
 
-       
+
         $this->load_view_front('front/add_anuncio', $data);
     }
     public function update_anuncio_index($anuncio_id)
@@ -197,7 +197,7 @@ class Front extends CI_Controller
         if ($anuncio_object) {
             $ciudad = $this->pais->get_by_city_all($anuncio_object->ciudad_id);
             $categoria = $this->cate_anuncio->get_sub_categoria_by_sub($anuncio_object->subcate_id);
-            
+
             $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
             $data['categoria'] =  $categoria;
             $data['ciudad'] =  $ciudad;
@@ -379,7 +379,7 @@ class Front extends CI_Controller
 
         $categoria_id = $this->input->post('categoria_id');
         $all_sub_categorias = $this->cate_anuncio->get_by_Cate_subasta_id($categoria_id);
-        
+
         echo json_encode($all_sub_categorias);
         exit();
     }
@@ -1032,7 +1032,7 @@ class Front extends CI_Controller
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
         $category = $this->input->post('category_subasta');
-        
+
         $subasta_palabra = $this->input->post('subasta_palabra');
         $ciudad_id = $this->input->post('subasta_ciudad_id');
         $tipo_subasta = $this->input->post('tipo_subasta');
@@ -1074,7 +1074,7 @@ class Front extends CI_Controller
 
 
         $contador = count($this->subasta->get_search_all($category, $subasta_palabra, $tipo, $ciudad_id));
-      
+
         /* URL a la que se desea agregar la paginación*/
         $config['base_url'] = site_url('search_subastas/page/');
 
@@ -1199,7 +1199,7 @@ class Front extends CI_Controller
         }
         $data["cat_id"] = $cat_id;
         $data["subcat_id"] = $subcat_id;
-        
+
         $data['all_subastas'] = $all_subastas;
         $data['resultados'] = $contador;
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
@@ -1385,10 +1385,10 @@ class Front extends CI_Controller
         $this->session->set_userdata('page', 'subasta_directa');
         $this->load->model('Subasta_model', 'subasta');
         $this->load->model('Categoria_model', 'category');
-        
+
         $categories = $this->category->get_all();
         $data['categories'] = $categories;
-        
+
         $subcat = $this->category->get_all_subasta_subcat();
         $data['subcat'] = $subcat;
         $this->load->model('Banner_model', 'banner');
@@ -1509,12 +1509,12 @@ class Front extends CI_Controller
             }
         }
         $tipo = 1;
-       
+
         $data['tipo'] = $tipo;
 
 
 
-        
+
         $this->load_view_front('front/subastas', $data);
     }
     public function subasta_inversa()
@@ -1585,8 +1585,8 @@ class Front extends CI_Controller
         $offset = !$page ? 0 : $page;
         //      $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $subcat_id = "";
-       
-           
+
+
 
         $all_subastas = $this->subasta->get_all_by_subastas_with_pagination($config['per_page'], $offset, 2);
 
@@ -1647,15 +1647,15 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
-        
+
         $categories = $this->category->get_all();
-        
+
         foreach ($categories as $item) {
-            
-          $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+
+            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
-       
-      
+
+
         $data['subcate'] = $subcate;
         $data['categories'] = $categories;
         /* URL a la que se desea agregar la paginación*/
@@ -1715,7 +1715,7 @@ class Front extends CI_Controller
         $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
-           
+
             if ($long > 150) {
                 $item->corta = substr($item->descripcion, 0, 150) . "...";
             } else {
@@ -1758,12 +1758,12 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
-        
-        
+
+
         $subcategoria = $this->category->get_all_subcate();
-       
+
         $data['subcategoria'] = $subcategoria;
-        
+
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
 
         $data['all_ciudad'] = $all_ciudad;
@@ -1795,8 +1795,8 @@ class Front extends CI_Controller
     public function buscar_anuncio()
     {
 
-     
-        
+
+
 
         header('Cache-Control: no cache');
         $this->load->model('Pais_model', 'pais');
@@ -1811,13 +1811,13 @@ class Front extends CI_Controller
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
         $data['categories'] = $categories;
-        
+
         $subcategoria = $this->category->get_all_subcate();
         $data['subcategoria'] = $subcategoria;
-        
+
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
-        
+
         $ciudad_id = $this->input->post('ciudad_id');
         if ($ciudad_id != NULL) {
             if ($ciudad_id == 0) {
@@ -1832,7 +1832,7 @@ class Front extends CI_Controller
                 $ciudad_id = 0;
             }
         }
-    
+
         if ($category != NULL) {
             if ($category == 0) {
                 $this->session->set_userdata('session_categoria', NULL);
@@ -1897,13 +1897,13 @@ class Front extends CI_Controller
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
         $subcate = "";
-       
+
         $offset = !$page ? 0 : $page;
         $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_name($config['per_page'], $offset, $anuncio_palabra, $ciudad_id, $category);
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
             $subcate = $item->subcate_id;
-            
+
             if ($long > 150) {
                 $item->corta = substr($item->descripcion, 0, 150) . "...";
             } else {
@@ -1919,9 +1919,9 @@ class Front extends CI_Controller
                 $item->corto = $item->titulo;
             }
         }
-        
 
-       
+
+
         $data['subcate'] = $subcate;
         $data['all_anuncios'] = $all_anuncios;
         $data['resultados'] = $contador;
@@ -1975,7 +1975,7 @@ class Front extends CI_Controller
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
 
-        
+
 
         $this->load_view_front('front/anuncios', $data);
     }
@@ -2220,7 +2220,7 @@ class Front extends CI_Controller
 
         $user_membresia = $this->membresia->get_membresia_by_user_id($user_id);
         $all_membresia = $this->membresia->get_by_id($user_membresia->membresia_id);
-        
+
         $city = $this->pais->get_by_city_all($ciudad_id);
         $all_pais = $this->pais->get_all();
         $data['all_pais'] = $all_pais;
@@ -2728,6 +2728,7 @@ class Front extends CI_Controller
     public function pago_exitoso()
     {
         $this->load->model('payment_model', 'payment');
+        $this->payment->create_prueba(["data" => "csm"]);
         $datos = file_get_contents('php://input');
         //     $this->payment->create_prueba(['data' => $datos]);
         $data = json_decode($datos, true);
