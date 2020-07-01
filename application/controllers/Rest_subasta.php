@@ -66,28 +66,33 @@ class Rest_subasta extends REST_Controller
             $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza, $fecha);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
+            $subastas = [];
             foreach ($all_subasta as $item) {
                 $title = strlen($item->nombre_espa);
                 $categoria_object = $this->categoria->get_by_id($item->categoria_id);
                 $item->categoria = $categoria_object;
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
-                if ($item->tipo_subasta == 2) {
-                    $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
-                }
                 if ($title > 19) {
                     $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
                 } else {
                     $item->nombre_espa = $item->nombre_espa;
                 }
-                if ($item->intervalo) {
-                    $item->intervalo = $item->intervalo[count($item->intervalo) - 1];
-                    $item->valido = true;
+                if ($item->tipo_subasta == 2) {
+                    $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
+                    if ($item->intervalo) {
+                        $intervalo = $item->intervalo[count($item->intervalo) - 1];
+                        if ($intervalo->cantidad > 0) {
+                            array_push($subastas, $item);
+                        }
+                    }
+                } else {
+                    array_push($subastas, $item);
                 }
             }
-            if ($all_subasta) {
+            if ($subastas) {
 
-                $this->response(['status' => 200, 'lista' => $all_subasta]);
+                $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404]);
             }
