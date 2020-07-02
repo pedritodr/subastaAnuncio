@@ -294,7 +294,7 @@ $mastercat = "";
                                                                                             {
                                                                                             ?>
                                                                                     
-                                                                                             <p><a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                             <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
                                                                                              <?= ucwords($result->nombre); ?>
                                                                                                 </a>
                                                                                             </p>
@@ -767,6 +767,7 @@ $mastercat = "";
             $('#category').val(params);
             $("#buscar_categoria").submit();
         }
+        
     </script>
     <style>
         /* CUSTOMIZE THE CAROUSEL
