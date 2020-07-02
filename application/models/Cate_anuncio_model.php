@@ -116,13 +116,11 @@ class Cate_anuncio_model extends CI_Model
     }
 
 
-
     function get_all_subcate()
     {
 
        
         $query = $this->db->get('sub_categoria');
-
         return  $query->result();
     }
 

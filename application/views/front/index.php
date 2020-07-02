@@ -352,15 +352,36 @@
                      </div>
                   </div>
                   <!-- Middle Content Box -->
-                  <div class="col-md-12 category-blocks">
-                     <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
-                     <ul class="popular-categories">
-                        <?php foreach ($all_cate_anuncio as $item) {  ?>
+                  <div class="col-md-12">
+                     <?= form_open_multipart("Front/Busquedade_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+                    
+                        <?php 
+                        $i = 0;
+                        
+                        foreach ($all_cate_anuncio as $item) {  ?>
                            <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                           <li><a style="cursor:pointer" onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><i><img style="height:128px; width:128px; margin-left:38px;" class="img-responsive img-rounded" src="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( <?= $item->count ?> )</span></a></li>
+                           <div class="col-md-3">
+                           <table class="table-hover" style="width:100%; background-color:white;"  border="0" >
+                              <tr>
+                                 <td>
+                                    <a  onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
+                                       <center>
+                                       <?= $item->nombre ?> <span style="color:#8f8889;"><br>( <?= $item->count ?> ) </span>
+                                       </center>
+                                    </a>
+                                   
+                    
+                                       </td>
+                                    
+                               
+                               </tr>
+                               </table>
+                               </div>
 
-                        <?php } ?>
-                     </ul>
+                      <?php
+                     } ?>
+                           
+                     
                      <input name="category" id="category" class="" type="hidden" value="">
                      <?= form_close(); ?>
                   </div>
