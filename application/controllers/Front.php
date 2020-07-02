@@ -3042,9 +3042,17 @@ class Front extends CI_Controller
         $this->load->model('payment_model', 'payment');
         $user_id = $this->input->post('user_id');
         $obj = $this->payment->get_by_payment_user_id($user_id);
-
+        $array = [];
         if (count($obj) > 0) {
-            echo json_encode(['status' => 500, 'data' => $obj, 'user_id' => $user_id]);
+            foreach ($obj as $item) {
+                if ($item->status == 0 || $item->status == 3) {
+                    array_push($array, $item);
+                }
+            }
+        }
+
+        if (count($array) > 0) {
+            echo json_encode(['status' => 500, 'data' => $array, 'user_id' => $user_id]);
         } else {
             echo json_encode(['status' => 200]);
         }
