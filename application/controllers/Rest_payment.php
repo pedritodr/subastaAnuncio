@@ -187,7 +187,7 @@ class Rest_payment extends REST_Controller
         if ($auth) {
             $obj = $this->payment->get_by_reference_id($reference);
             if ($obj) {
-                $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => "csm"]);
+                $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => "csm_aq"]);
                 $obj = $this->payment->get_by_id($obj->payment_id);
                 $this->response(['status' => 200, 'payment' => $obj]);
             } else {
