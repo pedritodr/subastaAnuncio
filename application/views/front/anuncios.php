@@ -303,6 +303,40 @@ if (empty($mastercat))
                                                                 </div>
                                                             </div>
                                                         <?php } ?>
+                                                        <?php if (!$category_id) { ?>
+                                                        <?php if ($categories) { ?>
+                                                            <div class="panel-group" id="accordion2">
+                                                            <?php
+                                                                $i =0;
+                                                                foreach ($categories as $item) {
+                                                                    $i ++;
+                                                                    ?>
+                                                                <!--Incia foreach --->
+                                                                <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i;?>">
+                                                                            <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                             <?= ucwords($item->nombre); ?> </a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
+                                                                            <div class="panel-body">
+                                                                            <?php
+                                                                                foreach($subcategoria as $result)
+                                                                                    {
+                                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                            {
+                                                                                            ?>
+
+                                                                                             <p><a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                             <?= ucwords($result->nombre); ?>
+                                                                                                </a>
+                                                                                            </p>
+                                                                                            <?php
+                                                                                            }
+                                                                                    }
+                                                                                ?>
 
 
                                                     <?php } ?>
