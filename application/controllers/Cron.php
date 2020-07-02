@@ -184,6 +184,14 @@ class Cron  extends CI_Controller
     {
         require(APPPATH . "libraries/Curl.php");
         $this->load->model('payment_model', 'payment');
+        $this->load->model('Correo_model', 'correo');
+        $asunto = "Ejecucion de sonda";
+        $motivo = 'Ejecucion de sonda Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3> “Ejecucion de sonda”</h3>";
+        $mensaje .= "Bien hecho.<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
         $payment = $this->payment->get_by_credenciales();

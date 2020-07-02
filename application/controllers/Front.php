@@ -1058,7 +1058,7 @@ class Front extends CI_Controller
                 $ciudad_id = 0;
             }
         }
-        
+
         if ($category != NULL) {
             if ($category == 0) {
                 $this->session->set_userdata('session_categoria_subasta', NULL);
@@ -1794,7 +1794,7 @@ class Front extends CI_Controller
     }
 
     public function buscar_anuncio()
-        {
+    {
         header('Cache-Control: no cache');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
@@ -1969,7 +1969,7 @@ class Front extends CI_Controller
         $data['destacados'] = $destacados;
         $data['contador'] = $contador;
 
-        
+
 
         $this->load_view_front('front/anuncios', $data);
     }
@@ -1977,16 +1977,12 @@ class Front extends CI_Controller
     ////
 
     public function busquedade_anuncio()
-        {
-            $mastercat = $this->input->post("category");
-            if($mastercat == "")
-                {
-
-                }
-            else{
-                $data["mastercat"] = $this->input->post("category");
-
-            }
+    {
+        $mastercat = $this->input->post("category");
+        if ($mastercat == "") {
+        } else {
+            $data["mastercat"] = $this->input->post("category");
+        }
 
         header('Cache-Control: no cache');
         $this->load->model('Pais_model', 'pais');
@@ -2002,13 +1998,13 @@ class Front extends CI_Controller
         }
 
         $data['categories'] = $categories;
-        
+
         $subcategoria = $this->category->get_all_subcate();
         $data['subcategoria'] = $subcategoria;
-        
+
         $anuncio_palabra = $this->input->post('anuncio_palabra');
         $category = $this->input->post('category');
-        
+
         $ciudad_id = $this->input->post('ciudad_id');
         if ($ciudad_id != NULL) {
             if ($ciudad_id == 0) {
@@ -2023,7 +2019,7 @@ class Front extends CI_Controller
                 $ciudad_id = 0;
             }
         }
-    
+
         if ($category != NULL) {
             if ($category == 0) {
                 $this->session->set_userdata('session_categoria', NULL);
@@ -2087,13 +2083,13 @@ class Front extends CI_Controller
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
         $subcate = "";
-       
+
         $offset = !$page ? 0 : $page;
         $all_anuncios = $this->anuncio->get_anuncios_by_category2($category);
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
             $subcate = $item->subcate_id;
-            
+
             if ($long > 150) {
                 $item->corta = substr($item->descripcion, 0, 150) . "...";
             } else {
@@ -3046,9 +3042,17 @@ class Front extends CI_Controller
         $this->load->model('payment_model', 'payment');
         $user_id = $this->input->post('user_id');
         $obj = $this->payment->get_by_payment_user_id($user_id);
-
+        $array = [];
         if (count($obj) > 0) {
-            echo json_encode(['status' => 500, 'data' => $obj]);
+            foreach ($obj as $item) {
+                if ($item->status == 0 || $item->status == 3) {
+                    array_push($array, $item);
+                }
+            }
+        }
+
+        if (count($array) > 0) {
+            echo json_encode(['status' => 500, 'data' => $array, 'user_id' => $user_id]);
         } else {
             echo json_encode(['status' => 200]);
         }

@@ -1422,7 +1422,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
@@ -1866,7 +1866,7 @@
 
                let requestId = data.requestId;
                let reference = data.reference;
-               let estado_payment = 0
+               let estado_payment = 0;
                if (data.status.status == "APPROVED") {
                   estado_payment = 1;
                   $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
@@ -2100,7 +2100,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
@@ -2435,7 +2435,7 @@
 
    .banner2 {
       padding-top: 107px !important
-   }  
+   }
 </style>
 
 
