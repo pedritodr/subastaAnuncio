@@ -323,13 +323,8 @@
                                  <?php } ?>
 
                               </div>
-
                            <?php } ?>
-
-
                         </div>
-                        <!-- End Tab panes -->
-                        <!-- Tab Content End -->
                      </div>
                   </div>
                </div>
@@ -352,16 +347,19 @@
                      </div>
                   </div>
                   <!-- Middle Content Box -->
-                  <div class="col-md-12">
+                  <div class="col-md-12a">
                      <?= form_open_multipart("Front/Busquedade_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                     
                         <?php 
-                        $i = 0;
+                        $i = -1;
                         
-                        foreach ($all_cate_anuncio as $item) {  ?>
+                        foreach ($all_cate_anuncio as $item) { 
+                           
+                           $i ++;?>
                            <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                           <div class="col-md-3">
-                           <table class="table-hover" style="width:100%; background-color:white;"  border="0" >
+                           
+                           <div class="col-md-3" style="background-color:white;">
+                           <table style="width:100%; background-color:white; border-color:ghostwhite;" border="5" >
                               <tr>
                                  <td>
                                     <a  onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
@@ -372,10 +370,9 @@
                                    
                     
                                        </td>
-                                    
-                               
+
                                </tr>
-                               </table>
+                           </table>
                                </div>
 
                       <?php

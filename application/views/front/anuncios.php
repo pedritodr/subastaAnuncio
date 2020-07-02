@@ -290,7 +290,7 @@ if (empty($mastercat))
                                                                             if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                         ?>
 
-                                                                                <p><a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
                                                                                         <?= ucwords($result->nombre); ?>
                                                                                     </a>
                                                                                 </p>
@@ -723,7 +723,7 @@ if (empty($mastercat))
         <!-- Main Container End -->
     </section>
     <script>
-        $('#category').val('');
+        //  $('#category').val('');
 
         function cargar_input_2(params) {
             $('#category').val(params);
@@ -731,70 +731,8 @@ if (empty($mastercat))
         }
     </script>
     <style>
-        /* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
-        /* Carousel base class */
-        .carousel {
-            margin-bottom: 58px;
-        }
-
-        /* Since positioning the image, we need to help out the caption */
-        .carousel-caption {
-            z-index: 1;
-        }
-
-        /* Declare heights because of positioning of img element */
-        .carousel .item {
-            height: 500px;
-            background-color: #555;
-        }
-
-        .carousel img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            min-height: 500px;
-        }
-
         .banner2 {
             padding-top: 107px !important
-        }
-
-        @media screen and (max-width: 992px) {
-            /*      .banner2 {
-            margin-top: 0
-         } */
-
-            .carousel .item {
-                height: 300px;
-                background-color: #555;
-            }
-
-            .carousel img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                min-height: 300px;
-            }
-        }
-
-        @media screen and (max-width: 400px) {
-            /*   .banner2 {
-   margin-top: 29% !important
-} */
-
-            .carousel .item {
-                height: 300px;
-                background-color: #555;
-            }
-
-            .carousel img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                min-height: 300px;
-            }
         }
 
         .recent-ads .recent-ads-list-image-inner {
