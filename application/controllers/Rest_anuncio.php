@@ -64,6 +64,7 @@ class Rest_anuncio extends REST_Controller
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($limite, $comienza);
             foreach ($all_anuncios as $item) {
+                //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
                 $long = strlen($item->descripcion);
                 if ($long > 99) {
@@ -71,8 +72,8 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->corta = $item->descripcion;
                 }
-                if ($title > 27) {
-                    $item->titulo = substr($item->titulo, 0, 24) . "...";
+                if ($title > 19) {
+                    $item->titulo = substr($item->titulo, 0, 16) . "...";
                 } else {
                     $item->titulo = $item->titulo;
                 }
@@ -368,5 +369,29 @@ class Rest_anuncio extends REST_Controller
         } else {
             $this->response(['status' => 500]);
         }
+    }
+    function remplace_title($cadena)
+    {
+        $cadena = utf8_decode($cadena);
+        $cadena = str_replace('?', '', $cadena);
+        $cadena = str_replace('+', '', $cadena);
+        $cadena = str_replace('%', '', $cadena);
+        $cadena = str_replace(',', '', $cadena);
+        $cadena = str_replace('?', '', $cadena);
+        $cadena = str_replace('/', '', $cadena);
+        $cadena = str_replace(':', '', $cadena);
+        $cadena = str_replace('(', '', $cadena);
+        $cadena = str_replace(')', '', $cadena);
+        $cadena = str_replace('??', '', $cadena);
+        $cadena = str_replace('`', '', $cadena);
+        $cadena = str_replace('!', '', $cadena);
+        $cadena = str_replace('¿', '', $cadena);
+        $cadena = str_replace("'", "-", $cadena);
+        $cadena = str_replace("´", "-", $cadena);
+        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
+        $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+
+        return $cadena;
     }
 }

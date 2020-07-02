@@ -62,20 +62,37 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
-            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza);
-
+            $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza, $fecha);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
+            $subastas = [];
             foreach ($all_subasta as $item) {
+                $title = strlen($item->nombre_espa);
                 $categoria_object = $this->categoria->get_by_id($item->categoria_id);
                 $item->categoria = $categoria_object;
-
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
+                if ($title > 19) {
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                } else {
+                    $item->nombre_espa = $item->nombre_espa;
+                }
+                if ($item->tipo_subasta == 2) {
+                    $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
+                    if ($item->intervalo) {
+                        $intervalo = $item->intervalo[count($item->intervalo) - 1];
+                        if ($intervalo->cantidad > 0) {
+                            array_push($subastas, $item);
+                        }
+                    }
+                } else {
+                    array_push($subastas, $item);
+                }
             }
-            if ($all_subasta) {
+            if ($subastas) {
 
-                $this->response(['status' => 200, 'lista' => $all_subasta]);
+                $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404]);
             }
@@ -125,20 +142,23 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
-
             $this->load->model('Categoria_model', 'categoria');
             $this->load->model('Pais_model', 'pais');
             $all_detalle = $this->subasta->get_by_id($subasta_id);
             $ciudad = $this->pais->get_by_ciudad_id_object($all_detalle->ciudad_id);
             $categoria = $this->categoria->get_by_id($all_detalle->categoria_id);
-
+            if ($all_detalle->tipo_subasta == 2) {
+                $all_detalle->intervalo = $this->subasta->get_intervalo_subasta($all_detalle->subasta_id);
+                if ($all_detalle->intervalo) {
+                    $intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
+                }
+            }
             $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
-
+            $subcat = $this->categoria->get_subcat_by_id($all_detalle->subcat_id);
             $puja =  $this->subasta->get_puja_alta($subasta_id);
             if ($all_detalle) {
-
-                $this->response(['status' => 200, 'detalle' => $all_detalle, 'puja' => $puja, 'subasta_user' => $subasta_user, 'foto_object' => $foto_object, 'ciudad' => $ciudad, 'categoria' => $categoria]);
+                $this->response(['status' => 200, 'detalle' => $all_detalle, 'puja' => $puja, 'subasta_user' => $subasta_user, 'foto_object' => $foto_object, 'ciudad' => $ciudad, 'categoria' => $categoria, 'subcategoria' => $subcat]);
             } else {
                 $this->response(['status' => 404]);
             }
