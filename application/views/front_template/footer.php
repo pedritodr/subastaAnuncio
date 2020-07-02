@@ -1422,7 +1422,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
