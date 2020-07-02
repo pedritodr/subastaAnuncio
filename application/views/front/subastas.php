@@ -474,9 +474,9 @@
                                                         </h4>
                                                     </div>
                                                 </div>
-                                            <?php } 
+                                            <?php }
                                             else {
-                                                
+
                                                 ?>
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
@@ -490,18 +490,18 @@
 
                                             <?php } ?>
                                             <?php if (!$category_id) { ?>
-                                               
-                                                <?php 
+
+                                                <?php
                                                     if ($categories) { ?>
                                                     <div class="panel-group" id="accordion2">
-                                                    <?php 
+                                                    <?php
                                                     $i =0;
-                                                    foreach ($categories as $item) { 
+                                                    foreach ($categories as $item) {
                                                         $i ++;
                                                         ?>
                                                     <!--Incia foreach --->
 
-                                                    
+
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
@@ -518,7 +518,7 @@
                                                                             if($result->categoria_id == $item->categoria_id)
                                                                                 {
                                                                                 ?>
-                                                                                    
+
                                                                                     <?php
                                                                                         if($result->subcat_id == $subcat_id)
                                                                                             {
@@ -527,7 +527,7 @@
                                                                                                     <?= ucwords($result->nombre); ?>
                                                                                                 </a></p>
                                                                                                 <?php
-                                                                                            
+
                                                                                             }
                                                                                         else{
                                                                                             ?>
@@ -536,7 +536,7 @@
                                                                                             </a></p>
                                                                                             <?php
                                                                                         }
-                                                                                        
+
                                                                                 }
                                                                         }
                                                                     ?>
@@ -544,17 +544,17 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
-                                                        
+
+
 
                                                     <?php } ?>
                                                 <!-- Termina foreach -->
-                                                    </div> 
+                                                    </div>
 
                                                 <?php } ?>
-                                            <?php 
-                                            } 
-                                                else { 
+                                            <?php
+                                            }
+                                                else {
                                                 ?>
                                                 <?php if ($categories) { ?>
                                                     <div class="panel-group" id="accordion3">
@@ -570,7 +570,7 @@
                                                                                 if($result->categoria_id == $item->categoria_id)
                                                                                     {
                                                                                     ?>
-                                                                                    
+
                                                                                         <?php
                                                                                             if($result->subcat_id == $subcat_id)
                                                                                                 {
@@ -579,7 +579,7 @@
                                                                                                         si <?= ucwords($result->nombre); ?>
                                                                                                     </a>
                                                                                                     <?php
-                                                                                            
+
                                                                                                 }
                                                                                             else{
                                                                                                 ?>
@@ -589,15 +589,15 @@
                                                                                                 <?php
                                                                                             }
                                                                                             ?>
-                                                                                    
-                                                                                    <?php 
+
+                                                                                    <?php
                                                                                     }
                                                                             }
                                                                         ?>
-                                                                    
+
 
                                                         <?php }
-                                                         else { 
+                                                         else {
                                                             $i = 0;
                                                             ?>
                                                             <div class="panel panel-default">
@@ -614,7 +614,7 @@
                                                                 if($result->categoria_id == $item->categoria_id)
                                                                     {
                                                                     ?>
-                                                                                    
+
                                                                         <?php
                                                                             if($result->subcat_id == $subcat_id)
                                                                                 {
@@ -627,7 +627,7 @@
                                                                                                     if($result->categoria_id == $item->categoria_id)
                                                                                                         {
                                                                                                         ?>
-                                                                                    
+
                                                                                                             <?php
                                                                                                                 if($result->subcat_id == $subcat_id)
                                                                                                                     {
@@ -636,7 +636,7 @@
                                                                                                                             <?= ucwords($result->nombre); ?>
                                                                                                                         </a></p>
                                                                                                                         <?php
-                                                                                            
+
                                                                                                                     }
                                                                                                                 else{
                                                                                                                     ?>
@@ -646,15 +646,15 @@
                                                                                                                     <?php
                                                                                                                 }
                                                                                                                 ?>
-                                                                                    
-                                                                                                        <?php 
+
+                                                                                                        <?php
                                                                                                         }
                                                                                                 }
                                                                                             ?>
 
                                                                                         </div>
-                                                                                    </div>  
-                                                                                    <?php   
+                                                                                    </div>
+                                                                                    <?php
                                                                                 }
                                                                             else{
 ?>
@@ -666,7 +666,7 @@
                 if($result->categoria_id == $item->categoria_id)
                     {
                     ?>
-                                                                                    
+
                     <li>
                         <?php
                             if($result->subcat_id == $subcat_id)
@@ -676,7 +676,7 @@
                                         <?= ucwords($result->nombre); ?>
                                     </a></p>
                                     <?php
-                                                                                            
+
                                 }
                             else{
                                 ?>
@@ -686,9 +686,9 @@
                                 <?php
                             }
                             ?>
-                                                                                    
+
                     </li>
-                    <?php 
+                    <?php
                     }
             }
         ?>
@@ -697,7 +697,7 @@
 </div>
 <?php
                                                                                 }
-                                                                            
+
                                                                     }
                                                             }
                                                             ?>
@@ -709,7 +709,7 @@
                                                                             if($result->categoria_id == $item->categoria_id)
                                                                                 {
                                                                                 ?>
-                                                                                    
+
                                                                                     <?php
                                                                                         if($result->subcat_id == $subcat_id)
                                                                                             {
@@ -718,7 +718,7 @@
                                                                                                     <?= ucwords($result->nombre); ?>
                                                                                                 </a></p>
                                                                                                 <?php
-                                                                                            
+
                                                                                             }
                                                                                         else{
                                                                                             ?>
@@ -728,8 +728,8 @@
                                                                                             <?php
                                                                                         }
                                                                                         ?>
-                                                                                    
-                                                                                <?php 
+
+                                                                                <?php
                                                                                 }
                                                                         }
                                                                     ?>
