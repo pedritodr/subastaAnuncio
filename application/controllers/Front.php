@@ -1058,6 +1058,7 @@ class Front extends CI_Controller
                 $ciudad_id = 0;
             }
         }
+        
         if ($category != NULL) {
             if ($category == 0) {
                 $this->session->set_userdata('session_categoria_subasta', NULL);
@@ -1793,11 +1794,7 @@ class Front extends CI_Controller
     }
 
     public function buscar_anuncio()
-    {
-
-
-
-
+        {
         header('Cache-Control: no cache');
         $this->load->model('Pais_model', 'pais');
         $this->load->model('Anuncio_model', 'anuncio');
@@ -1891,7 +1888,6 @@ class Front extends CI_Controller
 
         $config['prev_tag_close'] = '</li>';
 
-
         /* Se inicializa la paginacion*/
 
         $this->pagination->initialize($config);
@@ -1920,7 +1916,199 @@ class Front extends CI_Controller
             }
         }
 
+        $data['subcate'] = $subcate;
+        $data['all_anuncios'] = $all_anuncios;
+        $data['resultados'] = $contador;
+        if ($offset == 0) {
+            if ($contador == 0) {
+                $data['inicio'] = 0;
+                $data['fin'] = 0;
+            } else {
+                $data['inicio'] = 1;
+                if ($contador >= 8) {
+                    $data['fin'] =  8;
+                } else {
+                    $data['fin'] = $contador;
+                }
+            }
+        } else {
+            $data['inicio'] = $offset + 1;
+            $intervalo = 8 + $offset;
+            if ($intervalo > $contador) {
+                $data['fin'] = $contador;
+            } else {
+                $data['fin'] = $intervalo;
+            }
+        }
+        $recientes = $this->anuncio->get_all_anuncios_recientes();
+        foreach ($recientes as $item) {
+            $long = strlen($item->titulo);
 
+            if ($long > 22) {
+                $item->titulo_corto = substr($item->titulo, 0, 22) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $data['recientes'] = $recientes;
+        $destacados = $this->anuncio->get_all_anuncios_destacados();
+        foreach ($destacados as $item) {
+            $long = strlen($item->titulo);
+
+            if ($long > 20) {
+                $item->titulo_corto = substr($item->titulo, 0, 20) . "...";
+            } else {
+
+                $item->titulo_corto = $item->titulo;
+            }
+        }
+        $all_ciudad = $this->pais->get_by_pais_id_object(4);
+
+        $data['all_ciudad'] = $all_ciudad;
+        $data['destacados'] = $destacados;
+        $data['contador'] = $contador;
+
+        
+
+        $this->load_view_front('front/anuncios', $data);
+    }
+
+    ////
+
+    public function busquedade_anuncio()
+        {
+            $mastercat = $this->input->post("category");
+            if($mastercat == "")
+                {
+
+                }
+            else{
+                $data["mastercat"] = $this->input->post("category");
+
+            }
+
+        header('Cache-Control: no cache');
+        $this->load->model('Pais_model', 'pais');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Cate_anuncio_model', 'category');
+        $categories = $this->category->get_all();
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]);
+        $data['all_banners'] = $all_banners;
+
+        foreach ($categories as $item) {
+            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+        }
+
+        $data['categories'] = $categories;
+        
+        $subcategoria = $this->category->get_all_subcate();
+        $data['subcategoria'] = $subcategoria;
+        
+        $anuncio_palabra = $this->input->post('anuncio_palabra');
+        $category = $this->input->post('category');
+        
+        $ciudad_id = $this->input->post('ciudad_id');
+        if ($ciudad_id != NULL) {
+            if ($ciudad_id == 0) {
+                $this->session->set_userdata('session_ciudad', NULL);
+            } else {
+                $this->session->set_userdata('session_ciudad', $ciudad_id);
+            }
+        } else {
+            if ($this->session->userdata('session_ciudad')) {
+                $ciudad_id = $this->session->userdata('session_ciudad');
+            } else {
+                $ciudad_id = 0;
+            }
+        }
+    
+        if ($category != NULL) {
+            if ($category == 0) {
+                $this->session->set_userdata('session_categoria', NULL);
+            } else {
+                $this->session->set_userdata('session_categoria', $category);
+            }
+        } else {
+            if ($this->session->userdata('session_categoria')) {
+                $category = $this->session->userdata('session_categoria');
+            } else {
+                $category = 0;
+            }
+        }
+
+        //$contador = count($this->anuncio->get_anuncio_palabra($anuncio_palabra, $ciudad_id, $category));
+        $contador = count($this->anuncio->get_anuncios_by_category2($category));
+        /* URL a la que se desea agregar la paginación*/
+        $config['base_url'] = site_url('search_anuncios/page/');
+
+        /*Obtiene el total de registros a paginar */
+
+        $config['total_rows'] = $contador;
+        $user_id = $this->session->userdata('user_id');
+        if ($contador >= 8) {
+            $config['per_page'] = '8';
+        } else {
+
+            $config['per_page'] = (string) $contador;
+        }
+        /*Obtiene el numero de registros a mostrar por pagina */
+
+        $config['uri_segment'] = 3;
+        /*Se personaliza la paginación para que se adapte a bootstrap*/
+
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+
+        $config['cur_tag_close'] = '</a></li>';
+
+        $config['num_tag_open'] = '<li>';
+
+        $config['num_tag_close'] = '</li>';
+
+        $config['last_link'] = FALSE;
+
+        $config['first_link'] = FALSE;
+
+        $config['next_link'] = '&raquo;';
+
+        $config['next_tag_open'] = '<li>';
+
+        $config['next_tag_close'] = '</li>';
+
+        $config['prev_link'] = '&laquo;';
+
+        $config['prev_tag_open'] = '<li>';
+
+        $config['prev_tag_close'] = '</li>';
+
+        /* Se inicializa la paginacion*/
+
+        $this->pagination->initialize($config);
+        $page = $this->uri->segment(3);
+        $subcate = "";
+       
+        $offset = !$page ? 0 : $page;
+        $all_anuncios = $this->anuncio->get_anuncios_by_category2($category);
+        foreach ($all_anuncios as $item) {
+            $long = strlen($item->descripcion);
+            $subcate = $item->subcate_id;
+            
+            if ($long > 150) {
+                $item->corta = substr($item->descripcion, 0, 150) . "...";
+            } else {
+
+                $item->corta = $item->descripcion;
+            }
+            $nombre = strlen($item->titulo);
+
+            if ($nombre > 54) {
+                $item->corto = substr($item->titulo, 0, 54) . "...";
+            } else {
+
+                $item->corto = $item->titulo;
+            }
+        }
 
         $data['subcate'] = $subcate;
         $data['all_anuncios'] = $all_anuncios;
@@ -1979,6 +2167,7 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/anuncios', $data);
     }
+    ////
 
     public function about()
     {
