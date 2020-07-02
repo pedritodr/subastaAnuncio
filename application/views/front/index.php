@@ -348,7 +348,7 @@
                   </div>
                   <div class="row">
                   <!-- Middle Content Box -->
-                     <?= form_open_multipart("Front/Busquedade_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
+                     <?= form_open_multipart("search_categoria_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                     
                         <?php 
                         $i = -1;
