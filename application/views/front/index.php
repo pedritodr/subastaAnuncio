@@ -346,20 +346,31 @@
                         </h3>
                      </div>
                   </div>
+                  <div class="row">
                   <!-- Middle Content Box -->
-                  <div class="col-md-12a">
                      <?= form_open_multipart("Front/Busquedade_anuncio", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                     
                         <?php 
                         $i = -1;
-                        
+                        $color = "";
+                        $j= -1;
                         foreach ($all_cate_anuncio as $item) { 
+                           $j++;
+                           $i ++;
                            
-                           $i ++;?>
+                           ?>
                            <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                           
-                           <div class="col-md-3" style="background-color:white;">
-                           <table style="width:100%; background-color:white; border-color:ghostwhite;" border="5" >
+                           <?php 
+                           if($i == "4")
+                              {
+                                 ?>
+                                 <?php
+                                 $i = 0;
+                              }
+                          
+                           ?>
+                           <div class="col-md-3" style="background-color:white; border-bottom: 10px solid #F0F0F0; border-right: 5px solid #F0F0F0;  border-left: 5px solid #F0F0F0;" >
+                           <table class="table-hover" style="width:100%; background-color:white; "  >
                               <tr>
                                  <td>
                                     <a  onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
@@ -372,7 +383,7 @@
                                        </td>
 
                                </tr>
-                           </table>
+                               </table>
                                </div>
 
                       <?php
@@ -381,8 +392,8 @@
                      
                      <input name="category" id="category" class="" type="hidden" value="">
                      <?= form_close(); ?>
-                  </div>
                   <!-- Middle Content Box End -->
+               </div>
                </div>
                <!-- Row End -->
             </div>
