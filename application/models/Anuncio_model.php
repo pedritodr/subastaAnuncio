@@ -197,6 +197,22 @@ class Anuncio_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    function get_anuncios_by_category2($id)
+    {
+        $this->db->select('anuncio.destacado,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.subcate_id, sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->from('anuncio');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
+        $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
+        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
+        $this->db->join('user', 'user.user_id = anuncio.user_id');
+        $this->db->where('cate_anuncio.cate_anuncio_id', $id);
+        $this->db->where('anuncio.is_active', 1);
+        $query = $this->db->get();
+       
+        return $query->result();
+    }
+
     function get_anuncios_by_category_city($id, $ciudad_id)
     {
         $this->db->select('anuncio.destacado,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
@@ -366,6 +382,15 @@ class Anuncio_model extends CI_Model
         $this->db->order_by('anuncio.destacado', 'desc');
         $this->db->order_by('anuncio.anuncio_id', 'desc');
         $this->db->limit($limit, $start);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_all_sub_from_category($limit, $start, $palabra, $ciudad_id, $category = 0)
+    {
+        $this->db->select('*');
+        $this->db->from('sub_categoria');
+        $this->db->where('cate_anuncio_id', $category);
         $query = $this->db->get();
         return $query->result();
     }

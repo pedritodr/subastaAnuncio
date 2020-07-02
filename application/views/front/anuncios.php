@@ -1,11 +1,15 @@
 
+<?php
+if(empty($mastercat))
+$mastercat = "";
+?>
+
 <!-- Master Slider -->
 <?php if (count($all_banners) > 0) { ?>
         <div class="master-slider ms-skin-default banner2" id="masterslider">
             <?php foreach ($all_banners as $item) { ?>
                 <div class="ms-slide slide-1" data-delay="5">
                     <img class="img-master" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="<?= base_url($item->foto) ?>" alt="<?= $item->foto ?>" />
-
                     <!--  <h3 class="ms-layer title4 font-white font-uppercase font-thin-xs" style="left:90px; top:170px;" data-type="text" data-delay="2000" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)">2017 Ducati Panigale 959 </h3>
                 <h3 class="ms-layer title4 font-white font-thin-xs" style="left:90px; top:220px;" data-type="text" data-delay="2500" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)"><span class="font-color">Brand new 0 kms</span></h3>
 
@@ -77,7 +81,6 @@
                                         <!-- Sorting Filters Breadcrumb -->
                                         <div class="filter-brudcrums">
                                             <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> - <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span> <?= translate("resultados_lang"); ?></span>
-
                                         </div>
                                         <!-- Sorting Filters Breadcrumb End -->
                                     </div>
@@ -236,117 +239,338 @@
                                         <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                             <ul>
                                                 <?php $category_id = $this->session->userdata('session_categoria'); ?>
-
-
                                                     <?php if (!$category_id) { ?>
                                                     
-                                                        <li><a style="cursor:pointer; color:#2a3681" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
+                                                        <li>
+                                                            
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <h4 class="panel-title">
+                                                                    <a style="cursor:pointer; color:#2a3681" href="<?= site_url('anuncios/page'); ?>" >
+                                                                    <i style="color:#8c1822ab" class="fa fa-tags"></i>
+                                                                    Todas las categorías </a>
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
                                                         <?php }
                                                          else { ?>
-                                                        <li><a style="cursor:pointer" onclick="cargar_input('0')"><span><i style="color:#8c1822ab" class="fa fa-tags"></i></span>Todas las categorias</a></li>
+                                                        
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                <a style="cursor:pointer; color:#2a3681" href="<?= site_url('anuncios/page'); ?>" >
+                                                                <i style="color:#8c1822ab" class="fa fa-tags"></i>
+                                                                Todas las categorías</a>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+
                                                         <?php } ?>
                                                         <?php if (!$category_id) { ?>
                                                         <?php if ($categories) { ?>
-                                                            
-                                                            <?php foreach ($categories as $item) { ?>
-                                                                <li class="dropdown">
-                                                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
-                                                                    <ul class="dropdown-menu">
-                                                                    <?php
-                                                                    foreach($subcategoria as $result)
-                                                                        {
-                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
-                                                                            {
-                                                                            //Busqueda por todas las categorias
-                                                                            ?>
-                                                                            <li>
-                                                                           
-                                                                            <a style=" color:black;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
-                                                                            <?= ucwords($result->nombre); ?>
-                                                                            </a>
-                                                                            </li>
-                                                                        
-                                                                            <?php 
-                                                                            }
-                                                                        }
-                                                                        ?>
-                                                                    </ul>
-                                                                </li>
+                                                            <div class="panel-group" id="accordion2">
+                                                            <?php 
+                                                                $i =0;
+                                                                foreach ($categories as $item) { 
+                                                                    $i ++;
+                                                                    ?>
+                                                                <!--Incia foreach --->
+                                                                <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i;?>">
+                                                                            <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                             1 <?= ucwords($item->nombre); ?> </a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
+                                                                            <div class="panel-body">
+                                                                            <?php
+                                                                                foreach($subcategoria as $result)
+                                                                                    {
+                                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                            {
+                                                                                            ?>
+                                                                                    
+                                                                                             <p><a style="color:black;" onclick="cargar_input('<?= $result->subcate_id ?>')">
+                                                                                             <?= ucwords($result->nombre); ?>
+                                                                                                </a>
+                                                                                            </p>
+                                                                                            <?php
+                                                                                            }
+                                                                                    }
+                                                                                ?>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                     <?php } ?>
                                                                   
 
                                                                     <?php } ?>
-                                                                <?php } else { ?>
-                                                                <?php foreach ($categories as $item) { ?>
-                                                                <?php if ($item->cate_anuncio_id == $category_id) { ?>
-                                                                    <li class="dropdown">
-                                                                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
-                                                                        <ul class="dropdown-menu">
-                                                                        <?php
-                                                                        foreach($subcategoria as $result)
-                                                                            {
-                                                                            if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                <?php } else {
+                                                                $i = 0;
+                                                                 ?>
+                                                                <div class="panel-group" id="accordion2">
+
+                                                                <?php foreach ($categories as $item) {
+                                                                    $i++; ?>
+                                                                <?php if ($item->cate_anuncio_id == $mastercat) { ?>
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2"  href="#collapse<?= $i;?>">
+                                                                            <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                              <?= ucwords($item->nombre); ?> </a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div id="collapse<?= $i;?>" class="panel-collapse collapse in">
+                                                                            <div class="panel-body">
+                                                                            <?php
+                                                                                foreach($subcategoria as $result)
                                                                                 {
+                                                                                   
+                                                                                    if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                        {
+                                                                                        ?>
+                                                                                            <?php
+                                                                                              
+                                                                                                if($result->subcate_id == $subcate)
+                                                                                                    {
+                                                                                                      
+                                                                                                        ?>
+                                                                                                        <div id="collapse<?= $i;?>" class="panel-collapse collapse in">
+                                                                                                            <div class="panel-body">
+                                                                                                            <?php
+                                                                                                                foreach($subcategoria as $result)
+                                                                                                                    {
+                                                                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                                                            {
+                                                                                                                            ?>
+                            
+                                                                                                                                <?php
+                                                                                                                                    if($result->subcate_id == $subcate)
+                                                                                                                                        {
+                                                                                                                                            ?>
+                                                                                                                                            <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                                                                            </a></p>
+                                                                                                                                            <?php
+                                    
+                                                                                                                                        }
+                                                                                                                                    else{
+                                                                                                                                        ?>
+                                                                                                                                        <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                                                        </a></p>
+                                                                                                                                        <?php
+                                                                                                                                    }
+                                                                                                                                    ?>
+                            
+                                                                                                                            <?php 
+                                                                                                                            }
+                                                                                                                    }
+                                                                                                                ?>
+
+                                                                                                            </div>
+                                                                                                        </div>  
+                                                                                                        <?php   
+                                                                                                    }
+                                                                                                else{
+                                                                                    ?>
+                                                                                    <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
+                                                                                        <div class="panel-body">
+                                                                                        <?php
+                                                                                            foreach($subcategoria as $result)
+                                                                                                {
+                                                                                                    if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                                        {
+                                                                                                        ?>
+                                                                                            
+                                                                                                        <li>
+                                                                                                            <?php
+                                                                                                                if($result->subcate_id == $subcate)
+                                                                                                                    {
+                                                                                                                        ?>
+                                                                                                                        <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                                                        </a></p>
+                                                                                                                        <?php
+                                                                                                    
+                                                                                                                    }
+                                                                                                                else{
+                                                                                                                    ?>
+                                                                                                                    <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                                    </a></p>
+                                                                                                                    <?php
+                                                                                                                }
+                                                                                                                ?>
+                                                                                            
+                                                                                                        </li>
+                                                                                                        <?php 
+                                                                                                        }
+                                                                                                }
+                                                                                            ?>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <?php
+                                                                                                    }
+                                                                                                }
+                                                                                            }
                                                                                 ?>
-                                                                                <li>
-                                                                               
-                                                                                <a style="background-color:red; color:white;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
-                                                                                </li>
-                                                                        
-                                                                                <?php 
-                                                                                //No hace falta else, sospechoso.
-                                                                                }
-                                                                            }
-                                                                            ?>
-                                                                        </ul>
-                                                                    </li>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                        
                                                                     <?php }
-                                                                    else{
-                                                                        ?>
-                                                                        
-                                                                        <li class="dropdown">
-                                                                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i> <?= ucwords($item->nombre); ?> </a>
-                                                                        <ul class="dropdown-menu">
-                                                                               
+                                                                                
+                                                                        else { 
+                                                                            
+                                                                            ?>
+                                                                            <div class="panel panel-default">
+                                                                            <div class="panel-heading">
+                                                                                <h4 class="panel-title">
+                                                                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i;?>">
+                                                                                <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                                 <?= ucwords($item->nombre); ?> </a>
+                                                                                </h4>
+                                                                            </div>
+                                                                            <?php
+                                                                            foreach($subcategoria as $result)
+                                                                            {
+                                                                                if(($result->cate_anuncio_id == $item->cate_anuncio_id))
+                                                                                    {
+
+                                                                                       
+                                                                                    ?>
+                                                                                        <?php
+                                                                                            if($result->subcate_id == $subcate)
+                                                                                                {
+                                                                                                    ?>
+                                                                                                    <div id="collapse<?= $i;?>" class="panel-collapse collapse in">
+                                                                                                        <div class="panel-body">
+                                                                                                        <?php
+                                                                                                            foreach($subcategoria as $result)
+                                                                                                                {
+                                                                                                                    if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                                                        {
+                                                                                                                        ?>
+                            
+                                                                                                                            <?php
+                                                                                                                                if($result->subcate_id == $subcate)
+                                                                                                                                    {
+                                                                                                                                        ?>
+                                                                                                                                        <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                                           <?= ucwords($result->nombre); ?>
+                                                                                                                                        </a></p>
+                                                                                                                                        <?php
+                                    
+                                                                                                                                    }
+                                                                                                                                else{
+                                                                                                                                    ?>
+                                                                                                                                    <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                                      <?= ucwords($result->nombre); ?>
+                                                                                                                                    </a></p>
+                                                                                                                                    <?php
+                                                                                                                                }
+                                                                                                                                ?>
+                            
+                                                                                                                        <?php 
+                                                                                                                        }
+                                                                                                                }
+                                                                                                            ?>
+
+                                                                                                        </div>
+                                                                                                    </div>  
+                                                                                                    <?php   
+                                                                                                }
+                                                                                            else{
+                                                                                ?>
+                                                                                <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
+                                                                                    <div class="panel-body">
                                                                                     <?php
+                                                                                        foreach($subcategoria as $result)
+                                                                                            {
+                                                                                                if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                                    {
+                                                                                                    ?>
+                                                                                            
+                                                                                                    <li>
+                                                                                                        <?php
+                                                                                                            if($result->subcate_id == $subcate)
+                                                                                                                {
+                                                                                                                    ?>
+                                                                                                                    <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                                    </a></p>
+                                                                                                                    <?php
+                                                                                                    
+                                                                                                                }
+                                                                                                            else{
+                                                                                                                ?>
+                                                                                                                <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                                                </a></p>
+                                                                                                                <?php
+                                                                                                            }
+                                                                                                            ?>
+                                                                                            
+                                                                                                    </li>
+                                                                                                    <?php 
+                                                                                                    }
+                                                                                            }
+                                                                                        ?>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <?php
+                                                                                                }
+                    
+                                                                                    }
+                                                                            }
+                                                                            ?>
+                                                                            <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
+                                                                                <div class="panel-body">
+                                                                                <?php
                                                                                     foreach($subcategoria as $result)
                                                                                         {
-                                                                                        if($result->cate_anuncio_id == $item->cate_anuncio_id)
-                                                                                            {
-                                                                                            //Busqueda por todas las categorias
-                                                                                            if($result->subcate_id == $subcate)
-                                                                                            {
-                                                                                            ?>
-                                                                                            <li>
-                                                                           
-                                                                                            <a style=" color:red;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
-                                                                                            <?= ucwords($result->nombre); ?>
-                                                                                            </a>
-                                                                                            </li>
-                                                                                            <?php
-                                                                                            }
-                                                                                            else{
-                                                                                            ?>
-                                                                                            <li>
-                                                                       
-                                                                                            <a style=" color:black;"  onclick="cargar_input('<?= $result->subcate_id ?>')"> 
-                                                                                            <?= ucwords($result->nombre); ?>
-                                                                                            </a>
-                                                                                            </li>
-                                                                                            <?php
-                                                                                            
-                                                                                            }
-                                                                                            ?>
-                                                                                           
-                                                                        
-                                                                                            <?php 
-                                                                                            }
+                                                                                            if($result->cate_anuncio_id == $item->cate_anuncio_id)
+                                                                                                {
+                                                                                                ?>
+                            
+                                                                                                    <?php
+                                                                                                        if($result->subcate_id == $subcate)
+                                                                                                            {
+                                                                                                                ?>
+                                                                                                                <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                                                </a></p>
+                                                                                                                <?php
+                                    
+                                                                                                            }
+                                                                                                        else{
+                                                                                                            ?>
+                                                                                                            <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                                            </a></p>
+                                                                                                            <?php
+                                                                                                        }
+                                                                                                        ?>
+                            
+                                                                                                <?php 
+                                                                                                }
                                                                                         }
-                                                                                        ?>
-                                                                                    </ul>
-                                                                                </li>
-                                                                                    <?php } ?>
+                                                                                    ?>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <?php } ?>
                                                                             
                                                                         <?php
                                                                            
@@ -539,7 +763,7 @@
      
             $('#category').val('');
        
-        function cargar_input(params) {
+        function cargar_input_2(params) {
             $('#category').val(params);
             $("#buscar_categoria").submit();
         }
