@@ -387,11 +387,6 @@ class Subasta_model extends CI_Model
     function get_all_by_subastas_with_pagination_search($limit, $start, $id, $palabra, $tipo, $ciudad_id)
     {
         $this->db->limit($limit, $start);
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 5457147f04f3fc4f9be8cfaaf5d2129732c3165b
         $this->db->select('subasta.tipo_subasta,subasta.categoria_id, subasta.subcat_id, subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago, subcategoria_subasta.nombre as categoria, ciudad.name_ciudad as ciudad,ciudad.ciudad_id, subcategoria_subasta.subcat_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');

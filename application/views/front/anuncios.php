@@ -282,7 +282,7 @@ $mastercat = "";
                                                                             <h4 class="panel-title">
                                                                             <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i;?>">
                                                                             <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
-                                                                             1 <?= ucwords($item->nombre); ?> </a>
+                                                                             <?= ucwords($item->nombre); ?> </a>
                                                                             </h4>
                                                                         </div>
                                                                         <div id="collapse<?= $i;?>" class="panel-collapse collapse ">
