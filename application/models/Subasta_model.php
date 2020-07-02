@@ -454,6 +454,7 @@ class Subasta_model extends CI_Model
         $this->db->where('user_id', $user_id);
         $this->db->where('subasta_id', $subasta_id);
         $this->db->where('is_active', 1);
+        $this->db->where('intervalo_subasta_id', NULL);
         $query = $this->db->get();
         return $query->row();
     }

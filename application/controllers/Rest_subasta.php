@@ -150,7 +150,7 @@ class Rest_subasta extends REST_Controller
             if ($all_detalle->tipo_subasta == 2) {
                 $all_detalle->intervalo = $this->subasta->get_intervalo_subasta($all_detalle->subasta_id);
                 if ($all_detalle->intervalo) {
-                    $intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
+                    $all_detalle->intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
                 }
             }
             $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
