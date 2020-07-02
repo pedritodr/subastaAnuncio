@@ -70,6 +70,7 @@ $route['prueba'] = 'front/prueba';
 $route['search_subasta_directa'] = 'front/buscar_subasta_directa';
 $route['search_subasta_inversa'] = 'front/buscar_subasta_inversa';
 $route['search_anuncios'] = 'front/buscar_anuncio';
+$route['search_categoria_anuncios'] = 'front/busquedade_anuncio';
 
 $route['faqs'] = 'front/faq';
 //$route['payment/(:any)'] = 'front/pago_exitoso/$1';
