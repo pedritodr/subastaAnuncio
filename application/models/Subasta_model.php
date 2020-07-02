@@ -322,7 +322,7 @@ class Subasta_model extends CI_Model
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
         $this->db->join('subcategoria_subasta', 'subcategoria_subasta.subcat_id = subasta.subcat_id');
         $this->db->join('user', 'user.user_id = subasta.user_id');
-        
+
         if ($id > 0) {
             $this->db->where('subcategoria_subasta.subcat_id', $id); //modificado por jose, campo anterior categoria_id
         }
@@ -387,6 +387,11 @@ class Subasta_model extends CI_Model
     function get_all_by_subastas_with_pagination_search($limit, $start, $id, $palabra, $tipo, $ciudad_id)
     {
         $this->db->limit($limit, $start);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5457147f04f3fc4f9be8cfaaf5d2129732c3165b
         $this->db->select('subasta.tipo_subasta,subasta.categoria_id, subasta.subcat_id, subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago, subcategoria_subasta.nombre as categoria, ciudad.name_ciudad as ciudad,ciudad.ciudad_id, subcategoria_subasta.subcat_id');
         $this->db->from('subasta');
         $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
@@ -427,12 +432,14 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    function get_all_by_subastas_with_pagination2($limit, $start)
+    function get_all_by_subastas_with_pagination2($limit, $start, $fecha)
     {
         $this->db->limit($limit, $start);
         $this->db->select('*');
         $this->db->from('subasta');
         $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where("subasta.fecha_cierre >=", $fecha);
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
         $query = $this->db->get();
         return $query->result();
