@@ -1540,7 +1540,7 @@
 
                         $('#precio').html("<b class='strikethrough' style='font-size:16px !important; color:#2a3681 !important'>$" + parseFloat(object.intervalo[count_intervalo - 2].valor).toFixed(2) + "</b> $" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
                      } else {
-                        $('#precio').html("$" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
+                        $('#precio').html("Precio inicial $" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
 
                      }
                      $('#fecha_cierre').text(object.intervalo[count_intervalo - 1].fecha);
