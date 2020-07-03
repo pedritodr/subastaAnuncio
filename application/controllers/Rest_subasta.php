@@ -287,7 +287,8 @@ class Rest_subasta extends REST_Controller
                     $id = $this->subasta->create_puja($data);
                     $object = $this->subasta->get_by_puja_id($id);
                     if ($object) {
-                        $this->response(['status' => 200, 'object' => $object]);
+                        $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+                        $this->response(['status' => 200, 'object' => $object, 'user_win' => $user_win]);
                     } else {
                         $this->response(['status' => 404]);
                     }
@@ -299,8 +300,8 @@ class Rest_subasta extends REST_Controller
                 $id = $this->subasta->create_puja($data);
                 $object = $this->subasta->get_by_puja_id($id);
                 if ($object) {
-
-                    $this->response(['status' => 200, 'object' => $object]);
+                    $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+                    $this->response(['status' => 200, 'object' => $object, 'user_win' => $user_win]);
                 } else {
                     $this->response(['status' => 404]);
                 }
