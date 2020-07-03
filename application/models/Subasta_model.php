@@ -593,7 +593,7 @@ class Subasta_model extends CI_Model
 
         return $query->row();
     }
-    function get_puja_by_max($valor) //foto subasta
+    function get_puja_by_max($valor)
     {
 
         $this->db->where('valor', $valor);

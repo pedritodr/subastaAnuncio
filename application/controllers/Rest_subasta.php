@@ -310,7 +310,7 @@ class Rest_subasta extends REST_Controller
 
             if ($object) {
                 $user = $this->subasta->get_puja_by_max($object->valor);
-                $this->response(['status' => 200, 'object' => $object, 'user' => $user, 'object_user' => $object_user, 'subasta' => $subasta_id]);
+                $this->response(['status' => 200, 'puja_win' => $object, 'user_win' => $user, 'object_user' => $object_user, 'subasta' => $subasta_id]);
             }
         } else {
             $this->response(['status' => 500]);
