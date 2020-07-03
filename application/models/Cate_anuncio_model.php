@@ -97,7 +97,7 @@ class Cate_anuncio_model extends CI_Model
 
     function get_sub_categoria_by_sub($id)
     {
-        $this->db->select('subcategoria_subasta.nombre as sub,subasta.nombre as categoria, categoria.categoria_id');
+        $this->db->select('subcategoria_subasta.nombre_espa as sub,subasta.nombre as categoria, categoria.categoria_id');
         $this->db->from('subcategoria_subasta');
         $this->db->join('categoria', 'categoria.categoria_id=subcategoria_subasta.categoria_id');
         $this->db->where('subcategoria_subasta.subcat_id', $id);
@@ -119,7 +119,7 @@ class Cate_anuncio_model extends CI_Model
     function get_all_subcate()
     {
 
-       
+
         $query = $this->db->get('sub_categoria');
         return  $query->result();
     }
