@@ -658,7 +658,7 @@
 
                                                   <dt><strong>Anuncios Disponibles: </strong></dt>
                                                   <dd>
-                                                      <?= $all_membresia->cant_anuncio - $user_membresia->anuncios_publi;  ?>
+                                                      <?= $user_membresia->anuncios_publi;  ?>
                                                   </dd>
 
                                                   <dt><strong><?= translate('descripcion_lang') ?>: </strong></dt>
