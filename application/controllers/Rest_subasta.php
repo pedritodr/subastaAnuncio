@@ -87,6 +87,25 @@ class Rest_subasta extends REST_Controller
                         }
                     }
                 } else {
+                    $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
+                    if ($subasta_user) {
+                        $puja_user = $this->subasta->get_puja_alta_user($item->subasta_id, $user_id);
+                    } else {
+                        $subasta_user = null;
+                        $puja_user = null;
+                    }
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+                    if ($puja) {
+                        $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                    } else {
+                        $user_win = null;
+                    }
+                    $item->puja_win = $puja;
+                    $item->user_win = $user_win;
+                    $item->puja_user = $puja_user;
+                    $item->subasta_user = $subasta_user;
                     array_push($subastas, $item);
                 }
             }
