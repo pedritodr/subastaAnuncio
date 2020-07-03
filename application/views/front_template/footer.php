@@ -289,7 +289,10 @@
                      <div class="overview-price">
                         <div class="row">
                            <div class="col-md-4">
-                              <span style="margin-top:5px"><?= translate('precios_lang') ?> inicial <h5 style="font-size:14px !important" id="precio"> </h5> </span>
+                              <span style="margin-top:5px">
+                                 <h5 style="font-size:14px !important"><?= translate('precios_lang') ?> inicial</h5>
+                                 <h5 style="font-size:14px !important" id="precio"> </h5>
+                              </span>
                            </div>
                            <div id="body_valor_alto" class="col-md-8">
                               <span style="color:#fff" class="label label-success"><?= translate("valor_alto_lang"); ?> <h6 style="font-size:14px !important" id="valor_alto_modal" style="color:#fff"></h6></span>
