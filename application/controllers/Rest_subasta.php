@@ -307,10 +307,11 @@ class Rest_subasta extends REST_Controller
 
             $object = $this->subasta->get_puja_alta($subasta_id);
             $object_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
             $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
             if ($object) {
                 $user = $this->subasta->get_puja_by_max($object->valor);
-                $this->response(['status' => 200, 'puja_win' => $object, 'user_win' => $user, 'object_user' => $object_user, 'subasta' => $subasta_id, 'prueba' => $user_win]);
+                $this->response(['status' => 200, 'puja_win' => $object, 'user_win' => $user, 'object_user' => $object_user, 'subasta' => $subasta_id, 'subasta_user' => $subasta_user]);
             }
         } else {
             $this->response(['status' => 500]);
