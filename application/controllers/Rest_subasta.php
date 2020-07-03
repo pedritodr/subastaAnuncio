@@ -304,6 +304,7 @@ class Rest_subasta extends REST_Controller
         $subasta_id = $this->input->post('subasta_id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
+            $obj_subasta = $this->subasta->get_by_id($subasta_id);
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
             if ($subasta_user) {
                 $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
@@ -318,7 +319,7 @@ class Rest_subasta extends REST_Controller
                 $user_win = null;
             }
             if ($subasta_user) {
-                $this->response(['status' => 200, 'puja_win' => $puja, 'user_win' => $user_win, 'puja_user' => $puja_user, 'subasta' => $subasta_id, 'subasta_user' => $subasta_user]);
+                $this->response(['status' => 200, 'puja_win' => $puja, 'user_win' => $user_win, 'puja_user' => $puja_user, 'subasta' => $obj_subasta, 'subasta_user' => $subasta_user]);
             }
         } else {
             $this->response(['status' => 500]);
