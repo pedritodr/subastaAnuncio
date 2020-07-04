@@ -2928,6 +2928,8 @@ class Front extends CI_Controller
                 $status = 1;
             } elseif ($data['status']['status'] == "PENDING") {
                 $status = 3;
+            } elseif ($data['status']['status'] == "REJECTED") {
+                $status = 2;
             } else {
                 $status = 0;
             }

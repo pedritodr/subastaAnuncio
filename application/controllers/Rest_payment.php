@@ -204,8 +204,16 @@ class Rest_payment extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             $obj = $this->payment->get_by_payment_user_id($user_id);
+            $array = [];
             if (count($obj) > 0) {
-                $this->response(['status' => 200, 'obj' => $obj]);
+                foreach ($obj as $item) {
+                    if ($item->status == 0 || $item->status == 3) {
+                        array_push($array, $item);
+                    }
+                }
+            }
+            if (count($array) > 0) {
+                $this->response(['status' => 200, 'obj' => $array]);
             } else {
                 $this->response(['status' => 404]);
             }
