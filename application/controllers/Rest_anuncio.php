@@ -341,7 +341,10 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
-
+        $infinito = false;
+        if ($comienza > 0) {
+            $infinito = true;
+        }
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
@@ -361,10 +364,9 @@ class Rest_anuncio extends REST_Controller
                 }
             }
             if ($all_anuncios) {
-
                 $this->response(['status' => 200, 'lista' => $all_anuncios]);
             } else {
-                $this->response(['status' => 404]);
+                $this->response(['status' => 404, 'infinito' => $infinito]);
             }
         } else {
             $this->response(['status' => 500]);
