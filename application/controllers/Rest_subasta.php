@@ -119,6 +119,59 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function all_subastas_post()
+    {
+
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            $all_subasta = $this->subasta->get_all_by_subastas_rest();
+            $this->load->model("Categoria_model", "categoria");
+            $this->load->model('Pais_model', 'pais');
+            $subastas = [];
+            foreach ($all_subasta as $item) {
+                $title = strlen($item->nombre_espa);
+                $categoria_object = $this->categoria->get_by_id($item->categoria_id);
+                $item->categoria = $categoria_object;
+                $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
+                $item->ciudad = $ciudad_object;
+                if ($title > 19) {
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                } else {
+                    $item->nombre_espa = $item->nombre_espa;
+                }
+                $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+                $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
+                if ($subasta_user) {
+                    $puja_user = $this->subasta->get_puja_alta_user($item->subasta_id, $user_id);
+                } else {
+                    $subasta_user = null;
+                    $puja_user = null;
+                }
+                $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+                if ($puja) {
+                    $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                } else {
+                    $user_win = null;
+                }
+                $item->puja_win = $puja;
+                $item->user_win = $user_win;
+                $item->puja_user = $puja_user;
+                $item->subasta_user = $subasta_user;
+                array_push($subastas, $item);
+            }
+            if ($subastas) {
+                $this->response(['status' => 200, 'lista' => $subastas]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
     public function cargar_subastas2_post()
     {
 

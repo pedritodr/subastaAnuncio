@@ -436,6 +436,17 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    function get_all_by_subastas_rest()
+    {
+        $this->db->select('*');
+        $this->db->from('subasta');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where('subasta.tipo_subasta', 1);
+        // $this->db->order_by('subasta.fecha_cierre', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
     function get_all_by_subastas_with_pagination3($limit, $start, $id)
     {
         $this->db->limit($limit, $start);
