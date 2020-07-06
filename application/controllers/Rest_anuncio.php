@@ -456,7 +456,7 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->corta = $item->descripcion;
                 }
-                if ($title > 16) {
+                if ($title > 14) {
                     $item->titulo = substr($item->titulo, 0, 14) . "...";
                 } else {
                     $item->titulo = $item->titulo;
