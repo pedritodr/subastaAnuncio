@@ -1,5 +1,4 @@
 <?php
-require(APPPATH . "libraries/PPM.php");
 class Cron  extends CI_Controller
 {
 
@@ -184,8 +183,9 @@ class Cron  extends CI_Controller
     }
     public function update_transacciones()
     {
+        require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba(['data' => "sonda"]);
+        $this->payment->create_prueba([]);
         /*
         require(APPPATH . "libraries/Curl.php");
         $this->payment->create_prueba(['data' => "sonda"]);
