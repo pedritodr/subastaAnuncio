@@ -298,8 +298,7 @@ class Subasta  extends CI_Controller
                             'valor_inicial' => null,
                             'categoria_id' => $name_espa,
                             'subcat_id' => $subcategoria,
-
-                            'fecha_cierre' => null,
+                            'fecha_cierre' => $fecha_cierre,
                             'valor_pago' => null,
                             'is_open' => $is_open,
                             'ciudad_id' => $ciudad,
@@ -335,7 +334,7 @@ class Subasta  extends CI_Controller
                                     'valor_inicial' => $valor_inicial,
                                     'categoria_id' => $name_espa,
                                     'subcat_id' => $subcategoria,
-
+                                    'fecha_cierre' => $fecha_cierre,
                                     'photo' => $result[1],
                                     'fecha_cierre' => $fecha_cierre,
                                     'valor_pago' => $valor_pago,
@@ -350,7 +349,7 @@ class Subasta  extends CI_Controller
                                     'descrip_espa' => $descrip_espa,
                                     'categoria_id' => $name_espa,
                                     'subcat_id' => $subcategoria,
-
+                                    'fecha_cierre' => $fecha_cierre,
                                     'photo' => $result[1],
                                     'ciudad_id' => $ciudad,
                                     'tipo_subasta' => $tipo,
