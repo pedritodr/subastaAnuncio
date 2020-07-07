@@ -53,6 +53,14 @@ class Cron  extends CI_Controller
                 }
             }
         }
+        $this->load->model('Correo_model', 'correo');
+        $asunto = "Ejecucion de sonda";
+        $motivo = 'Ejecucion de sonda Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3> “Subasta inversa”</h3>";
+        $mensaje .= "Bien hecho.<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
     public function csm()
     {
@@ -186,7 +194,6 @@ class Cron  extends CI_Controller
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
         $this->payment->create_prueba(['data' => "sonda"]);
-        /*
         require(APPPATH . "libraries/Curl.php");
         $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
@@ -306,6 +313,6 @@ class Cron  extends CI_Controller
         $mensaje .= "<h3> “Ejecucion de sonda”</h3>";
         $mensaje .= "Bien hecho.<br>";
         $mensaje .= "El equipo de SUBASTANUNCIOS";
-        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);*/
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
 }
