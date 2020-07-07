@@ -32,30 +32,30 @@ class Membresia extends CI_Controller
     public function asignar_membresia()
     {
         $user_id = $this->input->post('id_usuario');
-       
-      
-            $membresia = $this->input->post('idmembresia');
-            $object_membresia = $this->membresia->get_by_id($membresia);
-            $fecha = date('Y-m-d H:i:s');
-            $fecha_fin = strtotime('+364 day', strtotime($fecha));
-            $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
-            $fecha_mes = strtotime('+30 day', strtotime($fecha));
-            $fecha_mes = date('Y-m-d', $fecha_mes);
-            $data = [
-                'user_id' => $user_id,
-                'membresia_id' => $membresia,
-                'fecha_inicio' => $fecha,
-                'fecha_fin' => $fecha_fin,
-                'fecha_mes' => $fecha_mes,
-                'anuncios_publi' => (int) $object_membresia->cant_anuncio,
-                'qty_subastas' => (int) $object_membresia->qty_subastas,
-                'estado' => 1,
-                'mes' => 1
-            ];
+
+        $membresia = $this->input->post('idmembresia');
+        $object_membresia = $this->membresia->get_by_id($membresia);
+        $fecha = date('Y-m-d H:i:s');
+        $fecha_fin = strtotime('+364 day', strtotime($fecha));
+        $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+        $fecha_mes = strtotime('+30 day', strtotime($fecha));
+        $fecha_mes = date('Y-m-d', $fecha_mes);
+        $data = [
+            'user_id' => $user_id,
+            'membresia_id' => $membresia,
+            'fecha_inicio' => $fecha,
+            'fecha_fin' => $fecha_fin,
+            'fecha_mes' => $fecha_mes,
+            'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+            'qty_subastas' => (int) $object_membresia->qty_subastas,
+            'estado' => 1,
+            'mes' => 1
+        ];
         $valor = $this->membresia->create_membresia_user($data);
         //die(var_dump($valor));
-        return redirect("user/cliente");
-       // $this->load_view_admin_g("user/cliente");
+        $this->response->set_message("Membresia asignada correctamente.", ResponseMessage::SUCCESS);
+        redirect("user/detalles/" . $user_id);
+        // $this->load_view_admin_g("user/cliente");
 
     }
     public function index_usuarios()
