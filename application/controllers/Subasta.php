@@ -163,7 +163,7 @@ class Subasta  extends CI_Controller
                     }
 
                     $id =  $this->subasta->create($data_subasta);
-                    if ($id) {
+                    if ($id && $tipo == 2) {
                         $fecha = date('Y-m-d');
                         $nuevafecha = strtotime('+' . $intervalo_dias . ' day', strtotime($fecha));
                         $nuevafecha = date('Y-m-d', $nuevafecha);
