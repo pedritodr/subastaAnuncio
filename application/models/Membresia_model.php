@@ -41,6 +41,19 @@ class Membresia_model extends CI_Model
 
         return $query->row();
     }
+
+    function get_membresia_by_user_id2($id)
+    {
+        //die(var_dump($id));
+        $this->db->select('membresia.cant_anuncio, membresia.qty_subastas, membresia.nombre,membresia.descripcion,membresia_user.membre_user_id,membresia_user.qty_subastas,membresia.descuento,membresia_user.anuncios_publi,membresia_user.fecha_inicio,membresia_user.fecha_fin');
+        $this->db->from('membresia_user');
+        $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
+        $this->db->where('membresia_user.user_id', $id);
+        $this->db->where('membresia_user.estado', 1);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
     function get_by_user_id($id)
     {
         $this->db->select('membresia.nombre,membresia.descripcion,membresia_user.membre_user_id,membresia_user.qty_subastas,membresia.descuento,membresia_user.anuncios_publi,membresia_user.fecha_inicio,membresia_user.fecha_fin');

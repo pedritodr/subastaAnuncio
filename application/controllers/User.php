@@ -65,18 +65,18 @@ class User extends CI_Controller
             $city = $this->pais->get_ciudad_by_id($usuarios->ciudad_id);
             foreach($city as $result)
             $ciudad = $result->name_ciudad;
-            
+
             $all_payment = $this->payment->get_by_payment_user_id_all($usuarios->user_id);
-            $membresia = $this->membresia->get_membresia_by_user_id($usuarios->user_id);
-            $tipomembresia = $this->membresia->get_by_id($membresia->membresia_id);
-            
+            $membresia = $this->membresia->get_membresia_by_user_id2($usuarios->user_id);
+
+           // $tipomembresia = $this->membresia->get_by_id($membresia->membresia_id);
+            $allmembresia = $this->membresia->get_all();
+            $data["allmembresia"] = $allmembresia;
             $data['usuarios'] = $usuarios;
             $data['ciudad'] = $ciudad;
             $data['allpay'] = $all_payment;
             $data['membresia'] = $membresia;
-            $data['tipomembresia'] = $tipomembresia;
-
-            
+            //$data['tipomembresia'] = $tipomembresia;
 
             $this->load_view_admin_g('user/detalles', $data);
         }

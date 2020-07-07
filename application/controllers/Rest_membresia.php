@@ -32,6 +32,8 @@ class Rest_membresia extends REST_Controller
 
 
 
+    
+
     public function pagar_membresia_post()
     {
 
