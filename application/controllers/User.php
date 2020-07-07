@@ -48,38 +48,42 @@ class User extends CI_Controller
         }
 
         $all_users = $this->user->get_all(['role_id' => 2]);
-        
+
         $data['all_users'] = $all_users;
 
         $this->load_view_admin_g("user/cliente", $data);
     }
 
     public function detalles($id)
-        {
-            if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-                $this->log_out();
-                redirect('login');
-            }
-
-            $usuarios = $this->user->get_by_id($id);
-            $city = $this->pais->get_ciudad_by_id($usuarios->ciudad_id);
-            foreach($city as $result)
-            $ciudad = $result->name_ciudad;
-            
-            $all_payment = $this->payment->get_by_payment_user_id_all($usuarios->user_id);
-            $membresia = $this->membresia->get_membresia_by_user_id($usuarios->user_id);
-            $tipomembresia = $this->membresia->get_by_id($membresia->membresia_id);
-            
-            $data['usuarios'] = $usuarios;
-            $data['ciudad'] = $ciudad;
-            $data['allpay'] = $all_payment;
-            $data['membresia'] = $membresia;
-            $data['tipomembresia'] = $tipomembresia;
-
-            
-
-            $this->load_view_admin_g('user/detalles', $data);
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
         }
+
+        $usuarios = $this->user->get_by_id($id);
+        $city = $this->pais->get_ciudad_by_id($usuarios->ciudad_id);
+        if ($city) {
+            foreach ($city as $result) {
+                $ciudad = $result->name_ciudad;
+            }
+        } else {
+            $ciudad = NULL;
+        }
+
+        $all_payment = $this->payment->get_by_payment_user_id_all($usuarios->user_id);
+        $membresia = $this->membresia->get_membresia_by_user_id2($usuarios->user_id);
+        // $tipomembresia = $this->membresia->get_by_id($membresia->membresia_id);
+        $allmembresia = $this->membresia->get_all();
+        $data["allmembresia"] = $allmembresia;
+        $data['usuarios'] = $usuarios;
+        $data['ciudad'] = $ciudad;
+        $data['allpay'] = $all_payment;
+        $data['membresia'] = $membresia;
+        //$data['tipomembresia'] = $tipomembresia;
+
+        $this->load_view_admin_g('user/detalles', $data);
+    }
     public function add_index()
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2, 3, 4])) {
@@ -212,7 +216,7 @@ class User extends CI_Controller
         $user_object = $this->user->get_by_id($user_id);
         $city = $this->pais->get_by_ciudad_id_object($user_object->ciudad_id);
         $cityall = $this->pais->get_all_ciudad();
-       
+
 
         if ($user_object) {
 
@@ -237,50 +241,45 @@ class User extends CI_Controller
         $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
         $allow_extension = in_array($ext, $allow_extension_array);
         $name = $this->input->post('fullname');
-        $surname= $this->input->post('surname');
+        $surname = $this->input->post('surname');
         $phone = $this->input->post('phone');
         $cedula = $this->input->post('cedula');
-        $ciudad= $this->input->post('ciudad');
+        $ciudad = $this->input->post('ciudad');
         $direccion = $this->input->post('direccion');
         $user_id = $this->input->post('user_id');
 
-        if ($allow_extension)
-            {
+        if ($allow_extension) {
             $result = save_image_from_post('archivo', './uploads/Cliente', time(), $this::WIDTH, $this::HEIGHT);
-          
-            if ($result[0]) 
-                {
-                    $data_user = [
-                        'name' => $name,
-                        'surname' => $surname,
-                        'phone' => $phone,
-                        'cedula' => $cedula,
-                        'ciudad_id' => $ciudad,
-                        'direccion' => $direccion,
-                        'photo' => $result[1]
-                        
-                    ];
-                    $this->user->update($user_id, $data_user);
-                }
-               
-            }
-            else{
+
+            if ($result[0]) {
                 $data_user = [
                     'name' => $name,
                     'surname' => $surname,
                     'phone' => $phone,
                     'cedula' => $cedula,
                     'ciudad_id' => $ciudad,
-                    'direccion' => $direccion
-                       
-                        
-                ];
-                $this->user->update($user_id, $data_user);   
-            }
+                    'direccion' => $direccion,
+                    'photo' => $result[1]
 
-            $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
-            redirect("user/profile_index");
-        
+                ];
+                $this->user->update($user_id, $data_user);
+            }
+        } else {
+            $data_user = [
+                'name' => $name,
+                'surname' => $surname,
+                'phone' => $phone,
+                'cedula' => $cedula,
+                'ciudad_id' => $ciudad,
+                'direccion' => $direccion
+
+
+            ];
+            $this->user->update($user_id, $data_user);
+        }
+
+        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+        redirect("user/profile_index");
     }
 
     public function credenciales_index()
@@ -315,19 +314,16 @@ class User extends CI_Controller
         $user_id = $this->input->post("user_id");
         $validacion = $this->input->post("validacion");
         $user_object =  $this->user->get_by_id($user_id);
-        if($user_object->password == md5($oldpassword))
-        {
+        if ($user_object->password == md5($oldpassword)) {
             $data_user = [
                 "password" => md5($password)
             ];
             $this->user->update($user_id, $data_user);
             $this->response->set_message("Actualizado", ResponseMessage::SUCCESS);
             redirect("user/credenciales_index/");
-        }
-        else{
+        } else {
             $this->response->set_message("Compruebe sus contraseñas", ResponseMessage::ERROR);
-            redirect("user/credenciales_index/");   
+            redirect("user/credenciales_index/");
         }
     }
-
 }
