@@ -144,9 +144,9 @@
                                     $d1->modify('+0 day');
                                     if ($subasta_object->fecha_inicio) { ?>
                                         <?php $date_inicio = new DateTime($subasta_object->fecha_inicio); ?>
-                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>">
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" value="<?php echo $date_inicio->format('Y-m-d\TH:i:s') ?>">
                                     <?php } else { ?>
-                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" min="<?= $d1->format('Y-m-d\TH:i:s') ?>" value="<?php echo $d1->format('Y-m-d\TH:i:s') ?>">
+                                        <input type="datetime-local" class="form-control input-sm" id="fecha_inicio" name="fecha_inicio" value="<?php echo $d1->format('Y-m-d\TH:i:s') ?>">
                                     <?php } ?>
 
                                 </div>
@@ -161,7 +161,7 @@
                                     $d->modify('+1 day');
                                     ?>
                                     <?php $date = new DateTime($subasta_object->fecha_cierre); ?>
-                                    <input type="datetime-local" class="form-control input-sm" id="fecha_cierre" name="fecha_cierre" min="<?= $d->format('Y-m-d\TH:i:s') ?>" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
+                                    <input type="datetime-local" class="form-control input-sm" id="fecha_cierre" name="fecha_cierre" value="<?php echo $date->format('Y-m-d\TH:i:s') ?>" placeholder="<?= translate('date_cierre_lang'); ?>">
                                 </div>
 
                             </div>
@@ -302,7 +302,7 @@
         $('#estado').show();
         $('#imagen').show();
         $('#fecha').show();
-        $('#entrada').show();
+        //$('#entrada').show();
         $('#descripcion').show();
     });
 
