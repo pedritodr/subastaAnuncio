@@ -32,7 +32,8 @@ class Membresia extends CI_Controller
     public function asignar_membresia()
     {
         $user_id = $this->input->post('id_usuario');
-
+        $this->load->model("User_model", "user");
+        $cliente = $this->user->get_by_id($user_id);
         $membresia = $this->input->post('idmembresia');
         $object_membresia = $this->membresia->get_by_id($membresia);
         $fecha = date('Y-m-d H:i:s');
@@ -52,6 +53,21 @@ class Membresia extends CI_Controller
             'mes' => 1
         ];
         $valor = $this->membresia->create_membresia_user($data);
+        if ($valor) {
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Membresia adquirida";
+            $motivo = 'Membresia adquirida Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+            $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+            $mensaje .= "" . $object_membresia->descripcion . "<br>";
+            $mensaje .= "Tu usuario " . $cliente->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+        }
         //die(var_dump($valor));
         $this->response->set_message("Membresia asignada correctamente.", ResponseMessage::SUCCESS);
         redirect("user/detalles/" . $user_id);
