@@ -244,6 +244,8 @@ class Subasta  extends CI_Controller
         $valor_pago = $this->input->post('valor_pago');
         $valor_inicial = $this->input->post('valor_inicial');
         $fecha_cierre = $this->input->post('fecha_cierre');
+        var_dump($fecha_cierre);
+        die();
         //inversa
         $cantidad_dias = $this->input->post('cantidad_dias');
         $intervalo_dias = $this->input->post('intervalo_dias');
