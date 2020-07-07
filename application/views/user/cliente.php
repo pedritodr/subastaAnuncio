@@ -4,14 +4,12 @@
         <h1>
             <?= "Gestión de Clientes"; ?>
             <small><?= translate('users_lang'); ?></small>
-            | <a href="<?= site_url('user/add_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
-            </a>
+            <!--  | <a href="<?= site_url('user/add_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
+            </a> -->
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
             <li class="active">Clientes</li>
-
-
         </ol>
     </section>
 
@@ -28,7 +26,7 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                <th style="width:10%">&nbsp;</th>
+                                    <th style="width:10%">&nbsp;</th>
                                     <th><?= translate("fullname_lang"); ?></th>
                                     <th>Cédula</th>
                                     <th>Dirección</th>
@@ -42,20 +40,17 @@
                                     <tr>
 
                                         <?php
-                                            if($item->photo == "")
-                                                {
-                                                    ?>
-                                                    <td>&nbsp;</td>
-                                                    <?php
-                                                }
-                                            else
-                                            {
-                                                ?>
-                                                <td> <img style="width: 75%; margin: 0 auto;" class="img img-rounded img-responsive" src="<?= site_url($item->photo); ?>"></td>
-                                                <?php
-                                            }
+                                        if ($item->photo == "") {
                                         ?>
-                                       
+                                            <td>&nbsp;</td>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <td> <img style="width: 75%; margin: 0 auto;" class="img img-rounded img-responsive" src="<?= site_url($item->photo); ?>"></td>
+                                        <?php
+                                        }
+                                        ?>
+
 
                                         <td><?= $item->name; ?> <?= $item->surname; ?></td>
                                         <td><?= $item->cedula; ?></td>
@@ -65,7 +60,7 @@
 
                                         <td>
 
-                                            <a style="color:black;" href="tel:<?=$item->phone ?>"><?= $item->phone; ?></a>
+                                            <a style="color:black;" href="tel:<?= $item->phone ?>"><?= $item->phone; ?></a>
 
                                         </td>
                                         <td>
@@ -91,8 +86,8 @@
 
                             </tbody>
                             <tfoot>
-                            <tr>
-                                <th style="width:10%">&nbsp;</th>
+                                <tr>
+                                    <th style="width:10%">&nbsp;</th>
                                     <th><?= translate("fullname_lang"); ?></th>
                                     <th>Cédula</th>
                                     <th>Dirección</th>

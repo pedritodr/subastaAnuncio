@@ -3,7 +3,8 @@
     <section class="content-header">
         <h1>
             Perfil de Cliente
-            <small><?= translate('users_lang'); ?></small>
+            <small><?= translate('users_lang'); ?></small> | <a href="<?= site_url('user/cliente'); ?>" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> <?= translate('back_lang'); ?>
+            </a>
 
         </h1>
         <ol class="breadcrumb">
