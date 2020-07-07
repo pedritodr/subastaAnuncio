@@ -185,7 +185,7 @@ class Cron  extends CI_Controller
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba([]);
+        $this->payment->create_prueba(['data' => "sonda"]);
         /*
         require(APPPATH . "libraries/Curl.php");
         $this->payment->create_prueba(['data' => "sonda"]);
