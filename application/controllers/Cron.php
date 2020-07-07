@@ -184,8 +184,10 @@ class Cron  extends CI_Controller
     }
     public function update_transacciones()
     {
-        require(APPPATH . "libraries/Curl.php");
         $this->load->model('payment_model', 'payment');
+        $this->payment->create_prueba(['data' => "sonda"]);
+        /*
+        require(APPPATH . "libraries/Curl.php");
         $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
@@ -304,6 +306,6 @@ class Cron  extends CI_Controller
         $mensaje .= "<h3> “Ejecucion de sonda”</h3>";
         $mensaje .= "Bien hecho.<br>";
         $mensaje .= "El equipo de SUBASTANUNCIOS";
-        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);*/
     }
 }
