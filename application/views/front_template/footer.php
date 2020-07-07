@@ -289,7 +289,10 @@
                      <div class="overview-price">
                         <div class="row">
                            <div class="col-md-4">
-                              <span style="margin-top:5px"><?= translate('precios_lang') ?> <h5 style="font-size:14px !important" id="precio"> </h5> </span>
+                              <span style="margin-top:5px">
+                                 <h5 style="font-size:14px !important"><?= translate('precios_lang') ?> inicial</h5>
+                                 <h5 style="font-size:14px !important" id="precio"> </h5>
+                              </span>
                            </div>
                            <div id="body_valor_alto" class="col-md-8">
                               <span style="color:#fff" class="label label-success"><?= translate("valor_alto_lang"); ?> <h6 style="font-size:14px !important" id="valor_alto_modal" style="color:#fff"></h6></span>
@@ -1422,7 +1425,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
@@ -1540,7 +1543,7 @@
 
                         $('#precio').html("<b class='strikethrough' style='font-size:16px !important; color:#2a3681 !important'>$" + parseFloat(object.intervalo[count_intervalo - 2].valor).toFixed(2) + "</b> $" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
                      } else {
-                        $('#precio').html("$" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
+                        $('#precio').html("Precio inicial $" + parseFloat(object.intervalo[count_intervalo - 1].valor).toFixed(2));
 
                      }
                      $('#fecha_cierre').text(object.intervalo[count_intervalo - 1].fecha);
@@ -1866,7 +1869,7 @@
 
                let requestId = data.requestId;
                let reference = data.reference;
-               let estado_payment = 0
+               let estado_payment = 0;
                if (data.status.status == "APPROVED") {
                   estado_payment = 1;
                   $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
@@ -2100,7 +2103,7 @@
          },
          success: function(result) {
             result = JSON.parse(result);
-            // console.log(result);
+            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
@@ -2435,7 +2438,7 @@
 
    .banner2 {
       padding-top: 107px !important
-   }  
+   }
 </style>
 
 

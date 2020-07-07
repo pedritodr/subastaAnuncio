@@ -102,7 +102,7 @@
                                              <!-- Ad Title -->
                                              <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[0]->all_subastas[$k]->subasta_id ?>','<?= NULL ?>');"><?= $all_categorias[0]->all_subastas[$k]->titulo_corto ?></a></h6>
                                              <!-- Price -->
-                                             <div class="price"> $<?= number_format($all_categorias[0]->all_subastas[$k]->valor_inicial, 2) ?></div>
+                                             <div class="price">Precio inicial $<?= number_format($all_categorias[0]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                              <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[0]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                              <div class="category-title">Ubicación: <span> <i class="fa fa-map-marker"></i> <?= $all_categorias[0]->all_subastas[$k]->name_ciudad ?> </span> </div>
 
@@ -229,7 +229,7 @@
                                                 <!-- Ad Title -->
                                                 <h6><a title="" onclick="cargarmodal_subasta('<?= $all_categorias[$i]->all_subastas[$k]->subasta_id ?>','<?= '' ?>');"><?= $all_categorias[$i]->all_subastas[$k]->titulo_corto ?></a></h6>
                                                 <!-- Price -->
-                                                <div class="price"> $<?= number_format($all_categorias[$i]->all_subastas[$k]->valor_inicial, 2) ?></div>
+                                                <div class="price">Precio inicial $<?= number_format($all_categorias[$i]->all_subastas[$k]->valor_inicial, 2) ?></div>
                                                 <div class="category-title">Vence: <span> <i class="fa fa-clock-o"></i> <?= $all_categorias[$i]->all_subastas[$k]->fecha_cierre ?> </span> </div>
                                                 <?php if ($all_categorias[$i]->all_subastas[$k]->fecha_cierre >= date("Y-m-d H:i:s")) { ?>
                                                    <!--        <div class="row">
@@ -347,53 +347,53 @@
                      </div>
                   </div>
                   <div class="row">
-                  <!-- Middle Content Box -->
+                     <!-- Middle Content Box -->
                      <?= form_open_multipart("search_categoria_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
-                    
-                        <?php 
-                        $i = -1;
-                        $color = "";
-                        $j= -1;
-                        foreach ($all_cate_anuncio as $item) { 
-                           $j++;
-                           $i ++;
-                           
-                           ?>
-                           <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                           <?php 
-                           if($i == "4")
-                              {
-                                 ?>
-                                 <?php
-                                 $i = 0;
-                              }
-                          
-                           ?>
-                           <div class="col-md-3" style="background-color:white; border-bottom: 10px solid #F0F0F0; border-right: 5px solid #F0F0F0;  border-left: 5px solid #F0F0F0;" >
-                           <table class="table-hover" style="width:100%; background-color:white; "  >
+
+                     <?php
+                     $i = -1;
+                     $color = "";
+                     $j = -1;
+                     foreach ($all_cate_anuncio as $item) {
+                        $j++;
+                        $i++;
+
+                     ?>
+                        <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
+                        <?php
+                        if ($i == "4") {
+                        ?>
+                        <?php
+                           $i = 0;
+                        }
+
+                        ?>
+                        <div class="col-md-3" style="background-color:white; border-bottom: 10px solid #F0F0F0; border-right: 5px solid #F0F0F0;  border-left: 5px solid #F0F0F0;">
+                           <table class="table-hover" style="width:100%; background-color:white; ">
                               <tr>
                                  <td>
-                                    <a  onclick="cargar_input('<?= $item->cate_anuncio_id ?>')"><center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
+                                    <a onclick="cargar_input('<?= $item->cate_anuncio_id ?>')">
+                                       <center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
                                        <center>
-                                       <?= $item->nombre ?> <span style="color:#8f8889;"><br>( <?= $item->count ?> ) </span>
+                                          <?= $item->nombre ?> <span style="color:#8f8889;"><br>( <?= $item->count ?> ) </span>
                                        </center>
                                     </a>
-                                   
-                    
-                                       </td>
 
-                               </tr>
-                               </table>
-                               </div>
 
-                      <?php
+                                 </td>
+
+                              </tr>
+                           </table>
+                        </div>
+
+                     <?php
                      } ?>
-                           
-                     
+
+
                      <input name="category" id="category" class="" type="hidden" value="">
                      <?= form_close(); ?>
-                  <!-- Middle Content Box End -->
-               </div>
+                     <!-- Middle Content Box End -->
+                  </div>
                </div>
                <!-- Row End -->
             </div>

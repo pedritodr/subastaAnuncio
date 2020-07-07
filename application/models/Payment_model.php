@@ -69,8 +69,7 @@ class Payment_model extends CI_Model
     function get_by_payment_user_id($id)
     {
         $this->db->where('user_id', $id);
-        $this->db->where('status', 0);
-        $this->db->or_where('status', 3);
+        //   $this->db->or_where('status', 3);
         $query = $this->db->get('payment');
 
         return $query->result();

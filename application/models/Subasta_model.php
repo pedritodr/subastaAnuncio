@@ -394,7 +394,6 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
 
-        
         if ($id > 0) {
             $this->db->where('subasta.subcat_id', $id); //Campo anterior, categoria_id
         }
@@ -404,13 +403,11 @@ class Subasta_model extends CI_Model
         if ($palabra != "") {
             $this->db->like('subasta.nombre_espa', $palabra);
         }
-
-       
         $this->db->where('subasta.tipo_subasta', $tipo);
 
 
         $query = $this->db->get();
-        
+
         return $query->result();
     }
     function get_all_by_subastas_with_pagination_palabra($limit, $start, $palabra, $tipo)
@@ -439,6 +436,17 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    function get_all_by_subastas_rest()
+    {
+        $this->db->select('*');
+        $this->db->from('subasta');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->where('subasta.tipo_subasta', 1);
+        // $this->db->order_by('subasta.fecha_cierre', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
     function get_all_by_subastas_with_pagination3($limit, $start, $id)
     {
         $this->db->limit($limit, $start);
@@ -457,6 +465,7 @@ class Subasta_model extends CI_Model
         $this->db->where('user_id', $user_id);
         $this->db->where('subasta_id', $subasta_id);
         $this->db->where('is_active', 1);
+        $this->db->where('intervalo_subasta_id', NULL);
         $query = $this->db->get();
         return $query->row();
     }
@@ -595,7 +604,7 @@ class Subasta_model extends CI_Model
 
         return $query->row();
     }
-    function get_puja_by_max($valor) //foto subasta
+    function get_puja_by_max($valor)
     {
 
         $this->db->where('valor', $valor);

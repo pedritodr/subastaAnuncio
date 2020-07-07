@@ -58,7 +58,10 @@ class Rest_subasta extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
-
+        $infinito = false;
+        if ($comienza > 0) {
+            $infinito = true;
+        }
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
@@ -87,11 +90,83 @@ class Rest_subasta extends REST_Controller
                         }
                     }
                 } else {
+                    $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
+                    if ($subasta_user) {
+                        $puja_user = $this->subasta->get_puja_alta_user($item->subasta_id, $user_id);
+                    } else {
+                        $subasta_user = null;
+                        $puja_user = null;
+                    }
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+                    if ($puja) {
+                        $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                    } else {
+                        $user_win = null;
+                    }
+                    $item->puja_win = $puja;
+                    $item->user_win = $user_win;
+                    $item->puja_user = $puja_user;
+                    $item->subasta_user = $subasta_user;
                     array_push($subastas, $item);
                 }
             }
             if ($subastas) {
 
+                $this->response(['status' => 200, 'lista' => $subastas]);
+            } else {
+                $this->response(['status' => 404, 'infinito' => $infinito]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
+    public function all_subastas_post()
+    {
+
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            $all_subasta = $this->subasta->get_all_by_subastas_rest();
+            $this->load->model("Categoria_model", "categoria");
+            $this->load->model('Pais_model', 'pais');
+            $subastas = [];
+            foreach ($all_subasta as $item) {
+                $title = strlen($item->nombre_espa);
+                $categoria_object = $this->categoria->get_by_id($item->categoria_id);
+                $item->categoria = $categoria_object;
+                $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
+                $item->ciudad = $ciudad_object;
+                if ($title > 19) {
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                } else {
+                    $item->nombre_espa = $item->nombre_espa;
+                }
+                $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+                $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+
+                if ($subasta_user) {
+                    $puja_user = $this->subasta->get_puja_alta_user($item->subasta_id, $user_id);
+                } else {
+                    $subasta_user = null;
+                    $puja_user = null;
+                }
+                $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+                if ($puja) {
+                    $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                } else {
+                    $user_win = null;
+                }
+                $item->puja_win = $puja;
+                $item->user_win = $user_win;
+                $item->puja_user = $puja_user;
+                $item->subasta_user = $subasta_user;
+                array_push($subastas, $item);
+            }
+            if ($subastas) {
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404]);
@@ -150,15 +225,29 @@ class Rest_subasta extends REST_Controller
             if ($all_detalle->tipo_subasta == 2) {
                 $all_detalle->intervalo = $this->subasta->get_intervalo_subasta($all_detalle->subasta_id);
                 if ($all_detalle->intervalo) {
-                    $intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
+                    $all_detalle->intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
                 }
             }
             $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
             $subcat = $this->categoria->get_subcat_by_id($all_detalle->subcat_id);
             $puja =  $this->subasta->get_puja_alta($subasta_id);
+
+            if ($subasta_user) {
+                $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            } else {
+                $subasta_user = null;
+                $puja_user = null;
+            }
+            $puja =  $this->subasta->get_puja_alta($subasta_id);
+            if ($puja) {
+                $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+            } else {
+                $user_win = null;
+            }
+
             if ($all_detalle) {
-                $this->response(['status' => 200, 'detalle' => $all_detalle, 'puja' => $puja, 'subasta_user' => $subasta_user, 'foto_object' => $foto_object, 'ciudad' => $ciudad, 'categoria' => $categoria, 'subcategoria' => $subcat]);
+                $this->response(['status' => 200, 'detalle' => $all_detalle, 'puja_win' => $puja, 'user_win' => $user_win, 'puja_user' => $puja_user, 'subasta_user' => $subasta_user, 'foto_object' => $foto_object, 'ciudad' => $ciudad, 'categoria' => $categoria, 'subcategoria' => $subcat]);
             } else {
                 $this->response(['status' => 404]);
             }
@@ -273,7 +362,8 @@ class Rest_subasta extends REST_Controller
                     $id = $this->subasta->create_puja($data);
                     $object = $this->subasta->get_by_puja_id($id);
                     if ($object) {
-                        $this->response(['status' => 200, 'object' => $object]);
+                        $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+                        $this->response(['status' => 200, 'object' => $object, 'user_win' => $user_win]);
                     } else {
                         $this->response(['status' => 404]);
                     }
@@ -285,8 +375,8 @@ class Rest_subasta extends REST_Controller
                 $id = $this->subasta->create_puja($data);
                 $object = $this->subasta->get_by_puja_id($id);
                 if ($object) {
-
-                    $this->response(['status' => 200, 'object' => $object]);
+                    $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+                    $this->response(['status' => 200, 'object' => $object, 'user_win' => $user_win]);
                 } else {
                     $this->response(['status' => 404]);
                 }
@@ -304,13 +394,22 @@ class Rest_subasta extends REST_Controller
         $subasta_id = $this->input->post('subasta_id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-
-            $object = $this->subasta->get_puja_alta($subasta_id);
-            $object_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
-
-            if ($object) {
-                $user = $this->subasta->get_puja_by_max($object->valor);
-                $this->response(['status' => 200, 'object' => $object, 'user' => $user, 'object_user' => $object_user, 'subasta' => $subasta_id]);
+            $obj_subasta = $this->subasta->get_by_id($subasta_id);
+            $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
+            if ($subasta_user) {
+                $puja_user = $this->subasta->get_puja_alta_user($subasta_id, $user_id);
+            } else {
+                $subasta_user = null;
+                $puja_user = null;
+            }
+            $puja =  $this->subasta->get_puja_alta($subasta_id);
+            if ($puja) {
+                $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+            } else {
+                $user_win = null;
+            }
+            if ($subasta_user) {
+                $this->response(['status' => 200, 'puja_win' => $puja, 'user_win' => $user_win, 'puja_user' => $puja_user, 'subasta' => $obj_subasta, 'subasta_user' => $subasta_user]);
             }
         } else {
             $this->response(['status' => 500]);

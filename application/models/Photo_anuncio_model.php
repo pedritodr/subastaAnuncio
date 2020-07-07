@@ -17,7 +17,7 @@ class Photo_anuncio_model extends CI_Model
         return $id;
     }
 
-    
+
 
 
     function get_by_id($id)
@@ -38,7 +38,7 @@ class Photo_anuncio_model extends CI_Model
     }
 
 
-    
+
     function get_by_anuncio_id_object($id)
     {
         $this->db->where('anuncio_id', $id);
@@ -47,7 +47,7 @@ class Photo_anuncio_model extends CI_Model
         return $query->row();
     }
 
-    
+
 
 
     function get_all($conditions = [], $get_as_row = FALSE)
@@ -95,9 +95,19 @@ class Photo_anuncio_model extends CI_Model
         return $afec;
     }
 
+    function delete_fotos($id)
+    {
+        $this->db->where('anuncio_id', $id);
+        $this->db->delete('photo_anuncio');
+        $afec = $this->db->affected_rows();
+        if ($afec > 0) {
+            //  $this->activelog($id,null,3);
+        }
 
-    
-  
+        return $afec;
+    }
+
+
 
 
 

@@ -91,7 +91,9 @@
             <div class="col-xs-6">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Membresías</h3>
+                    <div class="col-md-6"><h3 class="box-title">Membresías</h3></div>
+                    <div class="col-md-6" align ="right"><a data-toggle="modal" data-target="#modal_membresia" class="btn btn-primary">Cargar Membresía</a></div>
+                        
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <?= get_message_from_operation(); ?>
@@ -107,24 +109,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    <tr>
+                                <?php
+                                    foreach($membresia as $item)
+                                        {
+                                            ?>
+                                            <tr>
 
-                                        <td><?= $tipomembresia->nombre; ?></td>
-                                        <td><?php
-                                        $disponible = $tipomembresia->cant_anuncio - $membresia->anuncios_publi;
-                                        echo $disponible;
-                                        ?></td>
-                                        <td><?php
-                                        $disponible = $tipomembresia->qty_subastas;
-                                        echo $disponible;
-                                        ?></td>
-                                        <td><?= $membresia->fecha_inicio; ?></td>
-                                        <td><?= $membresia->fecha_fin; ?></td>
+                                            <td><?= $item->nombre; ?></td>
+                                            <td><?php
+                                            $disponible = $item->cant_anuncio ;
+                                            echo $disponible;
+                                            ?></td>
+                                            <td><?php
+                                            $disponible = $item->qty_subastas;
+                                            echo $disponible;
+                                            ?></td>
+                                            <td><?= $item->fecha_inicio; ?></td>
+                                            <td><?= $item->fecha_fin; ?></td>
 
 
-                                       
-                                        
-                                    </tr>
+
+
+</tr>
+                                            <?php
+                                        }
+                                        ?>
+                                    
 
 
 
@@ -135,9 +145,12 @@
                             <tr>
                                 <th style="width:10%">&nbsp;</th>
                                 <tr>
-                                <th>Membresia</th>
-                                        <th>Fecha de inicio</th>
-                                        <th>Fecha de finalización</th>
+                                <th>Nombre<br>&nbsp;</th>
+                                        <th>Anuncios Disponibles</th>
+                                        <th>Cantidad Subasta</th>
+
+                                        <th>Fecha inicio</th>
+                                        <th>Fecha finalización</th>
                                     </tr>
                                 </tr>
                             </tfoot>
@@ -149,7 +162,61 @@
         <!-- /.row -->
     </section>
     
+    <div class="modal fade" id="modal_membresia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title text-center" id="titulo_detalle">¿Asignar Membresía?</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="requestID">
+                        <div class="col-lg-12">
+                            <table class="table">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th colspan="2">Descripcion</th>
+                                    <th>Precio</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                               
+                                    <?php
+                                    foreach($allmembresia as $mimembresia)
+                                    {
+                                        ?>
+                                       <tr>
+                                        <td><div id="n_membresia<?=$mimembresia->membresia_id;?>"><?= $mimembresia->nombre; ?></div></td>
+                                        <td colspan="2"><?= $mimembresia->descripcion; ?></td>
+                                        <td><?= $mimembresia->precio; ?>$</td>
+                                        <td><a href="#" onclick="myfunction(<?=$mimembresia->membresia_id; ?>);" class="form-control btn btn-info">Seleccionar</a></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                            </table>
+                            
+                        </div>
+                        
 
+                    </div>
+                    
+                </div>
+                <div id="asignar">
+                    <h2 style="color:black;"><div id="nombreplan"></div></h2>
+                </div>
+                <div class="modal-footer">
+                <?= form_open("membresia/asignar_membresia");?>
+                    <input type="hidden" id="id_usuario" readonly name="id_usuario" value="<?= $usuarios->user_id ?>">
+                    <input type="hidden" id="idmembresia" readonly name="idmembresia">
+                    
+                    <input type="submit"  class="btn btn-success" value="Confirmar">
+                    <button type="button" class="btn" style="color:white; background-color:red;" data-dismiss="modal">Cancelar</button>
+                    <?=form_close(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.content -->
 </div><!-- /.content-wrapper -->
 
@@ -159,4 +226,14 @@
         $("#example2").DataTable();
 
     });
+
+    function myfunction(valor)
+    {
+
+       var nombre =  document.getElementById("n_membresia"+valor).innerHTML;
+       document.getElementById("nombreplan").innerHTML = "¿Desea asignar el " +nombre + "?";
+       //document.getElementById("idmembresia").val = valor;
+       $('#idmembresia').val(valor);
+       
+    }
 </script>
