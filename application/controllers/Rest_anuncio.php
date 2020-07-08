@@ -180,6 +180,10 @@ class Rest_anuncio extends REST_Controller
             $this->load->model('Cate_anuncio_model', 'categoria');
             if ($anuncio_id != "" || $anuncio_id != null) {
                 $obj_anuncio = $this->anuncio->get_by_id($anuncio_id);
+                if ($obj_anuncio) {
+                    $categoria_object = $this->categoria->get_by_subcate_id_object($obj_anuncio->subcate_id);
+                    $obj_anuncio->subcategoria = $categoria_object;
+                }
             } else {
                 $obj_anuncio = null;
             }
