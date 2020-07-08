@@ -428,4 +428,37 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function pagar_entrada_post()
+    {
+        $this->load->model('Membresia_model', 'membresia');
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $subasta_id = $this->input->post('subasta_id');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+            if ($membresia) {
+                $qty = (int) $membresia->qty_subastas;
+                if ($qty > 0) {
+                    $resta = $qty - 1;
+                    $this->membresia->update_membresia_user($membresia->membre_user_id, ['qty_subastas' => $resta]);
+                }
+                $data = [
+                    'user_id' => $user_id,
+                    'subasta_id' => $subasta_id,
+                    'is_active' => 1
+                ];
+                $id = $this->subasta->create_subasta_user($data);
+                if ($id) {
+                    $this->response(['status' => 200]);
+                } else {
+                    $this->response(['status' => 404]);
+                }
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
 }
