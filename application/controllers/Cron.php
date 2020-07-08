@@ -53,14 +53,6 @@ class Cron  extends CI_Controller
                 }
             }
         }
-        $this->load->model('Correo_model', 'correo');
-        $asunto = "Ejecucion de sonda";
-        $motivo = 'Ejecucion de sonda Subasta anuncios';
-        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-        $mensaje .= "<h3> “Subasta inversa”</h3>";
-        $mensaje .= "Bien hecho.<br>";
-        $mensaje .= "El equipo de SUBASTANUNCIOS";
-        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
     public function csm()
     {
@@ -158,8 +150,6 @@ class Cron  extends CI_Controller
 
         $fecha = strtotime(date("Y-m-d", time()));
         $all_anuncios = $this->anuncio->get_all(['is_active' => 1]);
-
-
         foreach ($all_anuncios as $item) {
             $fecha_fin = strtotime($item->fecha_vencimiento);
 
@@ -170,10 +160,8 @@ class Cron  extends CI_Controller
     }
     public function desactivar_subasta()
     {
-
         $fecha = strtotime(date("Y-m-d H:i:00", time()));
         $all_subastas = $this->subasta->get_all(['is_active' => 1]);
-
         foreach ($all_subastas as $item) {
             $fecha_cierre = strtotime($item->fecha_cierre);
             // $fecha_fin =  $item->fecha_cierre;
@@ -183,7 +171,6 @@ class Cron  extends CI_Controller
             $mes = date("m", $fechaEntera);
             $dia = date("d", $fechaEntera);
             $fecha_fin = $anio . "-" . $mes . "-" . $dia; */
-
             if ($fecha >= $fecha_cierre) {
                 $this->subasta->update($item->subasta_id, ['is_open' => 0]);
             }
@@ -227,7 +214,6 @@ class Cron  extends CI_Controller
 
             $curl = new Curl();
             $response = $curl->full_consulta_post($url, $json);
-
 
             if ($response) {
                 if ($response->status->status == "APPROVED") {
@@ -306,13 +292,5 @@ class Cron  extends CI_Controller
                 }
             }
         }
-        $this->load->model('Correo_model', 'correo');
-        $asunto = "Ejecucion de sonda";
-        $motivo = 'Ejecucion de sonda Subasta anuncios';
-        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-        $mensaje .= "<h3> “Ejecucion de sonda”</h3>";
-        $mensaje .= "Bien hecho.<br>";
-        $mensaje .= "El equipo de SUBASTANUNCIOS";
-        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
 }
