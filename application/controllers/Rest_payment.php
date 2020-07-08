@@ -199,11 +199,13 @@ class Rest_payment extends REST_Controller
     }
     public function payments_user_post()
     {
+        $this->load->model('Membresia_model', 'membresia');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             $obj = $this->payment->get_by_payment_user_id($user_id);
+            $membresia_user = $this->membresia->get_by_user_id($user_id);
             $array = [];
             if (count($obj) > 0) {
                 foreach ($obj as $item) {
@@ -213,9 +215,9 @@ class Rest_payment extends REST_Controller
                 }
             }
             if (count($array) > 0) {
-                $this->response(['status' => 200, 'obj' => $array]);
+                $this->response(['status' => 200, 'obj' => $array, 'membresia_user' => $membresia_user]);
             } else {
-                $this->response(['status' => 404]);
+                $this->response(['status' => 404, 'membresia_user' => $membresia_user]);
             }
         } else {
             $this->response(['status' => 500]);
