@@ -183,6 +183,7 @@ class Rest_anuncio extends REST_Controller
                 if ($obj_anuncio) {
                     $categoria_object = $this->categoria->get_by_subcate_id_object($obj_anuncio->subcate_id);
                     $obj_anuncio->subcategoria = $categoria_object;
+                    $obj_anuncio->fotos = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
                 }
             } else {
                 $obj_anuncio = null;
