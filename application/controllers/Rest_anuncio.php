@@ -173,11 +173,16 @@ class Rest_anuncio extends REST_Controller
 
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
-
+        $anuncio_id = $this->input->post('anuncio_id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
             $this->load->model('Cate_anuncio_model', 'categoria');
+            if ($anuncio_id != "" || $anuncio_id != null) {
+                $obj_anuncio = $this->anuncio->get_by_id($anuncio_id);
+            } else {
+                $obj_anuncio = null;
+            }
 
             $all_categorias = $this->categoria->get_all(['is_active' => 1]);
 
@@ -187,7 +192,7 @@ class Rest_anuncio extends REST_Controller
                     $item->contador = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
                 }
 
-                $this->response(['status' => 200, 'lista' => $all_categorias]);
+                $this->response(['status' => 200, 'lista' => $all_categorias, 'obj_anuncio' => $obj_anuncio]);
             } else {
                 $this->response(['status' => 404]);
             }
@@ -206,6 +211,7 @@ class Rest_anuncio extends REST_Controller
         if ($auth) {
             $this->load->model('Cate_anuncio_model', 'cate');
             $object = $this->cate->get_by_Cate_anuncio_id($id);
+
             if ($object) {
 
                 $this->response(['status' => 200, 'object' => $object]);
