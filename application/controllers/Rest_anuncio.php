@@ -350,10 +350,10 @@ class Rest_anuncio extends REST_Controller
         $lng = $this->input->post('lng');
         $lat = $this->input->post('lat');
         $data = json_decode($_POST['array']);
-
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-
+            $object = $this->anuncio->get_by_id($anuncio_id);
             if ($city != null) {
                 $city = strtoupper($city);
                 $ciudad_object = $this->pais->get_city($city);
@@ -370,58 +370,69 @@ class Rest_anuncio extends REST_Controller
             } else {
                 $ciudad_id = 4;
             }
-            $membresia = $this->membresia->get_by_user_id($user_id);
-            $fecha = date('Y-m-d');
-            $fecha_fin = strtotime('+30 day', strtotime($fecha));
-            $fecha_fin = date('Y-m-d', $fecha_fin);
-            $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            $fotos_anuncios = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
-            foreach ($fotos_anuncios as $item) {
-                unlink($item->main_photo);
-            }
-            $this->photo_anuncio->delete_fotos($anuncio_id);
             define('UPLOAD_DIR', './uploads/anuncio/');
             $fotos = [];
-            foreach ($data as $item) {
-                $img =  $item->imagen;
-                $img = str_replace('data:image/jpeg;base64,', '', $img);
-
-                $img = str_replace(' ', '+', $img);
-                $data = base64_decode($img);
-
-                $file = UPLOAD_DIR . uniqid() . '.jpg';
-                // $image = uniqid() . '.jpg';
-
-                $success = file_put_contents($file, $data);
-                array_push($fotos, $file);
+            $salva = [];
+            $main_photo = "editar";
+            for ($i = 0; $i < count($data); $i++) {
+                if ($i == 0) {
+                    if ($data[$i]->foto_anuncio_id == null) {
+                        $img =  $data[$i]->imagen;
+                        $img = str_replace('data:image/jpeg;base64,', '', $img);
+                        $img = str_replace(' ', '+', $img);
+                        $data = base64_decode($img);
+                        $file = UPLOAD_DIR . uniqid() . '.jpg';
+                        $success = file_put_contents($file, $data);
+                        $main_photo = $file;
+                    }
+                } else {
+                    if ($data[$i]->foto_anuncio_id == null) {
+                        $img =  $data[$i]->imagen;
+                        $img = str_replace('data:image/jpeg;base64,', '', $img);
+                        $img = str_replace(' ', '+', $img);
+                        $data = base64_decode($img);
+                        $file = UPLOAD_DIR . uniqid() . '.jpg';
+                        $success = file_put_contents($file, $data);
+                        array_push($fotos, $file);
+                    } else {
+                        array_push($salva, $data[$i]);
+                    }
+                }
             }
-
-
+            if ($main_photo != "editar") {
+                unlink($object->photo);
+                $datos['photo'] = $main_photo;
+            }
             $datos = [
                 'titulo' => $titulo,
                 'descripcion' => $descripcion,
                 'precio' => $precio,
-                'photo' => $fotos[0],
                 'whatsapp' => $whatsapp,
                 'subcate_id' => $subcategoria,
-                'is_active' => 1,
                 'lat' => $lat,
                 'lng' => $lng,
                 'ciudad_id' => $ciudad_id,
-                'user_id' => $user_id,
                 'direccion' => $direccion,
-                'fecha' =>  $fecha,
-                'destacado' => 0,
-                'fecha_vencimiento' => $fecha_fin
             ];
-
-            $object = $this->anuncio->update($anuncio_id, $datos);
-
-            if ($object > 0) {
-                if (count($fotos) > 1) {
-                    for ($i = 1; $i < count($fotos); $i++) {
+            $id = $this->anuncio->update($anuncio_id, $datos);
+            if ($id > 0) {
+                $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
+                foreach ($foto_object as $foto) {
+                    $encontro = false;
+                    foreach ($salva as $item) {
+                        if ($item->foto_anuncio_id == $foto->photo_anuncio_id) {
+                            $encontro = true;
+                        }
+                    }
+                    if (!$encontro) {
+                        unlink($foto->photo_anuncio);
+                        $this->photo_anuncio->delete($foto->photo_anuncio_id);
+                    }
+                }
+                if (count($fotos) > 0) {
+                    for ($i = 0; $i < count($fotos); $i++) {
                         $img =  $fotos[$i];
-                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
+                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $anuncio_id]);
                     }
                 }
                 $this->response(['status' => 200, 'object' => $object]);
