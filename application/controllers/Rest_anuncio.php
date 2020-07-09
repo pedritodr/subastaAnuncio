@@ -354,82 +354,83 @@ class Rest_anuncio extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             $object = $this->anuncio->get_by_id($anuncio_id);
-            if ($city != null) {
-                $city = strtoupper($city);
-                $ciudad_object = $this->pais->get_city($city);
-                if (!$ciudad_object) {
-                    $data_ciudad = [
-                        'name_ciudad' => $city,
-                        'pais_id' => 4,
+            if ($object) {
+                if ($city != null) {
+                    $city = strtoupper($city);
+                    $ciudad_object = $this->pais->get_city($city);
+                    if (!$ciudad_object) {
+                        $data_ciudad = [
+                            'name_ciudad' => $city,
+                            'pais_id' => 4,
 
-                    ];
-                    $ciudad_id = $this->pais->create_cuidad($data_ciudad);
-                } else {
-                    $ciudad_id = $ciudad_object->ciudad_id;
-                }
-            } else {
-                $ciudad_id = 4;
-            }
-            define('UPLOAD_DIR', './uploads/anuncio/');
-            $fotos = [];
-            $salva = [];
-            $main_photo = "editar";
-            for ($i = 0; $i < count($data); $i++) {
-                if ($i == 0) {
-                    if ($data[$i]->foto_anuncio_id == null) {
-                        $img =  $data[$i]->imagen;
-                        $img = str_replace('data:image/jpeg;base64,', '', $img);
-                        $img = str_replace(' ', '+', $img);
-                        $data = base64_decode($img);
-                        $file = UPLOAD_DIR . uniqid() . '.jpg';
-                        $success = file_put_contents($file, $data);
-                        $main_photo = $file;
-                    }
-                } else {
-                    if ($data[$i]->foto_anuncio_id == null) {
-                        $img =  $data[$i]->imagen;
-                        $img = str_replace('data:image/jpeg;base64,', '', $img);
-                        $img = str_replace(' ', '+', $img);
-                        $data = base64_decode($img);
-                        $file = UPLOAD_DIR . uniqid() . '.jpg';
-                        $success = file_put_contents($file, $data);
-                        array_push($fotos, $file);
+                        ];
+                        $ciudad_id = $this->pais->create_cuidad($data_ciudad);
                     } else {
-                        array_push($salva, $data[$i]);
+                        $ciudad_id = $ciudad_object->ciudad_id;
+                    }
+                } else {
+                    $ciudad_id = 4;
+                }
+                define('UPLOAD_DIR', './uploads/anuncio/');
+                $fotos = [];
+                $salva = [];
+                $main_photo = "editar";
+                for ($i = 0; $i < count($data); $i++) {
+                    if ($i == 0) {
+                        if ($data[$i]->foto_anuncio_id == null) {
+                            $img =  $data[$i]->imagen;
+                            $img = str_replace('data:image/jpeg;base64,', '', $img);
+                            $img = str_replace(' ', '+', $img);
+                            $data = base64_decode($img);
+                            $file = UPLOAD_DIR . uniqid() . '.jpg';
+                            $success = file_put_contents($file, $data);
+                            $main_photo = $file;
+                        }
+                    } else {
+                        if ($data[$i]->foto_anuncio_id == null) {
+                            $img =  $data[$i]->imagen;
+                            $img = str_replace('data:image/jpeg;base64,', '', $img);
+                            $img = str_replace(' ', '+', $img);
+                            $data = base64_decode($img);
+                            $file = UPLOAD_DIR . uniqid() . '.jpg';
+                            $success = file_put_contents($file, $data);
+                            array_push($fotos, $file);
+                        } else {
+                            array_push($salva, $data[$i]);
+                        }
                     }
                 }
-            }
-            if ($main_photo != "editar") {
-                unlink($object->photo);
+                if ($main_photo != "editar") {
+                    unlink($object->photo);
 
-                $datos = [
-                    'titulo' => $titulo,
-                    'descripcion' => $descripcion,
-                    'precio' => $precio,
-                    'whatsapp' => $whatsapp,
-                    'subcate_id' => $subcategoria,
-                    'lat' => $lat,
-                    'lng' => $lng,
-                    'ciudad_id' => $ciudad_id,
-                    'direccion' => $direccion,
-                    'photo' => $main_photo
-                ];
-            } else {
-                $datos = [
-                    'titulo' => $titulo,
-                    'descripcion' => $descripcion,
-                    'precio' => $precio,
-                    'whatsapp' => $whatsapp,
-                    'subcate_id' => $subcategoria,
-                    'lat' => $lat,
-                    'lng' => $lng,
-                    'ciudad_id' => $ciudad_id,
-                    'direccion' => $direccion,
-                ];
-            }
+                    $datos = [
+                        'titulo' => $titulo,
+                        'descripcion' => $descripcion,
+                        'precio' => $precio,
+                        'whatsapp' => $whatsapp,
+                        'subcate_id' => $subcategoria,
+                        'lat' => $lat,
+                        'lng' => $lng,
+                        'ciudad_id' => $ciudad_id,
+                        'direccion' => $direccion,
+                        'photo' => $main_photo
+                    ];
+                } else {
+                    $datos = [
+                        'titulo' => $titulo,
+                        'descripcion' => $descripcion,
+                        'precio' => $precio,
+                        'whatsapp' => $whatsapp,
+                        'subcate_id' => $subcategoria,
+                        'lat' => $lat,
+                        'lng' => $lng,
+                        'ciudad_id' => $ciudad_id,
+                        'direccion' => $direccion,
+                    ];
+                }
 
-            $id = $this->anuncio->update($anuncio_id, $datos);
-            if ($id > 0) {
+                $id = $this->anuncio->update($anuncio_id, $datos);
+
                 $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
                 foreach ($foto_object as $foto) {
                     $encontro = false;
