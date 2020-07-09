@@ -3130,8 +3130,9 @@ class Front extends CI_Controller
         $data = file_get_contents($path);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         //    $img = file_get_contents("https://www.subastanuncios.com/uploads/anuncio/5f00a7ad833e7.jpg");
+        $prueba  = "<img style='width:25%' src='" . $base64 . "'>";
         //  $img = base64_encode($img);
-        var_dump($base64);
+        var_dump($prueba);
         die();
     }
 }
