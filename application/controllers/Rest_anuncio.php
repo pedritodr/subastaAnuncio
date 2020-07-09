@@ -401,19 +401,33 @@ class Rest_anuncio extends REST_Controller
             }
             if ($main_photo != "editar") {
                 unlink($object->photo);
-                $datos['photo'] = $main_photo;
+
+                $datos = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'precio' => $precio,
+                    'whatsapp' => $whatsapp,
+                    'subcate_id' => $subcategoria,
+                    'lat' => $lat,
+                    'lng' => $lng,
+                    'ciudad_id' => $ciudad_id,
+                    'direccion' => $direccion,
+                    'photo' => $main_photo
+                ];
+            } else {
+                $datos = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'precio' => $precio,
+                    'whatsapp' => $whatsapp,
+                    'subcate_id' => $subcategoria,
+                    'lat' => $lat,
+                    'lng' => $lng,
+                    'ciudad_id' => $ciudad_id,
+                    'direccion' => $direccion,
+                ];
             }
-            $datos = [
-                'titulo' => $titulo,
-                'descripcion' => $descripcion,
-                'precio' => $precio,
-                'whatsapp' => $whatsapp,
-                'subcate_id' => $subcategoria,
-                'lat' => $lat,
-                'lng' => $lng,
-                'ciudad_id' => $ciudad_id,
-                'direccion' => $direccion,
-            ];
+
             $id = $this->anuncio->update($anuncio_id, $datos);
             if ($id > 0) {
                 $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
