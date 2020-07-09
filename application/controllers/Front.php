@@ -3123,9 +3123,15 @@ class Front extends CI_Controller
             }
         }
     }
-    public function kusky()
+    public function ok()
     {
-
-        $this->load_view_front('front/kusky');
+        $path = 'https://www.subastanuncios.com/uploads/anuncio/5f00a7ad833e7.jpg';
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        //    $img = file_get_contents("https://www.subastanuncios.com/uploads/anuncio/5f00a7ad833e7.jpg");
+        //  $img = base64_encode($img);
+        var_dump($base64);
+        die();
     }
 }
