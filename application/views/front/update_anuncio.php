@@ -254,9 +254,11 @@
                   $("#form_add_anuncio").submit();
                } else if (seleccion_pais == "") {
                   $('#pac-input').val("");
+                  cargar_city(city = "", lat, lng);
                } else {
                   $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
                   $('#modal_error_ciudad').modal('show');
+                  cargar_city(city = "", lat, lng);
                }
 
             });
@@ -372,7 +374,18 @@
                         map: map,
                         draggable: true
                      });
+                     marker.addListener("dragend", function() {
+                        var currentLocation = marker.getPosition();
+                        var lat = currentLocation.lat(); //latitude
+                        var lng = currentLocation.lng(); //longitude
+                        search_city(lat, lng);
+                        getReverseGeocodingData2(lat, lng);
+                        $('#lat').val(lat);
+                        $('#lng').val(lng);
+                        map.setZoom(16);
+                        map.setCenter(currentLocation);
 
+                     });
 
                      // Create the search box and link it to the UI element.
                      var input = document.getElementById('pac-input');
@@ -554,6 +567,7 @@
                                  $('#pais').val("");
                                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
                                  $('#modal_error_ciudad').modal('show');
+                                 cargar_city(city = "", lat, lng);
                               }
 
                            }
