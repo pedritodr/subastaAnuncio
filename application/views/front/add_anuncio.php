@@ -182,12 +182,12 @@
 
 
 
-                     <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
-                        <div id="google-maps-inner" class="google-maps-inner">
-                           <label><?= translate("direccion_lang"); ?></label>
-                           <div class="input-group">
-                              <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                              <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
+                           <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
+                              <div id="google-maps-inner" class="google-maps-inner">
+                                 <label><?= translate("direccion_lang"); ?></label>
+                                 <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
 
                                  </div>
 
@@ -236,12 +236,13 @@
          <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
          <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
          <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
-         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
+         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places"></script>
 
          <script type="text/javascript">
             var latitude = 0;
             var longitude = 0;
-
+            var init_lat = -1.831239;
+            var init_lng = -78.18340599999999;
             $(document).ready(function() {
                $("#subcategoria").select2({
                   placeholder: 'Seleccione la subcategoria',
@@ -257,9 +258,11 @@
                   $("#form_add_anuncio").submit();
                } else if (seleccion_pais == "") {
                   $('#pac-input').val("");
+                  initMap();
                } else {
                   $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
                   $('#modal_error_ciudad').modal('show');
+                  initMap();
                }
 
             });
@@ -297,13 +300,13 @@
                   'latLng': latlng
                }, function(results, status) {
                   if (status !== google.maps.GeocoderStatus.OK) {
-                     alert(status);
+                     //    alert(status);
                   }
                   // This is checking to see if the Geoeode Status is OK before proceeding
                   if (status == google.maps.GeocoderStatus.OK) {
 
                      var address = (results[0].formatted_address);
-                     alert(address);
+                     //  alert(address);
                      $('#pac-input').val(address);
 
                   }
@@ -327,6 +330,7 @@
 
                         lng: parseFloat(response.results[0].geometry.location.lng)
                      };
+                     console.log(pos)
                      var map = new google.maps.Map(document.getElementById('map'), {
                         center: pos,
                         scrollwheel: false,
@@ -338,7 +342,18 @@
                         draggable: true
                      });
 
+                     marker.addListener("dragend", function() {
+                        var currentLocation = marker.getPosition();
+                        var lat = currentLocation.lat(); //latitude
+                        var lng = currentLocation.lng(); //longitude
+                        search_city(lat, lng);
+                        getReverseGeocodingData2(lat, lng);
+                        $('#lat').val(lat);
+                        $('#lng').val(lng);
+                        map.setZoom(16);
+                        map.setCenter(currentLocation);
 
+                     });
                      // Create the search box and link it to the UI element.
                      var input = document.getElementById('pac-input');
                      var searchBox = new google.maps.places.SearchBox(input);
@@ -498,7 +513,7 @@
                         }, function(results, status) {
                            //  console.log(results);
                            if (status !== google.maps.GeocoderStatus.OK) {
-                              alert(status);
+                              //alert(status);
                            }
                            // This is checking to see if the Geoeode Status is OK before proceeding
                            if (status == google.maps.GeocoderStatus.OK) {
@@ -525,6 +540,7 @@
                                  $('#pais').val("");
                                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
                                  $('#modal_error_ciudad').modal('show');
+                                 initMap();
                               }
                            }
                         });
