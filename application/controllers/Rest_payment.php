@@ -223,4 +223,20 @@ class Rest_payment extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function mis_pagos_post(){
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if($auth){
+            $pagos = $this->payment->get_by_payment_user_id_all($user_id);
+            if($pagos){
+                $this->response(['status' => 200, 'pagos' => $pagos]);
+            }else{
+                $this->response(['status' => 404]); 
+            }
+        }else{
+            $this->response(['status' => 500]);
+        }
+
+    }
 }
