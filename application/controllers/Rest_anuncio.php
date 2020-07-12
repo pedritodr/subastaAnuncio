@@ -58,7 +58,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
-
+        $limite =11;
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
@@ -97,7 +97,7 @@ class Rest_anuncio extends REST_Controller
         $comienza = $this->input->post('comienza');
         $id = $this->input->post('id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-
+        $limite =11;
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_category($limite, $comienza, $id);
             foreach ($all_anuncios as $item) {
@@ -477,6 +477,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
+        $limite =11;
         $infinito = false;
         if ($comienza > 0) {
             $infinito = true;

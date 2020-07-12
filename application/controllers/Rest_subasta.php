@@ -57,6 +57,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
+        $limite =11;
         $comienza = $this->input->post('comienza');
         $infinito = false;
         if ($comienza > 0) {
@@ -181,6 +182,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
+        $limite =11;
         $comienza = $this->input->post('comienza');
         $id = $this->input->post('id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
