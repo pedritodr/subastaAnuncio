@@ -40,6 +40,13 @@ class Subasta_model extends CI_Model
 
         return $query->row();
     }
+    function get_by_intervalo_id_row($id)
+    {
+        $this->db->where('intervalo_subasta_id', $id);
+        $query = $this->db->get('intervalo_subasta');
+
+        return $query->row();
+    }
 
     function get_intevalo_by_id($id)
     {

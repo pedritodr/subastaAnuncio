@@ -495,7 +495,7 @@ class Rest_subasta extends REST_Controller
                     $item->nombre_espa = $item->nombre_espa;
                 }
                 if ($item->tipo_subasta == 2) {
-                    $item->intervalo = $this->subasta->get_all_subasta_intervalo($item->intervalo);
+                    $item->intervalo = $this->subasta->get_by_intervalo_id_row($item->intervalo);
                     array_push($subastas, $item);
                 } else {
                   
