@@ -231,7 +231,7 @@ class Rest_subasta extends REST_Controller
                     $all_detalle->intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
                 }
                 if ($subasta_user_id > 0) {
-                    $all_detalle->wim_inversa = $this->subasta->get_by_intervalo_id_row($subasta_user_id);
+                    $all_detalle->wim_inversa = $this->subasta->get_by_intervalo_subasta_id($subasta_user_id);
                 } else {
                     $all_detalle->wim_inversa = NULL;
                 }
