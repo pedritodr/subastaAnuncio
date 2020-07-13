@@ -436,6 +436,19 @@ class Subasta_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    function get_all_by_mis_subastas_with_pagination($limit, $start, $user_id)
+    {
+        $this->db->limit($limit, $start);
+        $this->db->select('*');
+        $this->db->from('subasta');
+        $this->db->join('subasta_user', 'subasta_user.subasta_id = subasta.subasta_id');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('user', 'user.user_id = subasta_user.user_id');
+        $this->db->where('subasta_user.user_id', $user_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
     function get_all_by_subastas_rest()
     {
         $this->db->select('*');
