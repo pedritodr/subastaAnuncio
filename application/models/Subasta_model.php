@@ -40,6 +40,13 @@ class Subasta_model extends CI_Model
 
         return $query->row();
     }
+    function get_by_intervalo_id_row($id)
+    {
+        $this->db->where('intervalo_subasta_id', $id);
+        $query = $this->db->get('intervalo_subasta');
+
+        return $query->row();
+    }
 
     function get_intevalo_by_id($id)
     {
@@ -433,6 +440,20 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->where("subasta.fecha_cierre >=", $fecha);
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_all_by_mis_subastas_with_pagination($limit, $start, $user_id)
+    {
+        $this->db->limit($limit, $start);
+        $this->db->select('*');
+        $this->db->from('subasta');
+        $this->db->join('subasta_user', 'subasta_user.subasta_id = subasta.subasta_id');
+   /*      $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('user', 'user.user_id = subasta_user.user_id'); */
+        $this->db->where('subasta_user.user_id', $user_id);
+        $this->db->where('subasta_user.is_active', 1);
         $query = $this->db->get();
         return $query->result();
     }

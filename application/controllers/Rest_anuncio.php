@@ -58,7 +58,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
-
+        $limite =11;
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
@@ -97,7 +97,7 @@ class Rest_anuncio extends REST_Controller
         $comienza = $this->input->post('comienza');
         $id = $this->input->post('id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-
+        $limite =11;
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_category($limite, $comienza, $id);
             foreach ($all_anuncios as $item) {
@@ -477,6 +477,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
+        $limite =11;
         $infinito = false;
         if ($comienza > 0) {
             $infinito = true;
@@ -531,5 +532,43 @@ class Rest_anuncio extends REST_Controller
         $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
 
         return $cadena;
+    }
+    public function activar_anuncio_post()
+    {
+
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $anuncio_id = $this->input->post('anuncio_id');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $object = $this->anuncio->get_by_id($anuncio_id);
+            if ($object) {
+                $row = $this->anuncio->update($anuncio_id, ['is_active' => 1]);
+                $this->response(['status' => 200]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
+    public function desactivar_anuncio_post()
+    {
+
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $anuncio_id = $this->input->post('anuncio_id');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $object = $this->anuncio->get_by_id($anuncio_id);
+            if ($object) {
+                $row = $this->anuncio->update($anuncio_id, ['is_active' => 0]);
+                $this->response(['status' => 200]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
     }
 }
