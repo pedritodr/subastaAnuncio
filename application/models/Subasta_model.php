@@ -446,6 +446,7 @@ class Subasta_model extends CI_Model
         $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
         $this->db->join('user', 'user.user_id = subasta_user.user_id');
         $this->db->where('subasta_user.user_id', $user_id);
+        $this->db->where('subasta_user.is_active', 1);
         $query = $this->db->get();
         return $query->result();
     }
