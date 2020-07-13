@@ -57,7 +57,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
-        $limite =11;
+        $limite = 11;
         $comienza = $this->input->post('comienza');
         $infinito = false;
         if ($comienza > 0) {
@@ -182,7 +182,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
-        $limite =11;
+        $limite = 11;
         $comienza = $this->input->post('comienza');
         $id = $this->input->post('id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
@@ -216,6 +216,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $subasta_id = $this->input->post('id');
+        $subasta_user_id = $this->input->post('subasta_user_id');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
 
         if ($auth) {
@@ -229,6 +230,13 @@ class Rest_subasta extends REST_Controller
                 if ($all_detalle->intervalo) {
                     $all_detalle->intervalo = $all_detalle->intervalo[count($all_detalle->intervalo) - 1];
                 }
+                if ($subasta_user_id > 0) {
+                    $all_detalle->wim_inversa = $this->subasta->get_by_intervalo_id_row($subasta_user_id);
+                } else {
+                    $all_detalle->wim_inversa = NULL;
+                }
+            } else {
+                $all_detalle->wim_inversa = NULL;
             }
             $foto_object = $this->subasta->get_by_subasta_id($subasta_id);
             $subasta_user =  $this->subasta->get_subasta_user($user_id, $subasta_id);
@@ -469,7 +477,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
-        $limite =11;
+        $limite = 11;
         $comienza = $this->input->post('comienza');
         $infinito = false;
         if ($comienza > 0) {
@@ -498,7 +506,7 @@ class Rest_subasta extends REST_Controller
                     $item->intervalo = $this->subasta->get_by_intervalo_id_row($item->intervalo_subasta_id);
                     array_push($subastas, $item);
                 } else {
-                  
+
                     $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
                     $puja =  $this->subasta->get_puja_alta($item->subasta_id);
 
