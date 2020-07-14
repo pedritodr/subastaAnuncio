@@ -268,39 +268,82 @@ class Rest_subasta extends REST_Controller
 
     public function buscar_subastas_post()
     {
-
+        $this->load->model('Pais_model', 'pais');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $buscar = $this->input->post('buscar');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-
+        $tipo = $this->input->post('tipo');
+        $ubicacion = $this->input->post('ubicacion');
+        $ciudad = $this->pais->get_city($ubicacion);
+        $infinito = false;
+        $limite = 11;
+        $comienza = $this->input->post('comienza');
+        if ($comienza > 0) {
+            $infinito = true;
+        }
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-            $this->load->model('Categoria_model', 'categoria');
-            $this->load->model('Pais_model', 'pais');
-            $all_detalle = $this->subasta->search_by_name($buscar);
-
-            if (count($all_detalle) > 0) {
-                foreach ($all_detalle as $item) {
-                    $categoria_object = $this->categoria->get_by_id($item->categoria_id);
-                    $item->categoria = $categoria_object;
-
-                    $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
-                    $item->ciudad = $ciudad_object;
-                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+            $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar,$tipo,$ciudad->ciudad_id);
+            $this->load->model("Categoria_model", "categoria");
+            $subastas = [];
+            foreach ($all_subasta as $item) {
+                $title = strlen($item->nombre_espa);
+                $categoria_object = $this->categoria->get_by_id($item->categoria_id);
+                $item->categoria = $categoria_object;
+                $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
+                $item->ciudad = $ciudad_object;
+                if ($title > 19) {
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                } else {
+                    $item->nombre_espa = $item->nombre_espa;
                 }
+                if ($item->tipo_subasta == 2) {
+                    $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
+                    if ($item->intervalo) {
+                        $intervalo = $item->intervalo[count($item->intervalo) - 1];
+                        if ($intervalo->cantidad > 0) {
+                            array_push($subastas, $item);
+                        }
+                    }
+                } else {
+                    $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
 
+                    if ($subasta_user) {
+                        $puja_user = $this->subasta->get_puja_alta_user($item->subasta_id, $user_id);
+                    } else {
+                        $subasta_user = null;
+                        $puja_user = null;
+                    }
+                    $puja =  $this->subasta->get_puja_alta($item->subasta_id);
+                    if ($puja) {
+                        $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                    } else {
+                        $user_win = null;
+                    }
+                    $item->puja_win = $puja;
+                    $item->user_win = $user_win;
+                    $item->puja_user = $puja_user;
+                    $item->subasta_user = $subasta_user;
+                    array_push($subastas, $item);
+                }
+            }
+            if ($subastas) {
 
-                $this->response(['status' => 200, 'lista' => $all_detalle]);
+                $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
-                $this->response(['status' => 404]);
+                $this->response(['status' => 404, 'infinito' => $infinito]);
             }
         } else {
             $this->response(['status' => 500]);
         }
+    
+
     }
     public function subasta_categoria_post()
     {
-
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
 
@@ -345,8 +388,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
-
     public function pujar_user_post()
     {
 
@@ -395,7 +436,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
     public function puja_alta_post()
     {
 
@@ -425,8 +465,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
-
     public function listar_get() //econtrando usuario
     {
 
@@ -473,7 +511,6 @@ class Rest_subasta extends REST_Controller
     }
     public function cargar_mis_subastas_post()
     {
-
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
@@ -534,6 +571,26 @@ class Rest_subasta extends REST_Controller
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404, 'infinito' => $infinito]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
+    public function ciudades_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $this->load->model('Pais_model', 'pais');
+
+            $ciudades = $this->pais->get_by_pais_id_object(4);
+
+            if (count($ciudades) > 0) {
+
+                $this->response(['status' => 200, 'lista' => $ciudades]);
+            } else {
+                $this->response(['status' => 404]);
             }
         } else {
             $this->response(['status' => 500]);

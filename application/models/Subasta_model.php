@@ -586,12 +586,28 @@ class Subasta_model extends CI_Model
         return $query->row();
     }
 
-    function search_by_name($name)
+    /* function search_by_name($name)
     {
         $query = "SELECT * FROM subasta  WHERE is_active = 1  AND nombre_espa LIKE '%$name%'";
         $resultados = $this->db->query($query);
         return $resultados->result();
+    } */
+    function search_by_name($limit, $start, $name,$tipo,$ciudad)
+    {
+        $this->db->limit($limit, $start);
+        $this->db->select('*');
+        $this->db->from('subasta');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.is_open', 1);
+        $this->db->like("subasta.nombre_espa", $name);
+        if($tipo>0){
+            $this->db->where('subasta.tipo_subasta', $tipo);
+        }
+        $this->db->where('subasta.ciudad_id', $ciudad);
+        $query = $this->db->get();
+        return $query->result();
     }
+
 
     function get_by_subasta_user($id) //foto subasta
     {
