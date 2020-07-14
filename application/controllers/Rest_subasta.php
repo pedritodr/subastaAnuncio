@@ -300,7 +300,6 @@ class Rest_subasta extends REST_Controller
     }
     public function subasta_categoria_post()
     {
-
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
 
@@ -345,8 +344,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
-
     public function pujar_user_post()
     {
 
@@ -395,7 +392,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
     public function puja_alta_post()
     {
 
@@ -425,8 +421,6 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
-
     public function listar_get() //econtrando usuario
     {
 
@@ -473,7 +467,6 @@ class Rest_subasta extends REST_Controller
     }
     public function cargar_mis_subastas_post()
     {
-
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
@@ -534,6 +527,26 @@ class Rest_subasta extends REST_Controller
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404, 'infinito' => $infinito]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
+    public function ciudades_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $this->load->model('Pais_model', 'pais');
+
+            $ciudades = $this->pais->get_by_pais_id_object(4);
+
+            if (count($ciudades) > 0) {
+
+                $this->response(['status' => 200, 'lista' => $ciudades]);
+            } else {
+                $this->response(['status' => 404]);
             }
         } else {
             $this->response(['status' => 500]);
