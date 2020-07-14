@@ -58,7 +58,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
         $comienza = $this->input->post('comienza');
-        $limite = 4;
+        $limite = 6;
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         $infinito = false;
         if ($comienza > 0) {
