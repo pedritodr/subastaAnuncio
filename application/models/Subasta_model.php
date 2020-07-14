@@ -601,7 +601,7 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->like("subasta.nombre_espa", $name);
         if($tipo>0){
-            $this->db->where('subasta.	tipo_subasta', $tipo);
+            $this->db->where('subasta.tipo_subasta', $tipo);
         }
         $this->db->where('subasta.ciudad_id', $ciudad);
         $query = $this->db->get();
