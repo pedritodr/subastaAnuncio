@@ -438,6 +438,7 @@ class Anuncio_model extends CI_Model
     function search_by_name($limit, $start, $name, $ciudad, $categoria, $subcategoria)
     {
 
+        $this->db->limit($limit, $start);
         $this->db->select('anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
         $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
@@ -459,8 +460,6 @@ class Anuncio_model extends CI_Model
         }
         $this->db->order_by('anuncio.destacado', 'desc');
         $this->db->order_by('anuncio.anuncio_id', 'desc');
-
-        $this->db->limit($limit, $start);
 
         $query = $this->db->get();
 
