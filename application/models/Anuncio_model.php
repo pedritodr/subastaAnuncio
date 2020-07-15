@@ -446,7 +446,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
-        /*     if ($name != "") {
+        if ($name != "") {
             $this->db->like('anuncio.titulo', $name);
         }
         if ($ciudad > 0) {
@@ -457,9 +457,9 @@ class Anuncio_model extends CI_Model
         }
         if ($subcategoria > 0) {
             $this->db->where('anuncio.subcate_id', $subcategoria);
-        } */
-        // $this->db->order_by('anuncio.destacado', 'desc');
-        //   $this->db->order_by('anuncio.anuncio_id', 'desc');
+        }
+        $this->db->order_by('anuncio.destacado', 'desc');
+        $this->db->order_by('anuncio.anuncio_id', 'desc');
 
         $query = $this->db->get();
 
