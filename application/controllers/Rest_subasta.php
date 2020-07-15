@@ -276,7 +276,9 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         $tipo = $this->input->post('tipo');
         $ubicacion = $this->input->post('ubicacion');
-        $ciudad = $this->pais->get_city($ubicacion);
+        $ciudad = $this->input->post('ciudad');
+        $categoria = $this->input->post('categoria');
+        $subcategoria = $this->input->post('subcategoria');
         $infinito = false;
         $limite = 11;
         $comienza = $this->input->post('comienza');
@@ -285,8 +287,17 @@ class Rest_subasta extends REST_Controller
         }
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
+            if($ubicacion){
+                $ciudad_obj = $this->pais->get_city($ubicacion);
+                if($ciudad_obj){
+                    $ciudad=$ciudad_obj->ciudad_id;
+                }else{
+                    $ciudad =0;
+                }
+            }
+         
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
-            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar, $tipo, $ciudad->ciudad_id);
+            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar, $tipo, $ciudad,$categoria,$subcategoria);
             $this->load->model("Categoria_model", "categoria");
             $subastas = [];
             foreach ($all_subasta as $item) {
