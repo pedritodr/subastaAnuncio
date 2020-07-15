@@ -114,7 +114,15 @@ class Cate_anuncio_model extends CI_Model
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
+    function get_all_sub($conditions = [], $get_as_row = FALSE)
+    {
+        foreach ($conditions as $key => $value) {
+            $this->db->where($key, $value);
+        }
+        $query = $this->db->get('sub_categoria');
 
+        return ($get_as_row) ? $query->row() : $query->result();
+    }
 
     function get_all_subcate()
     {

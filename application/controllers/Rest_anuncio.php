@@ -610,7 +610,7 @@ class Rest_anuncio extends REST_Controller
             $ciudades = $this->pais->get_by_pais_id_object(4);
             $categorias = $this->categoria->get_all(['is_active' => 1]);
             foreach ($categorias as $item) {
-                $item->subcategorias = $this->categoria->get_by_Cate_subasta_id($item->cate_anuncio_id);
+                $item->subcategorias = $this->categoria->get_all_sub(['cate_anuncio_id' => $item->cate_anuncio_id]);
             }
             if (count($ciudades) > 0) {
 
