@@ -609,7 +609,7 @@ class Subasta_model extends CI_Model
         if ($tipo > 0) {
             $this->db->where('subasta.tipo_subasta', $tipo);
         }
-       if($categoria >0){
+       if($categoria >0 && $subcategoria==0){
         $this->db->where('subasta.categoria_id', $categoria);
        }
        if($subcategoria>0){
