@@ -142,7 +142,7 @@ class Rest_anuncio extends REST_Controller
 
     public function buscar_anuncios_post()
     {
-
+        $this->load->model('Pais_model', 'pais');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $buscar = $this->input->post('buscar');
