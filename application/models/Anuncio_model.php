@@ -449,7 +449,7 @@ class Anuncio_model extends CI_Model
             $this->db->like('anuncio.titulo', $name);
         }
         if ($ciudad > 0) {
-            $this->db->where('anuncio.	ciudad_id', $ciudad);
+            $this->db->where('anuncio.ciudad_id', $ciudad);
         }
         if ($categoria > 0 && $subcategoria == 0) {
             $this->db->where('cate_anuncio.cate_anuncio_id', $categoria);
