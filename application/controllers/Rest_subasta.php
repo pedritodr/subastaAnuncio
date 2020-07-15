@@ -582,12 +582,15 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             $this->load->model('Pais_model', 'pais');
-
+            $this->load->model("Categoria_model", "categoria");
             $ciudades = $this->pais->get_by_pais_id_object(4);
-
+            $categorias = $this->categoria->get_all(['is_active'=>1]);
+            foreach ($categorias as $item) {
+              $item->subcategorias = $this->categoria->get_all_subcat_from_idcat($item->categoria_id);
+            }
             if (count($ciudades) > 0) {
 
-                $this->response(['status' => 200, 'lista' => $ciudades]);
+                $this->response(['status' => 200, 'lista' => $ciudades,'categorias'=>$categorias]);
             } else {
                 $this->response(['status' => 404]);
             }
