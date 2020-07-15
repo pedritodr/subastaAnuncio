@@ -160,6 +160,7 @@ class Rest_subasta extends REST_Controller
                 $puja =  $this->subasta->get_puja_alta($item->subasta_id);
                 if ($puja) {
                     $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                    $user_win->surname = substr($user_win->surname, 0, 4) . "...";
                 } else {
                     $user_win = null;
                 }
@@ -467,6 +468,7 @@ class Rest_subasta extends REST_Controller
             $puja =  $this->subasta->get_puja_alta($subasta_id);
             if ($puja) {
                 $user_win = $this->subasta->get_puja_alta_obj($subasta_id);
+                $user_win->surname = substr($user_win->surname, 0, 4) . "...";
             } else {
                 $user_win = null;
             }
