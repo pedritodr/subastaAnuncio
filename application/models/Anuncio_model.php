@@ -435,7 +435,7 @@ class Anuncio_model extends CI_Model
         $resultados = $this->db->query($query);
         return $resultados->result();*/
     }
-    function search_by_name($limit, $start, $name, $ciudad, $categoria, $subcategoria)
+    function search_by_name_pagination($limit, $start, $name, $ciudad, $categoria, $subcategoria)
     {
 
         $this->db->limit($limit, $start);
