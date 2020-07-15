@@ -169,7 +169,7 @@ class Rest_anuncio extends REST_Controller
                 }
             }
             $all_anuncios = $this->anuncio->search_by_name_pagination($limite, $comienza, $buscar, $ciudad, $categoria, $subcategoria);
-            $this->response(['status' => 500, 'lista' => $ciudad]);
+
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);

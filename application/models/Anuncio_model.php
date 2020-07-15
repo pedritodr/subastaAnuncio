@@ -439,13 +439,12 @@ class Anuncio_model extends CI_Model
     {
 
         $this->db->limit($limit, $start);
-        $this->db->select('*');
-        //$this->db->select('anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->select('anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
-        //  $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
-        //   $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
-        //   $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
-        //  $this->db->join('user', 'user.user_id = anuncio.user_id');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
+        $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
+        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
+        $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
         if ($name != "") {
             $this->db->like('anuncio.titulo', $name);
@@ -453,9 +452,9 @@ class Anuncio_model extends CI_Model
         if ($ciudad > 0) {
             $this->db->where('anuncio.ciudad_id', $ciudad);
         }
-        /*    if ($categoria > 0 && $subcategoria == 0) {
+        if ($categoria > 0 && $subcategoria == 0) {
             $this->db->where('cate_anuncio.cate_anuncio_id', $categoria);
-        } */
+        }
         if ($subcategoria > 0) {
             $this->db->where('anuncio.subcate_id', $subcategoria);
         }
