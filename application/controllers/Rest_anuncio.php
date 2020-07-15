@@ -149,7 +149,6 @@ class Rest_anuncio extends REST_Controller
         $comienza = $this->input->post('comienza');
         $ubicacion = $this->input->post('ubicacion');
         $ciudad = $this->input->post('ciudad');
-        $this->response(['status' => 500, 'result' => $ubicacion]);
         $categoria = $this->input->post('categoria');
         $subcategoria = $this->input->post('subcategoria');
         $limite = 11;
@@ -169,7 +168,7 @@ class Rest_anuncio extends REST_Controller
                     $ciudad = 0;
                 }
             }
-
+            $this->response(['status' => 500, 'result' => $ciudad]);
             $all_anuncios = $this->anuncio->search_by_name_pagination($limite, $comienza, $buscar, $ciudad, $categoria, $subcategoria);
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
