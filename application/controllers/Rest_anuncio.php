@@ -147,7 +147,7 @@ class Rest_anuncio extends REST_Controller
         $security_token = $this->input->post('security_token');
         $buscar = $this->input->post('buscar');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-        $comienza = $this->input->post('comienza');
+        $comienza = $this->input->post('comienza_busqueda');
         $ubicacion = $this->input->post('ubicacion');
         $ciudad = $this->input->post('ciudad');
         $this->response(['status' => 500, 'result' => $comienza]);
