@@ -146,8 +146,7 @@ class Rest_anuncio extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $buscar = $this->input->post('buscar');
-        $auth = $this->user->is_valid_auth($user_id, $security_token);
-        $comienza = $this->input->post('comienza');
+        $comienza = "csm";
         $ubicacion = $this->input->post('ubicacion');
         $ciudad = $this->input->post('ciudad');
         $this->response(['status' => 500, 'result' => $comienza]);
@@ -160,6 +159,7 @@ class Rest_anuncio extends REST_Controller
             $infinito = true;
         }
 
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             if ($ubicacion) {
                 $ciudad_obj = $this->pais->get_city($ubicacion);
