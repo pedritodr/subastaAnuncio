@@ -31,7 +31,7 @@ class Rest_anuncio extends REST_Controller
         $comienza = $this->input->post('comienza');
         $ubicacion = $this->input->post('ubicacion');
         $ciudad = $this->input->post('ciudad');
-        $this->response(['status' => 500, 'result' => $comienza]);
+        $this->response(['status' => 1000, 'result' => $security_token]);
         $categoria = $this->input->post('categoria');
         $subcategoria = $this->input->post('subcategoria');
         $limite = 11;
