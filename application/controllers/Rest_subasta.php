@@ -546,6 +546,9 @@ class Rest_subasta extends REST_Controller
 
         if ($auth) {
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
+            if ($infinito) {
+                $this->response(['status' => 10000, 'lista' => $comienza]);
+            }
             $all_subasta = $this->subasta->get_all_by_mis_subastas_with_pagination($limite, $comienza, $user_id);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
@@ -592,7 +595,6 @@ class Rest_subasta extends REST_Controller
                 }
             }
             if ($subastas) {
-
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
                 $this->response(['status' => 404, 'infinito' => $infinito]);
