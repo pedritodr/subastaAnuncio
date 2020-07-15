@@ -57,6 +57,7 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
+        $tipo = $this->input->post('tipo');
         $limite = 11;
         $comienza = $this->input->post('comienza');
         $infinito = false;
@@ -67,7 +68,7 @@ class Rest_subasta extends REST_Controller
 
         if ($auth) {
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
-            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza, $fecha);
+            $all_subasta = $this->subasta->get_all_by_subastas_with_pagination2($limite, $comienza, $fecha, $tipo);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             $subastas = [];
@@ -285,7 +286,7 @@ class Rest_subasta extends REST_Controller
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
-            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar,$tipo,$ciudad->ciudad_id);
+            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar, $tipo, $ciudad->ciudad_id);
             $this->load->model("Categoria_model", "categoria");
             $subastas = [];
             foreach ($all_subasta as $item) {
@@ -339,8 +340,6 @@ class Rest_subasta extends REST_Controller
         } else {
             $this->response(['status' => 500]);
         }
-    
-
     }
     public function subasta_categoria_post()
     {
