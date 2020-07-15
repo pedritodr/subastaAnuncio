@@ -104,6 +104,7 @@ class Rest_subasta extends REST_Controller
                     $puja =  $this->subasta->get_puja_alta($item->subasta_id);
                     if ($puja) {
                         $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                        $user_win->surname = substr($user_win->surname, 0, 4) . "...";
                     } else {
                         $user_win = null;
                     }
@@ -287,17 +288,17 @@ class Rest_subasta extends REST_Controller
         }
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-            if($ubicacion){
+            if ($ubicacion) {
                 $ciudad_obj = $this->pais->get_city($ubicacion);
-                if($ciudad_obj){
-                    $ciudad=$ciudad_obj->ciudad_id;
-                }else{
-                    $ciudad =0;
+                if ($ciudad_obj) {
+                    $ciudad = $ciudad_obj->ciudad_id;
+                } else {
+                    $ciudad = 0;
                 }
             }
-         
+
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
-            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar, $tipo, $ciudad,$categoria,$subcategoria);
+            $all_subasta = $this->subasta->search_by_name($limite, $comienza, $buscar, $tipo, $ciudad, $categoria, $subcategoria);
             $this->load->model("Categoria_model", "categoria");
             $subastas = [];
             foreach ($all_subasta as $item) {
@@ -332,6 +333,7 @@ class Rest_subasta extends REST_Controller
                     $puja =  $this->subasta->get_puja_alta($item->subasta_id);
                     if ($puja) {
                         $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                        $user_win->surname = substr($user_win->surname, 0, 4) . "...";
                     } else {
                         $user_win = null;
                     }
@@ -566,6 +568,7 @@ class Rest_subasta extends REST_Controller
                     $puja =  $this->subasta->get_puja_alta($item->subasta_id);
                     if ($puja) {
                         $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
+                        $user_win->surname = substr($user_win->surname, 0, 4) . "...";
                     } else {
                         $user_win = null;
                     }
@@ -595,13 +598,13 @@ class Rest_subasta extends REST_Controller
             $this->load->model('Pais_model', 'pais');
             $this->load->model("Categoria_model", "categoria");
             $ciudades = $this->pais->get_by_pais_id_object(4);
-            $categorias = $this->categoria->get_all(['is_active'=>1]);
+            $categorias = $this->categoria->get_all(['is_active' => 1]);
             foreach ($categorias as $item) {
-              $item->subcategorias = $this->categoria->get_all_subcat_from_idcat($item->categoria_id);
+                $item->subcategorias = $this->categoria->get_all_subcat_from_idcat($item->categoria_id);
             }
             if (count($ciudades) > 0) {
 
-                $this->response(['status' => 200, 'lista' => $ciudades,'categorias'=>$categorias]);
+                $this->response(['status' => 200, 'lista' => $ciudades, 'categorias' => $categorias]);
             } else {
                 $this->response(['status' => 404]);
             }
