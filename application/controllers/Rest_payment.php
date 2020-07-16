@@ -289,7 +289,7 @@ class Rest_payment extends REST_Controller
 
                 }
             }
-            $this->response(['status' => 200, 'payment' => $array]);
+
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);
