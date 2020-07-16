@@ -257,6 +257,37 @@ class Rest_payment extends REST_Controller
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if($auth){
+            $this->load->model('payment_model', 'payment');
+            require(APPPATH . "libraries/Curl.php");
+            $payment = $this->payment->get_by_credenciales_test();
+            $login = $payment->login;
+            $secretkey = $payment->secret_key;
+            $seed = Date("Y-m-d\TH:i:sP");
+            $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
+            $nonce = base64_encode($nonce);
+            $json = '{
+                "auth": {
+                    "login": "' . $login . '",
+                    "seed": "' . $seed . '",
+                    "nonce": "' . $nonce . '",
+                    "tranKey": "' . $tranKey . '"
+                }
+            }';
+            $listado = $this->payment->get_all_transaccion_pendiente($user_id);
+            foreach ($listado as $item) {
+
+                $url = $payment->end_ponit . 'api/session/' . $item->request_id;
+                $curl = new Curl();
+                $response = $curl->full_consulta_post($url, $json);
+                if ($response) {
+                    if ($response->status->status == "APPROVED") {
+                            $this->payment->update($item->payment_id, ['status' => 1]);
+                    } elseif ($response->status->status == "REJECTED") {
+                            $this->payment->update($item->payment_id, ['status' => 2]);
+                    }
+                }
+
+            }
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);

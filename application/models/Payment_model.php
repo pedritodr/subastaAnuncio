@@ -101,6 +101,14 @@ class Payment_model extends CI_Model
 
         return $query->result();
     }
+    function get_all_transaccion_pendiente($user_id)
+    {
+        $this->db->where('status', 0);
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('payment');
+
+        return $query->result();
+    }
     function update($id, $data)
     {
         $old = $this->get_by_id($id);
