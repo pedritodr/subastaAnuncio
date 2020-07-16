@@ -274,20 +274,24 @@ class Rest_payment extends REST_Controller
                 }
             }';
             $listado = $this->payment->get_all_transaccion_pendiente($user_id);
-            foreach ($listado as $item) {
+            $this->response(['status' => 200, 'pagos' => $listado]);
+            if($listado){
+                foreach ($listado as $item) {
 
-                $url = $payment->end_ponit . 'api/session/' . $item->request_id;
-                $curl = new Curl();
-                $response = $curl->full_consulta_post($url, $json);
-                if ($response) {
-                    if ($response->status->status == "APPROVED") {
-                            $this->payment->update($item->payment_id, ['status' => 1]);
-                    } elseif ($response->status->status == "REJECTED") {
-                            $this->payment->update($item->payment_id, ['status' => 2]);
+                    $url = $payment->end_ponit . 'api/session/' . $item->request_id;
+                    $curl = new Curl();
+                    $response = $curl->full_consulta_post($url, $json);
+                    if ($response) {
+                        if ($response->status->status == "APPROVED") {
+                                $this->payment->update($item->payment_id, ['status' => 1]);
+                        } elseif ($response->status->status == "REJECTED") {
+                                $this->payment->update($item->payment_id, ['status' => 2]);
+                        }
                     }
-                }
 
+                }
             }
+
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);
