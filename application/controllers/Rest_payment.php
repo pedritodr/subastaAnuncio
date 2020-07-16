@@ -178,6 +178,10 @@ class Rest_payment extends REST_Controller
     }
     public function update_request_post()
     {
+        require(APPPATH . "libraries/PPM.php");
+        $this->load->model('payment_model', 'payment');
+        require(APPPATH . "libraries/Curl.php");
+        $payment = $this->payment->get_by_credenciales_test();
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $request_id = $this->input->post('request_id');
@@ -185,10 +189,35 @@ class Rest_payment extends REST_Controller
         $status = $this->input->post('status');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
+            $login = $payment->login;
+            $secretkey = $payment->secret_key;
+            $seed = Date("Y-m-d\TH:i:sP");
+            $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
+            $nonce = base64_encode($nonce);
+            $json = '{
+                "auth": {
+                    "login": "' . $login . '",
+                    "seed": "' . $seed . '",
+                    "nonce": "' . $nonce . '",
+                    "tranKey": "' . $tranKey . '"
+                }
+            }';
+            $url = $payment->end_ponit . 'api/session/' . $request_id;
+            $curl = new Curl();
+            $response = $curl->full_consulta_post($url, $json);
             $obj = $this->payment->get_by_reference_id($reference);
+            if ($response) {
+                if ($response->status->status == "APPROVED") {
+                    if($obj){
+                        $this->payment->update($obj->payment_id, ['status' => 1, 'request_id' => $request_id]);
+                    }
+                } elseif ($response->status->status == "REJECTED") {
+                    if($obj){
+                        $this->payment->update($obj->payment_id, ['status' => 2, 'request_id' => $request_id]);
+                    }
+                }
+            }
             if ($obj) {
-                $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
-                $obj = $this->payment->get_by_id($obj->payment_id);
                 $this->response(['status' => 200, 'payment' => $obj]);
             } else {
                 $this->response(['status' => 500]);
@@ -228,11 +257,43 @@ class Rest_payment extends REST_Controller
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if($auth){
+          /*   $this->load->model('payment_model', 'payment');
+            require(APPPATH . "libraries/Curl.php");
+            $payment = $this->payment->get_by_credenciales_test();
+            $login = $payment->login;
+            $secretkey = $payment->secret_key;
+            $seed = Date("Y-m-d\TH:i:sP");
+            $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
+            $nonce = base64_encode($nonce);
+            $json = '{
+                "auth": {
+                    "login": "' . $login . '",
+                    "seed": "' . $seed . '",
+                    "nonce": "' . $nonce . '",
+                    "tranKey": "' . $tranKey . '"
+                }
+            }';
+            $listado = $this->payment->get_all_transaccion_pendiente($user_id);
+            if($listado){
+                foreach ($listado as $item) {
+                    $url = $payment->end_ponit . 'api/session/' . $item->request_id;
+                    $curl = new Curl();
+                    $response = $curl->full_consulta_post($url, $json);
+                    if ($response) {
+                        if ($response->status->status == "APPROVED") {
+                                $this->payment->update($item->payment_id, ['status' => 1]);
+                        } elseif ($response->status->status == "REJECTED") {
+                                $this->payment->update($item->payment_id, ['status' => 2]);
+                        }
+                    }
+
+                }
+            } */
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);
             }else{
-                $this->response(['status' => 404]); 
+                $this->response(['status' => 404]);
             }
         }else{
             $this->response(['status' => 500]);

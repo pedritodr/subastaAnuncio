@@ -3135,4 +3135,117 @@ class Front extends CI_Controller
         var_dump($prueba);
         die();
     }
+    public function pago_exitoso_2()
+    {
+        $this->load->model('payment_model', 'payment');
+        $this->payment->create_prueba(["data" => "visa"]);
+        $datos = file_get_contents('php://input');
+        //     $this->payment->create_prueba(['data' => $datos]);
+        $data = json_decode($datos, true);
+        $requestId = $data['requestId'];
+        $reference = $data['reference'];
+        // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
+        $obj =  $this->payment->get_by_reference_id($reference);
+
+        if ($obj) {
+            $this->payment->update($obj->payment_id, ['request_id' => $requestId]);
+            if ($data['status']['status'] == "APPROVED") {
+                $status = 1;
+            } elseif ($data['status']['status'] == "PENDING") {
+                $status = 3;
+            } elseif ($data['status']['status'] == "REJECTED") {
+                $status = 2;
+            } else {
+                $status = 0;
+            }
+            $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $requestId]);
+            if ($status == 1) {
+                if ($obj->tipo == 0) { //membresia
+                    $user_id = $obj->user_id;
+                    $this->load->model('User_model', 'user');
+                    $user_obj = $this->user->get_by_id($user_id);
+                    $this->load->model('Membresia_model', 'membresia');
+                    $object_membresia = $this->membresia->get_by_id($obj->id);
+                    $fecha = date('Y-m-d H:i:s');
+                    $fecha_fin = strtotime('+364 day', strtotime($fecha));
+                    $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+                    $fecha_mes = strtotime('+30 day', strtotime($fecha));
+                    $fecha_mes = date('Y-m-d', $fecha_mes);
+                    $data = [
+                        'user_id' => $user_id,
+                        'membresia_id' => $obj->id,
+                        'fecha_inicio' => $fecha,
+                        'fecha_fin' => $fecha_fin,
+                        'fecha_mes' => $fecha_mes,
+                        'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+                        'qty_subastas' => (int) $object_membresia->qty_subastas,
+                        'estado' => 1,
+                        'mes' => 1,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $id = $this->membresia->create_membresia_user($data);
+                    if ($id) {
+                        $this->load->model("Correo_model", "correo");
+                        $asunto = "Membresia adquirida";
+                        $motivo = 'Membresia adquirida Subasta anuncios';
+                        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                        $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+                        $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+                        $mensaje .= "" . $object_membresia->descripcion . "<br>";
+                        $mensaje .= "Tu usuario " . $user_obj->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+                        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                        $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                        $mensaje .= "Saludos,<br>";
+                        $mensaje .= "El equipo de SUBASTANUNCIOS";
+                        $this->correo->sent($user_obj->email, $mensaje, $asunto, $motivo);
+                    }
+                } elseif ($obj->tipo == 1) {
+                    $user_id = $obj->user_id;
+                    $subasta_id = $obj->id;
+                    $this->load->model('Subasta_model', 'subasta');
+                    $this->load->model('Membresia_model', 'membresia');
+                    $membresia = $this->membresia->get_membresia_by_user_id($user_id);
+                    if ($membresia) {
+                        $qty = (int) $membresia->qty_subastas;
+                        if ($qty > 0) {
+                            $resta = $qty - 1;
+                            $this->membresia->update_membresia_user($membresia->membre_user_id, ['qty_subastas' => $resta]);
+                        }
+                    }
+                    $data = [
+                        'user_id' => $user_id,
+                        'subasta_id' => $subasta_id,
+                        'is_active' => 1,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $this->subasta->create_subasta_user($data);
+                } elseif ($obj->tipo == 2) {
+                    $this->load->model('Anuncio_model', 'anuncio');
+                    $anuncio_id = $obj->id;
+                    $fecha = date('Y-m-d');
+                    $fecha_fin = strtotime('+30 day', strtotime($fecha));
+                    $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $obj->payment_id]);
+                } elseif ($obj->tipo == 3) {
+                    $user_id = $obj->user_id;
+                    $subasta_id = $obj->id;
+                    $this->load->model('Subasta_model', 'subasta');
+                    $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+                    $count = count($subasta);
+                    $cantidad = (int) $subasta[$count - 1]->cantidad - 1;
+                    if ($cantidad == 0) {
+                        $this->subasta->update($subasta_id, ['is_open' => 0]);
+                    }
+                    $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]);
+                    $data = [
+                        'user_id' => $user_id,
+                        'subasta_id' => $subasta_id,
+                        'is_active' => 1,
+                        'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+                        'payment_id' => $obj->payment_id
+                    ];
+                    $this->subasta->create_subasta_user($data);
+                }
+            }
+        }
+    }
 }
