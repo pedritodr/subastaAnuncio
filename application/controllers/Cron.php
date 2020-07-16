@@ -300,6 +300,12 @@ class Cron  extends CI_Controller
         $mensaje .= "El equipo de SUBASTANUNCIOS";
         $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
+    public function fechas(){
+         $fecha = date('Y-m-d H:i:s');
+         $dia = date("d", strtotime($fecha));
+
+        var_dump($dia);die();
+    }
     public function update_transacciones_test()
     {
         require(APPPATH . "libraries/PPM.php");

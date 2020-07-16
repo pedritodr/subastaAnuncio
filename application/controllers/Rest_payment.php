@@ -274,14 +274,14 @@ class Rest_payment extends REST_Controller
                 }
             }';
             $listado = $this->payment->get_all_transaccion_pendiente($user_id);
-
+$array=[];
             if($listado){
                 foreach ($listado as $item) {
 
                     $url = $payment->end_ponit . 'api/session/' . $item->request_id;
                     $curl = new Curl();
                     $response = $curl->full_consulta_post($url, $json);
-                    $this->response(['status' => $response]);
+array_push($array,$response);
                     if ($response) {
                         if ($response->status->status == "APPROVED") {
                                 $this->payment->update($item->payment_id, ['status' => 1]);
@@ -292,7 +292,7 @@ class Rest_payment extends REST_Controller
 
                 }
             }
-
+            $this->response(['status' => 200, 'payment' => $array]);
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);
