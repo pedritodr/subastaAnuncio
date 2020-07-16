@@ -180,9 +180,9 @@ class Cron  extends CI_Controller
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba(['data' => "sonda"]);
+      //  $this->payment->create_prueba(['data' => "sonda"]);
         require(APPPATH . "libraries/Curl.php");
-        $this->payment->create_prueba(['data' => "sonda"]);
+       // $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
         $payment = $this->payment->get_by_credenciales();
@@ -304,9 +304,9 @@ class Cron  extends CI_Controller
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba(['data' => "sonda"]);
+        //$this->payment->create_prueba(['data' => "sonda"]);
         require(APPPATH . "libraries/Curl.php");
-        $this->payment->create_prueba(['data' => "sonda"]);
+    //    $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
         $payment = $this->payment->get_by_credenciales_test();
