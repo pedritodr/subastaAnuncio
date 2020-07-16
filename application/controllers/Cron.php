@@ -185,7 +185,7 @@ class Cron  extends CI_Controller
         $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
-        $payment = $this->payment->get_by_credenciales();
+        $payment = $this->payment->get_by_credenciales_test();
         //Genera codigo aleatorio para el trankey
         $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
