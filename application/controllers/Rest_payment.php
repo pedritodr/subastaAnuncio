@@ -274,6 +274,7 @@ class Rest_payment extends REST_Controller
                 }
             }';
             $listado = $this->payment->get_all_transaccion_pendiente($user_id);
+            $this->response(['status' => 200, 'payment' => $listado]);
 $array=[];
             if($listado){
                 foreach ($listado as $item) {
