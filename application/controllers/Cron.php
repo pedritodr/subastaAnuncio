@@ -295,6 +295,13 @@ class Cron  extends CI_Controller
     }
     public function update_transacciones_test()
     {
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Sonda";
+        $motivo = 'Sonda';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "Ejecucion de sonda test";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
         $this->payment->create_prueba(['data' => "sonda"]);
