@@ -257,7 +257,7 @@ class Rest_payment extends REST_Controller
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if($auth){
-            $this->load->model('payment_model', 'payment');
+          /*   $this->load->model('payment_model', 'payment');
             require(APPPATH . "libraries/Curl.php");
             $payment = $this->payment->get_by_credenciales_test();
             $login = $payment->login;
@@ -288,8 +288,7 @@ class Rest_payment extends REST_Controller
                     }
 
                 }
-            }
-
+            } */
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
             if($pagos){
                 $this->response(['status' => 200, 'pagos' => $pagos]);
