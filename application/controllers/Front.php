@@ -3138,10 +3138,11 @@ class Front extends CI_Controller
     public function pago_exitoso_2()
     {
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba(["data" => "url_respose"]);
+
         $datos = file_get_contents('php://input');
         //     $this->payment->create_prueba(['data' => $datos]);
         $data = json_decode($datos, true);
+        $this->payment->create_prueba(["data" => "$data"]);
         $requestId = $data['requestId'];
         $reference = $data['reference'];
         // $obj =  $this->payment->get_by_reference_id("RF-1586980027-28");
