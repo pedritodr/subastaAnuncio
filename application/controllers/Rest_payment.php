@@ -219,6 +219,7 @@ class Rest_payment extends REST_Controller
             } */
             if ($obj) {
                 $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
+                $obj = $this->payment->get_by_reference_id($reference);
                 $this->response(['status' => 200, 'payment' => $obj]);
             } else {
                 $this->response(['status' => 500]);
