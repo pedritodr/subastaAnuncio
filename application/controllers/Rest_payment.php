@@ -189,7 +189,7 @@ class Rest_payment extends REST_Controller
         $status = $this->input->post('status');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-            $login = $payment->login;
+            /*  $login = $payment->login;
             $secretkey = $payment->secret_key;
             $seed = Date("Y-m-d\TH:i:sP");
             $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
@@ -204,9 +204,9 @@ class Rest_payment extends REST_Controller
             }';
             $url = $payment->end_ponit . 'api/session/' . $request_id;
             $curl = new Curl();
-            $response = $curl->full_consulta_post($url, $json);
+            $response = $curl->full_consulta_post($url, $json); */
             $obj = $this->payment->get_by_reference_id($reference);
-            if ($response) {
+            /*    if ($response) {
                 if ($response->status->status == "APPROVED") {
                     if($obj){
                         $this->payment->update($obj->payment_id, ['status' => 1, 'request_id' => $request_id]);
@@ -216,8 +216,9 @@ class Rest_payment extends REST_Controller
                         $this->payment->update($obj->payment_id, ['status' => 2, 'request_id' => $request_id]);
                     }
                 }
-            }
+            } */
             if ($obj) {
+                $this->payment->update($obj->payment_id, ['status' => $status, 'request_id' => $request_id]);
                 $this->response(['status' => 200, 'payment' => $obj]);
             } else {
                 $this->response(['status' => 500]);
@@ -252,12 +253,13 @@ class Rest_payment extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-    public function mis_pagos_post(){
+    public function mis_pagos_post()
+    {
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-        if($auth){
-          /*   $this->load->model('payment_model', 'payment');
+        if ($auth) {
+            /*   $this->load->model('payment_model', 'payment');
             require(APPPATH . "libraries/Curl.php");
             $payment = $this->payment->get_by_credenciales_test();
             $login = $payment->login;
@@ -290,14 +292,13 @@ class Rest_payment extends REST_Controller
                 }
             } */
             $pagos = $this->payment->get_by_payment_user_id_all($user_id);
-            if($pagos){
+            if ($pagos) {
                 $this->response(['status' => 200, 'pagos' => $pagos]);
-            }else{
+            } else {
                 $this->response(['status' => 404]);
             }
-        }else{
+        } else {
             $this->response(['status' => 500]);
         }
-
     }
 }
