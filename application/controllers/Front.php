@@ -3138,7 +3138,7 @@ class Front extends CI_Controller
     public function pago_exitoso_2()
     {
         $this->load->model('payment_model', 'payment');
-        $this->payment->create_prueba(["data" => "visa"]);
+        $this->payment->create_prueba(["data" => "url_respose"]);
         $datos = file_get_contents('php://input');
         //     $this->payment->create_prueba(['data' => $datos]);
         $data = json_decode($datos, true);
