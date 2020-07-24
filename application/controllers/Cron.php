@@ -180,9 +180,9 @@ class Cron  extends CI_Controller
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
-      //  $this->payment->create_prueba(['data' => "sonda"]);
+        //  $this->payment->create_prueba(['data' => "sonda"]);
         require(APPPATH . "libraries/Curl.php");
-       // $this->payment->create_prueba(['data' => "sonda"]);
+        // $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
         $payment = $this->payment->get_by_credenciales();
@@ -300,11 +300,13 @@ class Cron  extends CI_Controller
         $mensaje .= "El equipo de SUBASTANUNCIOS";
         $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
     }
-    public function fechas(){
-         $fecha = date('Y-m-d H:i:s');
-         $dia = date("d", strtotime($fecha));
+    public function fechas()
+    {
+        $fecha = date('Y-m-d H:i:s');
+        $dia = date("d", strtotime($fecha));
 
-        var_dump($dia);die();
+        var_dump($dia);
+        die();
     }
     public function update_transacciones_test()
     {
@@ -312,7 +314,7 @@ class Cron  extends CI_Controller
         $this->load->model('payment_model', 'payment');
         //$this->payment->create_prueba(['data' => "sonda"]);
         require(APPPATH . "libraries/Curl.php");
-    //    $this->payment->create_prueba(['data' => "sonda"]);
+        //    $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
         $payment = $this->payment->get_by_credenciales_test();
