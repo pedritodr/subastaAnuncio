@@ -837,13 +837,9 @@ class Rest_user extends REST_Controller
 
     public function generar_new_password_post()
     {
-
-
         $email = $this->input->post('email');
         $user_object = $this->user->get_user_by_email($email);
-
         if ($user_object) {
-            $user_object = $this->user->get_user_by_email($email);
             if ($user_object) {
                 $new_password = time();
                 $new_token = md5($email . $new_password);
