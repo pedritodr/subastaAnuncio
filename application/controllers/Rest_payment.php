@@ -27,7 +27,7 @@ class Rest_payment extends REST_Controller
         //carga de credenciales.
         $auth = $this->user->is_valid_auth($user_id, $security_token);
         if ($auth) {
-            $payment = $this->payment->get_by_credenciales_test();
+            $payment = $this->payment->get_by_credenciales_app();
             if ($payment) {
                 //Genera codigo aleatorio para el trankey
                 $length = 8;
@@ -57,7 +57,7 @@ class Rest_payment extends REST_Controller
         $this->load->model('payment_model', 'payment');
         $this->load->model('User_model', 'user');
         //carga de credenciales.
-        $payment = $this->payment->get_by_credenciales();
+        $payment = $this->payment->get_by_credenciales_app();
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         //carga de credenciales.
@@ -181,7 +181,7 @@ class Rest_payment extends REST_Controller
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
         require(APPPATH . "libraries/Curl.php");
-        $payment = $this->payment->get_by_credenciales_test();
+        $payment = $this->payment->get_by_credenciales_app();
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $request_id = $this->input->post('request_id');

@@ -308,7 +308,7 @@ class Cron  extends CI_Controller
         var_dump($dia);
         die();
     }
-    public function update_transacciones_test()
+    public function update_transacciones_app()
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
@@ -317,7 +317,7 @@ class Cron  extends CI_Controller
         //    $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
-        $payment = $this->payment->get_by_credenciales_test();
+        $payment = $this->payment->get_by_credenciales_app();
         //Genera codigo aleatorio para el trankey
         $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

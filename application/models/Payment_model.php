@@ -38,6 +38,7 @@ class Payment_model extends CI_Model
 
         return $query->row();
     }
+    //function que carga las credenciales de placetopay para la pagina web cuyo id es el 1 de la tabla credenciales
     function get_by_credenciales()
     {
         $this->db->where('id', 1);
@@ -45,7 +46,8 @@ class Payment_model extends CI_Model
 
         return $query->row();
     }
-    function get_by_credenciales_test()
+    //function que carga las credenciales de placetopay para la pagina web cuyo id es el 2 de la tabla credenciales
+    function get_by_credenciales_app()
     {
         $this->db->where('id', 2);
         $query = $this->db->get('credenciales');
