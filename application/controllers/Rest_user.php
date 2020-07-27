@@ -858,7 +858,6 @@ class Rest_user extends REST_Controller
             $this->correo->sent($email, $mensaje, $asunto, $motivo);
             $this->response(['status' => 200, 'msg' => 'Password generado y enviado a su correo.']);
         } else {
-
             $this->response(['status' => 404, 'msg' => 'No se encuentra el email especificado']);
         }
     }
