@@ -57,7 +57,7 @@ class Rest_payment extends REST_Controller
         $this->load->model('payment_model', 'payment');
         $this->load->model('User_model', 'user');
         //carga de credenciales.
-        $payment = $this->payment->get_by_credenciales();
+        $payment = $this->payment->get_by_credenciales_app();
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         //carga de credenciales.
