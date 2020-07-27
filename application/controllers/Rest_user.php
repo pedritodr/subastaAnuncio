@@ -840,27 +840,22 @@ class Rest_user extends REST_Controller
         $email = $this->input->post('email');
         $user_object = $this->user->get_user_by_email($email);
         if ($user_object) {
-            if ($user_object) {
-                $new_password = time();
-                $new_token = md5($email . $new_password);
-                $this->user->update($user_object->user_id, ["password" => md5($new_password), 'security_token' => $new_token]);
-                $this->load->model("Correo_model", "correo");
-                $asunto = "Cambio de clave";
-                $motivo = 'Cambio de contraseña Subasta anuncios';
-                $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-                $mensaje .= "Hola <br>Has solicitado el restablecimiento de tu contraseña para acceder al perfil: (" . $email . ").<br>";
-                $mensaje .= "Con el objetivo de proteger tus datos en todo momento, hemos generado una nueva contraseña para que puedas acceder de manera adecuada a la plataforma.<br>";
-                $mensaje .= "Nueva Contraseña:" . $new_password . "<br>";
-                $mensaje .= "Si usted presentara algún problema para la ejecución del procedimiento indicado, debe comunicarse con nuestro equipo de soporte a través del mail info@suabastanuncios.com.<br>";
-                $mensaje .= "Ha sido un placer ayudarte. Continúa utilizando nuestras herramientas.<br>";
-                $mensaje .= "Gracias por preferirnos<br>";
-                $mensaje .= "Saludos,<br>";
-                $mensaje .= "El equipo de SUBASTANUNCIOS";
-                $this->correo->sent($email, $mensaje, $asunto, $motivo);
-                $this->response->set_message(translate('cambiada_lang'), ResponseMessage::SUCCESS);
-                redirect("login");
-            }
-
+            $new_password = time();
+            $new_token = md5($email . $new_password);
+            $this->user->update($user_object->user_id, ["password" => md5($new_password), 'security_token' => $new_token]);
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Cambio de clave";
+            $motivo = 'Cambio de contraseña Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Has solicitado el restablecimiento de tu contraseña para acceder al perfil: (" . $email . ").<br>";
+            $mensaje .= "Con el objetivo de proteger tus datos en todo momento, hemos generado una nueva contraseña para que puedas acceder de manera adecuada a la plataforma.<br>";
+            $mensaje .= "Nueva Contraseña:" . $new_password . "<br>";
+            $mensaje .= "Si usted presentara algún problema para la ejecución del procedimiento indicado, debe comunicarse con nuestro equipo de soporte a través del mail info@suabastanuncios.com.<br>";
+            $mensaje .= "Ha sido un placer ayudarte. Continúa utilizando nuestras herramientas.<br>";
+            $mensaje .= "Gracias por preferirnos<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
             $this->response(['status' => 200, 'msg' => 'Password generado y enviado a su correo.']);
         } else {
 
