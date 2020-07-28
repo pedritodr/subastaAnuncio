@@ -1710,9 +1710,9 @@ class Front extends CI_Controller
 
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
-        $offset = !$page ? 0 : $page;
+        //     $offset = !$page ? 0 : $page;
 
-        $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
+        $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], 0);
         foreach ($all_anuncios as $item) {
             $long = strlen($item->descripcion);
 
