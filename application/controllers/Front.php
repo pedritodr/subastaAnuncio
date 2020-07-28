@@ -1668,19 +1668,19 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
-        if ($contador >= 8) {
+        /*        if ($contador >= 8) {
 
             $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
-        }
+        } */
 
         /*Obtiene el numero de registros a mostrar por pagina */
 
-        $config['uri_segment'] = 3;
+        //    $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
-
+        $config['per_page'] = '8';
         $config['cur_tag_open'] = '<li class="active"><a href="#">';
 
         $config['cur_tag_close'] = '</a></li>';
@@ -1710,7 +1710,6 @@ class Front extends CI_Controller
 
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
-
         $offset = !$page ? 0 : $page;
 
         $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
