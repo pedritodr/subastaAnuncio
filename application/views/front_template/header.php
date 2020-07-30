@@ -50,6 +50,7 @@
    <script src="<?= base_url('assets_front/js/modernizr.js') ?>"></script>
 
    <!-- Base MasterSlider style sheet -->
+   <script src="<?= base_url('admin_lte/bootstrap/js/alert_notificacion.js'); ?>"></script>
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/masterslider.css') ?>" />
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/skins/default/style.css') ?>" />
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/style.css') ?>" />
@@ -120,7 +121,7 @@
                            <!--usuario autenticado-->
 
                            <?php if ($this->session->userdata('role_id') != 1) { ?>
-                              
+
                               <li class="dropdown">
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
                                  <ul class="dropdown-menu">
@@ -130,7 +131,7 @@
                                  </ul>
                               </li>
                            <?php } else { ?>
-                              
+
                               <li class="dropdown">
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
                                  <ul class="dropdown-menu">

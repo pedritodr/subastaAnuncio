@@ -113,26 +113,7 @@
 
                               </div>
                            </div>
-
                         </div>
-
-
-
-
-                        <!-- end row -->
-                        <!-- Image Upload  -->
-                        <div class="row">
-                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                              <label><?= translate("image_lang"); ?> (750x750)</label>
-                              <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>">
-                              <div id="dropzone" class="dropzone"></div>
-                           </div>
-                        </div>
-
-
-
-                        <!-- end row -->
-                        <!-- Ad Description  -->
                         <div class="row">
                            <div style="margin-bottom: -3%;" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                               <div class="form-group">
@@ -141,10 +122,56 @@
                               </div>
                            </div>
                         </div>
+                        <div class="row">
+                           <br>
+                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                              <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> 4 Imagenes para el anuncio (tamaño minimo 645x645)</label></p>
+
+                              <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+                                 <div style="width:121px;height:121px;box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+
+                                    <span id="span_delete_1" onclick="delete_image_1()" style="position:absolute; top:-3%;z-index:100;right: 24%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i></span>
+
+                                    <img style="width:90.75px;height:90.75px; cursor:pointer position:relative" id="image_1" onclick="llamar_add_imagen_1()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+
+                                    <label style="font-size:12px;cursor: pointer;" for="add_image_1" class="text-center"><i class="fa fa-upload" aria-hidden="true"></i> <span>Agregar imagen</span></label>
+                                    <input type="file" name="archivo" id="add_image_1" accepts="image/*">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+                                 <div style="width:121px;height:121px;box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                    <span id="span_delete_2" onclick="delete_image_2()" style="position:absolute; top:-3%;z-index:100;right: 24%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i></span>
+                                    <img style="width:90.75px;height:90.75px; cursor:pointer" id="image_2" onclick="llamar_add_imagen_2()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+
+                                    <label style="font-size:12px;cursor: pointer;" for="add_image_2" class="text-center"><i class="fa fa-upload" aria-hidden="true"></i> <span>Agregar imagen</span></label>
+                                    <input type="file" name="archivo" id="add_image_2" accepts="image/*">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+                                 <div style="width:121px;height:121px;box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                    <span id="span_delete_3" onclick="delete_image_3()" style="position:absolute; top:-3%;z-index:100;right: 24%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i></span>
+                                    <img style="width:90.75px;height:90.75px; cursor:pointer" id="image_3" onclick="llamar_add_imagen_3()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+
+                                    <label style="font-size:12px;cursor: pointer;" for="add_image_3" class="text-center"><i class="fa fa-upload" aria-hidden="true"></i> <span>Agregar imagen</span></label>
+                                    <input type="file" name="archivo" id="add_image_3" accepts="image/*">
+                                 </div>
+                              </div>
+                              <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+                                 <div style="width:121px;height:121px;box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                    <span id="span_delete_4" onclick="delete_image_4()" style="position:absolute; top:-3%;z-index:100;right: 24%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i></span>
+                                    <img style="width:90.75px;height:90.75px; cursor:pointer" id="image_4" onclick="llamar_add_imagen_4()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+
+                                    <label style="font-size:12px;cursor: pointer;" for="add_image_4" class="text-center"><i class="fa fa-upload" aria-hidden="true"></i> <span>Agregar imagen</span></label>
+                                    <input type="file" name="archivo" id="add_image_4" accepts="image/*">
+                                 </div>
+                              </div>
+                           </div>
+                           <br>
+                        </div>
                         <!-- end row -->
 
                         <div class="row">
-
+                           <br>
                            <!--     <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
                         <label><?= translate("listar_country_lang"); ?></label>
                         <div class="input-group">
@@ -180,41 +207,25 @@
 
                      </div> -->
 
-
-
                            <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
                               <div id="google-maps-inner" class="google-maps-inner">
                                  <label><?= translate("direccion_lang"); ?></label>
                                  <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                     <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
-
                                  </div>
-
                                  <div id="map" class="map">
                                  </div>
-
-
                               </div>
                            </div>
-
-
                            <br><br>
-
-
                            <input type="hidden" id="lat" name="lat" />
                            <input type="hidden" id="lng" name="lng" />
                            <input type="hidden" id="pais" />
                            <input type="hidden" id="city_main" name="city_main" />
+                           <input name="array_fotos" id="array_fotos" type="hidden" value="">
                            <button id="btn_add_anuncio" type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
-
-
-
                         </div>
-
-
-
-
                         <?= form_close(); ?>
                      </div>
 
@@ -243,6 +254,949 @@
             var longitude = 0;
             var init_lat = -1.831239;
             var init_lng = -78.18340599999999;
+            var peso_maximo = 4 * 1048576;
+            var array_imagenes = [];
+
+            function delete_image_1() {
+               var id_encontrado;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_1") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_1').attr("src", imagen_default);
+                  $('#add_image_1').val("");
+                  $('#span_delete_1').hide();
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: true,
+                     timer: 3000
+                  });
+               }
+            }
+
+            function delete_image_2() {
+               var id_encontrado;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_2") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_2').attr("src", imagen_default);
+                  $('#add_image_2').val("");
+                  $('#span_delete_2').hide();
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: true,
+                     timer: 3000
+                  });
+               }
+            }
+
+            function delete_image_3() {
+               var id_encontrado;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_3") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_3').attr("src", imagen_default);
+                  $('#add_image_3').val("");
+                  $('#span_delete_3').hide();
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: true,
+                     timer: 3000
+                  });
+               }
+            }
+
+            function delete_image_4() {
+               var id_encontrado;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_4") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_4').attr("src", imagen_default);
+                  $('#add_image_4').val("");
+                  $('#span_delete_4').hide();
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: true,
+                     timer: 3000
+                  });
+               }
+            }
+
+            function llamar_add_imagen_1() {
+               $('#add_image_1').click();
+            }
+            $("#add_image_1").change(function(e) {
+               var image, file;
+               if ((file = this.files[0])) {
+                  if (array_imagenes.length > 0) {
+                     var encontro = false;
+                     var id_encontrado = 0;
+                     var name_contenedor;
+                     var repetido = false;
+                     for (let i = 0; i < array_imagenes.length; i++) {
+                        if (array_imagenes[i].name == "image_1") {
+                           encontro = true;
+                           id_encontrado = i;
+                           name_contenedor = array_imagenes[i].name;
+                        }
+                        if (array_imagenes[i].id == file.name) {
+                           encontro = true;
+                           repetido = true;
+                        }
+                     }
+                     if (encontro) {
+                        if (name_contenedor == "image_1") {
+                           if (id_encontrado != -1) {
+                              array_imagenes.splice(id_encontrado, 1);
+                           }
+                           var sizeByte = this.files[0].size;
+                           var sizekiloBytes = parseInt(sizeByte / 1024);
+                           if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                              if (file.size <= peso_maximo) {
+                                 image = new Image();
+                                 image.onload = function() {
+                                    if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                       if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                          var reader = new FileReader();
+                                          reader.onload = function(event) {
+                                             $('#image_1').attr("src", event.target.result);
+                                             $('#span_delete_1').show();
+                                             array_imagenes.push({
+                                                "id": file.name,
+                                                "imagen": event.target.result,
+                                                'foto_anuncio_id': null,
+                                                'name': "image_1"
+                                             });
+                                          }
+                                          reader.readAsDataURL(file);
+                                          Swal.fire({
+                                             icon: 'success',
+                                             title: 'La imagen se ah subido correctamente',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       } else {
+                                          Swal.fire({
+                                             icon: 'error',
+                                             title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       }
+
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+                                 };
+                                 image.src = URL.createObjectURL(file);
+                              }
+                           } else {
+                              Swal.fire({
+                                 icon: 'error',
+                                 title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                                 showConfirmButton: true,
+                                 timer: 3000
+                              });
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                        if (repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     } else {
+                        var sizeByte = this.files[0].size;
+                        var sizekiloBytes = parseInt(sizeByte / 1024);
+                        if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                           if (file.size <= peso_maximo) {
+                              image = new Image();
+                              image.onload = function() {
+                                 if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                    if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                       var reader = new FileReader();
+                                       reader.onload = function(event) {
+                                          $('#image_1').attr("src", event.target.result);
+                                          $('#span_delete_1').show();
+                                          array_imagenes.push({
+                                             "id": file.name,
+                                             "imagen": event.target.result,
+                                             'foto_anuncio_id': null,
+                                             'name': "image_1"
+                                          });
+                                       }
+                                       reader.readAsDataURL(file);
+                                       Swal.fire({
+                                          icon: 'success',
+                                          title: 'La imagen se ah subido correctamente',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+                              };
+                              image.src = URL.createObjectURL(file);
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     }
+
+                  } else {
+                     var sizeByte = this.files[0].size;
+                     var sizekiloBytes = parseInt(sizeByte / 1024);
+                     if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                        if (file.size <= peso_maximo) {
+                           image = new Image();
+                           image.onload = function() {
+                              if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                 if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                    var reader = new FileReader();
+                                    reader.onload = function(event) {
+                                       $('#image_1').attr("src", event.target.result);
+                                       $('#span_delete_1').show();
+                                       array_imagenes.push({
+                                          "id": file.name,
+                                          "imagen": event.target.result,
+                                          'foto_anuncio_id': null,
+                                          'name': "image_1"
+                                       });
+                                    }
+                                    reader.readAsDataURL(file);
+                                    Swal.fire({
+                                       icon: 'success',
+                                       title: 'La imagen se ah subido correctamente',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+
+                              } else {
+                                 Swal.fire({
+                                    icon: 'error',
+                                    title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                    showConfirmButton: true,
+                                    timer: 3000
+                                 });
+                              }
+                           };
+                           image.src = URL.createObjectURL(file);
+                        }
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                           showConfirmButton: true,
+                           timer: 3000
+                        });
+                     }
+                  }
+               }
+            });
+
+            function llamar_add_imagen_2() {
+               $('#add_image_2').click();
+            }
+            $("#add_image_2").change(function(e) {
+               var image, file;
+               if ((file = this.files[0])) {
+                  if (array_imagenes.length > 0) {
+                     var encontro = false;
+                     var id_encontrado = 0;
+                     var name_contenedor;
+                     var repetido = false;
+                     for (let i = 0; i < array_imagenes.length; i++) {
+                        if (array_imagenes[i].name == "image_2") {
+                           encontro = true;
+                           id_encontrado = i;
+                           name_contenedor = array_imagenes[i].name;
+                        }
+                        if (array_imagenes[i].id == file.name) {
+                           encontro = true;
+                           repetido = true;
+                        }
+                     }
+                     if (encontro) {
+                        if (name_contenedor == "image_2") {
+                           if (id_encontrado != -1) {
+                              array_imagenes.splice(id_encontrado, 1);
+
+                           }
+                           var sizeByte = this.files[0].size;
+                           var sizekiloBytes = parseInt(sizeByte / 1024);
+                           if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                              if (file.size <= peso_maximo) {
+                                 image = new Image();
+                                 image.onload = function() {
+                                    if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                       if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                          var reader = new FileReader();
+                                          reader.onload = function(event) {
+                                             $('#image_2').attr("src", event.target.result);
+                                             $('#span_delete_2').show();
+                                             array_imagenes.push({
+                                                "id": file.name,
+                                                "imagen": event.target.result,
+                                                'foto_anuncio_id': null,
+                                                'name': "image_2"
+                                             });
+                                          }
+                                          reader.readAsDataURL(file);
+                                          Swal.fire({
+                                             icon: 'success',
+                                             title: 'La imagen se ah subido correctamente',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       } else {
+                                          Swal.fire({
+                                             icon: 'error',
+                                             title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       }
+
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+                                 };
+                                 image.src = URL.createObjectURL(file);
+                              }
+                           } else {
+                              Swal.fire({
+                                 icon: 'error',
+                                 title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                                 showConfirmButton: true,
+                                 timer: 3000
+                              });
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                        if (repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     } else {
+                        var sizeByte = this.files[0].size;
+                        var sizekiloBytes = parseInt(sizeByte / 1024);
+                        if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                           if (file.size <= peso_maximo) {
+                              image = new Image();
+                              image.onload = function() {
+                                 if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                    if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                       var reader = new FileReader();
+                                       reader.onload = function(event) {
+                                          $('#image_2').attr("src", event.target.result);
+                                          $('#span_delete_2').show();
+                                          array_imagenes.push({
+                                             "id": file.name,
+                                             "imagen": event.target.result,
+                                             'foto_anuncio_id': null,
+                                             'name': "image_2"
+                                          });
+                                       }
+                                       reader.readAsDataURL(file);
+                                       Swal.fire({
+                                          icon: 'success',
+                                          title: 'La imagen se ah subido correctamente',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+                              };
+                              image.src = URL.createObjectURL(file);
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     }
+
+                  } else {
+                     var sizeByte = this.files[0].size;
+                     var sizekiloBytes = parseInt(sizeByte / 1024);
+                     if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                        if (file.size <= peso_maximo) {
+                           image = new Image();
+                           image.onload = function() {
+                              if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                 if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                    var reader = new FileReader();
+                                    reader.onload = function(event) {
+                                       $('#image_2').attr("src", event.target.result);
+                                       $('#span_delete_2').show();
+                                       array_imagenes.push({
+                                          "id": file.name,
+                                          "imagen": event.target.result,
+                                          'foto_anuncio_id': null,
+                                          'name': "image_2"
+                                       });
+                                    }
+                                    reader.readAsDataURL(file);
+                                    Swal.fire({
+                                       icon: 'success',
+                                       title: 'La imagen se ah subido correctamente',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+
+                              } else {
+                                 Swal.fire({
+                                    icon: 'error',
+                                    title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                    showConfirmButton: true,
+                                    timer: 3000
+                                 });
+                              }
+                           };
+                           image.src = URL.createObjectURL(file);
+                        }
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                           showConfirmButton: true,
+                           timer: 3000
+                        });
+                     }
+                  }
+               }
+            });
+
+            function llamar_add_imagen_3() {
+               $('#add_image_3').click();
+            }
+            $("#add_image_3").change(function(e) {
+               var image, file;
+               if ((file = this.files[0])) {
+                  if (array_imagenes.length > 0) {
+                     var encontro = false;
+                     var id_encontrado = 0;
+                     var name_contenedor;
+                     var repetido = false;
+                     for (let i = 0; i < array_imagenes.length; i++) {
+                        if (array_imagenes[i].name == "image_3") {
+                           encontro = true;
+                           id_encontrado = i;
+                           name_contenedor = array_imagenes[i].name
+                        }
+                        if (array_imagenes[i].id == file.name) {
+                           encontro = true;
+                           repetido = true;
+                        }
+                     }
+                     if (encontro) {
+                        if (name_contenedor == "image_3") {
+                           if (id_encontrado != -1) {
+                              array_imagenes.splice(id_encontrado, 1);
+                           }
+                           var sizeByte = this.files[0].size;
+                           var sizekiloBytes = parseInt(sizeByte / 1024);
+                           if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                              if (file.size <= peso_maximo) {
+                                 image = new Image();
+                                 image.onload = function() {
+                                    if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                       if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                          var reader = new FileReader();
+                                          reader.onload = function(event) {
+                                             $('#image_3').attr("src", event.target.result);
+                                             $('#span_delete_3').show();
+                                             array_imagenes.push({
+                                                "id": file.name,
+                                                "imagen": event.target.result,
+                                                'foto_anuncio_id': null,
+                                                'name': "image_3"
+                                             });
+                                          }
+                                          reader.readAsDataURL(file);
+                                          Swal.fire({
+                                             icon: 'success',
+                                             title: 'La imagen se ah subido correctamente',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       } else {
+                                          Swal.fire({
+                                             icon: 'error',
+                                             title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       }
+
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+                                 };
+                                 image.src = URL.createObjectURL(file);
+                              }
+                           } else {
+                              Swal.fire({
+                                 icon: 'error',
+                                 title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                                 showConfirmButton: true,
+                                 timer: 3000
+                              });
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                        if (repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     } else {
+                        var sizeByte = this.files[0].size;
+                        var sizekiloBytes = parseInt(sizeByte / 1024);
+                        if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                           if (file.size <= peso_maximo) {
+                              image = new Image();
+                              image.onload = function() {
+                                 if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                    if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                       var reader = new FileReader();
+                                       reader.onload = function(event) {
+                                          $('#image_3').attr("src", event.target.result);
+                                          $('#span_delete_3').show();
+                                          array_imagenes.push({
+                                             "id": file.name,
+                                             "imagen": event.target.result,
+                                             'foto_anuncio_id': null,
+                                             'name': "image_3"
+                                          });
+                                       }
+                                       reader.readAsDataURL(file);
+                                       Swal.fire({
+                                          icon: 'success',
+                                          title: 'La imagen se ah subido correctamente',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+                              };
+                              image.src = URL.createObjectURL(file);
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     }
+
+                  } else {
+                     var sizeByte = this.files[0].size;
+                     var sizekiloBytes = parseInt(sizeByte / 1024);
+                     if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                        if (file.size <= peso_maximo) {
+                           image = new Image();
+                           image.onload = function() {
+                              if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                 if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                    var reader = new FileReader();
+                                    reader.onload = function(event) {
+                                       $('#image_3').attr("src", event.target.result);
+                                       $('#span_delete_3').show();
+                                       array_imagenes.push({
+                                          "id": file.name,
+                                          "imagen": event.target.result,
+                                          'foto_anuncio_id': null,
+                                          'name': "image_3"
+                                       });
+                                    }
+                                    reader.readAsDataURL(file);
+                                    Swal.fire({
+                                       icon: 'success',
+                                       title: 'La imagen se ah subido correctamente',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+
+                              } else {
+                                 Swal.fire({
+                                    icon: 'error',
+                                    title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                    showConfirmButton: true,
+                                    timer: 3000
+                                 });
+                              }
+                           };
+                           image.src = URL.createObjectURL(file);
+                        }
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                           showConfirmButton: true,
+                           timer: 3000
+                        });
+                     }
+                  }
+               }
+            });
+
+            function llamar_add_imagen_4() {
+               $('#add_image_4').click();
+            }
+            $("#add_image_4").change(function(e) {
+               var image, file;
+               if ((file = this.files[0])) {
+                  if (array_imagenes.length > 0) {
+                     var encontro = false;
+                     var id_encontrado = 0;
+                     var repetido = false;
+                     var name_contenedor;
+                     for (let i = 0; i < array_imagenes.length; i++) {
+                        if (array_imagenes[i].name == "image_4") {
+                           encontro = true;
+                           id_encontrado = i;
+                           name_contenedor = array_imagenes[i].name;
+                        }
+
+                        if (array_imagenes[i].id == file.name) {
+                           encontro = true;
+                           repetido = true;
+
+                        }
+                     }
+                     if (encontro) {
+                        if (name_contenedor == "image_4") {
+                           if (id_encontrado != -1) {
+                              array_imagenes.splice(id_encontrado, 1);
+                           }
+                           var sizeByte = this.files[0].size;
+                           var sizekiloBytes = parseInt(sizeByte / 1024);
+                           if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                              if (file.size <= peso_maximo) {
+                                 image = new Image();
+                                 image.onload = function() {
+                                    if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                       if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                          var reader = new FileReader();
+                                          reader.onload = function(event) {
+                                             $('#image_4').attr("src", event.target.result);
+                                             $('#span_delete_4').show();
+                                             array_imagenes.push({
+                                                "id": file.name,
+                                                "imagen": event.target.result,
+                                                'foto_anuncio_id': null,
+                                                'name': "image_4"
+                                             });
+                                          }
+                                          reader.readAsDataURL(file);
+                                          Swal.fire({
+                                             icon: 'success',
+                                             title: 'La imagen se ah subido correctamente',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       } else {
+                                          Swal.fire({
+                                             icon: 'error',
+                                             title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                             showConfirmButton: true,
+                                             timer: 3000
+                                          });
+                                       }
+
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+                                 };
+                                 image.src = URL.createObjectURL(file);
+                              }
+                           } else {
+                              Swal.fire({
+                                 icon: 'error',
+                                 title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                                 showConfirmButton: true,
+                                 timer: 3000
+                              });
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                        if (repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+
+                     } else {
+                        var sizeByte = this.files[0].size;
+                        var sizekiloBytes = parseInt(sizeByte / 1024);
+                        if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                           if (file.size <= peso_maximo) {
+                              image = new Image();
+                              image.onload = function() {
+                                 if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                    if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                       var reader = new FileReader();
+                                       reader.onload = function(event) {
+                                          $('#image_4').attr("src", event.target.result);
+                                          $('#span_delete_4').show();
+                                          array_imagenes.push({
+                                             "id": file.name,
+                                             "imagen": event.target.result,
+                                             'foto_anuncio_id': null,
+                                             'name': "image_4"
+                                          });
+                                       }
+                                       reader.readAsDataURL(file);
+                                       Swal.fire({
+                                          icon: 'success',
+                                          title: 'La imagen se ah subido correctamente',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    } else {
+                                       Swal.fire({
+                                          icon: 'error',
+                                          title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                          showConfirmButton: true,
+                                          timer: 3000
+                                       });
+                                    }
+
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+                              };
+                              image.src = URL.createObjectURL(file);
+                           }
+                        } else {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                              showConfirmButton: true,
+                              timer: 3000
+                           });
+                        }
+                     }
+
+                  } else {
+                     var sizeByte = this.files[0].size;
+                     var sizekiloBytes = parseInt(sizeByte / 1024);
+                     if (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg") {
+                        if (file.size <= peso_maximo) {
+                           image = new Image();
+                           image.onload = function() {
+                              if (this.width.toFixed(0) >= 645 && this.height.toFixed(0) >= 645) {
+                                 if (this.width.toFixed(0) == this.height.toFixed(0)) {
+                                    var reader = new FileReader();
+                                    reader.onload = function(event) {
+                                       $('#image_4').attr("src", event.target.result);
+                                       $('#span_delete_4').show();
+                                       array_imagenes.push({
+                                          "id": file.name,
+                                          "imagen": event.target.result,
+                                          'foto_anuncio_id': null,
+                                          'name': "image_4"
+                                       });
+                                    }
+                                    reader.readAsDataURL(file);
+                                    Swal.fire({
+                                       icon: 'success',
+                                       title: 'La imagen se ah subido correctamente',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 } else {
+                                    Swal.fire({
+                                       icon: 'error',
+                                       title: 'La relación de aspecto de la imagen no es válida. Máximo permitido: 1:1(8,9 MP) máxima(2976*2976)',
+                                       showConfirmButton: true,
+                                       timer: 3000
+                                    });
+                                 }
+
+                              } else {
+                                 Swal.fire({
+                                    icon: 'error',
+                                    title: 'La imagen no cumple con el tamaño mínimo de (645px*645px)',
+                                    showConfirmButton: true,
+                                    timer: 3000
+                                 });
+                              }
+                           };
+                           image.src = URL.createObjectURL(file);
+                        }
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                           showConfirmButton: true,
+                           timer: 3000
+                        });
+                     }
+                  }
+               }
+            });
+
             $(document).ready(function() {
                $("#subcategoria").select2({
                   placeholder: 'Seleccione la subcategoria',
@@ -250,11 +1204,18 @@
                   width: '100%'
                });
                initMap();
-
             });
             $('#btn_add_anuncio').click(function() {
                var seleccion_pais = $('#pais').val().trim();
-               if (seleccion_pais == "Ecuador") {
+               if (array_imagenes.length <= 0) {
+                  Swal.fire({
+                     icon: 'info',
+                     title: 'No hay imagenes cargadas',
+                     showConfirmButton: true,
+                     timer: 3000
+                  });
+               } else if (seleccion_pais == "Ecuador") {
+                  $('#array_fotos').val(JSON.stringify(array_imagenes));
                   $("#form_add_anuncio").submit();
                } else if (seleccion_pais == "") {
                   $('#pac-input').val("");
@@ -264,7 +1225,6 @@
                   $('#modal_error_ciudad').modal('show');
                   initMap();
                }
-
             });
 
             function change_categoria() {
@@ -330,7 +1290,7 @@
 
                         lng: parseFloat(response.results[0].geometry.location.lng)
                      };
-                     console.log(pos)
+
                      var map = new google.maps.Map(document.getElementById('map'), {
                         center: pos,
                         scrollwheel: false,
@@ -603,73 +1563,32 @@
 
 
             }
-            const FILETYPES = [
-               'image/jpeg',
-               'image/pjpeg',
-               'image/png',
-               'image/bmp',
-               'image/gif'
-            ];
-
-            const MESSAGES = [];
-            const MAX_FILE_SIZE = 5 * 1048576;
-
-            // Define text message
-            MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
-            MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
-
-            // action message validation
-            const input_image = $("#image_upload");
-            const alert_message = $("#alert-message");
-
-            input_image.on("change", (e) => {
-
-               if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-                  //get the file size and file type from file input field
-                  var fileUpload = e.target.files[0];
-
-                  // Validate type file
-                  if (!validFileType(fileUpload)) {
-                     // console.log("Tipo de archivo Incorrecto");
-                     showMessage(MESSAGES['file_not_accept']);
-                     resetForm();
-                  }
-
-                  // Valid max file size
-                  if (fileUpload.size > MAX_FILE_SIZE) {
-                     // console.log('Supera los 5 mb');
-                     showMessage(MESSAGES['file_size_exceeded']);
-                     resetForm();
-                  }
-               }
-            });
-
-            function showMessage(message) {
-               alert_message.find('p').html(message);
-               alert_message.show(1);
-               setTimeout(() => {
-                  alert_message.fadeOut(2000)
-               }, 5000);
-            }
-
-
-
-            function resetForm() {
-               input_image.val('');
-            }
-
-            function validFileType(file) {
-               console.log(FILETYPES);
-               for (var i = 0; i < FILETYPES.length; i++) {
-                  if (file.type === FILETYPES[i]) {
-                     return true;
-                  }
-               }
-               return false;
-            }
          </script>
          <style>
+            #add_image_1 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_2 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_3 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_4 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
             h6 a:hover {
                color: #8c1822 !important;
             }
@@ -742,5 +1661,14 @@
                   left: 0;
                   min-height: 300px;
                }
+            }
+
+            #uploads {
+               display: block;
+               position: relative;
+            }
+
+            #uploads li {
+               list-style: none;
             }
          </style>

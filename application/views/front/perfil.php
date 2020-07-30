@@ -197,9 +197,9 @@
                                                               </li>
 
                                                           <?php } ?>
-                                                          <li>
+                                                          <!--   <li>
                                                               <a title='Subir imagenes' onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></a>
-                                                          </li>
+                                                          </li> -->
 
 
                                                       </ul>
