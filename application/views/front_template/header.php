@@ -77,8 +77,8 @@
    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon/favicon-16x16. png') ?>">
    <link rel=" manifest " href="<?= base_url('favicon/manifest.json') ?>">
 
-
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css" type="text/css" />
+   <link rel="stylesheet" href="<?= base_url('assets_front/css /cropper.css') ?>" type="text/css">
+   <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css" type="text/css" /> -->
 
 </head>
 
