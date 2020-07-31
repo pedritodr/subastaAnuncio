@@ -194,10 +194,10 @@ class Front extends CI_Controller
 
 
         $anuncio_object = $this->anuncio->get_by_id($anuncio_id);
+
         if ($anuncio_object) {
             $ciudad = $this->pais->get_by_city_all($anuncio_object->ciudad_id);
-            $categoria = $this->cate_anuncio->get_sub_categoria_by_sub($anuncio_object->subcate_id);
-
+            $categoria = $this->cate_anuncio->get_sub_categoria_by_sub2($anuncio_object->subcate_id);
             $fotos_object = $this->photo_anuncio->get_by_anuncio_id($anuncio_id);
             $data['categoria'] =  $categoria;
             $data['ciudad'] =  $ciudad;
@@ -229,9 +229,6 @@ class Front extends CI_Controller
             $this->load->model('Banner_model', 'banner');
             $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
             $data['all_banners'] = $all_banners;
-
-
-
             $this->load_view_front('front/update_anuncio', $data);
         } else {
             show_404();
@@ -240,17 +237,16 @@ class Front extends CI_Controller
 
     public function update_anuncio()
     {
-
         if (!in_array($this->session->userdata('role_id'), [2])) {
             $this->log_out();
             redirect('login');
         }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Pais_model', 'pais');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
-        $photo = $this->input->post('photo');
         $whatsapp = $this->input->post('whatsapp');
         $subcate_id = $this->input->post('subcategoria');
         $lat = $this->input->post('lat');
@@ -260,6 +256,8 @@ class Front extends CI_Controller
         $direccion = $this->input->post('pac-input');
         $anuncio_id = $this->input->post('anuncio_id');
         $city = $this->input->post('city_main');
+        $data = json_decode($_POST['array_fotos']);
+
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -267,7 +265,6 @@ class Front extends CI_Controller
                 $data_ciudad = [
                     'name_ciudad' => $city,
                     'pais_id' => 4,
-
                 ];
                 $ciudad_id = $this->pais->create_cuidad($data_ciudad);
             } else {
@@ -276,6 +273,7 @@ class Front extends CI_Controller
         } else {
             $ciudad_id = 4;
         }
+        $object = $this->anuncio->get_by_id($anuncio_id);
 
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
@@ -284,46 +282,42 @@ class Front extends CI_Controller
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("perfil/page/");
         } else {
-
-            $name_file = $_FILES['archivo']['name'];
-            if ($name_file != "") {
-                $separado = explode('.', $name_file);
-                $ext = end($separado); // me quedo con la extension
-                $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
-                $allow_extension = in_array($ext, $allow_extension_array);
-                if ($allow_extension) {
-                    $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 750);
-                    if ($result[0]) {
-                        $data = [
-                            'titulo' => $titulo,
-                            'descripcion' => $descripcion,
-                            'precio' => $precio,
-                            'photo' => $result[1],
-                            'whatsapp' => $whatsapp,
-                            'subcate_id' => $subcate_id,
-                            'lat' => $lat,
-                            'lng' => $lng,
-                            'ciudad_id' => $ciudad_id,
-                            'user_id' => $user_id,
-                            'direccion' => $direccion,
-
-                        ];
-                        $this->anuncio->update($anuncio_id, $data);
-                        $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                        $this->session->set_userdata('validando', 2);
-                        redirect("perfil/page/");
+            define('UPLOAD_DIR', './uploads/anuncio/');
+            $fotos = [];
+            $salva = [];
+            $main_photo = "editar";
+            if ($data) {
+                foreach ($data as $item) {
+                    if ($item->name == "image_1" && $item->foto_anuncio_id == null) {
+                        $img =  $item->imagen;
+                        $img = str_replace('data:image/jpeg;base64,', '', $img);
+                        $img = str_replace(' ', '+', $img);
+                        $data = base64_decode($img);
+                        $file = UPLOAD_DIR . uniqid() . '.jpg';
+                        $success = file_put_contents($file, $data);
+                        $main_photo = $file;
                     } else {
-                        $this->response->set_message($result[1], ResponseMessage::ERROR);
-                        redirect("perfil/page", "location", 301);
+                        if ($item->foto_anuncio_id == null) {
+                            $img =  $item->imagen;
+                            $img = str_replace('data:image/jpeg;base64,', '', $img);
+                            $img = str_replace(' ', '+', $img);
+                            $data = base64_decode($img);
+                            $file = UPLOAD_DIR . uniqid() . '.jpg';
+                            $success = file_put_contents($file, $data);
+                            array_push($fotos, $file);
+                        } else {
+                            array_push($salva, $item);
+                        }
                     }
-                } else {
-
-                    $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                    redirect("perfil/page", "location", 301);
                 }
-            } else {
+            }
 
-                $data = [
+            if ($main_photo != "editar") {
+                if (file_exists($object->photo)) {
+                    unlink($object->photo);
+                }
+
+                $datos = [
                     'titulo' => $titulo,
                     'descripcion' => $descripcion,
                     'precio' => $precio,
@@ -332,15 +326,52 @@ class Front extends CI_Controller
                     'lat' => $lat,
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
-                    'user_id' => $user_id,
                     'direccion' => $direccion,
-
+                    'photo' => $main_photo
                 ];
-                $this->anuncio->update($anuncio_id, $data);
-                $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                $this->session->set_userdata('validando', 2);
-                redirect("perfil/page/");
+            } else {
+                $datos = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'precio' => $precio,
+                    'whatsapp' => $whatsapp,
+                    'subcate_id' => $subcate_id,
+                    'lat' => $lat,
+                    'lng' => $lng,
+                    'ciudad_id' => $ciudad_id,
+                    'direccion' => $direccion,
+                ];
             }
+
+            $id = $this->anuncio->update($anuncio_id, $datos);
+            $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
+            foreach ($foto_object as $foto) {
+                $encontro = false;
+                if (count($salva) > 0) {
+                    foreach ($salva as $item) {
+                        if ($item->foto_anuncio_id == $foto->photo_anuncio_id) {
+                            $encontro = true;
+                        }
+                    }
+                }
+
+                if (!$encontro) {
+                    if (file_exists($foto->photo_anuncio)) {
+                        unlink($foto->photo_anuncio);
+                    }
+                    $this->photo_anuncio->delete($foto->photo_anuncio_id);
+                }
+            }
+
+            if (count($fotos) > 0) {
+                for ($i = 0; $i < count($fotos); $i++) {
+                    $img =  $fotos[$i];
+                    $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $anuncio_id]);
+                }
+            }
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            $this->session->set_userdata('validando', 2);
+            redirect("perfil/page/");
         }
     }
 
@@ -863,13 +894,13 @@ class Front extends CI_Controller
         $photo = $this->input->post('photo');
         $whatsapp = $this->input->post('whatsapp');
         $subcate_id = $this->input->post('subcategoria');
-
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
         $user_id = $this->session->userdata('user_id');
         $email = $this->session->userdata('email');
         $direccion = $this->input->post('pac-input');
         $city = $this->input->post('city_main');
+        $data = json_decode($_POST['array_fotos']);
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -886,12 +917,10 @@ class Front extends CI_Controller
         } else {
             $ciudad_id = 4;
         }
-
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
         $fecha_fin = date('Y-m-d', $fecha_fin);
-
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
 
@@ -899,100 +928,106 @@ class Front extends CI_Controller
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
             redirect("perfil/page/");
         } else {
-            $name_file = $_FILES['archivo']['name'];
+            $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+            define('UPLOAD_DIR', './uploads/anuncio/');
+            $fotos = [];
+            foreach ($data as $item) {
+                $img =  $item->imagen;
+                $img = str_replace('data:image/jpeg;base64,', '', $img);
 
-            $separado = explode('.', $name_file);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
 
+                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                // $image = uniqid() . '.jpg';
 
-            $ext = end($separado); // me quedo con la extension
-            $allow_extension_array = ["JPEG", "JPG", "jpg", "jpeg", "png", "bmp", "gif"];
-            $allow_extension = in_array($ext, $allow_extension_array);
-            if ($allow_extension) {
-                $result = save_image_from_post('archivo', './uploads/anuncio', time(), 750, 750);
-                if ($result[0]) {
-                    $data = [
-                        'titulo' => $titulo,
-                        'descripcion' => $descripcion,
-                        'precio' => $precio,
-                        'photo' => $result[1],
-                        'whatsapp' => $whatsapp,
-                        'subcate_id' => $subcate_id,
-                        'is_active' => 1,
-                        'lat' => $lat,
-                        'lng' => $lng,
-                        'ciudad_id' => $ciudad_id,
-                        'user_id' => $user_id,
-                        'direccion' => $direccion,
-                        'fecha' =>  date("Y-m-d"),
-                        'destacado' => 0,
-                        'fecha_vencimiento' => $fecha_fin
-                    ];
-                    if ($membresia) {
+                $success = file_put_contents($file, $data);
+                array_push($fotos, $file);
+            }
+            $data = [
+                'titulo' => $titulo,
+                'descripcion' => $descripcion,
+                'precio' => $precio,
+                'photo' => $fotos[0],
+                'whatsapp' => $whatsapp,
+                'subcate_id' => $subcate_id,
+                'is_active' => 1,
+                'lat' => $lat,
+                'lng' => $lng,
+                'ciudad_id' => $ciudad_id,
+                'user_id' => $user_id,
+                'direccion' => $direccion,
+                'fecha' =>  date("Y-m-d"),
+                'destacado' => 0,
+                'fecha_vencimiento' => $fecha_fin
+            ];
+            if ($membresia) {
+                $id =  $this->anuncio->create($data);
+                if ($id) {
+                    if ((int) $membresia->anuncios_publi > 0) {
 
-                        $id =  $this->anuncio->create($data);
-                        if ($id) {
-                            if ((int) $membresia->anuncios_publi > 0) {
-
-                                $qty_anuncios = (int) $membresia->anuncios_publi - 1;
-                                $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
-                                $this->anuncio->update($id, ['destacado' => 1]);
-                            }
-                            $obj_anuncio = $this->anuncio->get_by_id($id);
-                            $this->load->model("Correo_model", "correo");
-                            $asunto = "Anuncio creado";
-                            $motivo = 'Anuncio creado Subasta anuncios';
-                            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-                            $mensaje .= "<h3> “Nuevo anuncio”</h3>";
-                            $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
-                            $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
-                            $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
-                            $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
-                            $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
-                            $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
-                            $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
-                            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-                            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
-                            $mensaje .= "Saludos,<br>";
-                            $mensaje .= "El equipo de SUBASTANUNCIOS";
-                            $this->correo->sent($email, $mensaje, $asunto, $motivo);
-                        }
-                    } else {
-
-                        $id = $this->anuncio->create($data);
-                        if ($id) {
-                            $obj_anuncio = $this->anuncio->get_by_id($id);
-                            $this->load->model("Correo_model", "correo");
-                            $asunto = "Anuncio creado";
-                            $motivo = 'Anuncio creado Subasta anuncios';
-                            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-                            $mensaje .= "<h3> “Nuevo anuncio”</h3>";
-                            $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
-                            $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
-                            $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
-                            $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
-                            $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
-                            $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
-                            $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
-                            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-                            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
-                            $mensaje .= "Saludos,<br>";
-                            $mensaje .= "El equipo de SUBASTANUNCIOS";
-                            $this->correo->sent($email, $mensaje, $asunto, $motivo);
+                        $qty_anuncios = (int) $membresia->anuncios_publi - 1;
+                        $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
+                        $this->anuncio->update($id, ['destacado' => 1]);
+                    }
+                    if (count($fotos) > 1) {
+                        for ($i = 1; $i < count($fotos); $i++) {
+                            $img =  $fotos[$i];
+                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
                         }
                     }
-
-                    $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
-                    $this->session->set_userdata('validando', 2);
-                    redirect("perfil/page");
-                } else {
-                    $this->response->set_message($result[1], ResponseMessage::ERROR);
-                    redirect("perfil/page", "location", 301);
+                    $obj_anuncio = $this->anuncio->get_by_id($id);
+                    $this->load->model("Correo_model", "correo");
+                    $asunto = "Anuncio creado";
+                    $motivo = 'Anuncio creado Subasta anuncios';
+                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                    $mensaje .= "Saludos,<br>";
+                    $mensaje .= "El equipo de SUBASTANUNCIOS";
+                    $this->correo->sent($email, $mensaje, $asunto, $motivo);
                 }
             } else {
-
-                $this->response->set_message(translate("not_allow_extension"), ResponseMessage::ERROR);
-                redirect("perfil/page", "location", 301);
+                $id = $this->anuncio->create($data);
+                if ($id) {
+                    if (count($fotos) > 1) {
+                        for ($i = 1; $i < count($fotos); $i++) {
+                            $img =  $fotos[$i];
+                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
+                        }
+                    }
+                    $obj_anuncio = $this->anuncio->get_by_id($id);
+                    $this->load->model("Correo_model", "correo");
+                    $asunto = "Anuncio creado";
+                    $motivo = 'Anuncio creado Subasta anuncios';
+                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                    $mensaje .= "Saludos,<br>";
+                    $mensaje .= "El equipo de SUBASTANUNCIOS";
+                    $this->correo->sent($email, $mensaje, $asunto, $motivo);
+                }
             }
+
+            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            $this->session->set_userdata('validando', 2);
+            redirect("perfil/page");
         }
     }
     public function destacar_anuncio()
@@ -1668,19 +1703,19 @@ class Front extends CI_Controller
         $config['total_rows'] = $contador;
         $user_id = $this->session->userdata('user_id');
 
-        if ($contador >= 8) {
+        /*        if ($contador >= 8) {
 
             $config['per_page'] = '8';
         } else {
 
             $config['per_page'] = (string) $contador;
-        }
+        } */
 
         /*Obtiene el numero de registros a mostrar por pagina */
 
         $config['uri_segment'] = 3;
         /*Se personaliza la paginación para que se adapte a bootstrap*/
-
+        $config['per_page'] = '8';
         $config['cur_tag_open'] = '<li class="active"><a href="#">';
 
         $config['cur_tag_close'] = '</a></li>';
@@ -1710,7 +1745,6 @@ class Front extends CI_Controller
 
         $this->pagination->initialize($config);
         $page = $this->uri->segment(3);
-
         $offset = !$page ? 0 : $page;
 
         $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($config['per_page'], $offset);
@@ -2404,7 +2438,12 @@ class Front extends CI_Controller
         }
 
         $user_membresia = $this->membresia->get_membresia_by_user_id($user_id);
-        $all_membresia = $this->membresia->get_by_id($user_membresia->membresia_id);
+        if ($user_membresia) {
+            $all_membresia = $this->membresia->get_by_id($user_membresia->membresia_id);
+        } else {
+            $all_membresia = null;
+        }
+
 
         $city = $this->pais->get_by_city_all($ciudad_id);
         $all_pais = $this->pais->get_all();

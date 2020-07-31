@@ -56,12 +56,11 @@ class Cron  extends CI_Controller
     }
     public function csm()
     {
-        var_dump('hola');
-        die();
+
         // header('Content-Type: image/jpeg');
         $mem =  $this->anuncio->get_by_id(42);
 
-        define('UPLOAD_DIR', './uploads/anuncio/');
+        define('UPLOAD_DIR', './uploads/pdfs/');
         $img = $mem->photo;
         $img = str_replace('data:image/jpeg;base64,', '', $img);
 
@@ -108,7 +107,7 @@ class Cron  extends CI_Controller
             echo "<center>La imagen se ha optimizado correctamente.</center>";
             return $img2;
         }
-        $imagen_optimizada = redimensionar_imagen($image, $file, 450, 450);
+        $imagen_optimizada = redimensionar_imagen($image, $file, 645, 645);
         imagejpeg($imagen_optimizada, $file);
     }
     public function actualizar_membresia()
@@ -308,7 +307,7 @@ class Cron  extends CI_Controller
         var_dump($dia);
         die();
     }
-    public function update_transacciones_test()
+    public function update_transacciones_app()
     {
         require(APPPATH . "libraries/PPM.php");
         $this->load->model('payment_model', 'payment');
@@ -317,7 +316,7 @@ class Cron  extends CI_Controller
         //    $this->payment->create_prueba(['data' => "sonda"]);
         $transacciones = $this->payment->get_all_transaccion();
         //carga de credenciales.
-        $payment = $this->payment->get_by_credenciales_test();
+        $payment = $this->payment->get_by_credenciales_app();
         //Genera codigo aleatorio para el trankey
         $length = 8;
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
