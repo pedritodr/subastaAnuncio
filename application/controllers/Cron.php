@@ -56,12 +56,11 @@ class Cron  extends CI_Controller
     }
     public function csm()
     {
-        var_dump('hola');
-        die();
+
         // header('Content-Type: image/jpeg');
         $mem =  $this->anuncio->get_by_id(42);
 
-        define('UPLOAD_DIR', './uploads/anuncio/');
+        define('UPLOAD_DIR', './uploads/pdfs/');
         $img = $mem->photo;
         $img = str_replace('data:image/jpeg;base64,', '', $img);
 
@@ -108,7 +107,7 @@ class Cron  extends CI_Controller
             echo "<center>La imagen se ha optimizado correctamente.</center>";
             return $img2;
         }
-        $imagen_optimizada = redimensionar_imagen($image, $file, 450, 450);
+        $imagen_optimizada = redimensionar_imagen($image, $file, 645, 645);
         imagejpeg($imagen_optimizada, $file);
     }
     public function actualizar_membresia()

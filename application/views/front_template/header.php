@@ -46,6 +46,7 @@
    <link rel="stylesheet" id="color" href="<?= base_url('assets_front/css/colors/defualt.css') ?>">
    <!-- =-=-=-=-=-=-= For Style Switcher =-=-=-=-=-=-= -->
    <link rel="stylesheet" id="theme-color" type="text/css" href="#" />
+
    <!-- JavaScripts -->
    <script src="<?= base_url('assets_front/js/modernizr.js') ?>"></script>
 
@@ -75,6 +76,9 @@
    <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('favicon/favicon-96x96.png') ?>">
    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon/favicon-16x16. png') ?>">
    <link rel=" manifest " href="<?= base_url('favicon/manifest.json') ?>">
+
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css" type="text/css" />
 
 </head>
 
