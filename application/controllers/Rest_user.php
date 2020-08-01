@@ -335,39 +335,18 @@ class Rest_user extends REST_Controller
                 ]);
 
 
-                $html = '<div style="width:100%;border:2px solid #034C75">';
-                $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $name . '</h4></div>';
-                $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
-                $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
-                $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
-                $html .= '<div style="font-weight:bold;">Equipo APP</div>';
-                $html .= '</div>';
-
-                $this->load->library('email');
-
-                $config['protocol'] = 'smtp';
-                $config['smtp_host'] = 'smtp.zoho.com';
-                $config['smtp_user'] = 'pedro@datalabcenter.com';
-                $config['smtp_pass'] = "01420109811";
-                $config['smtp_port'] = '465';
-                //$config['smtp_timeout'] = '5';
-                //$config['smtp_keepalive'] = TRUE;
-                $config['smtp_crypto'] = 'ssl';
-                $config['charset'] = 'utf-8';
-                $config['newline'] = "\r\n";
-                $config['mailtype'] = 'html';
-                $config['wordwrap'] = TRUE;
-
-                $this->email->initialize($config);
-
-                $this->email->set_newline("\r\n");
-
-                $this->email->from('pedro@datalabcenter.com', 'Info APP');
-                $this->email->to($email);
-                $this->email->subject('Registro de usuario APP');
-                $this->email->message($html);
-                $this->email->send();
-
+                $this->load->model("Correo_model", "correo");
+                $asunto = "Validación de usuario";
+                $motivo = 'Validación de usuario Subasta anuncios';
+                $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
+                $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
+                $mensaje .= "" . $codigo_seguridad . "<br>";
+                $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
+                $mensaje .= "Saludos,<br>";
+                $mensaje .= "El equipo de SUBASTANUNCIOS";
+                $this->correo->sent($email, $mensaje, $asunto, $motivo);
 
                 $user_object = $this->user->get_by_id($user_id);
 
@@ -439,39 +418,18 @@ class Rest_user extends REST_Controller
                 'fecha_vencimiento_codigo' => $fecha_vencimiento
             ]);
 
-
-            $html = '<div style="width:100%;border:2px solid #034C75">';
-            $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $user_object->name . '</h4></div>';
-            $html .= '<div style="margin-top:10px;">El equipo de <b>APP</b> quiere agradecerte por formar parte de nuestra comunidad.<br/> Solo te queda un paso para completar tu registro, para validar que tu correo es real, ingresa en tu aplicación el código que te aparece a continuación: </div>';
-            $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $codigo_seguridad . '</div>';
-            $html .= '<div style="">No nos queda más que desearte que disfrutes la experiencia utilizar nuestra plataforma.</div>';
-            $html .= '<div style="font-weight:bold;">Equipo APP</div>';
-            $html .= '</div>';
-
-
-            $this->load->library('email');
-
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'pedro@datalabcenter.com';
-            $config['smtp_pass'] = "01420109811";
-            $config['smtp_port'] = '465';
-            //$config['smtp_timeout'] = '5';
-            //$config['smtp_keepalive'] = TRUE;
-            $config['smtp_crypto'] = 'ssl';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = 'html';
-            $config['wordwrap'] = TRUE;
-            $this->email->initialize($config);
-
-            $this->email->set_newline("\r\n");
-
-            $this->email->from('pedro@datalabcenter.com', 'Info APP');
-            $this->email->to($email);
-            $this->email->subject('Generación Código de Verificación');
-            $this->email->message($html);
-            $this->email->send();
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Validación de usuario";
+            $motivo = 'Validación de usuario Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
+            $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
+            $mensaje .= "" . $codigo_seguridad . "<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
 
             $this->response(['status' => 200, 'msg' => 'Código generado correctamente'], 200);
         } else {
@@ -879,54 +837,27 @@ class Rest_user extends REST_Controller
 
     public function generar_new_password_post()
     {
-
-
         $email = $this->input->post('email');
-
         $user_object = $this->user->get_user_by_email($email);
-
         if ($user_object) {
-
             $new_password = time();
-            $this->user->update($user_object->user_id, ['password' => md5($new_password), 'security_token' => md5($email . $new_password)]);
-
-            $html = '<div style="width:100%;border:2px solid #034C75">';
-            $html .= '<div style="background-color:#034C75;padding:10px;"><img style="width:48px;" src="https://s3.amazonaws.com/pagahoy.com/assets/1x1oscurotransparente.png" /><h1 style="color:#FFF;font-weight:bold;display:inline;font-size:36px;margin-left:10px;">Hola, </h1><h4 style="color:#fff;display:inline;font-size:28px;">' . $user_object->name . '</h4></div>';
-            $html .= '<div style="margin-top:10px;">El equipo de <b>Paga Hoy</b> te informa que se ha generado una nueva contraseña, la cual se muestra a continuación: </div>';
-            $html .= '<div style="text-align:center;font-weight:bold;font-size:24px;">' . $new_password . '</div>';
-            $html .= '<div style="">Muchas gracias por utilizar nuestro servicio.</div>';
-            $html .= '<div style="font-weight:bold;">Equipo Paga Hoy</div>';
-            $html .= '</div>';
-
-
-            $this->load->library('email');
-
-
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'smtp.zoho.com';
-            $config['smtp_user'] = 'pedro@datalabcenter.com';
-            $config['smtp_pass'] = "01420109811";
-            $config['smtp_port'] = '465';
-            //$config['smtp_timeout'] = '5';
-            //$config['smtp_keepalive'] = TRUE;
-            $config['smtp_crypto'] = 'ssl';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = 'html';
-            $config['wordwrap'] = TRUE;
-            $this->email->initialize($config);
-
-            $this->email->set_newline("\r\n");
-
-            $this->email->from('pedro@datalabcenter.com', 'Info subastanucios.com');
-            $this->email->to($email);
-            $this->email->subject('Recuperación de contraseña');
-            $this->email->message($html);
-            $this->email->send();
-
+            $new_token = md5($email . $new_password);
+            $this->user->update($user_object->user_id, ["password" => md5($new_password), 'security_token' => $new_token]);
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Cambio de clave";
+            $motivo = 'Cambio de contraseña Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "Hola <br>Has solicitado el restablecimiento de tu contraseña para acceder al perfil: (" . $email . ").<br>";
+            $mensaje .= "Con el objetivo de proteger tus datos en todo momento, hemos generado una nueva contraseña para que puedas acceder de manera adecuada a la plataforma.<br>";
+            $mensaje .= "Nueva Contraseña:" . $new_password . "<br>";
+            $mensaje .= "Si usted presentara algún problema para la ejecución del procedimiento indicado, debe comunicarse con nuestro equipo de soporte a través del mail info@suabastanuncios.com.<br>";
+            $mensaje .= "Ha sido un placer ayudarte. Continúa utilizando nuestras herramientas.<br>";
+            $mensaje .= "Gracias por preferirnos<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
             $this->response(['status' => 200, 'msg' => 'Password generado y enviado a su correo.']);
         } else {
-
             $this->response(['status' => 404, 'msg' => 'No se encuentra el email especificado']);
         }
     }

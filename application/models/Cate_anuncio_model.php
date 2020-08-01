@@ -104,7 +104,15 @@ class Cate_anuncio_model extends CI_Model
         $query = $this->db->get();
         return $query->row();
     }
-
+    function get_sub_categoria_by_sub2($id)
+    {
+        $this->db->select('sub_categoria.nombre as sub,cate_anuncio.nombre as categoria, cate_anuncio.cate_anuncio_id');
+        $this->db->from('sub_categoria');
+        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id=sub_categoria.cate_anuncio_id');
+        $this->db->where('sub_categoria.subcate_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
     function get_all($conditions = [], $get_as_row = FALSE)
     {
         foreach ($conditions as $key => $value) {
@@ -114,7 +122,15 @@ class Cate_anuncio_model extends CI_Model
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
+    function get_all_sub($conditions = [], $get_as_row = FALSE)
+    {
+        foreach ($conditions as $key => $value) {
+            $this->db->where($key, $value);
+        }
+        $query = $this->db->get('sub_categoria');
 
+        return ($get_as_row) ? $query->row() : $query->result();
+    }
 
     function get_all_subcate()
     {

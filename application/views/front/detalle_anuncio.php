@@ -166,7 +166,7 @@
                                                    <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
                                                       <!-- Img Block -->
                                                       <div class="ad-archive-img">
-                                                         <a href="#">
+                                                         <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                             <!--   <div class="ribbon popular"></div> -->
 
 

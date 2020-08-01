@@ -113,26 +113,7 @@
 
                               </div>
                            </div>
-
                         </div>
-
-
-
-
-                        <!-- end row -->
-                        <!-- Image Upload  -->
-                        <div class="row">
-                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                              <label><?= translate("image_lang"); ?> (750x750)</label>
-                              <input type="file" class="form-control input-sm" name="archivo" id="image_upload" placeholder="<?= translate('image_lang'); ?>">
-                              <div id="dropzone" class="dropzone"></div>
-                           </div>
-                        </div>
-
-
-
-                        <!-- end row -->
-                        <!-- Ad Description  -->
                         <div class="row">
                            <div style="margin-bottom: -3%;" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                               <div class="form-group">
@@ -141,108 +122,679 @@
                               </div>
                            </div>
                         </div>
+                        <div class="row">
+                           <br>
+                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                              <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> 4 Imagenes para el anuncio (tamaño recomendado 645x645)</label></p>
+
+                              <div class="row">
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_1" onclick="delete_image_1()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_1" onclick="llamar_add_imagen_1()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_1" class="text-center"> <span id="span_add_1" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_1" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_2" onclick="delete_image_2()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_2" onclick="llamar_add_imagen_2()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_2" class="text-center"> <span id="span_add_2" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_2" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_3" onclick="delete_image_3()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_3" onclick="llamar_add_imagen_3()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_3" class="text-center"> <span id="span_add_3" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_3" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_4" onclick="delete_image_4()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_4" onclick="llamar_add_imagen_4()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_4" class="text-center"> <span id="span_add_4" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_4" accepts="image/*">
+                                    </div>
+                                 </div>
+
+                              </div>
+                           </div>
+                           <br>
+                        </div>
                         <!-- end row -->
 
                         <div class="row">
-
-                           <!--     <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
-                        <label><?= translate("listar_country_lang"); ?></label>
-                        <div class="input-group">
-                           <span class="input-group-addon"> <i class="fa fa-globe"></i></span>
-
-                           <select onchange="change_pais();" id="pais" name="pais" class="form-control select2">
-
-                              <?php
-                              if (isset($all_pais))
-                                 foreach ($all_pais as $item) { ?>
-                                 <option value="<?= $item->pais_id; ?>"><?= $item->name_pais; ?></option>
-                              <?php } ?>
-                           </select>
-
-                        </div>
-                     </div> -->
-
-                           <!--       <div id="cuerpo_ciudades" class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
-                        <label><?= translate("listar_city_lang"); ?></label>
-                        <div class="input-group">
-                           <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
-                           <select onchange="cargar_city();" id="ciudad" name="ciudad" class="form-control select2">
-
-                              <?php
-                              if (isset($all_ciudad))
-                                 foreach ($all_ciudad as $item) { ?>
-                                 <option value="<?= $item->ciudad_id; ?>"><?= $item->name_ciudad; ?></option>
-                              <?php } ?>
-                           </select>
-
-
-                        </div>
-
-                     </div> -->
-
-
-
+                           <br>
                            <div style="padding:0 20px 0 20px" class="google-maps-wrapper">
                               <div id="google-maps-inner" class="google-maps-inner">
                                  <label><?= translate("direccion_lang"); ?></label>
                                  <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                     <input style="width:100%;" id="pac-input" name="pac-input" class="controls input-sm form-control" type="text" placeholder="Escribe la dirección aqui" required>
-
                                  </div>
-
                                  <div id="map" class="map">
                                  </div>
-
-
                               </div>
                            </div>
-
-
                            <br><br>
-
-
                            <input type="hidden" id="lat" name="lat" />
                            <input type="hidden" id="lng" name="lng" />
                            <input type="hidden" id="pais" />
                            <input type="hidden" id="city_main" name="city_main" />
+                           <input name="array_fotos" id="array_fotos" type="hidden" value="">
                            <button id="btn_add_anuncio" type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
-
-
-
                         </div>
-
-
-
-
                         <?= form_close(); ?>
                      </div>
 
                   </div>
-                  <!-- end post-ad-form-->
-
-                  <!-- end col -->
-                  <!-- Right Sidebar -->
-
-                  <!-- Middle Content Area  End -->
-                  <!-- end col -->
                </div>
                <!-- Row End -->
             </div>
-
-
             <!-- Main Container End -->
+            <div class="modal fade" id="myModal" role="dialog">
+               <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Editar imagen</h4>
+                     </div>
+                     <div class="modal-body">
+                        <div class="row">
+                           <div class="progress">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                           </div>
+                           <div class="col-lg-12">
+                              <div class="img-container">
+                                 <img style="width:75%" id="image">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="modal-footer">
+                        <div style="width:33%; float:right">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                           <button type="button" class="btn btn-primary" id="crop">Aceptar</button>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+
          </section>
+         <div style="display:none" class="container">
+            <h1>Upload cropped image to server</h1>
+            <label class="label" data-toggle="tooltip" title="Change your avatar">
+               <img class="rounded" id="avatar" src="https://avatars0.githubusercontent.com/u/3456749?s=160" alt="avatar">
+               <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+            </label>
+            <div class="alert" role="alert"></div>
+         </div>
          <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
          <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
          <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places"></script>
-
+         <script src="<?= base_url('assets_front/js/cropper.js') ?>"></script>
+         <!--  <script src=" https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js"></script> -->
          <script type="text/javascript">
             var latitude = 0;
             var longitude = 0;
             var init_lat = -1.831239;
             var init_lng = -78.18340599999999;
+            var peso_maximo = 4 * 1048576;
+            var array_imagenes = [];
+            var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
+            window.addEventListener('DOMContentLoaded', function() {
+               //    var avatar = document.getElementById('avatar');
+               var image = document.getElementById('image');
+               var input = document.getElementById('input');
+               var input_imagen_1 = document.getElementById('add_image_1');
+               var input_imagen_2 = document.getElementById('add_image_2');
+               var input_imagen_3 = document.getElementById('add_image_3');
+               var input_imagen_4 = document.getElementById('add_image_4');
+               var $progress = $('.progress');
+               var $progressBar = $('.progress-bar');
+               var $alert = $('.alert');
+               var $modal = $('#myModal');
+               var cropper;
+               var imagen_click = 0;
+               var name_archivo;
+               input_imagen_1.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_1") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_1") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 1;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+               input_imagen_2.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_2") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_2") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 2;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+               input_imagen_3.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_3") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_3") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 3;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+               input_imagen_4.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_4") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_4") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 4;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+               $modal.on('shown.bs.modal', function() {
+                  cropper = new Cropper(image, {
+                     aspectRatio: 1,
+                     viewMode: 3,
+                  });
+               }).on('hidden.bs.modal', function() {
+                  cropper.destroy();
+                  cropper = null;
+               });
+
+               document.getElementById('crop').addEventListener('click', function() {
+                  var initialAvatarURL;
+                  var canvas;
+                  $modal.modal('hide');
+                  if (cropper) {
+                     canvas = cropper.getCroppedCanvas({
+                        width: 645,
+                        height: 645,
+                     });
+                     initialAvatarURL = avatar.src;
+                     avatar = canvas.toDataURL();
+                     if (imagen_click == 1) {
+                        $('#image_1').attr("src", avatar);
+                        $('#span_delete_1').show();
+                        $('#span_add_1').text("Portada");
+                        array_imagenes.push({
+                           "id": name_archivo,
+                           "imagen": avatar,
+                           'foto_anuncio_id': null,
+                           'name': "image_1"
+                        });
+                     } else if (imagen_click == 2) {
+                        $('#image_2').attr("src", avatar);
+                        $('#span_delete_2').show();
+                        $('#span_add_2').text("Cargada");
+                        array_imagenes.push({
+                           "id": name_archivo,
+                           "imagen": avatar,
+                           'foto_anuncio_id': null,
+                           'name': "image_2"
+                        });
+                     } else if (imagen_click == 3) {
+                        $('#image_3').attr("src", avatar);
+                        $('#span_delete_3').show();
+                        $('#span_add_3').text("Cargada");
+                        array_imagenes.push({
+                           "id": name_archivo,
+                           "imagen": avatar,
+                           'foto_anuncio_id': null,
+                           'name': "image_3"
+                        });
+                     } else if (imagen_click == 4) {
+                        $('#image_4').attr("src", avatar);
+                        $('#span_delete_4').show();
+                        $('#span_add_4').text("Cargada");
+                        array_imagenes.push({
+                           "id": name_archivo,
+                           "imagen": avatar,
+                           'foto_anuncio_id': null,
+                           'name': "image_4"
+                        });
+                     }
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'La imagen se ah subido correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                     });
+                     // $progress.show();
+                  }
+               });
+            });
+            function delete_image_1() {
+
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_1") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_1').attr("src", imagen_default);
+                  $('#add_image_1').val("");
+                  $('#span_delete_1').hide();
+                  $('#span_add_1').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_2() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_2") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_2').attr("src", imagen_default);
+                  $('#add_image_2').val("");
+                  $('#span_delete_2').hide();
+                  $('#span_add_2').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_3() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_3") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_3').attr("src", imagen_default);
+                  $('#add_image_3').val("");
+                  $('#span_delete_3').hide();
+                  $('#span_add_3').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_4() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_4") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  $('#image_4').attr("src", imagen_default);
+                  $('#add_image_4').val("");
+                  $('#span_delete_4').hide();
+                  $('#span_add_4').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function llamar_add_imagen_1() {
+               $('#add_image_1').click();
+               imagen_click = 1;
+            }
+
+            function llamar_add_imagen_2() {
+               $('#add_image_2').click();
+            }
+
+            function llamar_add_imagen_3() {
+               $('#add_image_3').click();
+            }
+
+            function llamar_add_imagen_4() {
+               $('#add_image_4').click();
+            }
+
             $(document).ready(function() {
                $("#subcategoria").select2({
                   placeholder: 'Seleccione la subcategoria',
@@ -250,23 +802,99 @@
                   width: '100%'
                });
                initMap();
-
             });
-            $('#btn_add_anuncio').click(function() {
+          /*   $('#btn_add_anuncio').click(function() {
                var seleccion_pais = $('#pais').val().trim();
-               if (seleccion_pais == "Ecuador") {
-                  $("#form_add_anuncio").submit();
-               } else if (seleccion_pais == "") {
-                  $('#pac-input').val("");
-                  initMap();
-               } else {
-                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                  $('#modal_error_ciudad').modal('show');
-                  initMap();
+               if (array_imagenes.length <= 0) {
+                  Swal.fire({
+                     icon: 'info',
+                     title: 'No hay imagenes cargadas',
+                     showConfirmButton: true
+                  });
+               } else if (array_imagenes.length > 0) {
+                  var encontro_image1 = false;
+                  for (let i = 0; i < array_imagenes.length; i++) {
+                     if (array_imagenes[i].name == "image_1") {
+                        encontro_image1 = true
+                     }
+                  }
+                  if (encontro_image1) {
+                     if (seleccion_pais == "Ecuador") {
+                        swal.fire({
+                           title: '',
+                           html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
+                           showConfirmButton: false,
+                           allowOutsideClick: false,
+                           timer: 6000
+                        });
+                        $('#array_fotos').val(JSON.stringify(array_imagenes));
+                        $("#form_add_anuncio").submit();
+                        $('#btn_add_anuncio').prop('disabled', true);
+                     } else if (seleccion_pais == "") {
+                        $('#pac-input').val("");
+                        initMap();
+                     } else {
+                        $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                        $('#modal_error_ciudad').modal('show');
+                        initMap();
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'info',
+                        title: 'La imagen para la portada no se encuentra cargada',
+                        showConfirmButton: true
+                     });
+                  }
                }
-
-            });
-
+            }); */
+            $("#form_add_anuncio").on('submit', function(evt) {
+             
+             evt.preventDefault();
+             $('#array_fotos').val(JSON.stringify(array_imagenes));
+             var seleccion_pais = $('#pais').val().trim();
+             if (array_imagenes.length > 0) {
+                var encontro_image1 = false;
+                for (let i = 0; i < array_imagenes.length; i++) {
+                   if (array_imagenes[i].name == "image_1") {
+                      encontro_image1 = true;
+                   }
+                }
+                if (encontro_image1) {
+                   if (seleccion_pais == "Ecuador") {
+                      swal.fire({
+                         title: '',
+                         html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
+                         showConfirmButton: false,
+                         allowOutsideClick: false,
+                         timer: 6000
+                      });
+                      $('#array_fotos').val(JSON.stringify(array_imagenes));
+                      $("#form_add_anuncio").submit();
+                      $('#btn_add_anuncio').prop('disabled', true);
+                   } else if (seleccion_pais == "") {
+                      $('#pac-input').val("");
+                      initMap();
+                   } else {
+                      $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                      $('#modal_error_ciudad').modal('show');
+                      initMap();
+                   }
+                } else {
+                   Swal.fire({
+                      icon: 'info',
+                      title: 'La imagen para la portada no se encuentra cargada',
+                      showConfirmButton: true
+                   });
+                }
+             }else{
+                Swal.fire({
+                   icon: 'info',
+                   title: 'No hay imagenes cargadas',
+                   showConfirmButton: true
+                });
+             }
+             // tu codigo aqui
+          });
             function change_categoria() {
                var a = $("select[name=categoria]").val();
                $('#subcategoria').empty();
@@ -312,9 +940,6 @@
                   }
                });
             }
-
-
-
             //Funcion principal
             function initMap() {
 
@@ -330,7 +955,7 @@
 
                         lng: parseFloat(response.results[0].geometry.location.lng)
                      };
-                     console.log(pos)
+
                      var map = new google.maps.Map(document.getElementById('map'), {
                         center: pos,
                         scrollwheel: false,
@@ -603,73 +1228,65 @@
 
 
             }
-            const FILETYPES = [
-               'image/jpeg',
-               'image/pjpeg',
-               'image/png',
-               'image/bmp',
-               'image/gif'
-            ];
-
-            const MESSAGES = [];
-            const MAX_FILE_SIZE = 5 * 1048576;
-
-            // Define text message
-            MESSAGES['file_not_accept'] = '<?= "Extención del archivo no valida" ?>';
-            MESSAGES['file_size_exceeded'] = '<?= "El archivo seleccionado supera los 5mb permitidos" ?>';
-
-            // action message validation
-            const input_image = $("#image_upload");
-            const alert_message = $("#alert-message");
-
-            input_image.on("change", (e) => {
-
-               if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-                  //get the file size and file type from file input field
-                  var fileUpload = e.target.files[0];
-
-                  // Validate type file
-                  if (!validFileType(fileUpload)) {
-                     // console.log("Tipo de archivo Incorrecto");
-                     showMessage(MESSAGES['file_not_accept']);
-                     resetForm();
-                  }
-
-                  // Valid max file size
-                  if (fileUpload.size > MAX_FILE_SIZE) {
-                     // console.log('Supera los 5 mb');
-                     showMessage(MESSAGES['file_size_exceeded']);
-                     resetForm();
-                  }
-               }
-            });
-
-            function showMessage(message) {
-               alert_message.find('p').html(message);
-               alert_message.show(1);
-               setTimeout(() => {
-                  alert_message.fadeOut(2000)
-               }, 5000);
-            }
-
-
-
-            function resetForm() {
-               input_image.val('');
-            }
-
-            function validFileType(file) {
-               console.log(FILETYPES);
-               for (var i = 0; i < FILETYPES.length; i++) {
-                  if (file.type === FILETYPES[i]) {
-                     return true;
-                  }
-               }
-               return false;
-            }
          </script>
+
          <style>
+            .postdetails label span {
+               font-size: 12px;
+               color: #777;
+            }
+
+            .sweet-alert-trigger {
+               padding: 5px 10px;
+               border: 0;
+               border-radius: 3px;
+               background: #0F74F4;
+               color: white;
+            }
+
+            .save_loading {
+               width: 140px;
+               height: 140px;
+               margin: 0 auto;
+               animation-duration: 0.5s;
+               animation-timing-function: linear;
+               animation-iteration-count: infinite;
+               animation-name: ro;
+               transform-origin: 50% 50%;
+            }
+
+            @keyframes ro {
+               100% {
+                  transform: rotate(-360deg) translate(0, 0);
+               }
+            }
+
+            /* save success icon */
+
+            #add_image_1 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_2 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_3 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_4 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
             h6 a:hover {
                color: #8c1822 !important;
             }
@@ -677,9 +1294,6 @@
             h6 a {
                color: #000 !important;
             }
-
-            /* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
 
             /* Carousel base class */
             .carousel {
@@ -709,9 +1323,6 @@
             }
 
             @media screen and (max-width: 992px) {
-               /*      .banner2 {
-            margin-top: 0
-         } */
 
                .carousel .item {
                   height: 300px;
@@ -727,9 +1338,6 @@
             }
 
             @media screen and (max-width: 400px) {
-               /*   .banner2 {
-   margin-top: 29% !important
-} */
 
                .carousel .item {
                   height: 300px;
@@ -742,5 +1350,14 @@
                   left: 0;
                   min-height: 300px;
                }
+            }
+
+            #uploads {
+               display: block;
+               position: relative;
+            }
+
+            #uploads li {
+               list-style: none;
             }
          </style>
