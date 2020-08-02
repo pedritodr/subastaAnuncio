@@ -354,7 +354,7 @@
                                                                               <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
                                                                               <h5 class="text-center" style="font-size:14px !important"><span id="valor_inicial_subasta_<?= $item->subasta_id ?>" class="label label-success"><i class='fa fa-user-o'></i> <?= $item->user_win->name ?> $<?= number_format($item->puja->valor, 2) ?></span></h5>
                                                                           <?php } ?>
-                                                                          <h6 class="text-center"><?= "Valor de entreda" ?></h6>
+                                                                          <h6 class="text-center"><?= "Valor de entrada" ?></h6>
                                                                           <div class="price text-center"> <span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
                                                                           <h6 class="text-center"><?= "Valor inicial" ?> </h6>
                                                                           <div class="price text-center"><span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
