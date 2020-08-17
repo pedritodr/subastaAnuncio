@@ -153,7 +153,7 @@ class Cron  extends CI_Controller
             $fecha_fin = strtotime($item->fecha_vencimiento);
 
             if ($fecha >= $fecha_fin) {
-                $this->anuncio->update($item->anuncio_id, ['is_active' => 0,'is_delete'=>1]);
+                $this->anuncio->update($item->anuncio_id, ['is_active' => 0, 'is_delete' => 1]);
             }
         }
     }
@@ -291,13 +291,13 @@ class Cron  extends CI_Controller
                 }
             }
         }
-        $this->load->model("Correo_model", "correo");
+        /*  $this->load->model("Correo_model", "correo");
         $asunto = "Sonda";
         $motivo = 'Sonda';
         $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
         $mensaje .= "Ejecucion de sonda test";
         $mensaje .= "El equipo de SUBASTANUNCIOS";
-        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo);
+        $this->correo->sent("pedro@datalabcenter.com", $mensaje, $asunto, $motivo); */
     }
     public function fechas()
     {
