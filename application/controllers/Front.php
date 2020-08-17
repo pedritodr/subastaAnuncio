@@ -397,11 +397,11 @@ class Front extends CI_Controller
     {
         $this->load->model('Anuncio_model', 'anuncio');
         $anuncio_id = $this->input->post('anuncio_id');
-        $row =$this->anuncio->update($anuncio_id, ['is_delete' => 1]);
-        if($row > 0){
-            echo json_encode(['status'=>200]);
-        }else{
-            echo json_encode(['status'=>500]);
+        $row = $this->anuncio->update($anuncio_id, ['is_delete' => 1]);
+        if ($row > 0) {
+            echo json_encode(['status' => 200]);
+        } else {
+            echo json_encode(['status' => 500]);
         }
         exit();
     }
@@ -1047,7 +1047,6 @@ class Front extends CI_Controller
     }
     public function destacar_anuncio()
     {
-
         if (!in_array($this->session->userdata('role_id'), [2])) {
             $this->log_out();
             redirect('login');
@@ -1056,7 +1055,7 @@ class Front extends CI_Controller
         $anuncio_id = $this->input->post('anuncio_id_destacar');
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
-        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'fecha' => $fecha]);
         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
         $this->session->set_userdata('validando', 2);
         redirect("perfil/page");
@@ -2367,7 +2366,7 @@ class Front extends CI_Controller
             $item->user_win = $user_win;
         }
 
-        $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id,'is_delete'=>0]);
+        $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id, 'is_delete' => 0]);
 
         $config['base_url'] = site_url('perfil/page/');
 

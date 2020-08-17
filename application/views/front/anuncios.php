@@ -582,9 +582,9 @@ if (empty($mastercat))
                                                                     <!-- Ad Title -->
                                                                     <h6>
                                                                         <?php if ($item->titulo_corto) { ?>
-                                                                            <a href="#"><?= $item->titulo_corto ?></a>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo_corto ?></a>
                                                                         <?php } else { ?>
-                                                                            <a href="#"><?= $item->titulo ?></a>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo ?></a>
                                                                         <?php } ?>
                                                                     </h6>
                                                                     <!-- Price -->

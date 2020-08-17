@@ -99,14 +99,14 @@
                   <ul class="listnone">
                      <li><a href="<?= site_url('nosotros') ?>"><i class="fa fa-heart-o" aria-hidden="true"></i> <?= translate("acerca_lang") ?></a></li>
                      <!-- <li><a href="faqs.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><?= translate("preguntas_lang") ?></a></li>-->
-                     <li class="dropdown">
+                     <!--     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i> Language <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                            <li><a href="#"><?= translate('español_lang'); ?></a></li>
                            <li><a href="#"><?= translate('english_lang'); ?></a></li>
                            <li><a href="#"><?= translate('arabe_lang'); ?></a></li>
                         </ul>
-                     </li>
+                     </li> -->
                   </ul>
                </div>
                <!-- Header Top Right Social -->
@@ -170,9 +170,9 @@
                         <li>
                            <a class="text-center" href="<?= site_url('portada') ?>"> <?= translate('inicio_lang') ?> <i></i></a>
                         </li>
-                        <li>
+                        <!--   <li>
                            <a href="<?= site_url('nosotros') ?>"> <?= translate('acerca_lang') ?> <i></i></a>
-                        </li>
+                        </li> -->
                         <li>
                            <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?> <i></i></a>
                         </li>

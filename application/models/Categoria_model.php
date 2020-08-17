@@ -24,7 +24,12 @@ class Categoria_model extends CI_Model
         $query = $this->db->get('categoria');
         return $query->row();
     }
-
+    function get_by_categoria_id_sub($id)
+    {
+        $this->db->where('categoria_id', $id);
+        $query = $this->db->get('sub_categoria');
+        return $query->row();
+    }
 
     function get_all($conditions = [], $get_as_row = FALSE)
     {
@@ -46,7 +51,7 @@ class Categoria_model extends CI_Model
     ///Modificado por jose
     function get_all_subcat_from_idcat($id)
     {
-        
+
         $this->db->where('categoria_id', $id);
         $query = $this->db->get('subcategoria_subasta');
 
@@ -54,7 +59,7 @@ class Categoria_model extends CI_Model
     }
     function get_all_subasta_subcat()
     {
-        
+
         $query = $this->db->get('subcategoria_subasta');
         return  $query->result();
     }
@@ -136,7 +141,23 @@ class Categoria_model extends CI_Model
         else if ($action == 3)
             $log->afterDelete($log);
     }
+    function update_subcategoia($id, $data)
+    {
+        $old = $this->get_by_id($id);
+        $this->db->where('subcat_id', $id);
+        foreach ($data as $key => $value) {
+            $this->db->set($key, $value);
+        }
+        $this->db->update('subcategoria_subasta');
+        $afec = $this->db->affected_rows();
 
+        if ($afec > 0) {
+            $new = $this->get_by_id($id);
+            //  $this->activelog($id,null,2,$new,$old);
+        }
+
+        return $afec;
+    }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
 }

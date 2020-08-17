@@ -269,7 +269,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
         $this->db->order_by('anuncio.destacado', 'desc');
-        $this->db->order_by('anuncio.anuncio_id', 'desc');
+        $this->db->order_by('anuncio.fecha', 'desc');
 
         $this->db->limit($limit, $start);
 
@@ -289,7 +289,7 @@ class Anuncio_model extends CI_Model
         $this->db->where('anuncio.is_delete', 0);
         $this->db->where('anuncio.user_id', $user_id);
         $this->db->order_by('anuncio.destacado', 'desc');
-        $this->db->order_by('anuncio.anuncio_id', 'desc');
+        $this->db->order_by('anuncio.fecha', 'desc');
 
         $this->db->limit($limit, $start);
         $query = $this->db->get();

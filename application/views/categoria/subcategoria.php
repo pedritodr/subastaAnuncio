@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Gestionar Subcategorías 
+            Gestionar Subcategorías
             <small>Listar Subcategorías</small>
             | <a href="<?= site_url('categoria/index'); ?>" class="btn btn-primary">Ir Atras </a>
         </h1>
@@ -25,7 +25,7 @@
 
                         <?= get_message_from_operation(); ?>
 
-                        <?= form_open_multipart("categoria/add2"); ?>
+                        <?= form_open_multipart("categoria/add2", array('id' => 'formSubcategoria')); ?>
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -33,22 +33,19 @@
                                     <div class="col-lg-12">
                                         <label><?= translate("nombre_lang"); ?></label>
                                         <div class="input-group">
-
                                             <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                            <input type="text" class="form-control input-sm" name="name_espa" placeholder="<?= translate('nombre_lang'); ?>">
+                                            <input id="nombreSub" type="text" class="form-control input-sm" name="name_espa" placeholder="<?= translate('nombre_lang'); ?>">
                                             <input type="hidden" readonly class="form-control input-sm" name="idcategoria" value="<?= $idcategoria ?>">
+                                            <input name="sub_categoria" id="subCategoria" type="hidden" value="">
                                         </div>
-
                                     </div>
+                                </div>
                             </div>
-                        </div>
-
                             <div class="col-lg-12" style="text-align: right;">
                                 <br>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                                <button id="btnSubcategoria" type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> <?= translate('guardar_info_lang'); ?></button>
+                                <button id="btnCancelar" type="button" class="btn btn-info">Cancelar</button>
                             </div>
-
-
                         </div>
                         <?= form_close(); ?>
 
@@ -79,19 +76,20 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($all_categorias as $item) { ?>
-                                <tr>
-                                    <td> <?= $item->nombre; ?></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Acciones <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a  data-toggle="modal" data-target="#modal_delete" data-id="<?= $item->subcat_id; ?>" ><i class="fa fa-remove"></i>Quitar</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td> <?= $item->nombre; ?></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Acciones <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a style="cursor:pointer" onclick="cargarEditar('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-edit"></i>Editar</a></li>
+                                                    <li><a data-toggle="modal" data-target="#modal_delete" data-id="<?= $item->subcat_id; ?>"><i class="fa fa-remove"></i>Quitar</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
                             </tbody>
                             <tfoot>
@@ -108,7 +106,7 @@
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
-<div id="modal_delete" class="modal modal-danger fade" tabindex="-1" role="dialog">
+<div id="modal_delete" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -119,7 +117,7 @@
                 <p>¿Confirma que desea eliminar la subcategoría de subastas?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancelar</button>
                 <button id="btn-confirm2" type="button" class="btn bg-olive" onclick="" ;>Confirmar</button>
             </div>
         </div><!-- /.modal-content -->
@@ -128,19 +126,15 @@
 
 <script>
     $(function() {
+        $('#btnCancelar').hide();
         // action modal confirm
-        
-
         $('#modal_delete').on('shown.bs.modal', function(e) {
-
-
             //get data-id attribute of the clicked element
             let id = $(e.relatedTarget).data('id');
-
             let url = "<?= site_url('categoria/delete2/') ?>" + id;
             // console.log('la caca es ' + category_id);
             $("#btn-confirm2").attr('onclick', "window.location.href = '" + url + "'");
-            });
+        });
         $("#example1").DataTable({
             "order": [
                 [1, "asc"]
@@ -155,4 +149,24 @@
         });
 
     });
+
+    function cargarEditar(params) {
+        let obj = atob(params);
+        obj = JSON.parse(obj);
+        $('#subCategoria').val(obj.subcat_id);
+        $('#nombreSub').val(obj.nombre);
+        $('#btnCancelar').show();
+        $('#formSubcategoria').prop('action', '<?= site_url("categoria/update_subcategoria") ?>');
+        $('#btnSubcategoria').html('<i class="fa fa-edit"></i> Actualizar');
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1250);
+    }
+    $('#btnCancelar').click(function() {
+        $('#btnCancelar').hide();
+        $('#formSubcategoria').prop('action', '<?= site_url("categoria/add2") ?>');
+        $('#subCategoria').val("");
+        $('#nombreSub').val("");
+        $('#btnSubcategoria').html('<i class="fa fa-check-square"></i> <?= translate("guardar_info_lang"); ?>');
+    })
 </script>
