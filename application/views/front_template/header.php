@@ -55,7 +55,7 @@
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/masterslider.css') ?>" />
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/skins/default/style.css') ?>" />
    <link rel="stylesheet" href="<?= base_url('assets_front/js/masterslider/style/style.css') ?>" />
-
+   <link rel="stylesheet" href="<?= base_url('assets_front/css/cropper.css') ?>" type="text/css">
    <!-- HTML5 Shim and Respond.js IE8 support  of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
    <!--[if lt IE 9]>
@@ -76,9 +76,7 @@
    <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('favicon/favicon-96x96.png') ?>">
    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon/favicon-16x16. png') ?>">
    <link rel=" manifest " href="<?= base_url('favicon/manifest.json') ?>">
-
-
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css" type="text/css" />
+   <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css" type="text/css" /> -->
 
 </head>
 
@@ -101,14 +99,14 @@
                   <ul class="listnone">
                      <li><a href="<?= site_url('nosotros') ?>"><i class="fa fa-heart-o" aria-hidden="true"></i> <?= translate("acerca_lang") ?></a></li>
                      <!-- <li><a href="faqs.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><?= translate("preguntas_lang") ?></a></li>-->
-                     <li class="dropdown">
+                     <!--     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i> Language <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                            <li><a href="#"><?= translate('español_lang'); ?></a></li>
                            <li><a href="#"><?= translate('english_lang'); ?></a></li>
                            <li><a href="#"><?= translate('arabe_lang'); ?></a></li>
                         </ul>
-                     </li>
+                     </li> -->
                   </ul>
                </div>
                <!-- Header Top Right Social -->
@@ -172,9 +170,9 @@
                         <li>
                            <a class="text-center" href="<?= site_url('portada') ?>"> <?= translate('inicio_lang') ?> <i></i></a>
                         </li>
-                        <li>
+                        <!--   <li>
                            <a href="<?= site_url('nosotros') ?>"> <?= translate('acerca_lang') ?> <i></i></a>
-                        </li>
+                        </li> -->
                         <li>
                            <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?> <i></i></a>
                         </li>

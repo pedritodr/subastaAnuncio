@@ -581,7 +581,6 @@
       </div>
    </div>
 </div>
-
 <div class="modal fade price-quote" id="modal_pujar" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -618,7 +617,6 @@
       </div>
    </div>
 </div>
-
 <div class="modal fade price-quote" id="modal_saludar" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -795,6 +793,7 @@
 <!-- MasterSlider -->
 <script src="<?= base_url('assets_front/js/masterslider/masterslider.min.js') ?>"></script>
 
+
 <script type="text/javascript">
    (function($) {
       "use strict";
@@ -819,9 +818,6 @@
          autoHeight: false
       });
    })(jQuery);
-</script>
-
-<script type="text/javascript">
    $('#btn_modal_membresia').click(function() {
       if ($('#condiciones_membresia').prop('checked') == true) {
          $('#btn_modal_membresia').hide();

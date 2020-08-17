@@ -288,30 +288,31 @@ class Front extends CI_Controller
             $main_photo = "editar";
             if ($data) {
                 foreach ($data as $item) {
-                    if ($item->name == "image_1" && $item->foto_anuncio_id == null) {
-                        $img =  $item->imagen;
-                        $img = str_replace('data:image/jpeg;base64,', '', $img);
-                        $img = str_replace(' ', '+', $img);
-                        $data = base64_decode($img);
-                        $file = UPLOAD_DIR . uniqid() . '.jpg';
-                        $success = file_put_contents($file, $data);
-                        $main_photo = $file;
-                    } else {
-                        if ($item->foto_anuncio_id == null) {
+                    if ($item->foto_anuncio_id == null) {
+                        if ($item->name == "image_1") {
                             $img =  $item->imagen;
-                            $img = str_replace('data:image/jpeg;base64,', '', $img);
+                            $img = str_replace('data:image/png;base64,', '', $img);
+                            $img = str_replace(' ', '+', $img);
+                            $data = base64_decode($img);
+                            $file = UPLOAD_DIR . uniqid() . '.jpg';
+                            $success = file_put_contents($file, $data);
+                            $main_photo = $file;
+                        } else {
+                            $img =  $item->imagen;
+                            $img = str_replace('data:image/png;base64,', '', $img);
                             $img = str_replace(' ', '+', $img);
                             $data = base64_decode($img);
                             $file = UPLOAD_DIR . uniqid() . '.jpg';
                             $success = file_put_contents($file, $data);
                             array_push($fotos, $file);
-                        } else {
+                        }
+                    } else {
+                        if ($item->name != "image_1") {
                             array_push($salva, $item);
                         }
                     }
                 }
             }
-
             if ($main_photo != "editar") {
                 if (file_exists($object->photo)) {
                     unlink($object->photo);
@@ -345,6 +346,7 @@ class Front extends CI_Controller
 
             $id = $this->anuncio->update($anuncio_id, $datos);
             $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
+
             foreach ($foto_object as $foto) {
                 $encontro = false;
                 if (count($salva) > 0) {
@@ -364,11 +366,13 @@ class Front extends CI_Controller
             }
 
             if (count($fotos) > 0) {
+
                 for ($i = 0; $i < count($fotos); $i++) {
                     $img =  $fotos[$i];
                     $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $anuncio_id]);
                 }
             }
+            //   die();
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
             $this->session->set_userdata('validando', 2);
             redirect("perfil/page/");
@@ -389,7 +393,18 @@ class Front extends CI_Controller
         echo json_encode($all_ciudades);
         exit();
     }
-
+    public function delete_ads()
+    {
+        $this->load->model('Anuncio_model', 'anuncio');
+        $anuncio_id = $this->input->post('anuncio_id');
+        $row = $this->anuncio->update($anuncio_id, ['is_delete' => 1]);
+        if ($row > 0) {
+            echo json_encode(['status' => 200]);
+        } else {
+            echo json_encode(['status' => 500]);
+        }
+        exit();
+    }
     public function get_subcate() //buscar subcategoria
     {
 
@@ -933,7 +948,7 @@ class Front extends CI_Controller
             $fotos = [];
             foreach ($data as $item) {
                 $img =  $item->imagen;
-                $img = str_replace('data:image/jpeg;base64,', '', $img);
+                $img = str_replace('data:image/png;base64,', '', $img);
 
                 $img = str_replace(' ', '+', $img);
                 $data = base64_decode($img);
@@ -1032,7 +1047,6 @@ class Front extends CI_Controller
     }
     public function destacar_anuncio()
     {
-
         if (!in_array($this->session->userdata('role_id'), [2])) {
             $this->log_out();
             redirect('login');
@@ -1041,7 +1055,7 @@ class Front extends CI_Controller
         $anuncio_id = $this->input->post('anuncio_id_destacar');
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+30 day', strtotime($fecha));
-        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin]);
+        $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'fecha' => $fecha]);
         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
         $this->session->set_userdata('validando', 2);
         redirect("perfil/page");
@@ -2352,7 +2366,7 @@ class Front extends CI_Controller
             $item->user_win = $user_win;
         }
 
-        $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id]);
+        $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id, 'is_delete' => 0]);
 
         $config['base_url'] = site_url('perfil/page/');
 

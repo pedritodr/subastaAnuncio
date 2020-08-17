@@ -153,7 +153,7 @@ class Cron  extends CI_Controller
             $fecha_fin = strtotime($item->fecha_vencimiento);
 
             if ($fecha >= $fecha_fin) {
-                $this->anuncio->update($item->anuncio_id, ['is_active' => 0]);
+                $this->anuncio->update($item->anuncio_id, ['is_active' => 0,'is_delete'=>1]);
             }
         }
     }

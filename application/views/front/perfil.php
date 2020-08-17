@@ -197,9 +197,9 @@
                                                               </li>
 
                                                           <?php } ?>
-                                                          <!--   <li>
-                                                              <a title='Subir imagenes' onclick="cargar_modal_imagen('<?= $item->anuncio_id ?>');"><i class="fa fa-file-image-o" aria-hidden="true"></i></a>
-                                                          </li> -->
+                                                          <li>
+                                                              <a title='Eliminar anuncio' onclick="cargar_modal_eliminar_anuncio('<?= $item->anuncio_id ?>');"><i style="font-size: 20px;" class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                                          </li>
 
 
                                                       </ul>
@@ -354,7 +354,7 @@
                                                                               <h6 class="text-center"><?= translate("valor_alto_lang"); ?></h6>
                                                                               <h5 class="text-center" style="font-size:14px !important"><span id="valor_inicial_subasta_<?= $item->subasta_id ?>" class="label label-success"><i class='fa fa-user-o'></i> <?= $item->user_win->name ?> $<?= number_format($item->puja->valor, 2) ?></span></h5>
                                                                           <?php } ?>
-                                                                          <h6 class="text-center"><?= "Valor de entreda" ?></h6>
+                                                                          <h6 class="text-center"><?= "Valor de entrada" ?></h6>
                                                                           <div class="price text-center"> <span>$ <?= number_format($item->valor_pago, 2) ?></span> </div>
                                                                           <h6 class="text-center"><?= "Valor inicial" ?> </h6>
                                                                           <div class="price text-center"><span>$ <?= number_format($item->valor_inicial, 2) ?></span> </div>
@@ -733,6 +733,47 @@
           <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
           <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
           <script type="text/javascript">
+              function cargar_modal_eliminar_anuncio(params) {
+                  Swal.fire({
+                      title: '¿Está seguro (a) de que desea eliminar el anuncio?',
+                      text: "¡No podrás revertir esto!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Aceptar'
+                  }).then((result) => {
+                      if (result.value) {
+                          $.ajax({
+                              type: 'POST',
+                              url: "<?= site_url('front/delete_ads') ?>",
+                              data: {
+                                  anuncio_id: params
+                              },
+                              success: function(result) {
+                                  result = JSON.parse(result);
+                                  if (result.status == 200) {
+                                      Swal.fire(
+                                          '¡Eliminado correctamente!',
+                                          '',
+                                          'success'
+                                      );
+                                      location.reload();
+                                  } else {
+                                      Swal.fire({
+                                          icon: 'error',
+                                          title: 'Ocurrio un problema vuelva a intentarlo.',
+                                          showConfirmButton: false,
+                                          timer: 1500
+                                      });
+                                  }
+
+                              }
+
+                          });
+                      }
+                  })
+              }
               $('#update_password').click(function() {
                   $('#modal_cambiar_password').modal('show');
               });
