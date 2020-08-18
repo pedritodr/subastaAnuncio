@@ -487,7 +487,24 @@ class Rest_anuncio extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-
+    public function delete_post()
+    {
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $anuncio_id = $this->input->post('anuncio_id');
+        $auth = $this->user->is_valid_auth($user_id, $security_token);
+        if ($auth) {
+            $object = $this->anuncio->get_by_id($anuncio_id);
+            if ($object) {
+                $row = $this->anuncio->update($anuncio_id, ['is_delete' => 1]);
+                $this->response(['status' => 200]);
+            } else {
+                $this->response(['status' => 404]);
+            }
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
     public function listar_get() //econtrando usuario
     {
 

@@ -162,23 +162,14 @@ class Front extends CI_Controller
         $data['all_cate_anuncio'] = $all_cate_anuncio;
 
         $all_subcate = $this->cate_anuncio->get_by_Cate_anuncio_id($all_cate_anuncio[0]->cate_anuncio_id);
-
-
         $all_pais = $this->pais->get_all();
         $data['all_pais'] = $all_pais;
-
-
         $all_ciudad = $this->pais->get_by_pais_id_object($all_pais[0]->pais_id);
-
-
         $data['all_ciudad'] = $all_ciudad;
         $data['all_subcate'] = $all_subcate;
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-
-
-
         $this->load_view_front('front/add_anuncio', $data);
     }
     public function update_anuncio_index($anuncio_id)

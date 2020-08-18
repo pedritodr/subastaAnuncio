@@ -269,6 +269,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->order_by('anuncio.destacado', 'desc');
         $this->db->order_by('anuncio.fecha', 'desc');
 
@@ -306,6 +307,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->order_by('anuncio.anuncio_id', 'desc');
         $this->db->limit(5, 0);
         $query = $this->db->get();
@@ -322,6 +324,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
         $this->db->where('anuncio.destacado', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->order_by('anuncio.anuncio_id', 'desc');
 
         $query = $this->db->get();
@@ -338,6 +341,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('cate_anuncio.cate_anuncio_id', $id);
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         if ($ciudad_id > 0) {
             $this->db->where('anuncio.ciudad_id', $ciudad_id);
         }
@@ -357,6 +361,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('cate_anuncio.cate_anuncio_id', $id);
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         return $query->result();
@@ -374,6 +379,7 @@ class Anuncio_model extends CI_Model
             $this->db->like('anuncio.titulo', $palabra);
         }
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         if ($ciudad_id > 0) {
             $this->db->where('anuncio.ciudad_id', $ciudad_id);
         }
@@ -404,7 +410,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
-
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->where('anuncio.is_active', 1);
         if ($ciudad_id > 0) {
             $this->db->where('anuncio.ciudad_id', $ciudad_id);
@@ -428,6 +434,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->like('anuncio.titulo', $name);
         $query = $this->db->get();
         return $query->result();
@@ -448,6 +455,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         if ($name != "") {
             $this->db->like('anuncio.titulo', $name);
         }
@@ -476,6 +484,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
         $this->db->like('anuncio.anuncio_id', $id);
         $query = $this->db->get();
         return $query->row();
