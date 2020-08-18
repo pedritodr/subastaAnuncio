@@ -173,6 +173,7 @@ function seo_url($cadena)
     $cadena = str_replace('`', '', $cadena);
     $cadena = str_replace('!', '', $cadena);
     $cadena = str_replace('¿', '', $cadena);
+    $cadena = str_replace('#', '', $cadena);
     $cadena = str_replace("'", "-", $cadena);
     $cadena = str_replace("´", "-", $cadena);
     $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
