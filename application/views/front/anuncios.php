@@ -573,7 +573,7 @@ if (empty($mastercat))
                                                                     <!--    <div class="user-preview">
                                                                         <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"> <img src="" class="avatar avatar-small" alt=""> </a>
                                                                     </div> -->
-                                                                    <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
+                                                                    <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
                                                                 </div>
                                                                 <!-- Ad Img End -->
                                                                 <div class="short-description">
@@ -582,9 +582,9 @@ if (empty($mastercat))
                                                                     <!-- Ad Title -->
                                                                     <h6>
                                                                         <?php if ($item->titulo_corto) { ?>
-                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo_corto ?></a>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
                                                                         <?php } else { ?>
-                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo ?></a>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
                                                                         <?php } ?>
                                                                     </h6>
                                                                     <!-- Price -->
@@ -619,7 +619,7 @@ if (empty($mastercat))
                                                 <div class="recent-ads-list">
                                                     <div class="recent-ads-container">
                                                         <div class="recent-ads-list-image">
-                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>" class="recent-ads-list-image-inner">
+                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="recent-ads-list-image-inner">
                                                                 <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
                                                             </a><!-- /.recent-ads-list-image-inner -->
                                                         </div>
@@ -627,9 +627,9 @@ if (empty($mastercat))
                                                         <div class="recent-ads-list-content">
                                                             <h4 class="recent-ads-list-title text-justify">
                                                                 <?php if ($item->titulo_corto) { ?>
-                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo_corto ?></a>
+                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
                                                                 <?php } else { ?>
-                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"><?= $item->titulo ?></a>
+                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
                                                                 <?php } ?>
                                                             </h4>
                                                             <ul class="recent-ads-list-location">
