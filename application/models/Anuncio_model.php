@@ -194,7 +194,7 @@ class Anuncio_model extends CI_Model
         $this->db->join('user', 'user.user_id = anuncio.user_id');
         $this->db->where('cate_anuncio.cate_anuncio_id', $id);
         $this->db->where('anuncio.is_active', 1);
-        $this->db->order_by('cate_anuncio.orden', 'asc');
+        $this->db->order_by('cate_anuncio.orden', 'desc');
         $query = $this->db->get();
         return $query->result();
     }
