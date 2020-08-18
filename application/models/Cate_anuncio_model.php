@@ -115,7 +115,7 @@ class Cate_anuncio_model extends CI_Model
     }
     function get_all($conditions = [], $get_as_row = FALSE)
     {
-        $this->db->order_by('orden', 'desc');
+        $this->db->order_by('orden', 'asc');
         foreach ($conditions as $key => $value) {
             $this->db->where($key, $value);
         }
