@@ -387,6 +387,7 @@ class Rest_anuncio extends REST_Controller
                 if ($city != null) {
                     $city = strtoupper($city);
                     $ciudad_object = $this->pais->get_city($city);
+                    $this->response(['status' => 200, 'object' => $ciudad_object]);
                     if (!$ciudad_object) {
                         $data_ciudad = [
                             'name_ciudad' => $city,
@@ -400,6 +401,7 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $ciudad_id = 4;
                 }
+
                 define('UPLOAD_DIR', './uploads/anuncio/');
                 $fotos = [];
                 $salva = [];
@@ -545,6 +547,7 @@ class Rest_anuncio extends REST_Controller
                 } else {
                     $item->titulo = $item->titulo;
                 }
+                $item->fotos = $this->anuncio->get_all_fotos(['anuncio_id' => $item->anuncio_id]);
             }
             if ($all_anuncios) {
                 $this->response(['status' => 200, 'lista' => $all_anuncios]);
