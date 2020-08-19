@@ -542,8 +542,10 @@ class Rest_anuncio extends REST_Controller
                 }
                 if ($title > 14) {
                     $item->titulo = substr($item->titulo, 0, 14) . "...";
+                    $item->titulo_completo = $item->titulo;
                 } else {
                     $item->titulo = $item->titulo;
+                    $item->titulo_completo = $item->titulo;
                 }
                 $item->fotos = $this->anuncio->get_all_fotos(['anuncio_id' => $item->anuncio_id]);
             }
