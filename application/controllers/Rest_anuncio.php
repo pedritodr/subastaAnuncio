@@ -265,7 +265,7 @@ class Rest_anuncio extends REST_Controller
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
-        $city = $this->input->post('city_main');
+        $city = $this->input->post('city');
         $direccion = $this->input->post('direccion');
         $whatsapp = $this->input->post('phone');
         $subcategoria = $this->input->post('sub');
