@@ -373,6 +373,9 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
+        if ($tipo == 1) {
+            $this->db->order_by('subasta.valor_inicial', 'desc');
+        }
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
         $query = $this->db->get();
         return $query->result();
@@ -388,6 +391,9 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->where('categoria.categoria_id', $id);
+        if ($tipo == 1) {
+            $this->db->order_by('subasta.valor_inicial', 'desc');
+        }
         $query = $this->db->get();
         return $query->result();
     }
@@ -411,7 +417,9 @@ class Subasta_model extends CI_Model
             $this->db->like('subasta.nombre_espa', $palabra);
         }
         $this->db->where('subasta.tipo_subasta', $tipo);
-
+        if ($tipo == 1) {
+            $this->db->order_by('subasta.valor_inicial', 'desc');
+        }
 
         $query = $this->db->get();
 
@@ -428,6 +436,9 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->like('subasta.nombre_espa', $palabra);
+        if ($tipo == 1) {
+            $this->db->order_by('subasta.valor_inicial', 'desc');
+        }
         $query = $this->db->get();
         return $query->result();
     }
@@ -440,7 +451,9 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->where("subasta.fecha_cierre >=", $fecha);
-        $this->db->order_by('subasta.valor_inicial', 'desc');
+        if ($tipo == 1) {
+            $this->db->order_by('subasta.valor_inicial', 'desc');
+        }
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
         $query = $this->db->get();
         return $query->result();
