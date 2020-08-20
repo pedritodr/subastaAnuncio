@@ -440,6 +440,7 @@ class Subasta_model extends CI_Model
         $this->db->where('subasta.is_open', 1);
         $this->db->where('subasta.tipo_subasta', $tipo);
         $this->db->where("subasta.fecha_cierre >=", $fecha);
+        $this->db->order_by('subasta.valor_inicial', 'desc');
         // $this->db->order_by('subasta.fecha_cierre', 'desc');
         $query = $this->db->get();
         return $query->result();

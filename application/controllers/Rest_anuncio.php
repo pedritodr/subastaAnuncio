@@ -518,7 +518,7 @@ class Rest_anuncio extends REST_Controller
     }
     public function cargar_mis_anuncios_post()
     {
-
+        
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
