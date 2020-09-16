@@ -74,7 +74,7 @@ class Rest_anuncio extends REST_Controller
 
                 if (isset($item->descripcion)) {
                     if ($item->descripcion != "") {
-                        $item->corta = substr($item->descripcion, 0, 96) . "...";
+                        // $item->corta = substr($item->descripcion, 0, 96) . "...";
                     }
                 }
                 if ($title > 19) {
