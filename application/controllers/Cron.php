@@ -118,7 +118,8 @@ class Cron  extends CI_Controller
         $fecha_mes = date('Y-m-d  H:i:00', $fecha_mes);
 
         $all_membresias = $this->membresia->get_all_membresias_user(['estado' => 1]);
-
+        var_dump($all_membresias);
+        die();
 
         foreach ($all_membresias as $item) {
 
