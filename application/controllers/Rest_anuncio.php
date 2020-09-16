@@ -64,6 +64,7 @@ class Rest_anuncio extends REST_Controller
         if ($comienza > 0) {
             $infinito = true;
         }
+        $this->response(['status' => 200, 'csm' => $security_token]);
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($limite, $comienza);
             foreach ($all_anuncios as $item) {
@@ -518,7 +519,7 @@ class Rest_anuncio extends REST_Controller
     }
     public function cargar_mis_anuncios_post()
     {
-        
+
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $limite = $this->input->post('limite');
