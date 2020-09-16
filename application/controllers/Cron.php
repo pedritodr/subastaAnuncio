@@ -125,7 +125,7 @@ class Cron  extends CI_Controller
             $dia = date("d", $fechaEntera);
             $fecha_fin = $anio . "-" . $mes . "-" . $dia; */
             if ($fecha >= $fecha_fin) {
-                $this->membresia->update_membresia_user($item->membresia_user_id, ['estado' => 0]);
+                $this->membresia->update_membresia_user($item->membre_user_id, ['estado' => 0]);
             }
             if (($item->mes < 12) && (strtotime($item->fecha_mes) == $date) && ($item->is_upate == 0)) {
                 $mes = (int) $item->mes + 1;
@@ -135,7 +135,7 @@ class Cron  extends CI_Controller
                     'mes' => $mes,
                     'is_update' => 1
                 ];
-                $this->membresia->update_membresia_user($item->membresia_user_id, $data);
+                $this->membresia->update_membresia_user($item->membre_user_id, $data);
             }
         }
     }
