@@ -71,19 +71,18 @@ class Rest_anuncio extends REST_Controller
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
-                if (!strlen($item->descripcion)) {
-                    $this->response(['status' => 200, 'csm' => $item->titulo]);
-                }
-                /*    if (isset($item->descripcion)) {
+
+                if (isset($item->descripcion)) {
                     if ($item->descripcion != "") {
-                        $long = strlen($item->descripcion);
+
+                        $long = ($item->descripcion);
                         if ($long > 99) {
                             $item->corta = substr($item->descripcion, 0, 96) . "...";
                         } else {
                             $item->corta = $item->descripcion;
                         }
                     }
-                } */
+                }
                 if ($title > 19) {
                     $item->titulo = substr($item->titulo, 0, 16) . "...";
                 } else {
