@@ -83,7 +83,7 @@ class Rest_anuncio extends REST_Controller
                     $item->titulo = $item->titulo;
                 }
             }
-            $this->response(['status' => 200, 'csm' => $all_anuncios]);
+
             if ($all_anuncios) {
                 $this->response(['status' => 200, 'lista' => $all_anuncios]);
             } else {
