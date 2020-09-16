@@ -176,12 +176,12 @@ class Rest_anuncio extends REST_Controller
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
-                $long = strlen($item->descripcion);
+                /*      $long = strlen($item->descripcion);
                 if ($long > 99) {
                     $item->corta = substr($item->descripcion, 0, 96) . "...";
                 } else {
                     $item->corta = $item->descripcion;
-                }
+                } */
                 if ($title > 19) {
                     $item->titulo = substr($item->titulo, 0, 16) . "...";
                 } else {
@@ -537,12 +537,12 @@ class Rest_anuncio extends REST_Controller
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination_by_user($limite, $comienza, $user_id);
             foreach ($all_anuncios as $item) {
                 $title = strlen($item->titulo);
-                $long = strlen($item->descripcion);
+                /*    $long = strlen($item->descripcion);
                 if ($long > 99) {
                     $item->corta = substr($item->descripcion, 0, 96) . "...";
                 } else {
                     $item->corta = $item->descripcion;
-                }
+                } */
                 if ($title > 14) {
                     $item->titulo_completo = $item->titulo;
                     $item->titulo = substr($item->titulo, 0, 14) . "...";
