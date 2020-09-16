@@ -116,7 +116,8 @@ class Cron  extends CI_Controller
         $date = strtotime(date("Y-m-d"));
         $fecha_mes = strtotime('+30 day', $fecha);
         $fecha_mes = date('Y-m-d  H:i:00', $fecha_mes);
-
+        var_dump($fecha_mes);
+        die();
         $all_membresias = $this->membresia->get_all_membresias_user(['estado' => 1]);
 
 
