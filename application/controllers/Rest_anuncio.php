@@ -71,6 +71,9 @@ class Rest_anuncio extends REST_Controller
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
+                if (!$item->descripcion) {
+                    $this->response(['status' => 200, 'csm' => $item->titulo]);
+                }
                 /*    if (isset($item->descripcion)) {
                     if ($item->descripcion != "") {
                         $long = strlen($item->descripcion);
