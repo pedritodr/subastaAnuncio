@@ -113,7 +113,7 @@ class Cron  extends CI_Controller
     public function actualizar_membresia()
     {
         $fecha = strtotime(date("Y-m-d H:i:00", time()));
-        $date = strtotime(date("Y-m-d", time()));
+        $date = strtotime(date("Y-m-d"));
         $fecha_mes = strtotime('+30 day', $fecha);
         $fecha_mes = date('Y-m-d  H:i:00', $fecha_mes);
 
@@ -133,11 +133,14 @@ class Cron  extends CI_Controller
                 $this->membresia->update_membresia_user($item->membresia_user_id, ['estado' => 0]);
             }
             if (($item->mes < 12) && (strtotime($item->fecha_mes) == $date) && ($item->is_upate == 0)) {
+                var_dump("entro");
+                die();
                 $mes = (int) $item->mes + 1;
                 $data = [
                     'anuncios_publi' => (int) $item->cant_anuncio,
                     'fecha_mes' => $fecha_mes,
-                    'mes' => $mes
+                    'mes' => $mes,
+                    'is_update' => 1
                 ];
                 $this->membresia->update_membresia_user($item->membresia_user_id, $data);
             }
