@@ -132,7 +132,7 @@ class Cron  extends CI_Controller
             if ($fecha >= $fecha_fin) {
                 $this->membresia->update_membresia_user($item->membresia_user_id, ['estado' => 0]);
             }
-            if ($item->mes < 12 && strtotime($item->fecha_mes) == $date) {
+            if ($item->mes < 12 && strtotime($item->fecha_mes) == strtotime("2020-05-16")) {
                 $mes = (int) $item->mes + 1;
                 $data = [
                     'anuncios_publi' => (int) $item->cant_anuncio,
