@@ -132,19 +132,16 @@ class Cron  extends CI_Controller
             if ($fecha >= $fecha_fin) {
                 $this->membresia->update_membresia_user($item->membresia_user_id, ['estado' => 0]);
             }
-            if ($item->mes < 12 && strtotime($item->fecha_mes) == strtotime("2020-05-16")) {
+            if (($item->mes < 12) && (strtotime($item->fecha_mes) == $date) && $item->is_upate == 0) {
                 $mes = (int) $item->mes + 1;
                 $data = [
                     'anuncios_publi' => (int) $item->cant_anuncio,
                     'fecha_mes' => $fecha_mes,
                     'mes' => $mes
                 ];
-                var_dump($item);
-                //  $this->membresia->update_membresia_user($item->membresia_user_id, $data);
+                $this->membresia->update_membresia_user($item->membresia_user_id, $data);
             }
         }
-
-        die();
     }
     public function desactivar_anuncio()
     {
