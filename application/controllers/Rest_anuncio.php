@@ -64,8 +64,10 @@ class Rest_anuncio extends REST_Controller
         if ($comienza > 0) {
             $infinito = true;
         }
+
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($limite, $comienza);
+            $this->response(['status' => 200, 'csm' => $all_anuncios]);
             foreach ($all_anuncios as $item) {
                 //     $item->titulo = str_replace("´", "", $item->titulo);
                 $title = strlen($item->titulo);
