@@ -118,8 +118,7 @@ class Cron  extends CI_Controller
         $fecha_mes = date('Y-m-d  H:i:00', $fecha_mes);
 
         $all_membresias = $this->membresia->get_all_membresias_user(['estado' => 1]);
-        var_dump($all_membresias);
-        die();
+
 
         foreach ($all_membresias as $item) {
 
@@ -140,10 +139,12 @@ class Cron  extends CI_Controller
                     'fecha_mes' => $fecha_mes,
                     'mes' => $mes
                 ];
-
+                var_dump($item);
                 $this->membresia->update_membresia_user($item->membresia_user_id, $data);
             }
         }
+
+        die();
     }
     public function desactivar_anuncio()
     {
