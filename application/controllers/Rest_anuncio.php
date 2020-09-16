@@ -64,7 +64,7 @@ class Rest_anuncio extends REST_Controller
         if ($comienza > 0) {
             $infinito = true;
         }
-        $this->response(['status' => 200, 'csm' => $security_token]);
+        $this->response(['status' => 200, 'csm' => $auth]);
         if ($auth) {
             $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination($limite, $comienza);
             foreach ($all_anuncios as $item) {
