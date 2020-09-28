@@ -848,7 +848,7 @@
                }
             }); */
             $("#form_add_anuncio").on('submit', function(evt) {
-             
+
              evt.preventDefault();
              $('#array_fotos').val(JSON.stringify(array_imagenes));
              var seleccion_pais = $('#pais').val().trim();

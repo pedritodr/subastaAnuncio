@@ -935,7 +935,7 @@ class Front extends CI_Controller
             redirect("perfil/page/");
         } else {
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            define('UPLOAD_DIR', './uploads/anuncio/');
+            
             $fotos = [];
             foreach ($data as $item) {
                 $img =  $item->imagen;
