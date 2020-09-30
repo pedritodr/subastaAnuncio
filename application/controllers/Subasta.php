@@ -648,4 +648,51 @@ class Subasta  extends CI_Controller
             show_404();
         }
     }
+
+    public function subastas_invesas()
+    {
+
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+        $all_subasta = $this->subasta->get_subastas_inversas_pendientes();
+
+        $data['all_subasta'] = $all_subasta;
+        $this->load_view_admin_g("subasta/subasta_inversas", $data);
+    }
+    public function update_inversa($id = 0, $subasta_id = 0, $subasta_user)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+        $subasta = $this->subasta->get_by_id($subasta_id);
+        $intervalo = $this->subasta->get_by_intervalo_id_row($id);
+        $user_subasta = $this->subasta->get_by_subasta_user_id($subasta_user);
+        if ($subasta && $intervalo && $user_subasta) {
+            $cliente = json_decode($user_subasta->cliente);
+            $cantidad = (int) $intervalo->cantidad - 1;
+            if ($cantidad == 0) {
+                $this->subasta->update($subasta_id, ['is_open' => 0]);
+            }
+            $this->subasta->update_intervalo($id, ['cantidad' => $cantidad]);
+            $this->subasta->update_subasta_user2($subasta_user, ['is_active' => 1]);
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Subasta inversa";
+            $motivo = 'subasta inversa adquirida Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido la subasta:<br>";
+            $mensaje .= "<h1><b>" . $subasta->nombre_espa . "</b></h1><br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+            $this->response->set_message("Venta cerrada", ResponseMessage::SUCCESS);
+            redirect("subasta/subastas_invesas/", "location", 301);
+        } else {
+            show_404();
+        }
+    }
 }

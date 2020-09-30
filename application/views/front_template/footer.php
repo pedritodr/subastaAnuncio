@@ -365,7 +365,9 @@
 
                         </div>
                      <?php } else { ?>
-
+                        <div style="margin-top:5% !important" style="display:none" id="body_comprar_inversa" class="col-md-12">
+                           <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
+                        </div>
                         <div style="margin-top:5% !important" id="body_login_subasta_entrar" class="col-md-12">
                            <button id="btn_login_subasta" onclick="login(2)" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("login_lang"); ?></button>
                         </div>
@@ -547,7 +549,7 @@
             <input type="hidden" id='pagar_valor_inversa'>
             <input type="hidden" id='invresa_subasta_id'>
             <div class="row">
-               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+               <!--    <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
                   <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
                </div>
                <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
@@ -559,6 +561,45 @@
                <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
 
 
+               </div> -->
+               <div id="formClienteSubastaInversa" style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <!--  Form -->
+                  <div class="form-grid">
+                     <form>
+                        <div class="row">
+                           <div class="col-lg-6">
+                              <div class="form-group">
+                                 <label><?= translate("primer_nombre_lang"); ?></label>
+                                 <input required placeholder="Ej. Jesus" class="form-control input-text" type="text" id="nameInversa">
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="form-group">
+                                 <label><?= translate("primer_apellido_lang"); ?></label>
+                                 <input required placeholder="Ej. Perez" class="form-control input-text" type="text" id="surnameInversa">
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="row">
+                           <div class="col-lg-6">
+                              <div class="form-group">
+                                 <label><?= translate("email_lang"); ?></label>
+                                 <input placeholder="Ej. info@subastanuncio.com" class="form-control" type="email" id="emailInversa" required>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="form-group">
+                                 <label><?= translate("phone_user__lang"); ?></label>
+                                 <input placeholder="Ej. 986547800" class="form-control input-number" type="number" id="phoneInversa" required>
+                              </div>
+                           </div>
+
+                        </div>
+                     </form>
+                  </div>
+                  <!-- Form -->
+
                </div>
                <div id="body_condiciones_inversa" class="col-lg-12">
                   <div class="form-group">
@@ -567,14 +608,14 @@
                      </label>
                   </div>
                </div>
-               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
+               <!--    <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
 
 
-               </div>
+               </div> -->
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button id="btn_pagar_inversa" type="button" onclick="pagar_inversa()" class="btn btn-theme btn-block"><?= translate('pagar_lang') ?></button>
+               <button id="btn_pagar_inversa" type="button" onclick="pagar_inversa()" class="btn btn-theme btn-block">Lo quiero</button>
             </div>
 
          </div>
@@ -932,87 +973,265 @@
       var name_subasta = $('#name_subasta_inversa').text();
       var valor_subasta_inversa = $('#pagar_valor_inversa').val();
       var inversa_subasta_id = $('#invresa_subasta_id').val();
-
-      if ($('#condiciones_inversa').prop('checked') == true) {
-         $('#modal_pagar_inversa').modal("hide");
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/checkout') ?>",
-            data: {
-               monto: valor_subasta_inversa,
-               detalle: name_subasta,
-               id: inversa_subasta_id,
-               tipo: 3
-            },
-            success: function(data) {
-               data = JSON.parse(data);
-
-               var processUrl = data.processUrl;
-
-               P.init(processUrl);
-               $("#processUrl").val(processUrl);
-            },
-            error: function(data) {
-               data = JSON.parse(data);
-               alert(data.status.message);
-            }
-         });
-         P.on('response', function(data) {
-            let requestId = data.requestId;
-            let reference = data.reference;
-            let estado_payment = 0
-            if (data.status.status == "APPROVED") {
-               estado_payment = 1;
-               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-               $('#status_notificacion').text("Transacción Aprobada");
-               $('#product_adquirido').html("<strong>Subasta adquirida : </strong>" + name_subasta);
-            } else if (data.status.status == "REJECTED") {
-               estado_payment = 2;
-               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-               $('#status_notificacion').text("El pago ha sido rechazado");
-            } else if (data.status.status == "PENDING") {
-               estado_payment = 3;
-               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-               $('#status_notificacion').text("El proceso de pago está pendiente");
-            }
-            $.ajax({
-               type: 'POST',
-               url: "<?= site_url('front/update_request_id') ?>",
-               data: {
-                  request_id: requestId,
-                  reference: reference,
-                  status: estado_payment
-               },
-               success: function(result) {
-                  result = JSON.parse(result);
-                  if (result.status == 200) {
-                     $('#mensaje_notificacion').text(data.status.message);
-                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                     $('#modal_notificacion').modal('show');
-                     setTimeout(() => {
-                        location.reload();
-                     }, 6000);
-                  } else {
-                     alert("Ocurrio un error en el servidor");
-                  }
-
-               },
-               error: function(result) {
-
-                  alert("Ocurrio un error en el servidor");
-               }
+      var condicionesInversas = $('#condiciones_inversa').prop('checked');
+      var nameInversa = $('#nameInversa').val();
+      var surnameInversa = $('#surnameInversa').val();
+      var emailInversa = $('#emailInversa').val();
+      var phoneInversa = $('#phoneInversa').val();
+      if (!validaUserInversa) {
+         nameInversa = nameInversa.trim();
+         surnameInversa = surnameInversa.trim();
+         emailInversa = emailInversa.trim();
+         phoneInversa = phoneInversa.trim();
+         if (nameInversa == "") {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es necesario el campo primer nombre es requerido.',
+               showConfirmButton: false,
+               timer: 1500
             });
-         });
+            nameInversa.focus();
+         } else if (surnameInversa == "") {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es el campo primer apellido es requerido.',
+               showConfirmButton: false,
+               timer: 1500
+            });
+            surnameInversa.focus();
+         } else if (emailInversa == "") {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es necesario el campo email es requerido.',
+               showConfirmButton: false,
+               timer: 1500
+            });
+            emailInversa.focus();
+         } else if (phoneInversa == "") {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es necesario el campo teléfono es requerido.',
+               showConfirmButton: false,
+               timer: 1500
+            });
+            phoneInversa.focus();
+         } else if (!condicionesInversas) {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es necesario que acepte las condiciones de uso.',
+               showConfirmButton: true
+            });
+            $('#condiciones_inversa').focus();
+         } else {
+            $('#modal_pagar_inversa').modal("hide");
+            swal.fire({
+               title: '',
+               html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
+               showConfirmButton: false,
+               allowOutsideClick: false,
+            });
+            setTimeout(() => {
+               $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/generar_pedido_inversa') ?>",
+                  data: {
+                     id: inversa_subasta_id,
+                     user_id: null,
+                     valida_user: validaUserInversa,
+                     nombre: nameInversa,
+                     apellido: surnameInversa,
+                     telefono: phoneInversa,
+                     email: emailInversa
+                  },
+                  success: function(data) {
+                     data = JSON.parse(data);
+                     if (data.status == 200) {
+                        swal.close();
+                        Swal.fire({
+                           icon: 'success',
+                           title: 'Su pedido esta en proceso de verificación en breve minutos nuestros asistentes de ventas se comunicaran para concretar la compra.',
+                           showConfirmButton: true
+                        });
 
-         $("#lightboxIt").on('click', function() {
-
-            P.init($("#processUrl").val());
-         });
+                     } else {
+                        swal.close();
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Ocurrio un problema vuelva a intentarlo',
+                           showConfirmButton: true
+                        });
+                        $('#modal_pagar_inversa').modal("show");
+                     }
+                  },
+                  error: function(data) {
+                     swal.close();
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                        showConfirmButton: true
+                     });
+                     $('#modal_pagar_inversa').modal("show");
+                  }
+               });
+            }, 1500);
+         }
       } else {
-         $('#condiciones_inversa').focus();
-         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
-         $('.noficacion_error').show();
+         if (!condicionesInversas) {
+            Swal.fire({
+               icon: 'info',
+               title: 'Para continuar es necesario que acepte las condiciones de uso.',
+               showConfirmButton: true
+            });
+            $('#condiciones_inversa').focus();
+         } else {
+            $('#modal_pagar_inversa').modal("hide");
+            swal.fire({
+               title: '',
+               html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
+               showConfirmButton: false,
+               allowOutsideClick: false,
+            });
+            setTimeout(() => {
+               $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/generar_pedido_inversa') ?>",
+                  data: {
+                     id: inversa_subasta_id,
+                     user_id: user_id,
+                     valida_user: validaUserInversa,
+                     nombre: null,
+                     apellido: null,
+                     telefono: null,
+                     email: null
+                  },
+                  success: function(data) {
+                     data = JSON.parse(data);
+                     if (data.status == 200) {
+                        swal.close();
+                        Swal.fire({
+                           icon: 'success',
+                           title: 'Su pedido esta en proceso de verificación en breve minutos nuestros asistentes de ventas se comunicaran para concretar la compra.',
+                           showConfirmButton: true
+                        }).then((result) => {
+                           if (result.value) {
+                              setTimeout(() => {
+                                 location.reload();
+                              }, 500);
+                           }
+                        });
+
+                     } else {
+                        swal.close();
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'Ocurrio un problema vuelva a intentarlo',
+                           showConfirmButton: true
+                        });
+                        $('#modal_pagar_inversa').modal("show");
+                     }
+                  },
+                  error: function(data) {
+                     swal.close();
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                        showConfirmButton: true
+                     });
+                     $('#modal_pagar_inversa').modal("show");
+                  }
+               });
+
+            }, 1500);
+         }
       }
+
+
+
+      /*   if ($('#condiciones_inversa').prop('checked') == true) {
+           $('#modal_pagar_inversa').modal("hide");
+              $.ajax({
+                     type: 'POST',
+                     url: "<?= site_url('front/checkout') ?>",
+                     data: {
+                        monto: valor_subasta_inversa,
+                        detalle: name_subasta,
+                        id: inversa_subasta_id,
+                        tipo: 3
+                     },
+                     success: function(data) {
+                        data = JSON.parse(data);
+
+                        var processUrl = data.processUrl;
+
+                        P.init(processUrl);
+                        $("#processUrl").val(processUrl);
+                     },
+                     error: function(data) {
+                        data = JSON.parse(data);
+                        alert(data.status.message);
+                     }
+                  });
+                  P.on('response', function(data) {
+                     let requestId = data.requestId;
+                     let reference = data.reference;
+                     let estado_payment = 0
+                     if (data.status.status == "APPROVED") {
+                        estado_payment = 1;
+                        $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
+                        $('#status_notificacion').text("Transacción Aprobada");
+                        $('#product_adquirido').html("<strong>Subasta adquirida : </strong>" + name_subasta);
+                     } else if (data.status.status == "REJECTED") {
+                        estado_payment = 2;
+                        $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
+                        $('#status_notificacion').text("El pago ha sido rechazado");
+                     } else if (data.status.status == "PENDING") {
+                        estado_payment = 3;
+                        $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
+                        $('#status_notificacion').text("El proceso de pago está pendiente");
+                     }
+                     $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('front/update_request_id') ?>",
+                        data: {
+                           request_id: requestId,
+                           reference: reference,
+                           status: estado_payment
+                        },
+                        success: function(result) {
+                           result = JSON.parse(result);
+                           if (result.status == 200) {
+                              $('#mensaje_notificacion').text(data.status.message);
+                              $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
+                              $('#modal_notificacion').modal('show');
+                              setTimeout(() => {
+                                 location.reload();
+                              }, 6000);
+                           } else {
+                              alert("Ocurrio un error en el servidor");
+                           }
+
+                        },
+                        error: function(result) {
+
+                           alert("Ocurrio un error en el servidor");
+                        }
+                     });
+                  });
+
+                  $("#lightboxIt").on('click', function() {
+
+                     P.init($("#processUrl").val());
+                  });
+        } else {
+           $('#condiciones_inversa').focus();
+           Swal.fire({
+              icon: 'info',
+              title: 'Para continuar es necesario que acepte las condiciones de uso.',
+              showConfirmButton: true
+           });
+             $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+            $('.noficacion_error').show();
+        } */
    }
 
    function pagar_destacar() {
@@ -1499,8 +1718,8 @@
 
       if (object != "") {
 
-         //  $("#body_valor_alto").show();
-         //  $("#body_entrar_subasta").hide();
+         $("#btn_login_subasta").hide();
+         $("#btn_comprar_inversa").show();
          $("#body_pujar").hide();
          $('#galeria_main').empty();
          $('.carousel-indicators').empty();
@@ -2090,54 +2309,59 @@
       object = atob(object);
       object = JSON.parse(object);
       $('.transaccion_pendiente').hide();
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/get_payments_user') ?>",
+      /*      $.ajax({
+              type: 'POST',
+              url: "<?= site_url('front/get_payments_user') ?>",
 
-         data: {
-            user_id: user_id,
-         },
-         success: function(result) {
-            result = JSON.parse(result);
-            console.log(result);
-            if (result.status == 500) {
-               if (result.data.length > 0) {
+              data: {
+                 user_id: user_id,
+              },
+              success: function(result) {
+                 result = JSON.parse(result);
+                 console.log(result);
+                 if (result.status == 500) {
+                    if (result.data.length > 0) {
 
-                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
-                  for (let i = 0; i < result.data.length; i++) {
-                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
-                  }
+                       let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
+                       for (let i = 0; i < result.data.length; i++) {
+                          trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
+                       }
 
-                  $('#body_condiciones_inversa').hide();
-                  $('#btn_pagar_inversa').hide();
-                  $('.transaccion_pendiente').html(trans_pendiente);
-                  $('.transaccion_pendiente').show();
+                       $('#body_condiciones_inversa').hide();
+                       $('#btn_pagar_inversa').hide();
+                       $('.transaccion_pendiente').html(trans_pendiente);
+                       $('.transaccion_pendiente').show();
 
-               } else {
-                  $('#body_condiciones_inversa').show();
-                  $('#btn_pagar_inversa').show();
-               }
+                    } else {
+                       $('#body_condiciones_inversa').show();
+                       $('#btn_pagar_inversa').show();
+                    }
 
 
-            } else if (result.status == 200) {
-               $('#body_condiciones_inversa').show();
-               $('#btn_pagar_inversa').show();
-            }
-         }
-      });
+                 } else if (result.status == 200) {
+                    $('#body_condiciones_inversa').show();
+                    $('#btn_pagar_inversa').show();
+                 }
+              }
+           }); */
       $('#name_subasta_inversa').text(object.nombre_espa);
       $('#pagar_valor_inversa').val(parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
       $('#valor_inversa').text("$" + parseFloat(object.intervalo[object.intervalo.length - 1].valor).toFixed(2));
       $('#invresa_subasta_id').val(object.subasta_id);
       $('#modal_pagar_inversa').modal("show");
       $("#modal_detalle").modal("hide");
+      if (!user_id) {
+         $('#formClienteSubastaInversa').show();
+         validaUserInversa = false;
+      } else {
+         $('#formClienteSubastaInversa').hide();
+         validaUserInversa = true;
+      }
 
    }
-
+   let validaUserInversa = false;
 
    $(function() {
-
-
       if (contador_directa == 0 && contador_inversa != 0) {
          $('.mensaje_directa').show();
       } else if (contador_directa != 0 && contador_inversa == 0) {
@@ -2427,6 +2651,31 @@
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
 <style>
+   .sweet-alert-trigger {
+      padding: 5px 10px;
+      border: 0;
+      border-radius: 3px;
+      background: #0F74F4;
+      color: white;
+   }
+
+   .save_loading {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      animation-duration: 0.5s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-name: ro;
+      transform-origin: 50% 50%;
+   }
+
+   @keyframes ro {
+      100% {
+         transform: rotate(-360deg) translate(0, 0);
+      }
+   }
+
    .img-master {
       margin-top: 0px !important;
       max-height: 500px !important;

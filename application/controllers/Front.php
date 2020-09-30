@@ -935,7 +935,7 @@ class Front extends CI_Controller
             redirect("perfil/page/");
         } else {
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            
+
             $fotos = [];
             foreach ($data as $item) {
                 $img =  $item->imagen;
@@ -3292,5 +3292,46 @@ class Front extends CI_Controller
                 }
             }
         }
+    }
+    public function generar_pedido_inversa()
+    {
+        $this->load->model('User_model', 'user');
+        $subasta_id = $this->input->post('id');
+        $user_id = $this->input->post('user_id');
+        $valida_user = $this->input->post('valida_user');
+        $nombre = $this->input->post('nombre');
+        $apellido = $this->input->post('apellido');
+        $telefono = $this->input->post('telefono');
+        $email = $this->input->post('email');
+
+        $this->load->model('Subasta_model', 'subasta');
+        $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+        $count = count($subasta);
+        /*$cantidad = (int) $subasta[$count - 1]->cantidad - 1;
+        if ($cantidad == 0) {
+            $this->subasta->update($subasta_id, ['is_open' => 0]);
+        }
+        $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]); */
+        $data = [
+            'user_id' => $user_id,
+            'subasta_id' => $subasta_id,
+            'is_active' => 0,
+            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+            'cliente' => null
+        ];
+        if ($valida_user == "true") {
+            $cliente = $this->user->get_by_id($user_id);
+        } else {
+            $cliente = ['name' => $nombre, 'surname' => $apellido, 'phone' => $telefono, 'email' => $email];
+        }
+        $cliente = (object)$cliente;
+        $data['cliente'] = json_encode($cliente);
+        $id =  $this->subasta->create_subasta_user($data);
+        if ($id) {
+            echo json_encode(['status' => 200]);
+        } else {
+            echo json_encode(['status' => 500]);
+        }
+        exit();
     }
 }

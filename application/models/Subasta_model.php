@@ -40,6 +40,13 @@ class Subasta_model extends CI_Model
 
         return $query->row();
     }
+    function get_by_subasta_user_id($id)
+    {
+        $this->db->where('subasta_user_id', $id);
+        $query = $this->db->get('subasta_user');
+
+        return $query->row();
+    }
     function get_by_intervalo_id_row($id)
     {
         $this->db->where('intervalo_subasta_id', $id);
@@ -150,6 +157,23 @@ class Subasta_model extends CI_Model
     {
         $old = $this->get_by_id($id);
         $this->db->where('payment_id', $id);
+        foreach ($data as $key => $value) {
+            $this->db->set($key, $value);
+        }
+        $this->db->update('subasta_user');
+        $afec = $this->db->affected_rows();
+
+        if ($afec > 0) {
+            $new = $this->get_by_id($id);
+            //  $this->activelog($id,null,2,$new,$old);
+        }
+
+        return $afec;
+    }
+    function update_subasta_user2($id, $data)
+    {
+        $old = $this->get_by_id($id);
+        $this->db->where('subasta_user_id', $id);
         foreach ($data as $key => $value) {
             $this->db->set($key, $value);
         }
@@ -290,7 +314,24 @@ class Subasta_model extends CI_Model
         $this->db->join('intervalo_subasta', 'intervalo_subasta.intervalo_subasta_id = subasta_user.intervalo_subasta_id');
         $this->db->where('subasta.is_active', 1);
         $this->db->where('subasta.tipo_subasta', 2);
+        $this->db->where('subasta_user.is_active', 1);
         $this->db->where('subasta_user.user_id', $user_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_subastas_inversas_pendientes()
+    {
+        $this->db->select('subasta_user.subasta_user_id,subasta_user.intervalo_subasta_id,subasta_user.cliente as cliente,subasta.qty_articles,subasta.valor_maximo,subasta.valor_minimo,subasta.cantidad_dias,subasta.intervalo,subasta.porcentaje,subasta.fecha_inicio,subasta.is_open,subcategoria_subasta.nombre as subcategoria,intervalo_subasta.valor as costo,subasta.tipo_subasta,subasta.subasta_id,subasta.photo,subasta.nombre_espa,subasta.descrip_espa,subasta.valor_inicial,subasta.fecha_cierre,subasta.valor_pago,categoria.name_espa as categoria,ciudad.name_ciudad as ciudad,ciudad.ciudad_id,categoria.categoria_id');
+        $this->db->from('subasta');
+        $this->db->join('subasta_user', 'subasta_user.subasta_id = subasta.subasta_id');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = subasta.ciudad_id');
+        $this->db->join('categoria', 'categoria.categoria_id = subasta.categoria_id');
+        $this->db->join('subcategoria_subasta', 'subcategoria_subasta.subcat_id = subasta.subcat_id');
+        //   $this->db->join('user', 'user.user_id = subasta_user.user_id');
+        $this->db->join('intervalo_subasta', 'intervalo_subasta.intervalo_subasta_id = subasta_user.intervalo_subasta_id');
+        $this->db->where('subasta.is_active', 1);
+        $this->db->where('subasta.tipo_subasta', 2);
+        $this->db->where('subasta_user.is_active', 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -662,6 +703,7 @@ class Subasta_model extends CI_Model
     {
 
         $this->db->where('intervalo_subasta_id', $id);
+        $this->db->where('is_active', 1);
         $query = $this->db->get('subasta_user');
 
         return $query->result();

@@ -117,7 +117,11 @@
                         <i class="fa fa-money" aria-hidden="true"></i> <span><?= translate('manage_payment_lang'); ?></span>
                     </a>
                 </li>
-
+                <li>
+                    <a href="<?= site_url('subasta/subastas_invesas'); ?>">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Subastas inversas pendientes</span>
+                    </a>
+                </li>
 
             <?php }  ?>
 
