@@ -1049,7 +1049,7 @@
                         swal.close();
                         Swal.fire({
                            icon: 'success',
-                           title: 'Su pedido esta en proceso de verificación en breve minutos nuestros asistentes de ventas se comunicaran para concretar la compra.',
+                           title: 'Su pedido está en proceso de verificación, en breves minutos nuestros asistentes de ventas se comunicarán para concretar la compra.',
                            showConfirmButton: true
                         });
 
@@ -1110,7 +1110,7 @@
                         swal.close();
                         Swal.fire({
                            icon: 'success',
-                           title: 'Su pedido esta en proceso de verificación en breve minutos nuestros asistentes de ventas se comunicaran para concretar la compra.',
+                           title: 'Su pedido está en proceso de verificación, en breves minutos nuestros asistentes de ventas se comunicarán para concretar la compra.',
                            showConfirmButton: true
                         }).then((result) => {
                            if (result.value) {

@@ -629,9 +629,14 @@ class Subasta  extends CI_Controller
                     if ($subasta_user) {
                         foreach ($subasta_user as $subasta) {
                             $user = $this->user->get_by_id($subasta->user_id);
-                            $user->membresia = $this->membresia->get_by_user_id($user->user_id);
-                            $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
-                            $subasta->user = $user;
+                            if ($user) {
+                                $user->membresia = $this->membresia->get_by_user_id($user->user_id);
+                                $user->ciudad = $this->pais->get_by_ciudad_id_object($user->ciudad_id);
+                                $subasta->user = $user;
+                            } else {
+                                $user = json_decode($subasta->cliente);
+                                $subasta->user = $user;
+                            }
                         }
                     }
                     $item->user_subasta = $subasta_user;

@@ -3162,7 +3162,7 @@ class Front extends CI_Controller
                     'password' => md5($new_password),
                 ];
                 $this->user->update($user_id, $data);
-                $this->response->set_message('La contraseña se actualizo correctamente', ResponseMessage::SUCCESS);
+                $this->response->set_message('La contraseña se actualizó correctamente', ResponseMessage::SUCCESS);
                 redirect("perfil/page/");
             }
         }
@@ -3307,11 +3307,6 @@ class Front extends CI_Controller
         $this->load->model('Subasta_model', 'subasta');
         $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
         $count = count($subasta);
-        /*$cantidad = (int) $subasta[$count - 1]->cantidad - 1;
-        if ($cantidad == 0) {
-            $this->subasta->update($subasta_id, ['is_open' => 0]);
-        }
-        $this->subasta->update_intervalo($subasta[$count - 1]->intervalo_subasta_id, ['cantidad' => $cantidad]); */
         $data = [
             'user_id' => $user_id,
             'subasta_id' => $subasta_id,
@@ -3328,6 +3323,12 @@ class Front extends CI_Controller
         $data['cliente'] = json_encode($cliente);
         $id =  $this->subasta->create_subasta_user($data);
         if ($id) {
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Subasta inversa";
+            $motivo = 'Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "<h3>Ir al panel administrativo, venta de subasta inversa por revisar</h3>";
+            $this->correo->sent("info@subastanuncios.com", $mensaje, $asunto, $motivo);
             echo json_encode(['status' => 200]);
         } else {
             echo json_encode(['status' => 500]);
