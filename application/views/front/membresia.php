@@ -69,6 +69,13 @@
       <style>
           /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
+          .pricing ul {
+              font-size: 14px;
+              font-weight: 400;
+              list-style-type: square;
+              margin: 50px 30px 30px;
+              padding: 0;
+          }
 
           /* Carousel base class */
           .carousel {
