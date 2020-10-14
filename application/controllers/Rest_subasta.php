@@ -625,7 +625,6 @@ class Rest_subasta extends REST_Controller
     }
     public function generar_pedido_inversa_post()
     {
-        $this->load->model('User_model', 'user');
         $subasta_id = $this->input->post('subasta_id');
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
