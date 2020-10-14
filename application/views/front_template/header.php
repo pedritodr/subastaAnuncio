@@ -170,9 +170,9 @@
                         <li>
                            <a class="text-center" href="<?= site_url('portada') ?>"> <?= translate('inicio_lang') ?> <i></i></a>
                         </li>
-                        <!--   <li>
-                           <a href="<?= site_url('nosotros') ?>"> <?= translate('acerca_lang') ?> <i></i></a>
-                        </li> -->
+                        <li>
+                           <a href="<?= site_url('financiamiento') ?>"> Financiamiento <i></i></a>
+                        </li>
                         <li>
                            <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?> <i></i></a>
                         </li>

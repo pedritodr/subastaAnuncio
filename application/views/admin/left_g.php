@@ -122,6 +122,11 @@
                         <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Subastas inversas pendientes</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= site_url('financiamiento/index'); ?>">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Financiamientos</span>
+                    </a>
+                </li>
 
             <?php }  ?>
 

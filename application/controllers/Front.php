@@ -2254,7 +2254,19 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/membresia', $data_object);
     }
+    public function financiamiento()
+    {
 
+        $this->load->model('Empresa_model', 'empresa');
+        //    $this->load->model('Financiamiento_model', 'financiamiento');
+        $this->load->model('Banner_model', 'banner');
+        $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
+        $data_object['all_banners'] = $all_banners;
+
+
+
+        $this->load_view_front('front/financiamiento', $data_object);
+    }
     public function perfil()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
@@ -2529,6 +2541,77 @@ class Front extends CI_Controller
 
             $this->response->set_message(translate('mensaje_contacto_lang'), ResponseMessage::SUCCESS);
             redirect("contacto");
+        }
+    }
+    public function solicitar_financiamiento()
+    {
+
+        $tipo = $this->input->post('tipo');
+        $monto = $this->input->post('monto');
+        $entrada = $this->input->post('entrada');
+        $nombres = $this->input->post('nombres');
+        $apellidos = $this->input->post('apellidos');
+        $cedula = $this->input->post('cedula');
+        $telefono = $this->input->post('telefono');
+        $email = $this->input->post('email');
+        $estado_civil = $this->input->post('estado_civil');
+        $datos_conyuge = $this->input->post('datos_conyuge');
+        $estado_civil = $this->input->post('estado_civil');
+        $datos_laborales = $this->input->post('datos_laborales');
+        $fecha_nacimiento = $this->input->post('fecha_nacimiento');
+        $ingreso = $this->input->post('ingreso');
+        $gasto = $this->input->post('gasto');
+        $tipo_vivienda = $this->input->post('tipo_vivienda');
+        $tipo_inmobiliario = $this->input->post('tipo_inmobiliario');
+        $destino_credito = $this->input->post('destino_credito');
+        $tipo_auto = $this->input->post('tipo_auto');
+        //establecer reglas de validacion
+        $this->form_validation->set_rules('tipo', "", 'required');
+
+        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
+            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
+            redirect("financiamiento");
+        } else {
+            $this->load->model("Financiamiento_model", "financiamiento");
+            $data = [
+                'tipo' => $tipo,
+                'monto' => $monto,
+                'entrada' => $entrada,
+                'nombres' => $nombres,
+                'apellidos' => $apellidos,
+                'cedula' => $cedula,
+                'telefono' => $telefono,
+                'email' => $email,
+                'estado_civil' => $estado_civil,
+                'datos_laborales' => $datos_laborales,
+                'fecha_nacimiento' => $fecha_nacimiento,
+                'tipo_inmobiliario' => $tipo_inmobiliario,
+                'gasto' => $gasto,
+                'ingreso' => $ingreso,
+                'tipo_vivienda' => $tipo_vivienda,
+                'tipo_auto' => $tipo_auto,
+                'datos_conyuge' => $datos_conyuge,
+                'destino_credito' => $destino_credito,
+                'fecha_creacion' => date("Y-m-d H:i:s"),
+            ];
+
+            $id = $this->financiamiento->create($data);
+            $emails = [$email, 'info@subastanuncio.com'];
+            $fecha = date('Y-m-d H:i:s');
+            if ($id) {
+                $this->load->model("Correo_model", "correo");
+                $asunto = "Solicitud de crédito";
+                $motivo = 'Solicitud de crédito Subasta anuncios';
+                $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que tu solicitud de crédito está en proceso brevemente los administradores se comunicaran con usted.<br>";
+                $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                $mensaje .= "Saludos,<br>";
+                $mensaje .= "El equipo de SUBASTANUNCIOS";
+                $this->correo->sent($emails, $mensaje, $asunto, $motivo);
+            }
+
+            $this->response->set_message("La solicitud de crédito fue creada correctamente", ResponseMessage::SUCCESS);
+            redirect("financiamiento");
         }
     }
     public function pagar_membresia()
