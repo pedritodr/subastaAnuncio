@@ -623,4 +623,36 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
+    public function generar_pedido_inversa()
+    {
+        $this->load->model('User_model', 'user');
+        $subasta_id = $this->input->post('subasta_id');
+        $user_id = $this->input->post('user_id');
+        $security_token = $this->input->post('security_token');
+        $this->load->model('Subasta_model', 'subasta');
+        $subasta = $this->subasta->get_intervalo_subasta($subasta_id);
+        $count = count($subasta);
+        $data = [
+            'user_id' => $user_id,
+            'subasta_id' => $subasta_id,
+            'is_active' => 0,
+            'intervalo_subasta_id' => $subasta[$count - 1]->intervalo_subasta_id,
+            'cliente' => null
+        ];
+        $cliente = $this->user->get_by_id($user_id);
+        $cliente = (object)$cliente;
+        $data['cliente'] = json_encode($cliente);
+        $id =  $this->subasta->create_subasta_user($data);
+        if ($id) {
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Subasta inversa";
+            $motivo = 'Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "<h3>Ir al panel administrativo, venta de subasta inversa por revisar</h3>";
+            $this->correo->sent("info@subastanuncios.com", $mensaje, $asunto, $motivo);
+            $this->response(['status' => 200]);
+        } else {
+            $this->response(['status' => 500]);
+        }
+    }
 }
