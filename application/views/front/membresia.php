@@ -43,7 +43,7 @@
                                           <span class="price">$<?= number_format($item->precio, 2); ?></span>
                                           <span class="time"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
                                           <span class="time"><?= translate('descripcion_lang') ?></span>
-                                          <div style="height:260px !important" class="text-center">
+                                          <div style="height:260px !important" class="text-left">
                                               <?= $item->descripcion; ?>
                                           </div>
                                           <?php if ($this->session->userdata('user_id')) { ?>
@@ -75,6 +75,7 @@
               list-style-type: square;
               margin: 50px 30px 30px;
               padding: 0;
+              text-align: left;
           }
 
           /* Carousel base class */
