@@ -82,8 +82,8 @@ $route['condiciones-de-uso'] = 'front/condiciones';
 $route['politicas-de-privacidad'] = 'front/politicas';
 $route['aviso-legal'] = 'front/aviso_legal';
 $route['activacion'] = 'front/activacion_user';
-$route['financiamiento'] = 'front/financiamiento';
-
+/* $route['financiamientos/(:any)'] = 'front/financiamiento/$1'; */
+$route['financiamientos'] = 'front/financiamiento';
 require_once(BASEPATH . 'database/DB' . '.php');
 $db = &DB();
 $page = 5;

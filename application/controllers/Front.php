@@ -2262,8 +2262,11 @@ class Front extends CI_Controller
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
         $data_object['all_banners'] = $all_banners;
-
-
+        if ($this->session->flashdata('mensaje')) {
+            $data_object['mensaje'] = $this->session->flashdata('mensaje');
+        } else {
+            $data_object['mensaje'] = "solicitud";
+        }
 
         $this->load_view_front('front/financiamiento', $data_object);
     }
@@ -2556,7 +2559,6 @@ class Front extends CI_Controller
         $email = $this->input->post('email');
         $estado_civil = $this->input->post('estado_civil');
         $datos_conyuge = $this->input->post('datos_conyuge');
-        $estado_civil = $this->input->post('estado_civil');
         $datos_laborales = $this->input->post('datos_laborales');
         $fecha_nacimiento = $this->input->post('fecha_nacimiento');
         $ingreso = $this->input->post('ingreso');
@@ -2566,11 +2568,24 @@ class Front extends CI_Controller
         $destino_credito = $this->input->post('destino_credito');
         $tipo_auto = $this->input->post('tipo_auto');
         //establecer reglas de validacion
-        $this->form_validation->set_rules('tipo', "", 'required');
-
+        if ($tipo == 1 || $tipo == 3) {
+            $this->form_validation->set_rules('entrada', "Entrada", 'required');
+            $this->form_validation->set_rules('monto', "Monto", 'required');
+        } else {
+            $this->form_validation->set_rules('monto', "Monto", 'required');
+            $this->form_validation->set_rules('destino_credito', "Destino del crédito", 'required');
+        }
+        $this->form_validation->set_rules('nombres', "Nombres", 'required');
+        $this->form_validation->set_rules('apellidos', "Apellidos", 'required');
+        $this->form_validation->set_rules('cedula', "Cédula", 'required');
+        $this->form_validation->set_rules('telefono', "Teléfono", 'required');
+        $this->form_validation->set_rules('email', "Correo de contacto", 'required');
+        $this->form_validation->set_rules('fecha_nacimiento', "Fecha de nacimiento", 'required');
+        $this->form_validation->set_rules('ingreso', "Ingresos", 'required');
+        $this->form_validation->set_rules('gasto', "Gastos", 'required');
         if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
             $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("financiamiento");
+            redirect("financiamientos");
         } else {
             $this->load->model("Financiamiento_model", "financiamiento");
             $data = [
@@ -2609,9 +2624,10 @@ class Front extends CI_Controller
                 $mensaje .= "El equipo de SUBASTANUNCIOS";
                 $this->correo->sent($emails, $mensaje, $asunto, $motivo);
             }
-
+            $msj = 'La solicitud de crédito fue creada correctamente';
+            $this->session->set_flashdata('mensaje', $msj);
             $this->response->set_message("La solicitud de crédito fue creada correctamente", ResponseMessage::SUCCESS);
-            redirect("financiamiento");
+            redirect("financiamientos");
         }
     }
     public function pagar_membresia()

@@ -28,431 +28,31 @@
                         <!-- Main Title -->
                         <h1><span class="heading-color">TIPO DE FINANCIAMIENTO</span></h1>
                         <!-- Short Description -->
-                        <p class="heading-text"></p>
+                        <p class="heading-text"><?= get_message_from_operation(); ?></p>
                     </div>
                 </div>
                 <!-- Middle Content Box -->
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <div class="row">
                         <div class="col-md-12">
-
                             <!-- Nav tabs -->
                             <div class="card">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">AUTOMOTRIZ</a></li>
-                                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">CONSUMO</a></li>
-                                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">INMOBILIARIO</a></li>
+                                    <li onclick="automotriz()" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">AUTOMOTRIZ</a></li>
+                                    <li onclick="consumo()" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">CONSUMO</a></li>
+                                    <li onclick="inmobiliario()" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">INMOBILIARIO</a></li>
                                 </ul>
                                 <!-- Tab panes -->
+
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane active" id="home">
-                                        <?= form_open('front/solicitar_financiamiento'); ?>
-                                        <?= get_message_from_operation(); ?>
-                                        <input name="tipo" id="" class="btn btn-primary" type="hidden" value="1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group"> <label for="selectAuto">Auto</label>
-                                                    <select class="form-control" id="selectAuto" name="tipo_auto" required>
-                                                        <option value="1">Nuevo</option>
-                                                        <option value="2">Usado</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="monto">Monto</label>
-                                                    <input type="number" class="form-control" id="monto" name="monto" placeholder="Ejm:1000" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="entrada">Entrada</label>
-                                                    <input type="number" class="form-control" id="entrada" name="entrada" placeholder="Ejm:1000" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="cedula">Cédula</label>
-                                                    <input type="number" class="form-control" id="cedula" name="cedula" placeholder="Ejm:000000000" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="nombre">Nombres</label>
-                                                    <input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="apellido">Apellidos</label>
-                                                    <input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="telefono">Teléfono movil</label>
-                                                    <input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="email">Correo Personal</label>
-                                                    <input type="email" class="form-control" id="email" name="email" placeholder="Ejm:name@example.com" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="estado_civil">Estado civil</label>
-                                                    <select class="form-control" id="estado_civil" name="estado_civil" required>
-                                                        <option value="1">SOLTERO</option>
-                                                        <option value="2">CASADO SIN SEPARACION DE BIENES</option>
-                                                        <option value="3">CASADO CON SEPARACION DE BIENES</option>
-                                                        <option value="4">DIVORCIADO </option>
-                                                        <option value="5">VIUDO </option>
-                                                        <option value="6">UNION LIBRE </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="datosConyuge">Datos cónyuge</label>
-                                                    <textarea class="form-control" id="datosConyuge" name="datos_conyuge" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="datos">Datos laborales</label>
-                                                    <select class="form-control" id="datos" name="datos_laborales" required>
-                                                        <option value="1">EMPLEADO PÚBLICO</option>
-                                                        <option value="2">EMPLEADO PRIVADO</option>
-                                                        <option value="3">NEGOCIO PROPIO -RUC -RISE</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                                    <input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="ingreso">Ingreso mensuales</label>
-                                                    <input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="gasto">Gasto mensuales</label>
-                                                    <input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="vivienda">Tipo de vivienda</label>
-                                                    <select class="form-control" id="vivienda" name="tipo_vivienda" required>
-                                                        <option value="1">PROPIA</option>
-                                                        <option value="2">RENTADA</option>
-                                                        <option value="3">FAMILIAR</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p>
-                                            <p style="text-align:justify;padding:6px">
-                                                Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con
-                                                pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL
-                                                CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS
-                                                o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren
-                                                necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de
-                                                consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y
-                                                corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de
-                                                verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones,
-                                                manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales,
-                                                historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías
-                                                de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las
-                                                INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder.
-                                                De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,
-                                                entendiendo el perjurio que pueda la falsedad de la misma.
-                                            </p>
-                                            <p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p>
-                                            <div style="text-align:center" class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="acepto" required>
-                                                <label class="form-check-label" for="acepto">
-                                                    Acepcto
-                                                </label>
-                                            </div>
-                                            <br>
-                                            <button type="submit" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button>
-                                        </div>
-                                        <?= form_close(); ?>
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="profile">
-                                        <?= form_open('front/solicitar_financiamiento'); ?>
-                                        <input name="tipo" id="" class="btn btn-primary" type="hidden" value="2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="destinoCredito">Destino crédito</label>
-                                                <textarea class="form-control" id="destinoCredito" rows="3" name="destino_credito" required></textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="monto">Monto</label>
-                                                    <input type="number" class="form-control" id="monto" placeholder="Ejm:1000" name="monto" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="cedula">Cédula</label>
-                                                    <input type="number" class="form-control" id="cedula" placeholder="Ejm:000000000" name="cedula" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="nombre">Nombres</label>
-                                                    <input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="apellido">Apellidos</label>
-                                                    <input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="telefono">Teléfono movil</label>
-                                                    <input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="email">Correo Personal</label>
-                                                    <input type="email" class="form-control" id="email" placeholder="Ejm:name@example.com" name="email" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="estado">Estado civil</label>
-                                                    <select class="form-control" id="estado" name="estado_civil" required>
-                                                        <option value="1">SOLTERO</option>
-                                                        <option value="2">CASADO SIN SEPARACION DE BIENES</option>
-                                                        <option value="3">CASADO CON SEPARACION DE BIENES</option>
-                                                        <option value="4">DIVORCIADO </option>
-                                                        <option value="5">VIUDO </option>
-                                                        <option value="6">UNION LIBRE </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="datosConyuge">Datos cónyuge</label>
-                                                    <textarea class="form-control" id="datosConyuge" rows="3" name="datos_conyuge"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="datos">Datos laborales</label>
-                                                    <select class="form-control" id="datos" name="datos_laborales" required>
-                                                        <option value="1">EMPLEADO PÚBLICO</option>
-                                                        <option value="2">EMPLEADO PRIVADO</option>
-                                                        <option value="3">NEGOCIO PROPIO -RUC -RISE</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                                    <input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="ingreso">Ingreso mensuales</label>
-                                                    <input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="gasto">Gasto mensuales</label>
-                                                    <input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="vivienda">Tipo de vivienda</label>
-                                                    <select class="form-control" id="vivienda" name="tipo_vivienda" required>
-                                                        <option value="1">PROPIA</option>
-                                                        <option value="2">RENTADA</option>
-                                                        <option value="3">FAMILIAR</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p>
-                                            <p style="text-align:justify;padding:6px">
-                                                Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con
-                                                pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL
-                                                CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS
-                                                o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren
-                                                necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de
-                                                consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y
-                                                corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de
-                                                verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones,
-                                                manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales,
-                                                historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías
-                                                de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las
-                                                INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder.
-                                                De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,
-                                                entendiendo el perjurio que pueda la falsedad de la misma.
-                                            </p>
-                                            <p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p>
-                                            <div style="text-align:center" class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="acepto" required>
-                                                <label class="form-check-label" for="acepto">
-                                                    Acepcto
-                                                </label>
-                                            </div>
-                                            <br>
-                                            <button type="submit" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button>
-                                        </div>
-                                        <?= form_close(); ?>
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="messages">
-                                        <?= form_open('front/solicitar_financiamiento'); ?>
-                                        <input name="tipo" id="" class="btn btn-primary" type="hidden" value="3">
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group"> <label for="selectInmobiliario">Inmobiliario</label>
-                                                    <select class="form-control" id="selectInmobiliario" name="tipo_inmobiliario" required>
-                                                        <option value="1">Nueva</option>
-                                                        <option value="2">Usada</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="monto">Monto</label>
-                                                    <input type="number" class="form-control" id="monto" placeholder="Ejm:1000" name="monto" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="entrada">Entrada</label>
-                                                    <input type="number" class="form-control" id="entrada" placeholder="Ejm:1000" name="entrada" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="cedula">Cédula</label>
-                                                    <input type="number" class="form-control" id="cedula" placeholder="Ejm:000000000" name="cedula" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="nombre">Nombres</label>
-                                                    <input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="apellido">Apellidos</label>
-                                                    <input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="telefono">Teléfono movil</label>
-                                                    <input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="email">Correo Personal</label>
-                                                    <input type="email" class="form-control" id="email" placeholder="Ejm:name@example.com" name="email" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="estado">Estado civil</label>
-                                                    <select class="form-control" id="estado" name="estado_civil" required>
-                                                        <option value="1">SOLTERO</option>
-                                                        <option value="2">CASADO SIN SEPARACION DE BIENES</option>
-                                                        <option value="3">CASADO CON SEPARACION DE BIENES</option>
-                                                        <option value="4">DIVORCIADO </option>
-                                                        <option value="5">VIUDO </option>
-                                                        <option value="6">UNION LIBRE </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="datosConyuge">Datos cónyuge</label>
-                                                    <textarea class="form-control" id="datosConyuge" name="datos_conyuge" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="datos">Datos laborales</label>
-                                                    <select class="form-control" id="datos" name="datos_laborales" required>
-                                                        <option value="1">EMPLEADO PÚBLICO</option>
-                                                        <option value="2">EMPLEADO PRIVADO</option>
-                                                        <option value="3">NEGOCIO PROPIO -RUC -RISE</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                                    <input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="ingreso">Ingreso mensuales</label>
-                                                    <input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="gasto">Gasto mensuales</label>
-                                                    <input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> <label for="vivienda">Tipo de vivienda</label>
-                                                    <select class="form-control" id="vivienda" name="tipo_vivienda" required>
-                                                        <option value="1">PROPIA</option>
-                                                        <option value="2">RENTADA</option>
-                                                        <option value="3">FAMILIAR</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p>
-                                            <p style="text-align:justify;padding:6px">
-                                                Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con
-                                                pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL
-                                                CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS
-                                                o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren
-                                                necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de
-                                                consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y
-                                                corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de
-                                                verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones,
-                                                manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales,
-                                                historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías
-                                                de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las
-                                                INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder.
-                                                De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,
-                                                entendiendo el perjurio que pueda la falsedad de la misma.
-                                            </p>
-                                            <p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p>
-                                            <div style="text-align:center" class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="acepto" required>
-                                                <label class="form-check-label" for="acepto">
-                                                    Acepcto
-                                                </label>
-                                            </div>
-                                            <br>
-                                            <button type="submit" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button>
-                                        </div>
-                                        <?= form_close(); ?>
                                     </div>
-
                                 </div>
+
                             </div>
                         </div>
 
@@ -539,15 +139,167 @@
     </div>
 </div>
 <!-- =-=-=-=-=-=-= Forget Password Modal =-=-=-=-=-=-= -->
+<!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+<script src="<?= base_url('admin_lte/bootstrap/js/alert_notificacion.js'); ?>"></script>
 <script>
     function terminosCondiciones() {
         $('#modalTerminosCondiciones').modal('show');
     }
+    $(function() {
+
+        automotriz();
+        let validoCredito = '<?= $mensaje ?>';
+        if (validoCredito != "solicitud") {
+            Swal.fire({
+                icon: 'success',
+                title: 'La solicitud de crédito fue creada correctamente',
+                showConfirmButton: true,
+            });
+        }
+    })
+
+    function automotriz() {
+
+        let bodyForm = '<form action="<?= site_url('front/solicitar_financiamiento') ?>" method="post" id="formSolicitar"><input name="tipo" id="" class="btn btn-primary" type="hidden" value="1">';
+        bodyForm += '<div class="row">'
+        bodyForm += '<div class="col-md-12"> <div class="form-group"> <label for="selectAuto">Auto</label><select class="form-control" id="selectAuto" name="tipo_auto" required><option value="1">Nuevo</option> <option value="2">Usado</option></select></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="monto">Monto</label><input type="number" class="form-control" id="monto" name="monto" placeholder="Ejm:1000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="entrada">Entrada</label><input type="number" class="form-control" id="entrada" name="entrada" placeholder="Ejm:1000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="cedula">Cédula</label><input type="number" class="form-control" id="cedula" name="cedula" placeholder="Ejm:000000000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="nombre">Nombres</label><input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="apellido">Apellidos</label><input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="telefono">Teléfono movil</label><input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="email">Correo Personal</label><input type="email" class="form-control" id="email" name="email" placeholder="Ejm:name@example.com" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="estado_civil">Estado civil</label><select class="form-control" id="estado_civil" name="estado_civil" required><option value="1">SOLTERO</option><option value="2">CASADO SIN SEPARACION DE BIENES</option><option value="3">CASADO CON SEPARACION DE BIENES</option><option value="4">DIVORCIADO </option><option value="5">VIUDO </option><option value="6">UNION LIBRE </option></select></div></div>';
+        bodyForm += '<div class="col-md-12"><div class="form-group"><label for="datosConyuge">Datos cónyuge</label><textarea class="form-control" id="datosConyuge" name="datos_conyuge" rows="3"></textarea></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="datos">Datos laborales</label><select class="form-control" id="datos" name="datos_laborales" required><option value="1">EMPLEADO PÚBLICO</option><option value="2">EMPLEADO PRIVADO</option><option value="3">NEGOCIO PROPIO -RUC -RISE</option></select></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label><input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="ingreso">Ingreso mensuales</label><input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="gasto">Gasto mensuales</label><input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="vivienda">Tipo de vivienda</label> <select class="form-control" id="vivienda" name="tipo_vivienda" required><option value="1">PROPIA</option><option value="2">RENTADA</option><option value="3">FAMILIAR</option></select></div></div>';
+        bodyForm += '</div>'
+        bodyForm += '<div class="row"><p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p><p style="text-align:justify;padding:6px">Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones, manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales, historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder. De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,entendiendo el perjurio que pueda la falsedad de la misma.</p><p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p><div style="text-align:center" class="form-check"><input class="form-check-input" type="checkbox" value="" id="acepto" required><label class="form-check-label" for="acepto">Acepcto </label></div><br><button id="btnSolicitar" type="submit" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button></div>';
+        bodyForm += '</form>';
+        $('#home').empty();
+        $('#home').append(bodyForm);
+    }
+    $("#home").bind("click", function() {
+        $("#formSolicitar").on('submit', function(evt) {
+            $("#btnSolicitar").prop('disabled', true);
+            swal.fire({
+                title: '',
+                html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Creando solicitud de Crédito...</h4></div>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                timer: 6000
+            });
+        })
+    })
+
+    function consumo() {
+
+        let bodyForm = '<form action="<?= site_url('front/solicitar_financiamiento') ?>" method="post" id="formSolicitar2"><input name="tipo" id="" class="btn btn-primary" type="hidden" value="2">';
+        bodyForm += '<div class="row">'
+        bodyForm += '  <div class="col-md-12"><label for="destinoCredito">Destino crédito</label><textarea class="form-control" id="destinoCredito" rows="3" name="destino_credito" required></textarea></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="monto">Monto</label><input type="number" class="form-control" id="monto" name="monto" placeholder="Ejm:1000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="cedula">Cédula</label><input type="number" class="form-control" id="cedula" name="cedula" placeholder="Ejm:000000000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="nombre">Nombres</label><input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="apellido">Apellidos</label><input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="telefono">Teléfono movil</label><input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="email">Correo Personal</label><input type="email" class="form-control" id="email" name="email" placeholder="Ejm:name@example.com" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="estado_civil">Estado civil</label><select class="form-control" id="estado_civil" name="estado_civil" required><option value="1">SOLTERO</option><option value="2">CASADO SIN SEPARACION DE BIENES</option><option value="3">CASADO CON SEPARACION DE BIENES</option><option value="4">DIVORCIADO </option><option value="5">VIUDO </option><option value="6">UNION LIBRE </option></select></div></div>';
+        bodyForm += '<div class="col-md-12"><div class="form-group"><label for="datosConyuge">Datos cónyuge</label><textarea class="form-control" id="datosConyuge" name="datos_conyuge" rows="3"></textarea></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="datos">Datos laborales</label><select class="form-control" id="datos" name="datos_laborales" required><option value="1">EMPLEADO PÚBLICO</option><option value="2">EMPLEADO PRIVADO</option><option value="3">NEGOCIO PROPIO -RUC -RISE</option></select></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label><input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="ingreso">Ingreso mensuales</label><input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="gasto">Gasto mensuales</label><input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="vivienda">Tipo de vivienda</label> <select class="form-control" id="vivienda" name="tipo_vivienda" required><option value="1">PROPIA</option><option value="2">RENTADA</option><option value="3">FAMILIAR</option></select></div></div>';
+        bodyForm += '</div>'
+        bodyForm += '<div class="row"><p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p><p style="text-align:justify;padding:6px">Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones, manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales, historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder. De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,entendiendo el perjurio que pueda la falsedad de la misma.</p><p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p><div style="text-align:center" class="form-check"><input class="form-check-input" type="checkbox" value="" id="acepto" required><label class="form-check-label" for="acepto">Acepcto </label></div><br><button  id="btnSolicitar" type="submit" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button></div>';
+        bodyForm += '</form>';
+        $('#profile').empty();
+        $('#profile').append(bodyForm);
+    }
+    $("#profile").bind("click", function() {
+        $("#formSolicitar2").on('submit', function(evt) {
+            $("#btnSolicitar").prop('disabled', true);
+            swal.fire({
+                title: '',
+                html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Creando solicitud de Crédito...</h4></div>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                timer: 6000
+            });
+        })
+    })
+
+    function inmobiliario() {
+
+        let bodyForm = '<form action="<?= site_url('front/solicitar_financiamiento') ?>" method="post" id="formSolicitar3"><input name="tipo" id="" class="btn btn-primary" type="hidden" value="3">';
+        bodyForm += '<div class="row">'
+        bodyForm += '<div class="col-md-12"><div class="form-group"> <label for="selectInmobiliario">Inmobiliario</label><select class="form-control" id="selectInmobiliario" name="tipo_inmobiliario" required><option value="1">Nueva</option><option value="2">Usada</option></select></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="monto">Monto</label><input type="number" class="form-control" id="monto" name="monto" placeholder="Ejm:1000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="entrada">Entrada</label><input type="number" class="form-control" id="entrada" name="entrada" placeholder="Ejm:1000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="cedula">Cédula</label><input type="number" class="form-control" id="cedula" name="cedula" placeholder="Ejm:000000000" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="nombre">Nombres</label><input type="text" class="form-control" id="nombre" placeholder="" name="nombres" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="apellido">Apellidos</label><input type="text" class="form-control" id="apellido" placeholder="" name="apellidos" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="telefono">Teléfono movil</label><input type="tel" class="form-control" id="telefono" placeholder="" name="telefono" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="email">Correo Personal</label><input type="email" class="form-control" id="email" name="email" placeholder="Ejm:name@example.com" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="estado_civil">Estado civil</label><select class="form-control" id="estado_civil" name="estado_civil" required><option value="1">SOLTERO</option><option value="2">CASADO SIN SEPARACION DE BIENES</option><option value="3">CASADO CON SEPARACION DE BIENES</option><option value="4">DIVORCIADO </option><option value="5">VIUDO </option><option value="6">UNION LIBRE </option></select></div></div>';
+        bodyForm += '<div class="col-md-12"><div class="form-group"><label for="datosConyuge">Datos cónyuge</label><textarea class="form-control" id="datosConyuge" name="datos_conyuge" rows="3"></textarea></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="datos">Datos laborales</label><select class="form-control" id="datos" name="datos_laborales" required><option value="1">EMPLEADO PÚBLICO</option><option value="2">EMPLEADO PRIVADO</option><option value="3">NEGOCIO PROPIO -RUC -RISE</option></select></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="fechaNacimiento">Fecha de nacimiento</label><input style="padding:9px" type="date" class="form-control" id="fechaNacimiento" name="fecha_nacimiento" placeholder="" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="ingreso">Ingreso mensuales</label><input type="number" class="form-control" id="ingreso" placeholder="Ejm:1000" name="ingreso" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"><label for="gasto">Gasto mensuales</label><input type="number" class="form-control" id="gasto" placeholder="Ejm:1000" name="gasto" required></div></div>';
+        bodyForm += '<div class="col-md-6"><div class="form-group"> <label for="vivienda">Tipo de vivienda</label> <select class="form-control" id="vivienda" name="tipo_vivienda" required><option value="1">PROPIA</option><option value="2">RENTADA</option><option value="3">FAMILIAR</option></select></div></div>';
+        bodyForm += '</div>'
+        bodyForm += '<div class="row"><p style="text-align:center"><b>Autorización para revisión de Buro de Crédito</b></p><p style="text-align:justify;padding:6px">Al llenar la solicitud de financiamiento constante del presente formulario libre y voluntariamente, con pleno conocimiento de causa y aceptando las consecuencias de ello, el (los) referido (s) como EL CLIENTE, expresa e irrevocablemente y declara(n) que conoce que las las IINSTITUCIONES FINANCIERAS o compañías de generación de cartera, confirmarán, recabarán y obtendrán, según lo consideren necesario, información sobre EL CLIENTE de fuentes lícitas tales como agencias informales de consumidores y de referencias de crédito, burós de información crediticia, empleadores, compañías y corredores de seguros y otras agencias o personas naturales o jurídicas, públicas o privadas, con el fin de verificar su capacidad de pago, comportamiento y crédito comercial, hábitos de pago de obligaciones, manejo de cuentas bancarias, cumplimiento de obligaciones financieras, crediticias o comerciales, historial de empleos y demás información que permita a las INSTITUCIONES FINANCIERAS o compañías de generación de cartera procesar debidamente el presente Formulario, y por lo tanto autoriza las INSTITUCIONES FINANCIERAS o compañías de generación de cartera para así proceder. De igual manera expreso que certifico que toda la información proporcionada es correcta y veraz,entendiendo el perjurio que pueda la falsedad de la misma.</p><p onclick="terminosCondiciones()" style="text-align:center;cursor:pointer"><b>Términos y condiciones</b></p><div style="text-align:center" class="form-check"><input class="form-check-input" type="checkbox" value="" id="acepto" required><label class="form-check-label" for="acepto">Acepcto </label></div><br><button type="submit"  id="btnSolicitar" class="btn btn-theme btn-lg btn-block">Solicitar crédito</button></div>';
+        bodyForm += '</form>';
+        $('#messages').empty();
+        $('#messages').append(bodyForm);
+    }
+    $("#messages").bind("click", function() {
+        $("#formSolicitar3").on('submit', function(evt) {
+            $("#btnSolicitar").prop('disabled', true);
+            swal.fire({
+                title: '',
+                html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Creando solicitud de Crédito...</h4></div>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                timer: 6000
+            });
+        })
+    })
 </script>
 <!-- =-=-=-=-=-=-= Share Modal =-=-=-=-=-=-= -->
 <style>
     /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
+    .sweet-alert-trigger {
+        padding: 5px 10px;
+        border: 0;
+        border-radius: 3px;
+        background: #0F74F4;
+        color: white;
+    }
+
+    .save_loading {
+        width: 140px;
+        height: 140px;
+        margin: 0 auto;
+        animation-duration: 0.5s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-name: ro;
+        transform-origin: 50% 50%;
+    }
+
+    @keyframes ro {
+        100% {
+            transform: rotate(-360deg) translate(0, 0);
+        }
+    }
 
     /* Carousel base class */
     .carousel {
