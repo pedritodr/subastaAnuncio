@@ -303,11 +303,12 @@ class Rest_anuncio extends REST_Controller
             $fecha_fin = strtotime('+30 day', strtotime($fecha));
             $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+            define('UPLOAD_DIR', './uploads/anuncio/');
             $cliente = $this->user->get_by_id($user_id);
             $fotos = [];
             foreach ($data as $item) {
                 $img =  $item->imagen;
-                $img = str_replace('data:image/png;base64,', '', $img);
+                $img = str_replace('data:image/jpeg;base64,', '', $img);
 
                 $img = str_replace(' ', '+', $img);
                 $data = base64_decode($img);
