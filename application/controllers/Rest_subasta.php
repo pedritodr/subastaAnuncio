@@ -623,7 +623,7 @@ class Rest_subasta extends REST_Controller
             $this->response(['status' => 500]);
         }
     }
-    public function generar_pedido_inversa()
+    public function generar_pedido_inversa_post()
     {
         $this->load->model('User_model', 'user');
         $subasta_id = $this->input->post('subasta_id');
