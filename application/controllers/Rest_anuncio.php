@@ -282,7 +282,6 @@ class Rest_anuncio extends REST_Controller
         //$auth = $this->user->is_valid_auth($user_id, $security_token);
         $auth = true;
         if ($auth) {
-
             if ($city != null) {
                 $city = strtoupper($city);
                 $ciudad_object = $this->pais->get_city($city);
@@ -304,11 +303,11 @@ class Rest_anuncio extends REST_Controller
             $fecha_fin = strtotime('+30 day', strtotime($fecha));
             $fecha_fin = date('Y-m-d', $fecha_fin);
             $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-            define('UPLOAD_DIR', './uploads/anuncio/');
+            $cliente = $this->user->get_by_id($user_id);
             $fotos = [];
             foreach ($data as $item) {
                 $img =  $item->imagen;
-                $img = str_replace('data:image/jpeg;base64,', '', $img);
+                $img = str_replace('data:image/png;base64,', '', $img);
 
                 $img = str_replace(' ', '+', $img);
                 $data = base64_decode($img);
@@ -319,9 +318,7 @@ class Rest_anuncio extends REST_Controller
                 $success = file_put_contents($file, $data);
                 array_push($fotos, $file);
             }
-
-
-            $datos = [
+            $data = [
                 'titulo' => $titulo,
                 'descripcion' => $descripcion,
                 'precio' => $precio,
@@ -334,36 +331,78 @@ class Rest_anuncio extends REST_Controller
                 'ciudad_id' => $ciudad_id,
                 'user_id' => $user_id,
                 'direccion' => $direccion,
-                'fecha' =>  $fecha,
+                'fecha' =>  date("Y-m-d"),
                 'destacado' => 0,
                 'fecha_vencimiento' => $fecha_fin
             ];
             if ($membresia) {
-
-                $object =  $this->anuncio->create($datos);
-                if ($object) {
+                $id =  $this->anuncio->create($data);
+                if ($id) {
                     if ((int) $membresia->anuncios_publi > 0) {
 
                         $qty_anuncios = (int) $membresia->anuncios_publi - 1;
                         $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
-                        $this->anuncio->update($object, ['destacado' => 1]);
+                        $this->anuncio->update($id, ['destacado' => 1]);
                     }
+                    if (count($fotos) > 1) {
+                        for ($i = 1; $i < count($fotos); $i++) {
+                            $img =  $fotos[$i];
+                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
+                        }
+                    }
+                    $obj_anuncio = $this->anuncio->get_by_id($id);
+                    $this->load->model("Correo_model", "correo");
+                    $asunto = "Anuncio creado";
+                    $motivo = 'Anuncio creado Subasta anuncios';
+                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                    $mensaje .= "Saludos,<br>";
+                    $mensaje .= "El equipo de SUBASTANUNCIOS";
+                    $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+                    $this->response(['status' => 200, 'object' => $obj_anuncio]);
+                } else {
+                    $this->response(['status' => 404]);
                 }
             } else {
-
-                $object = $this->anuncio->create($datos);
-            }
-
-            if ($object) {
-                if (count($fotos) > 1) {
-                    for ($i = 1; $i < count($fotos); $i++) {
-                        $img =  $fotos[$i];
-                        $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $object]);
+                $id = $this->anuncio->create($data);
+                if ($id) {
+                    if (count($fotos) > 1) {
+                        for ($i = 1; $i < count($fotos); $i++) {
+                            $img =  $fotos[$i];
+                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
+                        }
                     }
+                    $obj_anuncio = $this->anuncio->get_by_id($id);
+                    $this->load->model("Correo_model", "correo");
+                    $asunto = "Anuncio creado";
+                    $motivo = 'Anuncio creado Subasta anuncios';
+                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+                    $mensaje .= "Saludos,<br>";
+                    $mensaje .= "El equipo de SUBASTANUNCIOS";
+                    $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+                    $this->response(['status' => 200, 'object' => $obj_anuncio]);
+                } else {
+                    $this->response(['status' => 404]);
                 }
-                $this->response(['status' => 200, 'object' => $object]);
-            } else {
-                $this->response(['status' => 404]);
             }
         } else {
             $this->response(['status' => 500]);
