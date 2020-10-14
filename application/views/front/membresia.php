@@ -44,7 +44,7 @@
                                           <span class="time"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
                                           <span class="time"><?= translate('descripcion_lang') ?></span>
                                           <div style="height:260px !important" class="text-left">
-                                              <?= $item->descripcion; ?>
+                                              <p><?= $item->descripcion; ?></p>
                                           </div>
                                           <?php if ($this->session->userdata('user_id')) { ?>
                                               <a style="cursor:pointer;" onclick="seleccionar_membresia('<?= base64_encode(json_encode($item)); ?>');" class="btn btn-theme"><?= translate('select_plan_lang') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
