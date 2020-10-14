@@ -37,14 +37,12 @@
                               <?php foreach ($all_membresia as $item) { ?>
                                   <div class="col-sm-6 col-lg-4 col-md-4">
                                       <div class="block">
-
                                           <h3><?= $item->nombre ?></h3>
-
                                           <span class="price">$<?= number_format($item->precio, 2); ?></span>
                                           <span class="time"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
                                           <span class="time"><?= translate('descripcion_lang') ?></span>
                                           <div style="height:260px !important" class="text-left">
-                                              <p><?= $item->descripcion; ?></p>
+                                              <?= $item->descripcion; ?>
                                           </div>
                                           <?php if ($this->session->userdata('user_id')) { ?>
                                               <a style="cursor:pointer;" onclick="seleccionar_membresia('<?= base64_encode(json_encode($item)); ?>');" class="btn btn-theme"><?= translate('select_plan_lang') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
