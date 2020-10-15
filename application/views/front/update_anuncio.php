@@ -184,7 +184,7 @@
                               </div>
                            </div>
                            <br><br>
-                        <input type="hidden" id="anuncio_id" name="anuncio_id" value="<?= $anuncio_object->anuncio_id ?>" /> 
+                           <input type="hidden" id="anuncio_id" name="anuncio_id" value="<?= $anuncio_object->anuncio_id ?>" />
                            <input type="hidden" id="lat" name="lat" value="<?= $anuncio_object->lat ?>" />
                            <input type="hidden" id="lng" name="lng" value="<?= $anuncio_object->lng ?>" />
                            <input type="hidden" id="city_main" name="city_main" value="<?= $ciudad->name_ciudad ?>" />
@@ -260,7 +260,7 @@
             var fotos_cargadas = '<?= json_encode($fotos_object) ?>';
             var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
             var lat = '<?php echo $anuncio_object->lat; ?>';
-               var lng = '<?php echo $anuncio_object->lng; ?>';
+            var lng = '<?php echo $anuncio_object->lng; ?>';
             $(function() {
                array_imagenes.push({
                   "id": name_foto,
@@ -292,7 +292,7 @@
                   }
                }
                cargar_city(city = "", lat, lng);
-               getReverseGeocodingData(lat,lng);
+               getReverseGeocodingData(lat, lng);
             });
             window.addEventListener('DOMContentLoaded', function() {
                //    var avatar = document.getElementById('avatar');
@@ -836,47 +836,48 @@
             function llamar_add_imagen_4() {
                $('#add_image_4').click();
             }
+
             function getReverseGeocodingData(lat, lng) {
-                        var latlng = new google.maps.LatLng(lat, lng);
-                        // This is making the Geocode request
-                        var geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({
-                           'latLng': latlng
-                        }, function(results, status) {
-                           if (status !== google.maps.GeocoderStatus.OK) {
-                              alert(status);
-                           }
-                           // This is checking to see if the Geoeode Status is OK before proceeding
-                           if (status == google.maps.GeocoderStatus.OK) {
+               var latlng = new google.maps.LatLng(lat, lng);
+               // This is making the Geocode request
+               var geocoder = new google.maps.Geocoder();
+               geocoder.geocode({
+                  'latLng': latlng
+               }, function(results, status) {
+                  if (status !== google.maps.GeocoderStatus.OK) {
+                     alert(status);
+                  }
+                  // This is checking to see if the Geoeode Status is OK before proceeding
+                  if (status == google.maps.GeocoderStatus.OK) {
 
-                              var address = (results[0].formatted_address);
-                              var arrayDeCadenas = address.split(",");
-                              $('#pac-input').val(address);
-                              if (arrayDeCadenas) {
-                                 if (arrayDeCadenas.length > 0) {
-                                    var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
-                                   
-                                    $('#pais').val(pais);
+                     var address = (results[0].formatted_address);
+                     var arrayDeCadenas = address.split(",");
+                     $('#pac-input').val(address);
+                     if (arrayDeCadenas) {
+                        if (arrayDeCadenas.length > 0) {
+                           var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
 
-                                 }
-                              }
+                           $('#pais').val(pais);
 
-                              var nombre_pais = 'Ecuador';
-                              var seleccion_pais = $('#pais').val().trim();
-
-                              if (nombre_pais != seleccion_pais) {
-                                 $('#pac-input').val("");
-                                 $('#pais').val("");
-                                 $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                                 $('#modal_error_ciudad').modal('show');
-                                 cargar_city(city = "", lat, lng);
-                              }
-
-                           }
-                        });
+                        }
                      }
+
+                     var nombre_pais = 'Ecuador';
+                     var seleccion_pais = $('#pais').val().trim();
+
+                     if (nombre_pais != seleccion_pais) {
+                        $('#pac-input').val("");
+                        $('#pais').val("");
+                        $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                        $('#modal_error_ciudad').modal('show');
+                        cargar_city(city = "", lat, lng);
+                     }
+
+                  }
+               });
+            }
             $("#form_update_anuncio").on('submit', function(evt) {
-             
+
                evt.preventDefault();
                $('#array_fotos').val(JSON.stringify(array_imagenes));
                var seleccion_pais = $('#pais').val().trim();
@@ -914,7 +915,7 @@
                         showConfirmButton: true
                      });
                   }
-               }else{
+               } else {
                   Swal.fire({
                      icon: 'info',
                      title: 'No hay imagenes cargadas',

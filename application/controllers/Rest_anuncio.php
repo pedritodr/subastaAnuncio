@@ -439,7 +439,6 @@ class Rest_anuncio extends REST_Controller
                         $data_ciudad = [
                             'name_ciudad' => $city,
                             'pais_id' => 4,
-
                         ];
                         $ciudad_id = $this->pais->create_cuidad($data_ciudad);
                     } else {
@@ -452,33 +451,37 @@ class Rest_anuncio extends REST_Controller
                 $fotos = [];
                 $salva = [];
                 $main_photo = "editar";
-                for ($i = 0; $i < count($data); $i++) {
-                    if ($i == 0) {
-                        if ($data[$i]->foto_anuncio_id == null) {
-                            $img =  $data[$i]->imagen;
-                            $img = str_replace('data:image/jpeg;base64,', '', $img);
-                            $img = str_replace(' ', '+', $img);
-                            $data = base64_decode($img);
-                            $file = UPLOAD_DIR . uniqid() . '.jpg';
-                            $success = file_put_contents($file, $data);
-                            $main_photo = $file;
-                        }
-                    } else {
-                        if ($data[$i]->foto_anuncio_id == null) {
-                            $img =  $data[$i]->imagen;
-                            $img = str_replace('data:image/jpeg;base64,', '', $img);
-                            $img = str_replace(' ', '+', $img);
-                            $data = base64_decode($img);
-                            $file = UPLOAD_DIR . uniqid() . '.jpg';
-                            $success = file_put_contents($file, $data);
-                            array_push($fotos, $file);
+                if ($data) {
+                    foreach ($data as $item) {
+                        if ($item->foto_anuncio_id == null) {
+                            if ($item->name == "image_1") {
+                                $img =  $item->imagen;
+                                $img = str_replace('data:image/jpeg;base64,', '', $img);
+                                $img = str_replace(' ', '+', $img);
+                                $data = base64_decode($img);
+                                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                                $success = file_put_contents($file, $data);
+                                $main_photo = $file;
+                            } else {
+                                $img =  $item->imagen;
+                                $img = str_replace('data:image/jpeg;base64,', '', $img);
+                                $img = str_replace(' ', '+', $img);
+                                $data = base64_decode($img);
+                                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                                $success = file_put_contents($file, $data);
+                                array_push($fotos, $file);
+                            }
                         } else {
-                            array_push($salva, $data[$i]);
+                            if ($item->name != "image_1") {
+                                array_push($salva, $item);
+                            }
                         }
                     }
                 }
                 if ($main_photo != "editar") {
-                    unlink($object->photo);
+                    if (file_exists($object->photo)) {
+                        unlink($object->photo);
+                    }
 
                     $datos = [
                         'titulo' => $titulo,
@@ -507,21 +510,28 @@ class Rest_anuncio extends REST_Controller
                 }
 
                 $id = $this->anuncio->update($anuncio_id, $datos);
-
                 $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
+
                 foreach ($foto_object as $foto) {
                     $encontro = false;
-                    foreach ($salva as $item) {
-                        if ($item->foto_anuncio_id == $foto->photo_anuncio_id) {
-                            $encontro = true;
+                    if (count($salva) > 0) {
+                        foreach ($salva as $item) {
+                            if ($item->foto_anuncio_id == $foto->photo_anuncio_id) {
+                                $encontro = true;
+                            }
                         }
                     }
+
                     if (!$encontro) {
-                        unlink($foto->photo_anuncio);
+                        if (file_exists($foto->photo_anuncio)) {
+                            unlink($foto->photo_anuncio);
+                        }
                         $this->photo_anuncio->delete($foto->photo_anuncio_id);
                     }
                 }
+
                 if (count($fotos) > 0) {
+
                     for ($i = 0; $i < count($fotos); $i++) {
                         $img =  $fotos[$i];
                         $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $anuncio_id]);
