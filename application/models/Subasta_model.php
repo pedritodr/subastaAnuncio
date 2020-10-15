@@ -251,7 +251,14 @@ class Subasta_model extends CI_Model
 
         return $afec;
     }
+    function delete_subasta_user2($id)
+    {
+        $this->db->where('subasta_user_id', $id);
+        $this->db->delete('subasta_user');
+        $afec = $this->db->affected_rows();
 
+        return $afec;
+    }
 
     function delete_foto($id)
     {

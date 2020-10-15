@@ -1,3 +1,4 @@
+<script src="<?= base_url('admin_lte/bootstrap/js/alert_notificacion.js'); ?>"></script>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -88,7 +89,8 @@
                                                     Acciones <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a href="<?= site_url('subasta/update_inversa/' . $item->intervalo_subasta_id . '/' . $item->subasta_id . '/' . $item->subasta_user_id); ?>"><i class="fa fa-check"></i> <?= "Activar" ?></a></li>
+                                                    <li><a style="cursor:pointer" onclick="confirmarInversa('<?= $item->intervalo_subasta_id ?>','<?= $item->subasta_id ?>','<?= $item->subasta_user_id ?>')"><i class="fa fa-check"></i> <?= "Activar" ?></a></li>
+                                                    <li><a style="cursor:pointer" onclick="cancelarInversa('<?= $item->subasta_user_id ?>')"><i class="fa fa-trash-o"></i> <?= "Eliminar" ?></a></li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -117,10 +119,40 @@
 <script>
     $(function() {
 
-        $('#example1').DataTable({
-            "order": [
-                [5, "desc"]
-            ]
-        });
+        $('#example1').DataTable({});
     });
+    //'subasta/delete_inversa/'
+    function confirmarInversa(intervalo, subasta_id, subasta_user_id) {
+        Swal.fire({
+            title: '¿Quieres guardar los cambios?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Guardar`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire('Guardado', '', 'success')
+                window.location.href = '<?= site_url('subasta/update_inversa/') ?>' + intervalo + '/' + subasta_id + '/' + subasta_user_id;
+            } else if (result.isDenied) {
+                Swal.fire('Cancelado', '', 'info')
+            }
+        })
+    }
+
+    function cancelarInversa(params) {
+        Swal.fire({
+            title: '¿Quieres eliminar esta solicitud?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Eliminado', '', 'success')
+                window.location.href = '<?= site_url('subasta/delete_inversa/') ?>' + params;
+            } else if (result.isDismissed) {
+                Swal.fire('Cancelado', '', 'info')
+            }
+        })
+    }
 </script>

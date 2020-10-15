@@ -700,4 +700,19 @@ class Subasta  extends CI_Controller
             show_404();
         }
     }
+    public function delete_inversa($id)
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+        $subasta_object = $this->subasta->get_by_subasta_user_id($id);
+        if ($subasta_object) { //eliminado foto
+            $this->subasta->delete_subasta_user2($id);
+            $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
+            redirect("subasta/subastas_invesas");
+        } else {
+            show_404();
+        }
+    }
 }
