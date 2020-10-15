@@ -450,11 +450,13 @@ class Rest_anuncio extends REST_Controller
                 define('UPLOAD_DIR', './uploads/anuncio/');
                 $fotos = [];
                 $salva = [];
-                $main_photo = "editar";
+                $encontro_photo = false;
+                $main_photo = null;
+                $count = 0;
                 if ($data) {
                     foreach ($data as $item) {
-                        if ($item->foto_anuncio_id == null) {
-                            if ($item->name == "image_1") {
+                        if ($count == 0 && $item->name != "image_1") {
+                            if ($item->foto_anuncio_id == null) {
                                 $img =  $item->imagen;
                                 $img = str_replace('data:image/jpeg;base64,', '', $img);
                                 $img = str_replace(' ', '+', $img);
@@ -463,6 +465,10 @@ class Rest_anuncio extends REST_Controller
                                 $success = file_put_contents($file, $data);
                                 $main_photo = $file;
                             } else {
+                                $main_photo = $item->imagen;
+                            }
+                        } else {
+                            if ($item->foto_anuncio_id == null) {
                                 $img =  $item->imagen;
                                 $img = str_replace('data:image/jpeg;base64,', '', $img);
                                 $img = str_replace(' ', '+', $img);
@@ -470,15 +476,18 @@ class Rest_anuncio extends REST_Controller
                                 $file = UPLOAD_DIR . uniqid() . '.jpg';
                                 $success = file_put_contents($file, $data);
                                 array_push($fotos, $file);
-                            }
-                        } else {
-                            if ($item->name != "image_1") {
-                                array_push($salva, $item);
+                            } else {
+                                if ($item->name != "image_1") {
+                                    array_push($salva, $item);
+                                } else {
+                                    $encontro_photo = true;
+                                }
                             }
                         }
+                        $count++;
                     }
                 }
-                if ($main_photo != "editar") {
+                if (!$encontro_photo) {
                     if (file_exists($object->photo)) {
                         unlink($object->photo);
                     }
