@@ -466,6 +466,7 @@ class Rest_anuncio extends REST_Controller
                                 $main_photo = $file;
                             } else {
                                 $main_photo = $item->imagen;
+                                $this->photo_anuncio->delete($item->photo_anuncio_id);
                             }
                         } else {
                             if ($item->foto_anuncio_id == null) {
