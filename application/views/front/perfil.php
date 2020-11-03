@@ -130,7 +130,7 @@
                                   <!-- Sorting Filters End-->
                                   <div class="clearfix"></div>
                                   <!-- Pagination -->
-
+                                  <br>
                                   <!-- mis anuncios -->
                                   <div class="posts-masonry">
                                       <!-- primer anuncio -->
