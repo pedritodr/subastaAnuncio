@@ -208,7 +208,7 @@
                   <p class="text-center">
                      <?= translate('confirmar_destacar_ads_lang') ?>
                   </p>
-                  <h3 class="text-center"><strong>Costo:</strong> $3.99</h3>
+                  <h3 class="text-center"><strong>Costo:</strong> $7.00</h3>
                   <input type="hidden" id='anuncio_id_destacar'>
                   <input type="hidden" id='anuncio_detalle_destacar'>
                   <div id="dropzone" class="dropzone"></div>
@@ -1239,7 +1239,7 @@
       $(".btn-theme").css("color", "#fff");
 
       var name_destacado = $('#anuncio_detalle_destacar').val();
-      var valor_destacado = 3.99;
+      var valor_destacado = 7;
       var anuncio_destacado_id = $('#anuncio_id_destacar').val();
       if ($('#condiciones_destacar').prop('checked') == true) {
          $('#modal_destacar').modal("hide");
