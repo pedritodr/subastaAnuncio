@@ -10,7 +10,13 @@
       <![endif]-->
    <meta name="description" content="">
    <meta name="author" content="ScriptsBundle">
-   <title>Subastas | Anuncios</title>
+   <title><?= isset($data_seo) ? $data_seo[1] : "Subastas | Anuncios"; ?></title>
+   <?php
+   if (isset($data_seo))
+      meta_tags($e = $data_seo[0], $title = $data_seo[1], $desc = $data_seo[2], $imgurl = $data_seo[3], $url = $data_seo[4]);
+   else
+      meta_tags();
+   ?>
    <!-- =-=-=-=-=-=-= Favicons Icon =-=-=-=-=-=-= -->
    <!--    <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" /> -->
    <!-- =-=-=-=-=-=-= Mobile Specific =-=-=-=-=-=-= -->

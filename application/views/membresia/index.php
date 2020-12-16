@@ -35,6 +35,7 @@
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
+                                    <th>Duración de la membresia</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </thead>
@@ -53,6 +54,7 @@
                                         </td>
                                         <td><label class="label label-info"><?= $item->descuento; ?></label></td>
                                         <td><label class="label label-primary"><?= $item->cant_anuncio; ?></label></td>
+                                        <td><label class="label label-primary"><?= $item->duracion; ?></label></td>
                                         <td>
                                             <!-- Single button -->
                                             <div class="btn-group">
@@ -67,9 +69,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
-
-
                                 <?php } ?>
 
                             </tbody>
@@ -81,6 +80,7 @@
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
+                                    <th>Duración de la membresia</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </tfoot>

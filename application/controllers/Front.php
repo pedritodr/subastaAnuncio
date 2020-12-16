@@ -99,7 +99,15 @@ class Front extends CI_Controller
 
         /*  var_dump($all_categorias);
         die();*/
-        $this->load_view_front('front/index', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Subastas | Anuncios', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/index', $data, 0, $data_header);
     }
 
     public function llamar_login()
@@ -116,28 +124,60 @@ class Front extends CI_Controller
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-        $this->load_view_front('front/faq', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Faqs', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/faq', $data, 0, $data_header);
     }
     public function condiciones()
     {
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-        $this->load_view_front('front/condiciones', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Condiciones de uso', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/condiciones', $data, 0, $data_header);
     }
     public function politicas()
     {
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-        $this->load_view_front('front/politicas', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Políticas', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/politicas', $data, 0, $data_header);
     }
     public function aviso_legal()
     {
         $this->load->model('Banner_model', 'banner');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
         $data['all_banners'] = $all_banners;
-        $this->load_view_front('front/aviso_legal', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Aviso Legal', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/aviso_legal', $data, 0, $data_header);
     }
     public function registrar()
     {
@@ -513,7 +553,14 @@ class Front extends CI_Controller
             }
         }
         $data['destacados'] = $destacados;
-        $this->load_view_front('front/detalle_anuncio', $data);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $data_header = array($e, $title = $all_anuncios->titulo, $desc = substr(strip_tags($all_anuncios->descripcion), 0, 250), $imgurl = base_url($all_anuncios->anuncio_photo), $url =  base_url(strtolower('anuncio/' . strtolower(seo_url($all_anuncios->titulo))) . $all_anuncios->anuncio_id));
+        $this->load_view_front('front/detalle_anuncio', $data, 0, $data_header);
     }
 
     public function detalle_subasta()
@@ -925,7 +972,7 @@ class Front extends CI_Controller
         }
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
-        $fecha_fin = strtotime('+30 day', strtotime($fecha));
+        $fecha_fin = strtotime('+150 day', strtotime($fecha));
         $fecha_fin = date('Y-m-d', $fecha_fin);
         //establecer reglas de validacion
         $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
@@ -1045,7 +1092,7 @@ class Front extends CI_Controller
         $this->load->model('Anuncio_model', 'anuncio');
         $anuncio_id = $this->input->post('anuncio_id_destacar');
         $fecha = date('Y-m-d');
-        $fecha_fin = strtotime('+30 day', strtotime($fecha));
+        $fecha_fin = strtotime('+150 day', strtotime($fecha));
         $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'fecha' => $fecha]);
         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
         $this->session->set_userdata('validando', 2);
@@ -2267,8 +2314,15 @@ class Front extends CI_Controller
         } else {
             $data_object['mensaje'] = "solicitud";
         }
-
-        $this->load_view_front('front/financiamiento', $data_object);
+        $e = array(
+            'general' => true, //description
+            'og' => true,
+            'twitter' => true,
+            'robot' => true
+        );
+        $description = 'La nueva alternativa para comercializar, impulsar, comprar, vender, subastar variedad de artículos a través de nuestra plataforma online de manera práctica';
+        $data_header = array($e, $title = 'Financiamiennto', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
+        $this->load_view_front('front/financiamiento', $data_object, 0, $data_header);
     }
     public function perfil()
     {
@@ -2638,7 +2692,8 @@ class Front extends CI_Controller
         $this->load->model('Membresia_model', 'membresia');
         $object_membresia = $this->membresia->get_by_id($membresia);
         $fecha = date('Y-m-d H:i:s');
-        $fecha_fin = strtotime('+364 day', strtotime($fecha));
+        $duracion = '+' . $object_membresia->duracion . ' day';
+        $fecha_fin = strtotime($duracion, strtotime($fecha));
         $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
@@ -3085,7 +3140,8 @@ class Front extends CI_Controller
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
                     $fecha = date('Y-m-d H:i:s');
-                    $fecha_fin = strtotime('+364 day', strtotime($fecha));
+                    $duracion = '+' . $object_membresia->duracion . ' day';
+                    $fecha_fin = strtotime($duracion, strtotime($fecha));
                     $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
                     $fecha_mes = strtotime('+30 day', strtotime($fecha));
                     $fecha_mes = date('Y-m-d', $fecha_mes);
@@ -3141,7 +3197,7 @@ class Front extends CI_Controller
                     $this->load->model('Anuncio_model', 'anuncio');
                     $anuncio_id = $obj->id;
                     $fecha = date('Y-m-d');
-                    $fecha_fin = strtotime('+30 day', strtotime($fecha));
+                    $fecha_fin = strtotime('+150 day', strtotime($fecha));
                     $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $obj->payment_id]);
                 } elseif ($obj->tipo == 3) {
                     $user_id = $obj->user_id;
@@ -3311,7 +3367,8 @@ class Front extends CI_Controller
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
                     $fecha = date('Y-m-d H:i:s');
-                    $fecha_fin = strtotime('+364 day', strtotime($fecha));
+                    $duracion = '+' . $object_membresia->duracion . ' day';
+                    $fecha_fin = strtotime($duracion, strtotime($fecha));
                     $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
                     $fecha_mes = strtotime('+30 day', strtotime($fecha));
                     $fecha_mes = date('Y-m-d', $fecha_mes);
@@ -3367,7 +3424,7 @@ class Front extends CI_Controller
                     $this->load->model('Anuncio_model', 'anuncio');
                     $anuncio_id = $obj->id;
                     $fecha = date('Y-m-d');
-                    $fecha_fin = strtotime('+30 day', strtotime($fecha));
+                    $fecha_fin = strtotime('+150 day', strtotime($fecha));
                     $this->anuncio->update($anuncio_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $obj->payment_id]);
                 } elseif ($obj->tipo == 3) {
                     $user_id = $obj->user_id;

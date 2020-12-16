@@ -4,8 +4,8 @@
         <h1>
             <?= translate('manage_anuncio_lang'); ?>
             <small><?= translate('listar_anuncio_lang'); ?></small>
-            | <a href="<?= site_url('front/anuncio'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
-            </a> 
+            <!--  | <a href="<?= site_url('front/anuncio'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
+            </a> -->
 
         </h1>
         <ol class="breadcrumb">
@@ -77,18 +77,21 @@
                                                     Acciones <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a onclick="detalles('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-eye"></i> <?= translate("ver_lang"); ?></a></li>
+                                                    <li><a style="cursor:pointer" onclick="detalles('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-eye"></i> <?= translate("ver_lang"); ?></a></li>
                                                     <?php if ($item->is_active == 1) { ?>
-                                                        <li><a onclick="desactivar('<?= $item->anuncio_id ?>')"><i class="fa fa-remove"></i> <?= translate("desactivar_ads_lang"); ?></a></li>
+                                                        <li><a style="cursor:pointer" onclick="desactivar('<?= $item->anuncio_id ?>')"><i class="fa fa-remove"></i> <?= translate("desactivar_ads_lang"); ?></a></li>
                                                     <?php } else { ?>
-                                                        <li><a onclick="activar('<?= $item->anuncio_id ?>')"><i class="fa fa-check"></i> <?= translate("publicar_lang"); ?></a></li>
+                                                        <li><a style="cursor:pointer" onclick="activar('<?= $item->anuncio_id ?>')"><i class="fa fa-check"></i> <?= translate("publicar_lang"); ?></a></li>
+                                                    <?php } ?>
+                                                    <?php if ($item->destacado == 0) { ?>
+                                                        <li><a style="cursor:pointer" onclick="destacarAnuncio('<?= $item->anuncio_id ?>')"><i class="fa fa-check"></i>Destacar anuncio</a></li>
                                                     <?php } ?>
                                                     <?php if ($item->galeria) { ?>
-                                                        <li><a onclick="galeria('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-picture-o" aria-hidden="true"></i> <?= translate("photos_lang"); ?></a></li>
+                                                        <li><a style="cursor:pointer" onclick="galeria('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-picture-o" aria-hidden="true"></i> <?= translate("photos_lang"); ?></a></li>
                                                     <?php } ?>
                                                     <?php if ($item->user) { ?>
                                                         <li class="divider"></li>
-                                                        <li><a onclick="usuario('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-user"></i> <?= translate("user_lang"); ?></a></li>
+                                                        <li><a style="cursor:pointer" onclick="usuario('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-user"></i> <?= translate("user_lang"); ?></a></li>
                                                     <?php } ?>
                                                 </ul>
                                             </div>
@@ -178,6 +181,31 @@
             <input name="anuncio_id_desactivar" id="anuncio_id_desactivar" class="btn btn-primary" type="hidden" value="">
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success"><?= translate('desactivar_ads_lang') ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            <?= form_close(); ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_destacar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">Destacar anuncio</h4>
+            </div>
+            <?= form_open_multipart("anuncio/destacar") ?>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="text-center"><?= translate('confirmar_destacar_ads_lang') ?></h4>
+                    </div>
+                </div>
+            </div>
+            <input name="anuncio_id_destacar" id="anuncio_id_destacar" class="btn btn-primary" type="hidden" value="">
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Destacar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             <?= form_close(); ?>
@@ -363,6 +391,12 @@
     function desactivar(params) {
         $('#anuncio_id_desactivar').val(params);
         $('#modal_desactivar').modal('show');
+
+    }
+
+    function destacarAnuncio(params) {
+        $('#anuncio_id_destacar').val(params);
+        $('#modal_destacar').modal('show');
 
     }
 

@@ -62,13 +62,20 @@
 
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <label><?= translate("cant_anuncios_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i><strong>N°</strong></i></i></span>
                                             <input step="any" type="number" class="form-control input-sm" name="cant_anuncio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->cant_anuncio; ?>">
                                         </div>
 
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label>Duración de la membresia</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i><strong>N°</strong></i></i></span>
+                                            <input required min="0" type="number" class="form-control input-sm" name="duracion" placeholder="<?= 'Duración de la membresia' ?>" value="<?= $membresia_object->duracion; ?>">
+                                        </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">

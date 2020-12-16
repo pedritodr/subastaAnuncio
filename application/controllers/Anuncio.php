@@ -234,4 +234,17 @@ class Anuncio extends CI_Controller
         $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
         redirect("anuncio/index");
     }
+    public function destacar()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+
+        $anuncio_id = $this->input->post('anuncio_id_destacar');
+        $this->anuncio->update($anuncio_id, ['destacado' => 1]);
+
+        $this->response->set_message(translate('data_saved_ok'), ResponseMessage::SUCCESS);
+        redirect("anuncio/index");
+    }
 }

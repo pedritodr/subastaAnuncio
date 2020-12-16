@@ -37,7 +37,8 @@ class Membresia extends CI_Controller
         $membresia = $this->input->post('idmembresia');
         $object_membresia = $this->membresia->get_by_id($membresia);
         $fecha = date('Y-m-d H:i:s');
-        $fecha_fin = strtotime('+364 day', strtotime($fecha));
+        $duracion = '+' . $object_membresia->duracion . ' day';
+        $fecha_fin = strtotime($duracion, strtotime($fecha));
         $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
@@ -117,6 +118,7 @@ class Membresia extends CI_Controller
         $sorteo = $this->input->post('sorteo');
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
+        $duracion = $this->input->post('duracion');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -134,7 +136,8 @@ class Membresia extends CI_Controller
                 'descuento' => $descuento,
                 'sorteo' => $sorteo,
                 'descripcion' => $descripcion,
-                'qty_subastas' => $subastas
+                'qty_subastas' => $subastas,
+                'duracion' => $duracion
             ];
             $this->membresia->create($data);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -177,9 +180,8 @@ class Membresia extends CI_Controller
         $sorteo = $this->input->post('sorteo');
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
+        $duracion = $this->input->post('duracion');
         $membresia_object = $this->membresia->get_by_id($membresia_id);
-
-
 
         if ($membresia_object) {
 
@@ -191,8 +193,8 @@ class Membresia extends CI_Controller
                 'descuento' => $descuento,
                 'sorteo' => $sorteo,
                 'descripcion' => $descripcion,
-                'qty_subastas' => $subastas
-
+                'qty_subastas' => $subastas,
+                'duracion' => $duracion
             ];
             $this->membresia->update($membresia_id, $data_membresia);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
