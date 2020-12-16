@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * SEO Helper
  *
@@ -22,10 +22,10 @@
  * @param   string  Page URL
  */
 
-if(! function_exists('meta_tags')) {
+if (!function_exists('meta_tags')) {
     function meta_tags($enable = array('general' => true, 'og' => true, 'twitter' => true, 'robot' => true), $title = '', $desc = '', $imgurl = '', $url = '')
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->config->load('seo_config');
 
         $output = '';
@@ -50,7 +50,6 @@ if(! function_exists('meta_tags')) {
         }
         if ($enable['robot']) {
             $output .= '<meta name="robots" content="index,follow"/>';
-
         } else {
             $output .= '<meta name="robots" content="noindex,nofollow"/>';
         }
@@ -59,7 +58,7 @@ if(! function_exists('meta_tags')) {
         //open graph
         if ($enable['og']) {
             $output .= '<meta property="og:title" content="' . $title . '"/>'
-                . '<meta property="og:type" content="' . $desc . '"/>'
+                . '<meta property="og:type" content="website"/>'
                 . '<meta property="og:image" content="' . $imgurl . '"/>'
                 . '<meta property="og:url" content="' . $url . '"/>';
         }
@@ -74,7 +73,5 @@ if(! function_exists('meta_tags')) {
         }
 
         echo $output;
-
-
     }
 }
