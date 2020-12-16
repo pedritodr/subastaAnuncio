@@ -4,10 +4,11 @@
   "name": "codeigniter/framework",
   "license": "MIT",
   "require": {
-    "php": ">=5.2.4"
+    "php": ">=5.2.4",
+    "neitanod/forceutf8": "~2.0"
   },
   "require-dev": {
-    "mikey179/vfsStream": "1.1.*",
+    "mikey179/vfsStream": "1.1.*"
 
   }
 
