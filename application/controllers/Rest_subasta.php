@@ -133,10 +133,11 @@ class Rest_subasta extends REST_Controller
         $user_id = $this->input->post('user_id');
         $security_token = $this->input->post('security_token');
         $auth = $this->user->is_valid_auth($user_id, $security_token);
-        $this->response(['status' => 200, 'lista' => $auth]);
+
         if ($auth) {
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
             $all_subasta = $this->subasta->get_all_by_subastas_rest();
+            $this->response(['status' => 200, 'lista' => $all_subasta]);
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             $subastas = [];
