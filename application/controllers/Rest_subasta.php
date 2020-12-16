@@ -141,6 +141,7 @@ class Rest_subasta extends REST_Controller
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             $subastas = [];
+            $this->response(['status' => 200, 'lista' => $all_subasta]);
             foreach ($all_subasta as $item) {
                 $title = strlen($item->nombre_espa);
                 $categoria_object = $this->categoria->get_by_id($item->categoria_id);
