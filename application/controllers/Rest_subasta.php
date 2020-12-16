@@ -137,7 +137,7 @@ class Rest_subasta extends REST_Controller
         if ($auth) {
             $fecha = strtotime(date("Y-m-d H:i:00", time()));
             $all_subasta = $this->subasta->get_all_by_subastas_rest();
-            $this->response(['status' => 200, 'lista' => $all_subasta]);
+
             $this->load->model("Categoria_model", "categoria");
             $this->load->model('Pais_model', 'pais');
             $subastas = [];
@@ -176,6 +176,7 @@ class Rest_subasta extends REST_Controller
                 $item->subasta_user = $subasta_user;
                 array_push($subastas, $item);
             }
+            $this->response(['status' => 200, 'lista' => $subastas]);
             if ($subastas) {
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
