@@ -148,9 +148,9 @@ class Rest_subasta extends REST_Controller
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
                 if ($title > 19) {
-                    // $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
+                    $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
                 } else {
-                    //  $item->nombre_espa = $item->nombre_espa;
+                    $item->nombre_espa = $item->nombre_espa;
                 }
                 $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
                 $puja =  $this->subasta->get_puja_alta($item->subasta_id);
