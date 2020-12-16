@@ -176,7 +176,7 @@ class Rest_subasta extends REST_Controller
                 $item->subasta_user = $subasta_user;
                 array_push($subastas, $item);
             }
-            $this->response(['status' => 200, 'lista' => $subastas]);
+            $this->response(['status' => 200, 'lista' => $all_subasta]);
             if ($subastas) {
                 $this->response(['status' => 200, 'lista' => $subastas]);
             } else {
