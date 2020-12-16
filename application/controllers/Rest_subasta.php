@@ -1,5 +1,4 @@
 <?php
-require 'vendor/autoload.php';
 require(APPPATH . "libraries/REST_Controller.php");
 require(APPPATH . "libraries/DatalabSecurity.php");
 //require(APPPATH . "libraries/proveedores/AlignetWallet.php");
