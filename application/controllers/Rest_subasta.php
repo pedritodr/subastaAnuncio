@@ -79,10 +79,14 @@ class Rest_subasta extends REST_Controller
                 $ciudad_object = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
                 $item->ciudad = $ciudad_object;
                 if ($title > 19) {
+                    $str = substr(utf8_encode($item->nombre_espa), 0, 16) . "...";
+                    $item->nombre_espa = utf8_encode($str);
+                }
+                /*   if ($title > 19) {
                     $item->nombre_espa = substr($item->nombre_espa, 0, 16) . "...";
                 } else {
                     $item->nombre_espa = $item->nombre_espa;
-                }
+                } */
                 if ($item->tipo_subasta == 2) {
                     $item->intervalo = $this->subasta->get_intervalo_subasta($item->subasta_id);
                     if ($item->intervalo) {
@@ -105,7 +109,9 @@ class Rest_subasta extends REST_Controller
                     if ($puja) {
                         $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
                         if ($user_win) {
-                            $user_win->surname = substr($user_win->surname, 0, 4) . "...";
+                            $strUser = substr(utf8_encode($user_win->surname), 0, 4) . "...";
+                            $user_win->surname = utf8_decode($strUser);
+                            // $user_win->surname = substr($user_win->surname, 0, 4) . "...";
                         }
                     } else {
                         $user_win = null;
@@ -150,8 +156,6 @@ class Rest_subasta extends REST_Controller
                     if ($title > 19) {
                         $str = substr(utf8_encode($item->nombre_espa), 0, 16) . "...";
                         $item->nombre_espa = utf8_encode($str);
-                    } else {
-                        $item->nombre_espa = $item->nombre_espa;
                     }
                     $subasta_user =  $this->subasta->get_subasta_user($user_id, $item->subasta_id);
                     $puja =  $this->subasta->get_puja_alta($item->subasta_id);
@@ -166,7 +170,8 @@ class Rest_subasta extends REST_Controller
                     if ($puja) {
                         $user_win = $this->subasta->get_puja_alta_obj($item->subasta_id);
                         if ($user_win) {
-                            //$user_win->surname = substr($user_win->surname, 0, 4) . "...";
+                            $strUser = substr(utf8_encode($user_win->surname), 0, 4) . "...";
+                            $user_win->surname = utf8_decode($strUser);
                         }
                     } else {
                         $user_win = null;
