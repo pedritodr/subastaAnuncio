@@ -125,9 +125,18 @@
                         <div class="row">
                            <br>
                            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                              <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> 4 Imagenes para el anuncio (tamaño recomendado 645x645)</label></p>
+                              <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> Hasta 10 Imagenes para el anuncio (tamaño recomendado 645x645)</label></p>
 
-                              <div class="row">
+                              <div class="row" id="bodyCargaImagenes">
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_0" onclick="delete_image_0()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_0" onclick="llamar_add_imagen_0()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image" class="text-center"> <span id="span_add_0" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_0" accepts="image/*">
+                                    </div>
+                                 </div>
                                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                                     <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
                                        <span id="span_delete_1" onclick="delete_image_1()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
@@ -162,6 +171,51 @@
                                        <br>
                                        <label style="font-size:12px;cursor: pointer;" for="add_image_4" class="text-center"> <span id="span_add_4" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
                                        <input type="file" name="archivo" id="add_image_4" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_5" onclick="delete_image_5()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_5" onclick="llamar_add_imagen_5()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_5" class="text-center"> <span id="span_add_6" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_5" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_6" onclick="delete_image_6()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_6" onclick="llamar_add_imagen_6()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_6" class="text-center"> <span id="span_add_6" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_6" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_7" onclick="delete_image_7()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_7" onclick="llamar_add_imagen_7()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_7" class="text-center"> <span id="span_add_7" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_7" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_8" onclick="delete_image_8()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_8" onclick="llamar_add_imagen_8()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_8" class="text-center"> <span id="span_add_8" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_8" accepts="image/*">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div style="box-shadow: 4px 6px 10px -3px #bfc9d4" class="text-center">
+                                       <span id="span_delete_9" onclick="delete_image_9()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
+                                       <img style="width: 70%; cursor:pointer position:relative" id="image_9" onclick="llamar_add_imagen_9()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
+                                       <br>
+                                       <label style="font-size:12px;cursor: pointer;" for="add_image_9" class="text-center"> <span id="span_add_9" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen</span></label>
+                                       <input type="file" name="archivo" id="add_image_9" accepts="image/*">
                                     </div>
                                  </div>
 
@@ -257,10 +311,16 @@
                //    var avatar = document.getElementById('avatar');
                var image = document.getElementById('image');
                var input = document.getElementById('input');
+               var input_imagen_0 = document.getElementById('add_image_0');
                var input_imagen_1 = document.getElementById('add_image_1');
                var input_imagen_2 = document.getElementById('add_image_2');
                var input_imagen_3 = document.getElementById('add_image_3');
                var input_imagen_4 = document.getElementById('add_image_4');
+               var input_imagen_5 = document.getElementById('add_image_5');
+               var input_imagen_6 = document.getElementById('add_image_6');
+               var input_imagen_7 = document.getElementById('add_image_7');
+               var input_imagen_8 = document.getElementById('add_image_8');
+               var input_imagen_9 = document.getElementById('add_image_9');
                var $progress = $('.progress');
                var $progressBar = $('.progress-bar');
                var $alert = $('.alert');
@@ -268,6 +328,95 @@
                var cropper;
                var imagen_click = 0;
                var name_archivo;
+               input_imagen_0.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           console.log(array_imagenes)
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_0") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_0") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 0;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
                input_imagen_1.addEventListener('change', function(e) {
                   var files = e.target.files;
                   var sizeByte = this.files[0].size;
@@ -356,6 +505,7 @@
                      });
                   }
                });
+
                input_imagen_2.addEventListener('change', function(e) {
                   var files = e.target.files;
                   var sizeByte = this.files[0].size;
@@ -443,6 +593,7 @@
                      });
                   }
                });
+
                input_imagen_3.addEventListener('change', function(e) {
                   var files = e.target.files;
                   var sizeByte = this.files[0].size;
@@ -530,6 +681,7 @@
                      });
                   }
                });
+
                input_imagen_4.addEventListener('change', function(e) {
                   var files = e.target.files;
                   var sizeByte = this.files[0].size;
@@ -617,6 +769,447 @@
                      });
                   }
                });
+
+               input_imagen_5.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_5") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_5") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 5;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
+               input_imagen_6.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_6") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_6") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 6;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
+               input_imagen_7.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_7") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_7") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 7;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
+               input_imagen_8.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_8") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_8") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 8;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
+               input_imagen_9.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
+                     if (this.files[0].size < peso_maximo) {
+                        if (array_imagenes.length > 0) {
+                           for (let i = 0; i < array_imagenes.length; i++) {
+                              if (array_imagenes[i].name == "image_9") {
+                                 encontro = true;
+                                 id_encontrado = i;
+                                 name_contenedor = array_imagenes[i].name;
+                              }
+                              if (array_imagenes[i].id == this.files[0].name) {
+                                 encontro = true;
+                                 repetido = true;
+                              }
+                           }
+                        } else {
+                           valida_crear = true;
+                        }
+                        if (encontro && !repetido) {
+                           if (name_contenedor == "image_9") {
+                              if (id_encontrado != -1) {
+                                 array_imagenes.splice(id_encontrado, 1);
+                                 valida_crear = true;
+                              }
+                           }
+                        } else if (encontro && repetido) {
+                           Swal.fire({
+                              icon: 'info',
+                              title: 'La imagen ya esta cargada',
+                              showConfirmButton: true
+                           });
+                        } else if (!encontro && !repetido) {
+                           valida_crear = true;
+                        }
+                        if (valida_crear) {
+                           imagen_click = 9;
+                           name_archivo = this.files[0].name;
+                           var done = function(url) {
+                              input.value = '';
+                              image.src = url;
+                              $alert.hide();
+                              $modal.modal({
+                                 backdrop: 'static',
+                                 keyboard: false
+                              });
+                           };
+                           var reader;
+                           var file;
+                           var url;
+
+                           if (files && files.length > 0) {
+                              file = files[0];
+                              if (URL) {
+                                 done(URL.createObjectURL(file));
+                              } else if (FileReader) {
+                                 reader = new FileReader();
+                                 reader.onload = function(e) {
+                                    done(reader.result);
+                                 };
+                                 reader.readAsDataURL(file);
+                              }
+                           }
+                        }
+
+                     } else {
+                        Swal.fire({
+                           icon: 'error',
+                           title: 'La imagen supera el peso máximo de 4MB',
+                           showConfirmButton: true,
+                        });
+                     }
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+
                $modal.on('shown.bs.modal', function() {
                   cropper = new Cropper(image, {
                      aspectRatio: 1,
@@ -638,45 +1231,36 @@
                      });
                      initialAvatarURL = avatar.src;
                      avatar = canvas.toDataURL();
-                     if (imagen_click == 1) {
-                        $('#image_1').attr("src", avatar);
-                        $('#span_delete_1').show();
-                        $('#span_add_1').text("Portada");
+                     if (array_imagenes.length > 0) {
+                        var indice = array_imagenes.length;
+                        $('#image_' + indice).attr("src", avatar);
+                        $('#span_delete_' + indice).show();
+                        $('#span_add_' + indice).text("");
                         array_imagenes.push({
                            "id": name_archivo,
                            "imagen": avatar,
                            'foto_anuncio_id': null,
-                           'name': "image_1"
+                           'name': "image_" + indice
                         });
-                     } else if (imagen_click == 2) {
-                        $('#image_2').attr("src", avatar);
-                        $('#span_delete_2').show();
-                        $('#span_add_2').text("Cargada");
+                        $('#image_' + indice).attr("src", avatar);
+                        $('#span_delete_' + indice).show();
+                        $('#span_add_' + indice).text("");
                         array_imagenes.push({
                            "id": name_archivo,
                            "imagen": avatar,
                            'foto_anuncio_id': null,
-                           'name': "image_2"
+                           'name': "image_" + indice
                         });
-                     } else if (imagen_click == 3) {
-                        $('#image_3').attr("src", avatar);
-                        $('#span_delete_3').show();
-                        $('#span_add_3').text("Cargada");
+
+                     } else {
+                        $('#image_0').attr("src", avatar);
+                        $('#span_delete_0').show();
+                        $('#span_add_0').text("Portada");
                         array_imagenes.push({
                            "id": name_archivo,
                            "imagen": avatar,
                            'foto_anuncio_id': null,
-                           'name': "image_3"
-                        });
-                     } else if (imagen_click == 4) {
-                        $('#image_4').attr("src", avatar);
-                        $('#span_delete_4').show();
-                        $('#span_add_4').text("Cargada");
-                        array_imagenes.push({
-                           "id": name_archivo,
-                           "imagen": avatar,
-                           'foto_anuncio_id': null,
-                           'name': "image_4"
+                           'name': "image_0"
                         });
                      }
                      Swal.fire({
@@ -689,6 +1273,7 @@
                   }
                });
             });
+
             function delete_image_1() {
 
                var id_encontrado = -1;
@@ -778,6 +1363,11 @@
                }
             }
 
+            function llamar_add_imagen_0() {
+               $('#add_image_0').click();
+               imagen_click = 0;
+            }
+
             function llamar_add_imagen_1() {
                $('#add_image_1').click();
                imagen_click = 1;
@@ -795,6 +1385,31 @@
                $('#add_image_4').click();
             }
 
+            function llamar_add_imagen_5() {
+               $('#add_image_5').click();
+               imagen_click = 5;
+            }
+
+            function llamar_add_imagen_6() {
+               $('#add_image_6').click();
+               imagen_click = 6;
+            }
+
+            function llamar_add_imagen_7() {
+               $('#add_image_7').click();
+               imagen_click = 7;
+            }
+
+            function llamar_add_imagen_8() {
+               $('#add_image_8').click();
+               imagen_click = 8;
+            }
+
+            function llamar_add_imagen_9() {
+               $('#add_image_9').click();
+               imagen_click = 9;
+            }
+
             $(document).ready(function() {
                $("#subcategoria").select2({
                   placeholder: 'Seleccione la subcategoria',
@@ -803,19 +1418,60 @@
                });
                initMap();
             });
-          /*   $('#btn_add_anuncio').click(function() {
+            /*   $('#btn_add_anuncio').click(function() {
+                 var seleccion_pais = $('#pais').val().trim();
+                 if (array_imagenes.length <= 0) {
+                    Swal.fire({
+                       icon: 'info',
+                       title: 'No hay imagenes cargadas',
+                       showConfirmButton: true
+                    });
+                 } else if (array_imagenes.length > 0) {
+                    var encontro_image1 = false;
+                    for (let i = 0; i < array_imagenes.length; i++) {
+                       if (array_imagenes[i].name == "image_1") {
+                          encontro_image1 = true
+                       }
+                    }
+                    if (encontro_image1) {
+                       if (seleccion_pais == "Ecuador") {
+                          swal.fire({
+                             title: '',
+                             html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
+                             showConfirmButton: false,
+                             allowOutsideClick: false,
+                             timer: 6000
+                          });
+                          $('#array_fotos').val(JSON.stringify(array_imagenes));
+                          $("#form_add_anuncio").submit();
+                          $('#btn_add_anuncio').prop('disabled', true);
+                       } else if (seleccion_pais == "") {
+                          $('#pac-input').val("");
+                          initMap();
+                       } else {
+                          $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                          $('#modal_error_ciudad').modal('show');
+                          initMap();
+                       }
+                    } else {
+                       Swal.fire({
+                          icon: 'info',
+                          title: 'La imagen para la portada no se encuentra cargada',
+                          showConfirmButton: true
+                       });
+                    }
+                 }
+              }); */
+            $("#form_add_anuncio").on('submit', function(evt) {
+
+               evt.preventDefault();
+               $('#array_fotos').val(JSON.stringify(array_imagenes));
                var seleccion_pais = $('#pais').val().trim();
-               if (array_imagenes.length <= 0) {
-                  Swal.fire({
-                     icon: 'info',
-                     title: 'No hay imagenes cargadas',
-                     showConfirmButton: true
-                  });
-               } else if (array_imagenes.length > 0) {
+               if (array_imagenes.length > 0) {
                   var encontro_image1 = false;
                   for (let i = 0; i < array_imagenes.length; i++) {
                      if (array_imagenes[i].name == "image_1") {
-                        encontro_image1 = true
+                        encontro_image1 = true;
                      }
                   }
                   if (encontro_image1) {
@@ -845,56 +1501,16 @@
                         showConfirmButton: true
                      });
                   }
+               } else {
+                  Swal.fire({
+                     icon: 'info',
+                     title: 'No hay imagenes cargadas',
+                     showConfirmButton: true
+                  });
                }
-            }); */
-            $("#form_add_anuncio").on('submit', function(evt) {
+               // tu codigo aqui
+            });
 
-             evt.preventDefault();
-             $('#array_fotos').val(JSON.stringify(array_imagenes));
-             var seleccion_pais = $('#pais').val().trim();
-             if (array_imagenes.length > 0) {
-                var encontro_image1 = false;
-                for (let i = 0; i < array_imagenes.length; i++) {
-                   if (array_imagenes[i].name == "image_1") {
-                      encontro_image1 = true;
-                   }
-                }
-                if (encontro_image1) {
-                   if (seleccion_pais == "Ecuador") {
-                      swal.fire({
-                         title: '',
-                         html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
-                         showConfirmButton: false,
-                         allowOutsideClick: false,
-                         timer: 6000
-                      });
-                      $('#array_fotos').val(JSON.stringify(array_imagenes));
-                      $("#form_add_anuncio").submit();
-                      $('#btn_add_anuncio').prop('disabled', true);
-                   } else if (seleccion_pais == "") {
-                      $('#pac-input').val("");
-                      initMap();
-                   } else {
-                      $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                      $('#modal_error_ciudad').modal('show');
-                      initMap();
-                   }
-                } else {
-                   Swal.fire({
-                      icon: 'info',
-                      title: 'La imagen para la portada no se encuentra cargada',
-                      showConfirmButton: true
-                   });
-                }
-             }else{
-                Swal.fire({
-                   icon: 'info',
-                   title: 'No hay imagenes cargadas',
-                   showConfirmButton: true
-                });
-             }
-             // tu codigo aqui
-          });
             function change_categoria() {
                var a = $("select[name=categoria]").val();
                $('#subcategoria').empty();
@@ -1286,6 +1902,43 @@
                position: absolute;
                z-index: -1;
             }
+
+            #add_image_5 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_6 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_7 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_8 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_9 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
+            #add_image_0 {
+               opacity: 0;
+               position: absolute;
+               z-index: -1;
+            }
+
 
             h6 a:hover {
                color: #8c1822 !important;
