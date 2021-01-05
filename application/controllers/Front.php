@@ -933,27 +933,34 @@ class Front extends CI_Controller
 
     public function add_anuncio()
     {
-
-        if (!in_array($this->session->userdata('role_id'), [2])) {
-            $this->log_out();
-            redirect('login');
+        ini_set('max_execution_time', '0');
+        $user_id = $this->session->userdata('user_id');
+        if (!$user_id) {
+            echo json_encode(['status' => 500]);
+            exit();
         }
+        if ($this->session->userdata('role_id')) {
+            if ($this->session->userdata('role_id') != 2) {
+                echo json_encode(['status' => 404]);
+                exit();
+            }
+        }
+        define('UPLOAD_DIR', './uploads/anuncio/');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Pais_model', 'pais');
         $titulo = $this->input->post('titulo');
         $descripcion = $this->input->post('descripcion');
         $precio = $this->input->post('precio');
-        $photo = $this->input->post('photo');
+        $photo = json_decode($_POST['photo']);
         $whatsapp = $this->input->post('whatsapp');
         $subcate_id = $this->input->post('subcategoria');
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
         $user_id = $this->session->userdata('user_id');
         $email = $this->session->userdata('email');
-        $direccion = $this->input->post('pac-input');
+        $direccion = $this->input->post('pac_input');
         $city = $this->input->post('city_main');
-        $data = json_decode($_POST['array_fotos']);
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -974,113 +981,95 @@ class Front extends CI_Controller
         $fecha = date('Y-m-d');
         $fecha_fin = strtotime('+150 day', strtotime($fecha));
         $fecha_fin = date('Y-m-d', $fecha_fin);
-        //establecer reglas de validacion
-        $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
-
-        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
-            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("perfil/page/");
+        $img =  $photo->imagen;
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $file = UPLOAD_DIR . uniqid() . '.jpg';
+        // $image = uniqid() . '.jpg';
+        $success = file_put_contents($file, $data);
+        $data_ads = [
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'precio' => $precio,
+            'photo' => $file,
+            'whatsapp' => $whatsapp,
+            'subcate_id' => $subcate_id,
+            'is_active' => 1,
+            'lat' => $lat,
+            'lng' => $lng,
+            'ciudad_id' => $ciudad_id,
+            'user_id' => $user_id,
+            'direccion' => $direccion,
+            'fecha' =>  date("Y-m-d"),
+            'destacado' => 0,
+            'fecha_vencimiento' => $fecha_fin
+        ];
+        $id = false;
+        if ($membresia) {
+            $id =  $this->anuncio->create($data_ads);
+            if ($id) {
+                if ((int) $membresia->anuncios_publi > 0) {
+                    $qty_anuncios = (int) $membresia->anuncios_publi - 1;
+                    $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
+                    $this->anuncio->update($id, ['destacado' => 1]);
+                }
+            }
         } else {
-            $this->load->model('Photo_anuncio_model', 'photo_anuncio');
-
-            $fotos = [];
-            foreach ($data as $item) {
-                $img =  $item->imagen;
-                $img = str_replace('data:image/png;base64,', '', $img);
-
-                $img = str_replace(' ', '+', $img);
-                $data = base64_decode($img);
-
-                $file = UPLOAD_DIR . uniqid() . '.jpg';
-                // $image = uniqid() . '.jpg';
-
-                $success = file_put_contents($file, $data);
-                array_push($fotos, $file);
-            }
-            $data = [
-                'titulo' => $titulo,
-                'descripcion' => $descripcion,
-                'precio' => $precio,
-                'photo' => $fotos[0],
-                'whatsapp' => $whatsapp,
-                'subcate_id' => $subcate_id,
-                'is_active' => 1,
-                'lat' => $lat,
-                'lng' => $lng,
-                'ciudad_id' => $ciudad_id,
-                'user_id' => $user_id,
-                'direccion' => $direccion,
-                'fecha' =>  date("Y-m-d"),
-                'destacado' => 0,
-                'fecha_vencimiento' => $fecha_fin
-            ];
-            if ($membresia) {
-                $id =  $this->anuncio->create($data);
-                if ($id) {
-                    if ((int) $membresia->anuncios_publi > 0) {
-
-                        $qty_anuncios = (int) $membresia->anuncios_publi - 1;
-                        $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
-                        $this->anuncio->update($id, ['destacado' => 1]);
-                    }
-                    if (count($fotos) > 1) {
-                        for ($i = 1; $i < count($fotos); $i++) {
-                            $img =  $fotos[$i];
-                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
-                        }
-                    }
-                    $obj_anuncio = $this->anuncio->get_by_id($id);
-                    $this->load->model("Correo_model", "correo");
-                    $asunto = "Anuncio creado";
-                    $motivo = 'Anuncio creado Subasta anuncios';
-                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
-                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
-                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
-                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
-                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
-                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
-                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
-                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
-                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
-                    $mensaje .= "Saludos,<br>";
-                    $mensaje .= "El equipo de SUBASTANUNCIOS";
-                    $this->correo->sent($email, $mensaje, $asunto, $motivo);
-                }
-            } else {
-                $id = $this->anuncio->create($data);
-                if ($id) {
-                    if (count($fotos) > 1) {
-                        for ($i = 1; $i < count($fotos); $i++) {
-                            $img =  $fotos[$i];
-                            $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $id]);
-                        }
-                    }
-                    $obj_anuncio = $this->anuncio->get_by_id($id);
-                    $this->load->model("Correo_model", "correo");
-                    $asunto = "Anuncio creado";
-                    $motivo = 'Anuncio creado Subasta anuncios';
-                    $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-                    $mensaje .= "<h3> “Nuevo anuncio”</h3>";
-                    $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
-                    $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
-                    $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
-                    $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
-                    $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
-                    $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
-                    $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
-                    $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-                    $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
-                    $mensaje .= "Saludos,<br>";
-                    $mensaje .= "El equipo de SUBASTANUNCIOS";
-                    $this->correo->sent($email, $mensaje, $asunto, $motivo);
-                }
-            }
-
-            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+            $id = $this->anuncio->create($data_ads);
+        }
+        if ($id) {
+            $obj_anuncio = $this->anuncio->get_by_id($id);
+            $this->load->model("Correo_model", "correo");
+            $asunto = "Anuncio creado";
+            $motivo = 'Anuncio creado Subasta anuncios';
+            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+            $mensaje .= "<h3> “Nuevo anuncio”</h3>";
+            $mensaje .= "Bien hecho. <br>Has creado un nuevo anuncio dentro de nuestra plataforma. Ahora todos nuestros visitantes podrán visualizarlo y ponerse en contacto contigo. Los datos referenciales de tu anuncio son los siguientes:<br>";
+            $mensaje .= "<strong>Título: </strong>" . $obj_anuncio->titulo . "<br>";
+            $mensaje .= "<strong>Descripción: </strong>" . $obj_anuncio->descripcion . "<br>";
+            $mensaje .= "<strong>Precio: </strong>" . number_format($obj_anuncio->precio, 2) . "<br>";
+            $mensaje .= "<strong>Dirección: </strong>" . $obj_anuncio->direccion . "<br>";
+            $mensaje .= "<strong>whatsapp: </strong>" . $obj_anuncio->whatsapp . "<br>";
+            $mensaje .= "Recuerda que las personas interesadas se pondrán en contacto contigo mediante el número telefónico que especificaste en el anuncio. Te deseemos mucha suerte.<br>";
+            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+            $mensaje .= "Saludos,<br>";
+            $mensaje .= "El equipo de SUBASTANUNCIOS";
+            $this->correo->sent($email, $mensaje, $asunto, $motivo);
             $this->session->set_userdata('validando', 2);
-            redirect("perfil/page");
+            echo json_encode(['status' => 200, 'id' => $id]);
+            exit();
+        }
+        // $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+
+        // redirect("perfil/page");
+
+    }
+
+    public function add_photo_anuncio()
+    {
+
+        ini_set('max_execution_time', '0');
+        define('UPLOAD_DIR', './uploads/anuncio/');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+        $id = $this->input->post('id');
+        $photo = json_decode($_POST['photo']);
+        $img =  $photo->imagen;
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $file = UPLOAD_DIR . uniqid() . '.jpg';
+        // $image = uniqid() . '.jpg';
+        $success = file_put_contents($file, $data);
+        $creado =  $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $id]);
+        if ($creado) {
+            echo json_encode(['status' => 200]);
+            exit();
+        } else {
+            echo json_encode(['status' => 200]);
+            exit();
         }
     }
     public function destacar_anuncio()

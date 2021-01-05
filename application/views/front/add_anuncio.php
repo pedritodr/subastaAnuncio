@@ -40,20 +40,19 @@
                         <!-- Titulo anuncio  -->
                         <div class="row">
                            <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                              <?= form_open_multipart("front/add_anuncio", array('id' => 'form_add_anuncio')); ?>
+                              <form>
+                                 <div id="alert-message" class="alert alert-danger alert-dismissable" style="display: none;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <h4><i class="icon fa fa-ban"></i> <?= translate('title_alert_message_lang'); ?></h4>
+                                    <p></p>
+                                 </div>
+                                 <?= get_message_from_operation(); ?>
 
-                              <div id="alert-message" class="alert alert-danger alert-dismissable" style="display: none;">
-                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                 <h4><i class="icon fa fa-ban"></i> <?= translate('title_alert_message_lang'); ?></h4>
-                                 <p></p>
-                              </div>
-                              <?= get_message_from_operation(); ?>
 
-
-                              <div class="form-group">
-                                 <label><?= translate("titulo_anun_lang"); ?></label>
-                                 <input required placeholder="<?= translate('titulo_anun_lang'); ?>" class="form-control" type="text" name="titulo">
-                              </div>
+                                 <div class="form-group">
+                                    <label><?= translate("titulo_anun_lang"); ?></label>
+                                    <input required placeholder="<?= translate('titulo_anun_lang'); ?>" class="form-control" type="text" id="titulo" name="titulo">
+                                 </div>
                            </div>
                         </div>
                         <div class="row">
@@ -99,7 +98,7 @@
                               <label><?= translate("precios_lang"); ?></label>
                               <div class="input-group">
                                  <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-                                 <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" min="0" type="number" step="any" name="precio">
+                                 <input required placeholder="<?= translate('precios_lang'); ?>" class="form-control" min="0" type="number" step="any" id="precio" name="precio">
                               </div>
 
                            </div>
@@ -109,7 +108,7 @@
                               <div class="input-group">
                                  <span class="input-group-addon"><i class="fa fa-whatsapp" aria-hidden="true"></i>
                                  </span>
-                                 <input placeholder="<?= translate("phone_person__lang"); ?>" class="form-control" type="text" name="whatsapp">
+                                 <input placeholder="<?= translate("phone_person__lang"); ?>" class="form-control" type="text" id="whatsapp" name="whatsapp">
 
                               </div>
                            </div>
@@ -118,7 +117,7 @@
                            <div style="margin-bottom: -3%;" class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                               <div class="form-group">
                                  <label class="control-label"><?= translate('description_lang'); ?></label>
-                                 <textarea name="descripcion" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>"></textarea>
+                                 <textarea name="descripcion" id="descripcion" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>"></textarea>
                               </div>
                            </div>
                         </div>
@@ -244,11 +243,11 @@
                            <input type="hidden" id="pais" />
                            <input type="hidden" id="city_main" name="city_main" />
                            <input name="array_fotos" id="array_fotos" type="hidden" value="">
-                           <button id="btn_add_anuncio" type="submit" class="btn btn-theme pull-right"><?= translate('publi_boton_ang') ?></button>
+                           <button id="btn_add_anuncio" type="button" class="btn btn-primary pull-right"><?= translate('publi_boton_ang') ?></button>
                         </div>
-                        <?= form_close(); ?>
-                     </div>
 
+                     </div>
+                     </form>
                   </div>
                </div>
                <!-- Row End -->
@@ -1235,23 +1234,13 @@
                         var indice = array_imagenes.length;
                         $('#image_' + indice).attr("src", avatar);
                         $('#span_delete_' + indice).show();
-                        $('#span_add_' + indice).text("");
+                        $('#span_add_' + indice).text("Cargada");
                         array_imagenes.push({
                            "id": name_archivo,
                            "imagen": avatar,
                            'foto_anuncio_id': null,
                            'name': "image_" + indice
                         });
-                        $('#image_' + indice).attr("src", avatar);
-                        $('#span_delete_' + indice).show();
-                        $('#span_add_' + indice).text("");
-                        array_imagenes.push({
-                           "id": name_archivo,
-                           "imagen": avatar,
-                           'foto_anuncio_id': null,
-                           'name': "image_" + indice
-                        });
-
                      } else {
                         $('#image_0').attr("src", avatar);
                         $('#span_delete_0').show();
@@ -1265,7 +1254,7 @@
                      }
                      Swal.fire({
                         icon: 'success',
-                        title: 'La imagen se ah subido correctamente',
+                        title: 'La imagen se ha subido correctamente',
                         showConfirmButton: false,
                         timer: 1500
                      });
@@ -1273,6 +1262,43 @@
                   }
                });
             });
+
+            function delete_image_0() {
+
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_0") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
 
             function delete_image_1() {
 
@@ -1284,10 +1310,24 @@
                }
                if (id_encontrado != -1) {
                   array_imagenes.splice(id_encontrado, 1);
-                  $('#image_1').attr("src", imagen_default);
-                  $('#add_image_1').val("");
-                  $('#span_delete_1').hide();
-                  $('#span_add_1').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
                   Swal.fire({
                      icon: 'success',
                      title: 'La imagen se eliminó correctamente',
@@ -1306,10 +1346,24 @@
                }
                if (id_encontrado != -1) {
                   array_imagenes.splice(id_encontrado, 1);
-                  $('#image_2').attr("src", imagen_default);
-                  $('#add_image_2').val("");
-                  $('#span_delete_2').hide();
-                  $('#span_add_2').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
                   Swal.fire({
                      icon: 'success',
                      title: 'La imagen se eliminó correctamente',
@@ -1328,10 +1382,24 @@
                }
                if (id_encontrado != -1) {
                   array_imagenes.splice(id_encontrado, 1);
-                  $('#image_3').attr("src", imagen_default);
-                  $('#add_image_3').val("");
-                  $('#span_delete_3').hide();
-                  $('#span_add_3').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
                   Swal.fire({
                      icon: 'success',
                      title: 'La imagen se eliminó correctamente',
@@ -1350,10 +1418,204 @@
                }
                if (id_encontrado != -1) {
                   array_imagenes.splice(id_encontrado, 1);
-                  $('#image_4').attr("src", imagen_default);
-                  $('#add_image_4').val("");
-                  $('#span_delete_4').hide();
-                  $('#span_add_4').html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_5() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_5") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_6() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_6") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_7() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_6") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_8() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_8") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'La imagen se eliminó correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  });
+               }
+            }
+
+            function delete_image_9() {
+               var id_encontrado = -1;
+               for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_9") {
+                     id_encontrado = i;
+                  }
+               }
+               if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                     $('#image_' + i).attr("src", imagen_default);
+                     $('#add_image_' + i).val("");
+                     $('#span_delete_' + i).hide();
+                     $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                     array_imagenes.forEach(function(item, index, array) {
+                        item.name = "imagen_" + index;
+                        $('#image_' + index).attr("src", item.imagen);
+                        $('#span_delete_' + index).show();
+                        if (index == 0) {
+                           $('#span_add_' + index).text("Portada");
+                        } else {
+                           $('#span_add_' + index).text("Cargada");
+                        }
+                     });
+                  }
                   Swal.fire({
                      icon: 'success',
                      title: 'La imagen se eliminó correctamente',
@@ -1411,6 +1673,7 @@
             }
 
             $(document).ready(function() {
+
                $("#subcategoria").select2({
                   placeholder: 'Seleccione la subcategoria',
                   allowClear: true,
@@ -1418,98 +1681,210 @@
                });
                initMap();
             });
-            /*   $('#btn_add_anuncio').click(function() {
-                 var seleccion_pais = $('#pais').val().trim();
-                 if (array_imagenes.length <= 0) {
-                    Swal.fire({
-                       icon: 'info',
-                       title: 'No hay imagenes cargadas',
-                       showConfirmButton: true
-                    });
-                 } else if (array_imagenes.length > 0) {
-                    var encontro_image1 = false;
-                    for (let i = 0; i < array_imagenes.length; i++) {
-                       if (array_imagenes[i].name == "image_1") {
-                          encontro_image1 = true
-                       }
-                    }
-                    if (encontro_image1) {
-                       if (seleccion_pais == "Ecuador") {
-                          swal.fire({
-                             title: '',
-                             html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
-                             showConfirmButton: false,
-                             allowOutsideClick: false,
-                             timer: 6000
-                          });
-                          $('#array_fotos').val(JSON.stringify(array_imagenes));
-                          $("#form_add_anuncio").submit();
-                          $('#btn_add_anuncio').prop('disabled', true);
-                       } else if (seleccion_pais == "") {
-                          $('#pac-input').val("");
-                          initMap();
-                       } else {
-                          $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                          $('#modal_error_ciudad').modal('show');
-                          initMap();
-                       }
-                    } else {
-                       Swal.fire({
-                          icon: 'info',
-                          title: 'La imagen para la portada no se encuentra cargada',
-                          showConfirmButton: true
-                       });
-                    }
-                 }
-              }); */
-            $("#form_add_anuncio").on('submit', function(evt) {
 
-               evt.preventDefault();
-               $('#array_fotos').val(JSON.stringify(array_imagenes));
+            $("#btn_add_anuncio").click(async function() {
+               var titulo = $('#titulo');
+               var categoria = $('#categoria');
+               var subcategoria = $('#subcategoria');
+               var precio = $('#precio');
+               var whatsapp = $('#whatsapp');
+               var decripcion = $('#descripcion');
                var seleccion_pais = $('#pais').val().trim();
-               if (array_imagenes.length > 0) {
-                  var encontro_image1 = false;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                     if (array_imagenes[i].name == "image_1") {
-                        encontro_image1 = true;
-                     }
-                  }
-                  if (encontro_image1) {
-                     if (seleccion_pais == "Ecuador") {
-                        swal.fire({
-                           title: '',
-                           html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4>Guardando...</h4></div>',
-                           showConfirmButton: false,
-                           allowOutsideClick: false,
-                           timer: 6000
-                        });
-                        $('#array_fotos').val(JSON.stringify(array_imagenes));
-                        $("#form_add_anuncio").submit();
-                        $('#btn_add_anuncio').prop('disabled', true);
-                     } else if (seleccion_pais == "") {
-                        $('#pac-input').val("");
-                        initMap();
+               if (titulo.val().trim() == "") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: titulo.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        titulo.focus();
                      } else {
-                        $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                        $('#modal_error_ciudad').modal('show');
-                        initMap();
+                        titulo.focus();
                      }
-                  } else {
-                     Swal.fire({
-                        icon: 'info',
-                        title: 'La imagen para la portada no se encuentra cargada',
-                        showConfirmButton: true
-                     });
-                  }
-               } else {
+                  });
+               } else if (categoria.val() == "0") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: categoria.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        categoria.focus();
+                     } else {
+                        categoria.focus();
+                     }
+                  });
+               } else if (subcategoria.val() == "0") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: subcategoria.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (subcategoria.isConfirmed) {
+                        subcategoria.focus();
+                     } else {
+                        subcategoria.focus();
+                     }
+                  });
+               } else if (precio.val().trim() == "") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: precio.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        precio.focus();
+                        precio.blur(function() {
+                           precio.focus();
+                        });
+                     } else {
+                        precio.focus();
+                     }
+                  });
+               } else if (whatsapp.val().trim() == "") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: whatsapp.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        whatsapp.focus();
+                     } else {
+                        whatsapp.focus();
+                     }
+                  });
+               } else if (decripcion.val().trim() == "") {
+                  Swal.fire({
+                     icon: 'info',
+                     title: decripcion.prop('placeholder') + ' es un campo requerido',
+                     showConfirmButton: true
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        decripcion.focus();
+
+                     } else {
+                        decripcion.focus();
+
+                     }
+                  });
+               } else if (array_imagenes.length == 0) {
                   Swal.fire({
                      icon: 'info',
                      title: 'No hay imagenes cargadas',
                      showConfirmButton: true
                   });
+               } else if (seleccion_pais == "") {
+                  $('#pac-input').val("");
+                  initMap();
+               } else if (seleccion_pais != "Ecuador") {
+                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                  $('#modal_error_ciudad').modal('show');
+                  initMap();
+                  $('#btn_add_anuncio').prop('disabled', false);
+               } else {
+                  swal.fire({
+                     title: '',
+                     html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4 id="mensajeAlert">Creando el anuncio...</h4></div>',
+                     showConfirmButton: false,
+                     allowOutsideClick: false,
+                     footer: '<h6>No realice acciones sobre la página</h6>'
+                  });
+                  $('#btn_add_anuncio').prop('disabled', true);
+                  var latAds = $("#lat").val();
+                  var lngAds = $('#lng').val();
+                  var cityAds = $('#city_main').val();
+                  var addressAds = $('#pac-input').val();
+                  var photoMain = {
+                     imagen: array_imagenes[0].imagen
+                  };
+                  var resultCreateAds = await createAds(titulo.val().trim(), categoria.val(), subcategoria.val(), precio.val().trim(), whatsapp.val().trim(), decripcion.val().trim(), JSON.stringify(photoMain), cityAds, latAds, lngAds, addressAds)
+                  resultCreateAds = JSON.parse(resultCreateAds);
+                  if (resultCreateAds.status == 404) {
+                     $('#btn_add_anuncio').prop('disabled', false);
+                     Swal.fire({
+                        icon: 'info',
+                        title: 'Lo sentimos esta opción solo esta disponible para los clientes',
+                        showConfirmButton: true
+                     });
+                  } else if (resultCreateAds.status == 500) {
+                     $('#btn_add_anuncio').prop('disabled', false);
+                     Swal.fire({
+                        icon: 'info',
+                        title: 'Lo sentimos esta opción solo esta disponible para los clientes registrados',
+                        showConfirmButton: true
+                     });
+                  } else {
+                     if (array_imagenes.length > 1) {
+                        for (let i = 1; i < array_imagenes.length; i++) {
+                           $('#mensajeAlert').text("Guardando imagen nro:" + i);
+                           var img = {
+                              imagen: array_imagenes[i].imagen
+                           }
+                           resultPhoto = await createPhoto(resultCreateAds.id, JSON.stringify(img));
+                        }
+                        setTimeout(() => {
+                           window.location = '<?= site_url("perfil/page") ?>';
+                        }, 1000);
+                        Swal.fire({
+                           icon: 'success',
+                           title: 'Anuncio creado correctamente',
+                           showConfirmButton: false,
+                           timer: 1500
+                        });
+
+                     } else {
+                        setTimeout(() => {
+                           window.location = '<?= site_url("perfil/page") ?>';
+                        }, 1000);
+                        Swal.fire({
+                           icon: 'success',
+                           title: 'Anuncio creado correctamente',
+                           showConfirmButton: false,
+                           timer: 1500
+                        });
+                     }
+
+                  }
                }
-               // tu codigo aqui
+
             });
+
+            async function createAds(titulo, categoria, subcategoria, precio, whatsapp, descripcion, photo, city_main, lat, lng, pac_input) {
+               return $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/add_anuncio') ?>",
+                  data: {
+                     titulo,
+                     categoria,
+                     subcategoria,
+                     precio,
+                     whatsapp,
+                     descripcion,
+                     photo,
+                     city_main,
+                     lat,
+                     lng,
+                     pac_input
+                  },
+                  success: function(result) {
+                     result = JSON.parse(result);
+                  }
+               })
+            }
+
+            async function createPhoto(id, photo) {
+               return $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/add_photo_anuncio') ?>",
+                  data: {
+                     id,
+                     photo
+                  },
+                  success: function(result) {
+                     result = JSON.parse(result);
+                  }
+               })
+            }
 
             function change_categoria() {
                var a = $("select[name=categoria]").val();
@@ -2012,5 +2387,11 @@
 
             #uploads li {
                list-style: none;
+            }
+
+            .btn-primary {
+               color: #fff;
+               background-color: #8c1822;
+               border-color: #8c1822;
             }
          </style>
