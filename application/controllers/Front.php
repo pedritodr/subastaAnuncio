@@ -268,9 +268,17 @@ class Front extends CI_Controller
 
     public function update_anuncio()
     {
-        if (!in_array($this->session->userdata('role_id'), [2])) {
-            $this->log_out();
-            redirect('login');
+        ini_set('max_execution_time', '0');
+        $user_id = $this->session->userdata('user_id');
+        if (!$user_id) {
+            echo json_encode(['status' => 500]);
+            exit();
+        }
+        if ($this->session->userdata('role_id')) {
+            if ($this->session->userdata('role_id') != 2) {
+                echo json_encode(['status' => 404]);
+                exit();
+            }
         }
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Pais_model', 'pais');
@@ -282,13 +290,11 @@ class Front extends CI_Controller
         $subcate_id = $this->input->post('subcategoria');
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
-        //  $ciudad = $this->input->post('ciudad');
+        $photo = json_decode($_POST['photo']);
         $user_id = $this->session->userdata('user_id');
-        $direccion = $this->input->post('pac-input');
-        $anuncio_id = $this->input->post('anuncio_id');
+        $direccion = $this->input->post('pac_input');
+        $anuncio_id = $this->input->post('anuncioId');
         $city = $this->input->post('city_main');
-        $data = json_decode($_POST['array_fotos']);
-
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -305,50 +311,33 @@ class Front extends CI_Controller
             $ciudad_id = 4;
         }
         $object = $this->anuncio->get_by_id($anuncio_id);
-
-        //establecer reglas de validacion
-        $this->form_validation->set_rules('titulo', translate('titulo_anun_lang'), 'required');
-
-        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
-            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("perfil/page/");
+        define('UPLOAD_DIR', './uploads/anuncio/');
+        $main_photo = false;
+        $new_imagen = null;
+        if ($photo->foto_anuncio_id == null) {
+            $img =  $photo->imagen;
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = UPLOAD_DIR . uniqid() . '.jpg';
+            $success = file_put_contents($file, $data);
+            $main_photo = true;
+            $new_imagen = $file;
         } else {
-            define('UPLOAD_DIR', './uploads/anuncio/');
-            $fotos = [];
-            $salva = [];
-            $main_photo = "editar";
-            if ($data) {
-                foreach ($data as $item) {
-                    if ($item->foto_anuncio_id == null) {
-                        if ($item->name == "image_1") {
-                            $img =  $item->imagen;
-                            $img = str_replace('data:image/png;base64,', '', $img);
-                            $img = str_replace(' ', '+', $img);
-                            $data = base64_decode($img);
-                            $file = UPLOAD_DIR . uniqid() . '.jpg';
-                            $success = file_put_contents($file, $data);
-                            $main_photo = $file;
-                        } else {
-                            $img =  $item->imagen;
-                            $img = str_replace('data:image/png;base64,', '', $img);
-                            $img = str_replace(' ', '+', $img);
-                            $data = base64_decode($img);
-                            $file = UPLOAD_DIR . uniqid() . '.jpg';
-                            $success = file_put_contents($file, $data);
-                            array_push($fotos, $file);
-                        }
-                    } else {
-                        if ($item->name != "image_1") {
-                            array_push($salva, $item);
-                        }
-                    }
+            if ($anuncio_id != $photo->foto_anuncio_id) {
+                $main_photo = true;
+                $obj = $this->photo_anuncio->get_by_id($photo->foto_anuncio_id);
+                if ($obj) {
+                    $this->photo_anuncio->delete($photo->foto_anuncio_id);
+                    $new_imagen = $photo->id;
                 }
             }
-            if ($main_photo != "editar") {
+        }
+        if ($main_photo) {
+            if ($new_imagen) {
                 if (file_exists($object->photo)) {
                     unlink($object->photo);
                 }
-
                 $datos = [
                     'titulo' => $titulo,
                     'descripcion' => $descripcion,
@@ -359,7 +348,7 @@ class Front extends CI_Controller
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
                     'direccion' => $direccion,
-                    'photo' => $main_photo
+                    'photo' => $new_imagen
                 ];
             } else {
                 $datos = [
@@ -371,45 +360,76 @@ class Front extends CI_Controller
                     'lat' => $lat,
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
-                    'direccion' => $direccion,
+                    'direccion' => $direccion
                 ];
             }
-
-            $id = $this->anuncio->update($anuncio_id, $datos);
-            $foto_object = $this->anuncio->get_all_fotos(['anuncio_id' => $anuncio_id]);
-
-            foreach ($foto_object as $foto) {
-                $encontro = false;
-                if (count($salva) > 0) {
-                    foreach ($salva as $item) {
-                        if ($item->foto_anuncio_id == $foto->photo_anuncio_id) {
-                            $encontro = true;
-                        }
-                    }
-                }
-
-                if (!$encontro) {
-                    if (file_exists($foto->photo_anuncio)) {
-                        unlink($foto->photo_anuncio);
-                    }
-                    $this->photo_anuncio->delete($foto->photo_anuncio_id);
-                }
-            }
-
-            if (count($fotos) > 0) {
-
-                for ($i = 0; $i < count($fotos); $i++) {
-                    $img =  $fotos[$i];
-                    $this->photo_anuncio->create(['photo_anuncio' => $img, 'anuncio_id' => $anuncio_id]);
-                }
-            }
-            //   die();
-            $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
+        } else {
+            $datos = [
+                'titulo' => $titulo,
+                'descripcion' => $descripcion,
+                'precio' => $precio,
+                'whatsapp' => $whatsapp,
+                'subcate_id' => $subcate_id,
+                'lat' => $lat,
+                'lng' => $lng,
+                'ciudad_id' => $ciudad_id,
+                'direccion' => $direccion
+            ];
+        }
+        $row = $this->anuncio->update($anuncio_id, $datos);
+        if ($row >= 0) {
             $this->session->set_userdata('validando', 2);
-            redirect("perfil/page/");
+            echo json_encode(['status' => 200, 'id' => $anuncio_id]);
+            exit();
         }
     }
-
+    public function update_photo_anuncio()
+    {
+        ini_set('max_execution_time', '0');
+        define('UPLOAD_DIR', './uploads/anuncio/');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model('Photo_anuncio_model', 'photo_anuncio');
+        $id = $this->input->post('id');
+        $photos = json_decode($_POST['photos']);
+        if (count($photos) > 0) {
+            $salva = [];
+            $all_fotos_ads = $this->photo_anuncio->get_by_anuncio_id($id);
+            foreach ($photos as $item) {
+                if ($item->foto_anuncio_id == null) {
+                    $img =  $item->imagen;
+                    $img = str_replace('data:image/png;base64,', '', $img);
+                    $img = str_replace(' ', '+', $img);
+                    $data = base64_decode($img);
+                    $file = UPLOAD_DIR . uniqid() . '.jpg';
+                    // $image = uniqid() . '.jpg';
+                    $success = file_put_contents($file, $data);
+                    $creado =  $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $id]);
+                } else {
+                    $salva[] = $item;
+                }
+            }
+            foreach ($all_fotos_ads as $item) {
+                $encontrado = false;
+                foreach ($salva as $s) {
+                    if ($s->foto_anuncio_id == $item->photo_anuncio_id) {
+                        $encontrado = true;
+                    }
+                }
+                if (!$encontrado) {
+                    $this->photo_anuncio->delete($item->photo_anuncio_id);
+                    if (file_exists($item->photo_anuncio)) {
+                        unlink($item->photo_anuncio);
+                    }
+                }
+            }
+            echo json_encode(['status' => 200]);
+            exit();
+        } else {
+            $this->photo_anuncio->delete_fotos($id);
+            echo json_encode(['status' => 200]);
+            exit();
+        }
+    }
 
     public function get_ciudad()
     { //buscar ciudad
@@ -1049,22 +1069,23 @@ class Front extends CI_Controller
 
     public function add_photo_anuncio()
     {
-
         ini_set('max_execution_time', '0');
         define('UPLOAD_DIR', './uploads/anuncio/');
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Photo_anuncio_model', 'photo_anuncio');
         $id = $this->input->post('id');
-        $photo = json_decode($_POST['photo']);
-        $img =  $photo->imagen;
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $data = base64_decode($img);
-        $file = UPLOAD_DIR . uniqid() . '.jpg';
-        // $image = uniqid() . '.jpg';
-        $success = file_put_contents($file, $data);
-        $creado =  $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $id]);
-        if ($creado) {
+        $photos = json_decode($_POST['photos']);
+        if (count($photos) > 0) {
+            foreach ($photos as $item) {
+                $img =  $item->imagen;
+                $img = str_replace('data:image/png;base64,', '', $img);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+                $file = UPLOAD_DIR . uniqid() . '.jpg';
+                // $image = uniqid() . '.jpg';
+                $success = file_put_contents($file, $data);
+                $creado =  $this->photo_anuncio->create(['photo_anuncio' => $file, 'anuncio_id' => $id]);
+            }
             echo json_encode(['status' => 200]);
             exit();
         } else {
@@ -1072,6 +1093,7 @@ class Front extends CI_Controller
             exit();
         }
     }
+
     public function destacar_anuncio()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {

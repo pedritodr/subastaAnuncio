@@ -339,7 +339,6 @@
                   if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this.files[0].type == "image/jpg") {
                      if (this.files[0].size < peso_maximo) {
                         if (array_imagenes.length > 0) {
-                           console.log(array_imagenes)
                            for (let i = 0; i < array_imagenes.length; i++) {
                               if (array_imagenes[i].name == "image_0") {
                                  encontro = true;
@@ -357,7 +356,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_0") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*    array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -446,7 +445,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_1") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*   array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -534,7 +533,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_2") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*    array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -622,7 +621,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_3") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*    array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -710,7 +709,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_4") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*   array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -798,7 +797,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_5") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*     array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -886,7 +885,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_6") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*  array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -974,7 +973,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_7") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*   array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -1062,7 +1061,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_8") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*  array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -1150,7 +1149,7 @@
                         if (encontro && !repetido) {
                            if (name_contenedor == "image_9") {
                               if (id_encontrado != -1) {
-                                 array_imagenes.splice(id_encontrado, 1);
+                                 /*     array_imagenes.splice(id_encontrado, 1); */
                                  valida_crear = true;
                               }
                            }
@@ -1231,16 +1230,29 @@
                      initialAvatarURL = avatar.src;
                      avatar = canvas.toDataURL();
                      if (array_imagenes.length > 0) {
-                        var indice = array_imagenes.length;
-                        $('#image_' + indice).attr("src", avatar);
-                        $('#span_delete_' + indice).show();
-                        $('#span_add_' + indice).text("Cargada");
-                        array_imagenes.push({
-                           "id": name_archivo,
-                           "imagen": avatar,
-                           'foto_anuncio_id': null,
-                           'name': "image_" + indice
-                        });
+                        if (typeof array_imagenes[imagen_click] !== 'undefined') {
+                           $('#image_' + imagen_click).attr("src", avatar);
+                           $('#span_delete_' + imagen_click).show();
+                           if (imagen_click == 0) {
+                              $('#span_add_' + imagen_click).text("Portada");
+                           } else {
+                              $('#span_add_' + imagen_click).text("Cargada");
+                           }
+                           array_imagenes[imagen_click].foto_anuncio_id = null;
+                           array_imagenes[imagen_click].id = name_archivo;
+                           array_imagenes[imagen_click].imagen = avatar;
+                        } else {
+                           var indice = array_imagenes.length;
+                           $('#image_' + indice).attr("src", avatar);
+                           $('#span_delete_' + indice).show();
+                           $('#span_add_' + indice).text("Cargada");
+                           array_imagenes.push({
+                              "id": name_archivo,
+                              "imagen": avatar,
+                              'foto_anuncio_id': null,
+                              'name': "image_" + indice
+                           });
+                        }
                      } else {
                         $('#image_0').attr("src", avatar);
                         $('#span_delete_0').show();
@@ -1281,7 +1293,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1318,7 +1330,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1354,7 +1366,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1390,7 +1402,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1426,7 +1438,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1462,7 +1474,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1498,7 +1510,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1534,7 +1546,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1570,7 +1582,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1606,7 +1618,7 @@
                   }
                   if (array_imagenes.length > 0) {
                      array_imagenes.forEach(function(item, index, array) {
-                        item.name = "imagen_" + index;
+                        item.name = "image_" + index;
                         $('#image_' + index).attr("src", item.imagen);
                         $('#span_delete_' + index).show();
                         if (index == 0) {
@@ -1637,14 +1649,17 @@
 
             function llamar_add_imagen_2() {
                $('#add_image_2').click();
+               imagen_click = 2;
             }
 
             function llamar_add_imagen_3() {
                $('#add_image_3').click();
+               imagen_click = 3;
             }
 
             function llamar_add_imagen_4() {
                $('#add_image_4').click();
+               imagen_click = 4;
             }
 
             function llamar_add_imagen_5() {
@@ -1814,24 +1829,37 @@
                         showConfirmButton: true
                      });
                   } else {
-                     if (array_imagenes.length > 1) {
-                        for (let i = 1; i < array_imagenes.length; i++) {
-                           $('#mensajeAlert').text("Guardando imagen nro:" + i);
-                           var img = {
-                              imagen: array_imagenes[i].imagen
+                     array_imagenes.splice(0, 1);
+                     if (array_imagenes.length > 0) {
+                        $('#mensajeAlert').text("Guardando imagenes");
+                        setTimeout(async () => {
+                           resultPhoto = await createPhoto(resultCreateAds.id, JSON.stringify(array_imagenes));
+                           resultPhoto = JSON.parse(resultPhoto);
+                           if (resultPhoto.status == 200) {
+                              setTimeout(() => {
+                                 window.location = '<?= site_url("perfil/page") ?>';
+                              }, 1000);
+                              Swal.fire({
+                                 icon: 'success',
+                                 title: 'Anuncio creado correctamente',
+                                 showConfirmButton: false,
+                                 timer: 1500
+                              });
+                           } else {
+                              Swal.fire({
+                                 icon: 'error',
+                                 title: 'Ocurrido un error vuelva a intentarlo',
+                                 showConfirmButton: false,
+                                 timer: 1500
+                              }).then((result) => {
+                                 if (result.isConfirmed) {
+                                    location.reload();
+                                 } else {
+                                    location.reload();
+                                 }
+                              });
                            }
-                           resultPhoto = await createPhoto(resultCreateAds.id, JSON.stringify(img));
-                        }
-                        setTimeout(() => {
-                           window.location = '<?= site_url("perfil/page") ?>';
-                        }, 1000);
-                        Swal.fire({
-                           icon: 'success',
-                           title: 'Anuncio creado correctamente',
-                           showConfirmButton: false,
-                           timer: 1500
-                        });
-
+                        }, 2000);
                      } else {
                         setTimeout(() => {
                            window.location = '<?= site_url("perfil/page") ?>';
@@ -1872,13 +1900,13 @@
                })
             }
 
-            async function createPhoto(id, photo) {
+            async function createPhoto(id, photos) {
                return $.ajax({
                   type: 'POST',
                   url: "<?= site_url('front/add_photo_anuncio') ?>",
                   data: {
                      id,
-                     photo
+                     photos
                   },
                   success: function(result) {
                      result = JSON.parse(result);
