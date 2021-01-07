@@ -188,7 +188,7 @@
                                                               <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
                                                           <?php } else { ?>
                                                               <li>
-                                                                  <a title="Actilet anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
+                                                                  <a title="Activar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
                                                               </li>
                                                           <?php } ?>
                                                           <?php if ($item->destacado == 0) { ?>
