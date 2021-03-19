@@ -10,7 +10,7 @@
       <![endif]-->
     <meta name="description" content="">
     <meta name="author" content="ScriptsBundle">
-    <title><?= isset($data_seo) ? $data_seo[1] : "Subastas | Anuncioss"; ?></title>
+    <title><?= isset($data_seo) ? $data_seo[1] : "Subastas | Anuncios"; ?></title>
     <?php
    if (isset($data_seo))
       meta_tags($e = $data_seo[0], $title = $data_seo[1], $desc = $data_seo[2], $imgurl = $data_seo[3], $url = $data_seo[4]);
@@ -194,7 +194,7 @@
                                         <?= translate('inicio_lang') ?> <i></i></a>
                                 </li>
                                 <li>
-                                    <a href="<?= site_url('financiamientos') ?>"> Financiamiento <i></i></a>
+                                    <a href="<?= site_url('financiamientos') ?>"> Financiamientos <i></i></a>
                                 </li>
                                 <li>
                                     <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?>
