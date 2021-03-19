@@ -214,7 +214,7 @@ class Front extends CI_Controller
     }
     public function update_anuncio_index($anuncio_id)
     {
-        if (!in_array($this->session->userdata('role_id'), [2])) {
+        if (!in_array($this->session->userdata('role_id'), [1,2])) {
             $this->log_out();
             redirect('login');
         }
@@ -275,7 +275,7 @@ class Front extends CI_Controller
             exit();
         }
         if ($this->session->userdata('role_id')) {
-            if ($this->session->userdata('role_id') != 2) {
+            if (!in_array($this->session->userdata('role_id'), [1,2])) {
                 echo json_encode(['status' => 404]);
                 exit();
             }
@@ -295,6 +295,7 @@ class Front extends CI_Controller
         $direccion = $this->input->post('pac_input');
         $anuncio_id = $this->input->post('anuncioId');
         $city = $this->input->post('city_main');
+        $url = $this->input->post('url');
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -348,7 +349,8 @@ class Front extends CI_Controller
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
                     'direccion' => $direccion,
-                    'photo' => $new_imagen
+                    'photo' => $new_imagen,
+                    'url'=>$url
                 ];
             } else {
                 $datos = [
@@ -360,7 +362,8 @@ class Front extends CI_Controller
                     'lat' => $lat,
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
-                    'direccion' => $direccion
+                    'direccion' => $direccion,
+                    'url'=>$url
                 ];
             }
         } else {
@@ -373,7 +376,8 @@ class Front extends CI_Controller
                 'lat' => $lat,
                 'lng' => $lng,
                 'ciudad_id' => $ciudad_id,
-                'direccion' => $direccion
+                'direccion' => $direccion,
+                'url'=>$url
             ];
         }
         $row = $this->anuncio->update($anuncio_id, $datos);
@@ -960,7 +964,7 @@ class Front extends CI_Controller
             exit();
         }
         if ($this->session->userdata('role_id')) {
-            if ($this->session->userdata('role_id') != 2) {
+            if (!in_array($this->session->userdata('role_id'), [1,2])) {
                 echo json_encode(['status' => 404]);
                 exit();
             }
@@ -981,6 +985,7 @@ class Front extends CI_Controller
         $email = $this->session->userdata('email');
         $direccion = $this->input->post('pac_input');
         $city = $this->input->post('city_main');
+        $url = $this->input->post('url');
         if ($city != null) {
             $city = strtoupper($city);
             $ciudad_object = $this->pais->get_city($city);
@@ -1023,7 +1028,8 @@ class Front extends CI_Controller
             'direccion' => $direccion,
             'fecha' =>  date("Y-m-d"),
             'destacado' => 0,
-            'fecha_vencimiento' => $fecha_fin
+            'fecha_vencimiento' => $fecha_fin,
+            'url'=>$url
         ];
         $id = false;
         if ($membresia) {

@@ -47,7 +47,7 @@ class Anuncio_model extends CI_Model
     function get_all_anuncios_id($id)
     {
 
-        $this->db->select('anuncio.destacado,cate_anuncio.cate_anuncio_id,user.photo as photo_perfil,user.email,user.phone,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->select('anuncio.url,anuncio.destacado,cate_anuncio.cate_anuncio_id,user.photo as photo_perfil,user.email,user.phone,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
         $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
         $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
@@ -262,7 +262,7 @@ class Anuncio_model extends CI_Model
     function get_all_anuncios_with_pagination($limit, $start)
     {
 
-        $this->db->select('anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->select('anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
         $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
         $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
