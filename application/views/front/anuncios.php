@@ -5,21 +5,20 @@ if (empty($mastercat))
 
 <!-- Master Slider -->
 <?php if (count($all_banners) > 0) { ?>
-<div class="master-slider ms-skin-default banner2" id="masterslider">
-    <?php foreach ($all_banners as $item) { ?>
-    <div class="ms-slide slide-1" data-delay="5">
-        <img class="img-master" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>"
-            data-src="<?= base_url($item->foto) ?>" alt="<?= $item->foto ?>" />
-        <!--  <h3 class="ms-layer title4 font-white font-uppercase font-thin-xs" style="left:90px; top:170px;" data-type="text" data-delay="2000" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)">2017 Ducati Panigale 959 </h3>
+    <div class="master-slider ms-skin-default banner2" id="masterslider">
+        <?php foreach ($all_banners as $item) { ?>
+            <div class="ms-slide slide-1" data-delay="5">
+                <img class="img-master" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="<?= base_url($item->foto) ?>" alt="<?= $item->foto ?>" />
+                <!--  <h3 class="ms-layer title4 font-white font-uppercase font-thin-xs" style="left:90px; top:170px;" data-type="text" data-delay="2000" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)">2017 Ducati Panigale 959 </h3>
                 <h3 class="ms-layer title4 font-white font-thin-xs" style="left:90px; top:220px;" data-type="text" data-delay="2500" data-duration="2000" data-ease="easeOutExpo" data-effect="skewleft(30,80)"><span class="font-color">Brand new 0 kms</span></h3>
 
                 <h5 class="ms-layer text1 font-white" style="left: 92px; top: 295px;" data-type="text" data-effect="bottom(45)" data-duration="2500" data-delay="3000" data-ease="easeOutExpo">Lorem Ipsum is simply dummy text of the printing typesetting<br>
                     industry is proident sunt in culpa officia deserunt mollit.
                 </h5>
                 <a class="ms-layer btn3 uppercase" style="left:95px; top: 405px;" data-type="text" data-delay="3500" data-ease="easeOutExpo" data-duration="2000" data-effect="scale(1.5,1.6)"> Get Started Now!</a> -->
+            </div>
+        <?php } ?>
     </div>
-    <?php } ?>
-</div>
 <?php } ?>
 <!-- end Master Slider -->
 <div id="search-section">
@@ -33,15 +32,14 @@ if (empty($mastercat))
                         <option label="<?= translate("select_category_lang"); ?>"></option>
                         <option value="0">TODAS LAS CIUDADES </option>
                         <?php if ($all_ciudad) { ?>
-                        <?php foreach ($all_ciudad as $item) { ?>
-                        <?php if ($this->session->userdata('session_ciudad')) { ?>
-                        <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected
-                            <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
-                        <?php  } else { ?>
-                        <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
-                        <?php } ?>
+                            <?php foreach ($all_ciudad as $item) { ?>
+                                <?php if ($this->session->userdata('session_ciudad')) { ?>
+                                    <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php  } else { ?>
+                                    <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php } ?>
 
-                        <?php } ?>
+                            <?php } ?>
 
                         <?php } ?>
 
@@ -49,8 +47,7 @@ if (empty($mastercat))
                 </div>
                 <!-- Search Field -->
                 <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
-                    <input name="anuncio_palabra" type="text" class="form-control"
-                        placeholder="<?= translate("buscar_palabra_lang"); ?>" />
+                    <input name="anuncio_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
                 </div>
                 <!-- Search Button -->
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
@@ -77,146 +74,142 @@ if (empty($mastercat))
                     <!-- Row -->
                     <div class="row">
                         <?php if ($all_anuncios) { ?>
-                        <?php if (count($all_anuncios) > 0) { ?>
-                        <!-- Sorting Filters -->
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                            <!-- Sorting Filters Breadcrumb -->
-                            <div class="filter-brudcrums">
-                                <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> -
-                                        <?= $fin ?></span> <?= translate("de_lang"); ?> <span
-                                        class="showed"><?= $resultados ?></span>
-                                    <?= translate("resultados_lang"); ?></span>
-                            </div>
-                            <!-- Sorting Filters Breadcrumb End -->
-                        </div>
-                        <?php } ?>
+                            <?php if (count($all_anuncios) > 0) { ?>
+                                <!-- Sorting Filters -->
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <!-- Sorting Filters Breadcrumb -->
+                                    <div class="filter-brudcrums">
+                                        <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> -
+                                                <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span>
+                                            <?= translate("resultados_lang"); ?></span>
+                                    </div>
+                                    <!-- Sorting Filters Breadcrumb End -->
+                                </div>
+                            <?php } ?>
                         <?php } ?>
                         <!-- Sorting Filters End-->
                         <div class="clearfix"></div>
                         <!-- Ads Archive --><?php if ($all_anuncios) { ?>
-                        <?php foreach ($all_anuncios as $item) {
+                            <?php foreach ($all_anuncios as $item) {
 
                             ?>
-                        <div class="ads-list-archive">
-                            <!-- Image Block -->
-                            <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
-                                <!-- Img Block -->
-                                <div class="ad-archive-img">
+                                <div class="ads-list-archive">
+                                    <!-- Image Block -->
+                                    <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
+                                        <!-- Img Block -->
+                                        <div class="ad-archive-img">
 
-                                    <a style="cursor:pointer"
-                                        href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
-                                        <!--   <div class="ribbon popular"></div> -->
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
+                                                <!--   <div class="ribbon popular"></div> -->
 
 
-                                        <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
+                                                <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
 
-                                        <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
-                                        <?php } else { ?>
-                                        <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
+                                                    <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                                <?php } else { ?>
+                                                    <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
 
-                                        <?php } ?>
+                                                <?php } ?>
 
-                                    </a>
-                                    <?php if ($item->destacado == 1) { ?>
-                                    <div class="ribbon popular"><?= translate("featured_lang") ?></div>
-                                    <?php } ?>
-                                </div>
+                                            </a>
+                                            <?php if ($item->destacado == 1) { ?>
+                                                <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                            <?php } ?>
+                                        </div>
 
-                                <!-- Img Block -->
-                            </div>
-                            <!-- Ads Listing -->
-                            <div class="clearfix visible-xs-block"></div>
-                            <!-- Content Block -->
-                            <div class="col-lg-9 col-md-9 col-sm-9 no-padding">
-                                <!-- Ad Desc -->
-                                <div class="ad-archive-desc">
-                                    <!-- Price -->
-                                    <div class="ad-price">
-                                        <font style="vertical-align: inherit;">
-                                            <font style="vertical-align: inherit;">$
-                                                <?= number_format($item->precio, 2) ?></font>
-                                        </font>
+                                        <!-- Img Block -->
                                     </div>
-                                    <!-- Title -->
-                                    <a style="cursor:pointer"
-                                        href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
-                                        <h6>
-                                            <font style="vertical-align: inherit;">
-                                                <font style="vertical-align: inherit;"><?= $item->corto ?></font>
-                                            </font>
-                                        </h6>
-                                    </a>
-                                    <!-- Category -->
-                                    <div class="category-title"> <span><a href="#">
-                                                <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;">
-                                                        <?= $item->categoria ?>/<?= $item->subcategoria ?></font>
-                                                </font>
-                                            </a></span> </div>
-                                    <!-- Short Description -->
+                                    <!-- Ads Listing -->
                                     <div class="clearfix visible-xs-block"></div>
-                                    <p class="hidden-sm">
-                                        <font style="vertical-align: inherit;">
-                                            <font style="vertical-align: inherit;"><?= $item->corta ?></font>
-                                        </font>
-                                    </p>
-                                    <!-- Ad Features -->
-                                    <ul class="add_info">
-                                        <!-- Contact Details -->
-                                        <li>
-                                            <div class="custom-tooltip tooltip-effect-4">
-                                                <span class="tooltip-item"><i class="fa fa-phone"></i></span>
-                                                <div class="tooltip-content">
-                                                    <span class="label label-success">
-                                                        <font style="vertical-align: inherit;">
-                                                            <font style="vertical-align: inherit;">+
-                                                                <?= $item->whatsapp ?></font>
-                                                        </font>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Address -->
-                                        <li>
-                                            <div class="custom-tooltip tooltip-effect-4">
-                                                <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
-                                                <div class="tooltip-content">
-
-                                                    <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;">
-                                                            <?= $item->direccion ?>
-                                                        </font>
-                                                    </font>
-                                                </div>
-                                            </div>
-                                        </li>
-
-
-                                    </ul>
-                                    <!-- Ad History -->
-                                    <div style="margin-top:5px">
-
-                                        <div class="ad-meta"> <a
-                                                href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"
-                                                class="btn btn-success"><i class="fa fa-eye"></i>
+                                    <!-- Content Block -->
+                                    <div class="col-lg-9 col-md-9 col-sm-9 no-padding">
+                                        <!-- Ad Desc -->
+                                        <div class="ad-archive-desc">
+                                            <!-- Price -->
+                                            <div class="ad-price">
                                                 <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;">
-                                                        <?= translate("ver_info_lang"); ?></font>
+                                                    <font style="vertical-align: inherit;">$
+                                                        <?= number_format($item->precio, 2) ?></font>
                                                 </font>
-                                            </a> </div>
-                                        <?php if($item->url !='' || $item->url != null){?>
-                                        <div class="ad-meta"> <a href="<?= $item->url ?>" class="btn btn-primary"
-                                                style="margin-right:4px">Comprar</a> </div>
-                                        <?php } ?>
+                                            </div>
+                                            <!-- Title -->
+                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
+                                                <h6>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"><?= $item->corto ?></font>
+                                                    </font>
+                                                </h6>
+                                            </a>
+                                            <!-- Category -->
+                                            <div class="category-title"> <span><a href="#">
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                                <?= $item->categoria ?>/<?= $item->subcategoria ?></font>
+                                                        </font>
+                                                    </a></span> </div>
+                                            <!-- Short Description -->
+                                            <div class="clearfix visible-xs-block"></div>
+                                            <p class="hidden-sm">
+                                                <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;"><?= $item->corta ?></font>
+                                                </font>
+                                            </p>
+                                            <!-- Ad Features -->
+                                            <ul class="add_info">
+                                                <!-- Contact Details -->
+                                                <li>
+                                                    <div class="custom-tooltip tooltip-effect-4">
+                                                        <span class="tooltip-item"><i class="fa fa-phone"></i></span>
+                                                        <div class="tooltip-content">
+                                                            <span class="label label-success">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <font style="vertical-align: inherit;">+
+                                                                        <?= $item->whatsapp ?></font>
+                                                                </font>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- Address -->
+                                                <li>
+                                                    <div class="custom-tooltip tooltip-effect-4">
+                                                        <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
+                                                        <div class="tooltip-content">
+
+                                                            <font style="vertical-align: inherit;">
+                                                                <font style="vertical-align: inherit;">
+                                                                    <?= $item->direccion ?>
+                                                                </font>
+                                                            </font>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+
+                                            </ul>
+                                            <!-- Ad History -->
+                                            <div style="margin-top:5px">
+
+                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                                <?= translate("ver_info_lang"); ?></font>
+                                                        </font>
+                                                    </a> </div>
+                                                <?php if (isset($item->url)) {
+                                                        if ($item->url != '' || $item->url != null) { ?>
+                                                        <div class="ad-meta"> <a href="<?= $item->url ?>" class="btn btn-primary" style="margin-right:4px">Comprar</a> </div>
+                                                <?php }
+                                                    } ?>
+                                            </div>
+                                        </div>
+                                        <!-- Ad Desc End -->
                                     </div>
+                                    <!-- Content Block End -->
                                 </div>
-                                <!-- Ad Desc End -->
-                            </div>
-                            <!-- Content Block End -->
-                        </div>
-                        <?php } ?>
+                            <?php } ?>
                         <?php } else { ?>
-                        <p class="text-center"><?= translate("n_resultados"); ?></p>
+                            <p class="text-center"><?= translate("n_resultados"); ?></p>
                         <?php } ?>
                         <!-- Ads Archive End -->
                         <div class="clearfix"></div>
@@ -243,8 +236,7 @@ if (empty($mastercat))
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <!-- Title -->
                                     <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                            href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <i class="more-less glyphicon glyphicon-plus"></i>
                                             <?= translate("categories_lang"); ?>
                                         </a>
@@ -252,333 +244,309 @@ if (empty($mastercat))
                                     <!-- Title End -->
                                 </div>
                                 <!-- Content -->
-                                <div id="collapseOne" class="panel-collapse " role="tabpanel"
-                                    aria-labelledby="headingOne">
+                                <div id="collapseOne" class="panel-collapse " role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body categories">
                                         <?= form_open_multipart("search_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
                                         <ul>
                                             <?php $category_id = $this->session->userdata('session_categoria'); ?>
                                             <?php if (!$category_id) { ?>
 
-                                            <li>
+                                                <li>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a style="cursor:pointer; color:#2a3681" href="<?= site_url('anuncios/page'); ?>">
+                                                                    <i style="color:#8c1822ab" class="fa fa-tags"></i>
+                                                                    Todas las categorías </a>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                            <?php } else { ?>
 
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a style="cursor:pointer; color:#2a3681"
-                                                                href="<?= site_url('anuncios/page'); ?>">
+                                                            <a style="cursor:pointer; color:#2a3681" href="<?= site_url('anuncios/page'); ?>">
                                                                 <i style="color:#8c1822ab" class="fa fa-tags"></i>
-                                                                Todas las categorías </a>
+                                                                Todas las categorías</a>
                                                         </h4>
                                                     </div>
                                                 </div>
 
-                                            </li>
-                                            <?php } else { ?>
-
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a style="cursor:pointer; color:#2a3681"
-                                                            href="<?= site_url('anuncios/page'); ?>">
-                                                            <i style="color:#8c1822ab" class="fa fa-tags"></i>
-                                                            Todas las categorías</a>
-                                                    </h4>
-                                                </div>
-                                            </div>
-
                                             <?php } ?>
                                             <?php if (!$category_id) { ?>
-                                            <?php if ($categories) { ?>
-                                            <div class="panel-group" id="accordion2">
-                                                <?php
+                                                <?php if ($categories) { ?>
+                                                    <div class="panel-group" id="accordion2">
+                                                        <?php
                                                         $i = 0;
                                                         foreach ($categories as $item) {
                                                             $i++;
                                                         ?>
-                                                <!--Incia foreach --->
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a data-toggle="collapse" data-parent="#accordion2"
-                                                                href="#collapse<?= $i; ?>">
-                                                                <i><img style="width:10%"
-                                                                        src="<?= base_url($item->photo) ?>" alt=""></i>
-                                                                <?= ucwords($item->nombre); ?> </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
-                                                        <div class="panel-body">
-                                                            <?php
+                                                            <!--Incia foreach --->
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <h4 class="panel-title">
+                                                                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i; ?>">
+                                                                            <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                            <?= ucwords($item->nombre); ?> </a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
+                                                                    <div class="panel-body">
+                                                                        <?php
                                                                         foreach ($subcategoria as $result) {
                                                                             if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                         ?>
 
-                                                            <p><a style="color:black;"
-                                                                    onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                    <?= ucwords($result->nombre); ?>
-                                                                </a>
-                                                            </p>
-                                                            <?php
+                                                                                <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                    </a>
+                                                                                </p>
+                                                                        <?php
                                                                             }
                                                                         }
                                                                         ?>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php } ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
 
 
-                                                <?php } ?>
+                                                    <?php } ?>
                                                 <?php } else {
                                                 $i = 0;
                                                 ?>
-                                                <div class="panel-group" id="accordion2">
+                                                    <div class="panel-group" id="accordion2">
 
-                                                    <?php foreach ($categories as $item) {
+                                                        <?php foreach ($categories as $item) {
                                                             $i++; ?>
-                                                    <?php if ($item->cate_anuncio_id == $mastercat) { ?>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a data-toggle="collapse" data-parent="#accordion2"
-                                                                    href="#collapse<?= $i; ?>">
-                                                                    <i><img style="width:10%"
-                                                                            src="<?= base_url($item->photo) ?>"
-                                                                            alt=""></i>
-                                                                    <?= ucwords($item->nombre); ?> </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse in">
-                                                            <div class="panel-body">
-                                                                <?php
+                                                            <?php if ($item->cate_anuncio_id == $mastercat) { ?>
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i; ?>">
+                                                                                <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                                <?= ucwords($item->nombre); ?> </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapse<?= $i; ?>" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <?php
                                                                             foreach ($subcategoria as $result) {
 
                                                                                 if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                             ?>
-                                                                <?php
+                                                                                    <?php
 
                                                                                     if ($result->subcate_id == $subcate) {
 
                                                                                     ?>
-                                                                <div id="collapse<?= $i; ?>"
-                                                                    class="panel-collapse collapse in">
-                                                                    <div class="panel-body">
-                                                                        <?php
+                                                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse in">
+                                                                                            <div class="panel-body">
+                                                                                                <?php
                                                                                                 foreach ($subcategoria as $result) {
                                                                                                     if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                                                 ?>
 
-                                                                        <?php
+                                                                                                        <?php
                                                                                                         if ($result->subcate_id == $subcate) {
                                                                                                         ?>
-                                                                        <p><a style="color:red;"
-                                                                                onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                                <?= ucwords($result->nombre); ?>
-                                                                            </a></p>
-                                                                        <?php
+                                                                                                            <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                                                </a></p>
+                                                                                                        <?php
 
                                                                                                         } else {
                                                                                                         ?>
-                                                                        <p><a style="color:black;"
-                                                                                onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                                <?= ucwords($result->nombre); ?>
-                                                                            </a></p>
-                                                                        <?php
+                                                                                                            <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                    <?= ucwords($result->nombre); ?>
+                                                                                                                </a></p>
+                                                                                                        <?php
                                                                                                         }
                                                                                                         ?>
 
-                                                                        <?php
+                                                                                                <?php
                                                                                                     }
                                                                                                 }
                                                                                                 ?>
 
-                                                                    </div>
-                                                                </div>
-                                                                <?php
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <?php
                                                                                     } else {
                                                                                     ?>
-                                                                <div id="collapse<?= $i; ?>"
-                                                                    class="panel-collapse collapse ">
-                                                                    <div class="panel-body">
-                                                                        <?php
+                                                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
+                                                                                            <div class="panel-body">
+                                                                                                <?php
                                                                                                 foreach ($subcategoria as $result) {
                                                                                                     if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                                                 ?>
 
-                                                                        <li>
-                                                                            <?php
+                                                                                                        <li>
+                                                                                                            <?php
                                                                                                             if ($result->subcate_id == $subcate) {
                                                                                                             ?>
-                                                                            <p><a style="color:red;"
-                                                                                    onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                                    <?= ucwords($result->nombre); ?>
-                                                                                </a></p>
-                                                                            <?php
+                                                                                                                <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                                    </a></p>
+                                                                                                            <?php
 
                                                                                                             } else {
                                                                                                             ?>
-                                                                            <p><a style="color:black;"
-                                                                                    onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                                    <?= ucwords($result->nombre); ?>
-                                                                                </a></p>
-                                                                            <?php
+                                                                                                                <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                        <?= ucwords($result->nombre); ?>
+                                                                                                                    </a></p>
+                                                                                                            <?php
                                                                                                             }
                                                                                                             ?>
 
-                                                                        </li>
-                                                                        <?php
+                                                                                                        </li>
+                                                                                                <?php
                                                                                                     }
                                                                                                 }
                                                                                                 ?>
 
-                                                                    </div>
-                                                                </div>
-                                                                <?php
+                                                                                            </div>
+                                                                                        </div>
+                                                                            <?php
                                                                                     }
                                                                                 }
                                                                             }
                                                                             ?>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                    <?php } else {
+                                                            <?php } else {
 
                                                             ?>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a data-toggle="collapse" data-parent="#accordion2"
-                                                                    href="#collapse<?= $i; ?>">
-                                                                    <i><img style="width:10%"
-                                                                            src="<?= base_url($item->photo) ?>"
-                                                                            alt=""></i>
-                                                                    <?= ucwords($item->nombre); ?> </a>
-                                                            </h4>
-                                                        </div>
-                                                        <?php
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $i; ?>">
+                                                                                <i><img style="width:10%" src="<?= base_url($item->photo) ?>" alt=""></i>
+                                                                                <?= ucwords($item->nombre); ?> </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <?php
                                                                     foreach ($subcategoria as $result) {
                                                                         if (($result->cate_anuncio_id == $item->cate_anuncio_id)) {
 
 
                                                                     ?>
-                                                        <?php
+                                                                            <?php
                                                                             if ($result->subcate_id == $subcate) {
                                                                             ?>
-                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse in">
-                                                            <div class="panel-body">
-                                                                <?php
+                                                                                <div id="collapse<?= $i; ?>" class="panel-collapse collapse in">
+                                                                                    <div class="panel-body">
+                                                                                        <?php
                                                                                         foreach ($subcategoria as $result) {
                                                                                             if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                                         ?>
 
-                                                                <?php
+                                                                                                <?php
                                                                                                 if ($result->subcate_id == $subcate) {
                                                                                                 ?>
-                                                                <p><a style="color:red;"
-                                                                        onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                        <?= ucwords($result->nombre); ?>
-                                                                    </a></p>
-                                                                <?php
+                                                                                                    <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                                        </a></p>
+                                                                                                <?php
 
                                                                                                 } else {
                                                                                                 ?>
-                                                                <p><a style="color:black;"
-                                                                        onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                        <?= ucwords($result->nombre); ?>
-                                                                    </a></p>
-                                                                <?php
+                                                                                                    <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                            <?= ucwords($result->nombre); ?>
+                                                                                                        </a></p>
+                                                                                                <?php
                                                                                                 }
                                                                                                 ?>
 
-                                                                <?php
+                                                                                        <?php
                                                                                             }
                                                                                         }
                                                                                         ?>
 
-                                                            </div>
-                                                        </div>
-                                                        <?php
+                                                                                    </div>
+                                                                                </div>
+                                                                            <?php
                                                                             } else {
                                                                             ?>
-                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
-                                                            <div class="panel-body">
-                                                                <?php
+                                                                                <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
+                                                                                    <div class="panel-body">
+                                                                                        <?php
                                                                                         foreach ($subcategoria as $result) {
                                                                                             if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                                         ?>
 
-                                                                <li>
-                                                                    <?php
+                                                                                                <li>
+                                                                                                    <?php
                                                                                                     if ($result->subcate_id == $subcate) {
                                                                                                     ?>
-                                                                    <p><a style="color:red;"
-                                                                            onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                            <?= ucwords($result->nombre); ?>
-                                                                        </a></p>
-                                                                    <?php
+                                                                                                        <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                                            </a></p>
+                                                                                                    <?php
 
                                                                                                     } else {
                                                                                                     ?>
-                                                                    <p><a style="color:black;"
-                                                                            onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                            <?= ucwords($result->nombre); ?>
-                                                                        </a></p>
-                                                                    <?php
+                                                                                                        <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                                            </a></p>
+                                                                                                    <?php
                                                                                                     }
                                                                                                     ?>
 
-                                                                </li>
-                                                                <?php
+                                                                                                </li>
+                                                                                        <?php
                                                                                             }
                                                                                         }
                                                                                         ?>
 
-                                                            </div>
-                                                        </div>
-                                                        <?php
+                                                                                    </div>
+                                                                                </div>
+                                                                    <?php
                                                                             }
                                                                         }
                                                                     }
                                                                     ?>
-                                                        <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
-                                                            <div class="panel-body">
-                                                                <?php
+                                                                    <div id="collapse<?= $i; ?>" class="panel-collapse collapse ">
+                                                                        <div class="panel-body">
+                                                                            <?php
                                                                             foreach ($subcategoria as $result) {
                                                                                 if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                             ?>
 
-                                                                <?php
+                                                                                    <?php
                                                                                     if ($result->subcate_id == $subcate) {
                                                                                     ?>
-                                                                <p><a style="color:red;"
-                                                                        onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                        <?= ucwords($result->nombre); ?>
-                                                                    </a></p>
-                                                                <?php
+                                                                                        <p><a style="color:red;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                            </a></p>
+                                                                                    <?php
 
                                                                                     } else {
                                                                                     ?>
-                                                                <p><a style="color:black;"
-                                                                        onclick="cargar_input_2('<?= $result->subcate_id ?>')">
-                                                                        <?= ucwords($result->nombre); ?>
-                                                                    </a></p>
-                                                                <?php
+                                                                                        <p><a style="color:black;" onclick="cargar_input_2('<?= $result->subcate_id ?>')">
+                                                                                                <?= ucwords($result->nombre); ?>
+                                                                                            </a></p>
+                                                                                    <?php
                                                                                     }
                                                                                     ?>
 
-                                                                <?php
+                                                                            <?php
                                                                                 }
                                                                             }
                                                                             ?>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <?php } ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php } ?>
 
                                                     <?php
 
@@ -595,116 +563,106 @@ if (empty($mastercat))
                             </div>
                             <!-- Featured Ads -->
                             <?php if ($destacados) { ?>
-                            <?php if (count($destacados) > 0) { ?>
-                            <div class="widget" style="margin-top:8% !important">
-                                <div class="widget-heading">
-                                    <h4 class="panel-title"><a><?= translate("anuncios_destacados_lang") ?></a></h4>
-                                </div>
-                                <div class="widget-content">
-                                    <div class="featured-slider-3">
-                                        <!-- Featured Ads -->
-                                        <?php foreach ($destacados as $item) { ?>
-                                        <div class="item">
-                                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
-                                                <!-- Ad Box -->
-                                                <div class="category-grid-box">
-                                                    <!-- Ad Img -->
-                                                    <div class="category-grid-img">
-                                                        <img class="img-responsive" alt=""
-                                                            src="<?= base_url($item->anuncio_photo) ?>">
-                                                        <!-- Ad Status -->
-                                                        <!-- User Review -->
-                                                        <!--    <div class="user-preview">
+                                <?php if (count($destacados) > 0) { ?>
+                                    <div class="widget" style="margin-top:8% !important">
+                                        <div class="widget-heading">
+                                            <h4 class="panel-title"><a><?= translate("anuncios_destacados_lang") ?></a></h4>
+                                        </div>
+                                        <div class="widget-content">
+                                            <div class="featured-slider-3">
+                                                <!-- Featured Ads -->
+                                                <?php foreach ($destacados as $item) { ?>
+                                                    <div class="item">
+                                                        <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
+                                                            <!-- Ad Box -->
+                                                            <div class="category-grid-box">
+                                                                <!-- Ad Img -->
+                                                                <div class="category-grid-img">
+                                                                    <img class="img-responsive" alt="" src="<?= base_url($item->anuncio_photo) ?>">
+                                                                    <!-- Ad Status -->
+                                                                    <!-- User Review -->
+                                                                    <!--    <div class="user-preview">
                                                                         <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo)))); ?>"> <img src="" class="avatar avatar-small" alt=""> </a>
                                                                     </div> -->
-                                                        <!-- View Details --><a
-                                                            href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"
-                                                            class="view-details"><?= translate("ver_info_lang") ?></a>
-                                                    </div>
-                                                    <!-- Ad Img End -->
-                                                    <div class="short-description">
-                                                        <!-- Ad Category -->
-                                                        <div class="category-title"> <span><a
-                                                                    href="#"><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span>
+                                                                    <!-- View Details --><a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="view-details"><?= translate("ver_info_lang") ?></a>
+                                                                </div>
+                                                                <!-- Ad Img End -->
+                                                                <div class="short-description">
+                                                                    <!-- Ad Category -->
+                                                                    <div class="category-title"> <span><a href="#"><?= $item->categoria ?>/<?= $item->subcategoria ?></a></span>
+                                                                    </div>
+                                                                    <!-- Ad Title -->
+                                                                    <h6>
+                                                                        <?php if ($item->titulo_corto) { ?>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
+                                                                        <?php } else { ?>
+                                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
+                                                                        <?php } ?>
+                                                                    </h6>
+                                                                    <!-- Price -->
+                                                                    <div class="price">$<?= number_format($item->precio, 2) ?></div>
+                                                                </div>
+                                                                <!-- Addition Info -->
+                                                                <div class="ad-info">
+                                                                    <ul>
+                                                                        <li><i class="fa fa-map-marker"></i><?= $item->ciudad ?>
+                                                                        </li>
+                                                                        <li><i class="fa fa-clock-o"></i><?= translate("publicado_lang"); ?>:
+                                                                            <?= $item->fecha ?> </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Ad Box End -->
                                                         </div>
-                                                        <!-- Ad Title -->
-                                                        <h6>
-                                                            <?php if ($item->titulo_corto) { ?>
-                                                            <a
-                                                                href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
-                                                            <?php } else { ?>
-                                                            <a
-                                                                href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
-                                                            <?php } ?>
-                                                        </h6>
-                                                        <!-- Price -->
-                                                        <div class="price">$<?= number_format($item->precio, 2) ?></div>
                                                     </div>
-                                                    <!-- Addition Info -->
-                                                    <div class="ad-info">
-                                                        <ul>
-                                                            <li><i class="fa fa-map-marker"></i><?= $item->ciudad ?>
-                                                            </li>
-                                                            <li><i
-                                                                    class="fa fa-clock-o"></i><?= translate("publicado_lang"); ?>:
-                                                                <?= $item->fecha ?> </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <!-- Ad Box End -->
+                                                <?php } ?>
                                             </div>
                                         </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div> <?php } ?>
+                                    </div> <?php } ?>
                             <?php } ?>
                             <!-- Recent Ads -->
                             <?php if ($recientes) { ?>
-                            <?php if (count($recientes) > 0) { ?>
-                            <div class="widget">
-                                <div class="widget-heading">
-                                    <h4 class="panel-title"><a><?= translate("anuncios_recientes_lang") ?></a></h4>
-                                </div>
-                                <div class="widget-content recent-ads">
-                                    <?php foreach ($recientes as $item) { ?>
-                                    <!-- Ads -->
-                                    <div class="recent-ads-list">
-                                        <div class="recent-ads-container">
-                                            <div class="recent-ads-list-image">
-                                                <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"
-                                                    class="recent-ads-list-image-inner">
-                                                    <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
-                                                </a><!-- /.recent-ads-list-image-inner -->
-                                            </div>
-                                            <!-- /.recent-ads-list-image -->
-                                            <div class="recent-ads-list-content">
-                                                <h4 class="recent-ads-list-title text-justify">
-                                                    <?php if ($item->titulo_corto) { ?>
-                                                    <a
-                                                        href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
-                                                    <?php } else { ?>
-                                                    <a
-                                                        href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
-                                                    <?php } ?>
-                                                </h4>
-                                                <ul class="recent-ads-list-location">
-                                                    <li><a href="#"><?= $item->ciudad ?></a></li>
-
-                                                </ul>
-                                                <div class="recent-ads-list-price">
-                                                    $ <?= number_format($item->precio, 2) ?>
-                                                </div>
-                                                <!-- /.recent-ads-list-price -->
-                                            </div>
-                                            <!-- /.recent-ads-list-content -->
+                                <?php if (count($recientes) > 0) { ?>
+                                    <div class="widget">
+                                        <div class="widget-heading">
+                                            <h4 class="panel-title"><a><?= translate("anuncios_recientes_lang") ?></a></h4>
                                         </div>
-                                        <!-- /.recent-ads-container -->
+                                        <div class="widget-content recent-ads">
+                                            <?php foreach ($recientes as $item) { ?>
+                                                <!-- Ads -->
+                                                <div class="recent-ads-list">
+                                                    <div class="recent-ads-container">
+                                                        <div class="recent-ads-list-image">
+                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="recent-ads-list-image-inner">
+                                                                <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
+                                                            </a><!-- /.recent-ads-list-image-inner -->
+                                                        </div>
+                                                        <!-- /.recent-ads-list-image -->
+                                                        <div class="recent-ads-list-content">
+                                                            <h4 class="recent-ads-list-title text-justify">
+                                                                <?php if ($item->titulo_corto) { ?>
+                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
+                                                                <?php } else { ?>
+                                                                    <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo ?></a>
+                                                                <?php } ?>
+                                                            </h4>
+                                                            <ul class="recent-ads-list-location">
+                                                                <li><a href="#"><?= $item->ciudad ?></a></li>
+
+                                                            </ul>
+                                                            <div class="recent-ads-list-price">
+                                                                $ <?= number_format($item->precio, 2) ?>
+                                                            </div>
+                                                            <!-- /.recent-ads-list-price -->
+                                                        </div>
+                                                        <!-- /.recent-ads-list-content -->
+                                                    </div>
+                                                    <!-- /.recent-ads-container -->
+                                                </div>
+                                            <?php } ?>
+                                        </div>
                                     </div>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <?php } ?>
+                                <?php } ?>
                             <?php } ?>
                             <!-- Categories Panel End -->
 
@@ -779,24 +737,24 @@ if (empty($mastercat))
         <!-- Main Container End -->
     </section>
     <script>
-    //  $('#category').val('');
+        //  $('#category').val('');
 
-    function cargar_input_2(params) {
-        $('#category').val(params);
-        $("#buscar_categoria").submit();
-    }
+        function cargar_input_2(params) {
+            $('#category').val(params);
+            $("#buscar_categoria").submit();
+        }
     </script>
     <style>
-    .banner2 {
-        padding-top: 107px !important
-    }
+        .banner2 {
+            padding-top: 107px !important
+        }
 
-    .recent-ads .recent-ads-list-image-inner {
-        background-color: rgba(0, 0, 0, 0.0) !important;
-        display: block;
-        height: 60px;
-        margin: 0 16px 0 0;
-        position: relative;
-        width: 100px;
-    }
+        .recent-ads .recent-ads-list-image-inner {
+            background-color: rgba(0, 0, 0, 0.0) !important;
+            display: block;
+            height: 60px;
+            margin: 0 16px 0 0;
+            position: relative;
+            width: 100px;
+        }
     </style>
