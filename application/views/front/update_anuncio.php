@@ -141,7 +141,7 @@
                                                   <span id="span_delete_0" onclick="delete_image_0()" style="position:absolute; top:0%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
                                                   <img style="width: 70%; cursor:pointer position:relative" id="image_0" onclick="llamar_add_imagen_0()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
                                                   <br>
-                                                  <label style="font-size:12px;cursor: pointer;" for="add_image" class="text-center"> <span id="span_add_0" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar
+                                                  <label style="font-size:12px;cursor: pointer;" for="add_image_0" class="text-center"> <span id="span_add_0" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar
                                                           imagen</span></label>
                                                   <input type="file" name="archivo" id="add_image_0" accepts="image/*">
                                               </div>

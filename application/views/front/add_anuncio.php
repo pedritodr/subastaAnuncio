@@ -141,7 +141,7 @@
                                                   <span id="span_delete_0" onclick="delete_image_0()" style="position:absolute; top:-3%;z-index:100;right: 23%;cursor:pointer;display:none;" class="label label-danger"><i class="fa fa-ban" aria-hidden="true"></i> Eliminar</span>
                                                   <img style="width: 70%; cursor:pointer position:relative" id="image_0" onclick="llamar_add_imagen_0()" src="<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>" alt="">
                                                   <br>
-                                                  <label style="font-size:12px;cursor: pointer;" for="add_image" class="text-center"> <span id="span_add_0" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar
+                                                  <label style="font-size:12px;cursor: pointer;" for="add_image_0" class="text-center"> <span id="span_add_0" style="background:#fff0" class="label label-success"> <i class="fa fa-upload" aria-hidden="true"></i> Agregar
                                                           imagen</span></label>
                                                   <input type="file" name="archivo" id="add_image_0" accepts="image/*">
                                               </div>
@@ -312,2120 +312,2139 @@
               </label>
               <div class="alert" role="alert"></div>
           </div>
-          <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
-          <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-          <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places">
-          </script>
-          <script src="<?= base_url('assets_front/js/cropper.js') ?>"></script>
-          <!--  <script src=" https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js"></script> -->
-          <script type="text/javascript">
-              var latitude = 0;
-              var longitude = 0;
-              var init_lat = -1.831239;
-              var init_lng = -78.18340599999999;
-              var peso_maximo = 4 * 1048576;
-              var array_imagenes = [];
-              var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
-              window.addEventListener('DOMContentLoaded', function() {
-                  //    var avatar = document.getElementById('avatar');
-                  var image = document.getElementById('image');
-                  var input = document.getElementById('input');
-                  var input_imagen_0 = document.getElementById('add_image_0');
-                  var input_imagen_1 = document.getElementById('add_image_1');
-                  var input_imagen_2 = document.getElementById('add_image_2');
-                  var input_imagen_3 = document.getElementById('add_image_3');
-                  var input_imagen_4 = document.getElementById('add_image_4');
-                  var input_imagen_5 = document.getElementById('add_image_5');
-                  var input_imagen_6 = document.getElementById('add_image_6');
-                  var input_imagen_7 = document.getElementById('add_image_7');
-                  var input_imagen_8 = document.getElementById('add_image_8');
-                  var input_imagen_9 = document.getElementById('add_image_9');
-                  var $progress = $('.progress');
-                  var $progressBar = $('.progress-bar');
-                  var $alert = $('.alert');
-                  var $modal = $('#myModal');
-                  var cropper;
-                  var imagen_click = 0;
-                  var name_archivo;
-                  input_imagen_0.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_0") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_0") {
-                                      if (id_encontrado != -1) {
-                                          /*    array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 0;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_1.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_1") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_1") {
-                                      if (id_encontrado != -1) {
-                                          /*   array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 1;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_2.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_2") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_2") {
-                                      if (id_encontrado != -1) {
-                                          /*    array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 2;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_3.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_3") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_3") {
-                                      if (id_encontrado != -1) {
-                                          /*    array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 3;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_4.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_4") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_4") {
-                                      if (id_encontrado != -1) {
-                                          /*   array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 4;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_5.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_5") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_5") {
-                                      if (id_encontrado != -1) {
-                                          /*     array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 5;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_6.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_6") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_6") {
-                                      if (id_encontrado != -1) {
-                                          /*  array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 6;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_7.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_7") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_7") {
-                                      if (id_encontrado != -1) {
-                                          /*   array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 7;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_8.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_8") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_8") {
-                                      if (id_encontrado != -1) {
-                                          /*  array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 8;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  input_imagen_9.addEventListener('change', function(e) {
-                      var files = e.target.files;
-                      var sizeByte = this.files[0].size;
-                      var sizekiloBytes = parseInt(sizeByte / 1024);
-                      var encontro = false;
-                      var id_encontrado = -1;
-                      var name_contenedor;
-                      var repetido = false;
-                      var valida_crear = false;
-                      if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
-                          .files[0].type == "image/jpg") {
-                          if (this.files[0].size < peso_maximo) {
-                              if (array_imagenes.length > 0) {
-                                  for (let i = 0; i < array_imagenes.length; i++) {
-                                      if (array_imagenes[i].name == "image_9") {
-                                          encontro = true;
-                                          id_encontrado = i;
-                                          name_contenedor = array_imagenes[i].name;
-                                      }
-                                      if (array_imagenes[i].id == this.files[0].name) {
-                                          encontro = true;
-                                          repetido = true;
-                                      }
-                                  }
-                              } else {
-                                  valida_crear = true;
-                              }
-                              if (encontro && !repetido) {
-                                  if (name_contenedor == "image_9") {
-                                      if (id_encontrado != -1) {
-                                          /*     array_imagenes.splice(id_encontrado, 1); */
-                                          valida_crear = true;
-                                      }
-                                  }
-                              } else if (encontro && repetido) {
-                                  Swal.fire({
-                                      icon: 'info',
-                                      title: 'La imagen ya esta cargada',
-                                      showConfirmButton: true
-                                  });
-                              } else if (!encontro && !repetido) {
-                                  valida_crear = true;
-                              }
-                              if (valida_crear) {
-                                  imagen_click = 9;
-                                  name_archivo = this.files[0].name;
-                                  var done = function(url) {
-                                      input.value = '';
-                                      image.src = url;
-                                      $alert.hide();
-                                      $modal.modal({
-                                          backdrop: 'static',
-                                          keyboard: false
-                                      });
-                                  };
-                                  var reader;
-                                  var file;
-                                  var url;
-
-                                  if (files && files.length > 0) {
-                                      file = files[0];
-                                      if (URL) {
-                                          done(URL.createObjectURL(file));
-                                      } else if (FileReader) {
-                                          reader = new FileReader();
-                                          reader.onload = function(e) {
-                                              done(reader.result);
-                                          };
-                                          reader.readAsDataURL(file);
-                                      }
-                                  }
-                              }
-
-                          } else {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'La imagen supera el peso máximo de 4MB',
-                                  showConfirmButton: true,
-                              });
-                          }
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
-                              showConfirmButton: true
-                          });
-                      }
-                  });
-
-                  $modal.on('shown.bs.modal', function() {
-                      cropper = new Cropper(image, {
-                          aspectRatio: 1,
-                          viewMode: 3,
-                      });
-                  }).on('hidden.bs.modal', function() {
-                      cropper.destroy();
-                      cropper = null;
-                  });
-
-                  document.getElementById('crop').addEventListener('click', function() {
-                      var initialAvatarURL;
-                      var canvas;
-                      $modal.modal('hide');
-                      if (cropper) {
-                          canvas = cropper.getCroppedCanvas({
-                              width: 645,
-                              height: 645,
-                          });
-                          initialAvatarURL = avatar.src;
-                          avatar = canvas.toDataURL();
+      </div>
+      <!-- =-=-=-=-=-=-= Ads Archives End =-=-=-=-=-=-= -->
+      <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+      <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places">
+      </script>
+      <script src="<?= base_url('assets_front/js/cropper.js') ?>"></script>
+      <!--  <script src=" https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js"></script> -->
+      <script type="text/javascript">
+          var latitude = 0;
+          var longitude = 0;
+          var init_lat = -1.831239;
+          var init_lng = -78.18340599999999;
+          var peso_maximo = 4 * 1048576;
+          var array_imagenes = [];
+          var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
+          window.addEventListener('DOMContentLoaded', function() {
+              //    var avatar = document.getElementById('avatar');
+              var image = document.getElementById('image');
+              var input = document.getElementById('input');
+              var input_imagen_0 = document.getElementById('add_image_0');
+              var input_imagen_1 = document.getElementById('add_image_1');
+              var input_imagen_2 = document.getElementById('add_image_2');
+              var input_imagen_3 = document.getElementById('add_image_3');
+              var input_imagen_4 = document.getElementById('add_image_4');
+              var input_imagen_5 = document.getElementById('add_image_5');
+              var input_imagen_6 = document.getElementById('add_image_6');
+              var input_imagen_7 = document.getElementById('add_image_7');
+              var input_imagen_8 = document.getElementById('add_image_8');
+              var input_imagen_9 = document.getElementById('add_image_9');
+              var $progress = $('.progress');
+              var $progressBar = $('.progress-bar');
+              var $alert = $('.alert');
+              var $modal = $('#myModal');
+              var cropper;
+              var imagen_click = 0;
+              var name_archivo;
+              input_imagen_0.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
                           if (array_imagenes.length > 0) {
-                              if (typeof array_imagenes[imagen_click] !== 'undefined') {
-                                  $('#image_' + imagen_click).attr("src", avatar);
-                                  $('#span_delete_' + imagen_click).show();
-                                  if (imagen_click == 0) {
-                                      $('#span_add_' + imagen_click).text("Portada");
-                                  } else {
-                                      $('#span_add_' + imagen_click).text("Cargada");
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_0") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
                                   }
-                                  array_imagenes[imagen_click].foto_anuncio_id = null;
-                                  array_imagenes[imagen_click].id = name_archivo;
-                                  array_imagenes[imagen_click].imagen = avatar;
-                              } else {
-                                  var indice = array_imagenes.length;
-                                  $('#image_' + indice).attr("src", avatar);
-                                  $('#span_delete_' + indice).show();
-                                  $('#span_add_' + indice).text("Cargada");
-                                  array_imagenes.push({
-                                      "id": name_archivo,
-                                      "imagen": avatar,
-                                      'foto_anuncio_id': null,
-                                      'name': "image_" + indice
-                                  });
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
                               }
                           } else {
-                              $('#image_0').attr("src", avatar);
-                              $('#span_delete_0').show();
-                              $('#span_add_0').text("Portada");
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_0") {
+                                  if (id_encontrado != -1) {
+                                      /*    array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 0;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_1.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_1") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_1") {
+                                  if (id_encontrado != -1) {
+                                      /*   array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 1;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_2.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_2") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_2") {
+                                  if (id_encontrado != -1) {
+                                      /*    array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 2;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_3.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_3") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_3") {
+                                  if (id_encontrado != -1) {
+                                      /*    array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 3;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_4.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_4") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_4") {
+                                  if (id_encontrado != -1) {
+                                      /*   array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 4;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_5.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_5") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_5") {
+                                  if (id_encontrado != -1) {
+                                      /*     array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 5;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_6.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_6") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_6") {
+                                  if (id_encontrado != -1) {
+                                      /*  array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 6;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_7.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_7") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_7") {
+                                  if (id_encontrado != -1) {
+                                      /*   array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 7;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_8.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_8") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_8") {
+                                  if (id_encontrado != -1) {
+                                      /*  array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 8;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              input_imagen_9.addEventListener('change', function(e) {
+                  var files = e.target.files;
+                  var sizeByte = this.files[0].size;
+                  var sizekiloBytes = parseInt(sizeByte / 1024);
+                  var encontro = false;
+                  var id_encontrado = -1;
+                  var name_contenedor;
+                  var repetido = false;
+                  var valida_crear = false;
+                  if (this.files[0].type == "image/jpeg" || this.files[0].type == "image/png" || this
+                      .files[0].type == "image/jpg") {
+                      if (this.files[0].size < peso_maximo) {
+                          if (array_imagenes.length > 0) {
+                              for (let i = 0; i < array_imagenes.length; i++) {
+                                  if (array_imagenes[i].name == "image_9") {
+                                      encontro = true;
+                                      id_encontrado = i;
+                                      name_contenedor = array_imagenes[i].name;
+                                  }
+                                  if (array_imagenes[i].id == this.files[0].name) {
+                                      encontro = true;
+                                      repetido = true;
+                                  }
+                              }
+                          } else {
+                              valida_crear = true;
+                          }
+                          if (encontro && !repetido) {
+                              if (name_contenedor == "image_9") {
+                                  if (id_encontrado != -1) {
+                                      /*     array_imagenes.splice(id_encontrado, 1); */
+                                      valida_crear = true;
+                                  }
+                              }
+                          } else if (encontro && repetido) {
+                              Swal.fire({
+                                  icon: 'info',
+                                  title: 'La imagen ya esta cargada',
+                                  showConfirmButton: true
+                              });
+                          } else if (!encontro && !repetido) {
+                              valida_crear = true;
+                          }
+                          if (valida_crear) {
+                              imagen_click = 9;
+                              name_archivo = this.files[0].name;
+                              var done = function(url) {
+                                  input.value = '';
+                                  image.src = url;
+                                  $alert.hide();
+                                  $modal.modal({
+                                      backdrop: 'static',
+                                      keyboard: false
+                                  });
+                              };
+                              var reader;
+                              var file;
+                              var url;
+
+                              if (files && files.length > 0) {
+                                  file = files[0];
+                                  if (URL) {
+                                      done(URL.createObjectURL(file));
+                                  } else if (FileReader) {
+                                      reader = new FileReader();
+                                      reader.onload = function(e) {
+                                          done(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                  }
+                              }
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'La imagen supera el peso máximo de 4MB',
+                              showConfirmButton: true,
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Solo están permitidas las imagenes en formato jpg,jpeg,png',
+                          showConfirmButton: true
+                      });
+                  }
+              });
+
+              $modal.on('shown.bs.modal', function() {
+                  cropper = new Cropper(image, {
+                      aspectRatio: 1,
+                      viewMode: 3,
+                  });
+              }).on('hidden.bs.modal', function() {
+                  cropper.destroy();
+                  cropper = null;
+              });
+
+              document.getElementById('crop').addEventListener('click', function() {
+                  var initialAvatarURL;
+                  var canvas;
+                  $modal.modal('hide');
+                  if (cropper) {
+                      canvas = cropper.getCroppedCanvas({
+                          width: 645,
+                          height: 645,
+                      });
+                      initialAvatarURL = avatar.src;
+                      avatar = canvas.toDataURL();
+                      if (array_imagenes.length > 0) {
+                          if (typeof array_imagenes[imagen_click] !== 'undefined') {
+                              $('#image_' + imagen_click).attr("src", avatar);
+                              $('#span_delete_' + imagen_click).show();
+                              if (imagen_click == 0) {
+                                  $('#span_add_' + imagen_click).text("Portada");
+                              } else {
+                                  $('#span_add_' + imagen_click).text("Cargada");
+                              }
+                              array_imagenes[imagen_click].foto_anuncio_id = null;
+                              array_imagenes[imagen_click].id = name_archivo;
+                              array_imagenes[imagen_click].imagen = avatar;
+                          } else {
+                              var indice = array_imagenes.length;
+                              $('#image_' + indice).attr("src", avatar);
+                              $('#span_delete_' + indice).show();
+                              $('#span_add_' + indice).text("Cargada");
                               array_imagenes.push({
                                   "id": name_archivo,
                                   "imagen": avatar,
                                   'foto_anuncio_id': null,
-                                  'name': "image_0"
+                                  'name': "image_" + indice
                               });
+                          }
+                      } else {
+                          $('#image_0').attr("src", avatar);
+                          $('#span_delete_0').show();
+                          $('#span_add_0').text("Portada");
+                          array_imagenes.push({
+                              "id": name_archivo,
+                              "imagen": avatar,
+                              'foto_anuncio_id': null,
+                              'name': "image_0"
+                          });
+                      }
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'La imagen se ha subido correctamente',
+                          showConfirmButton: false,
+                          timer: 1500
+                      });
+                      // $progress.show();
+                  }
+              });
+          });
+
+          function delete_image_0() {
+
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_0") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_1() {
+
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_1") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_2() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_2") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_3() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_3") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_4() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_4") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_5() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_5") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_6() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_6") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_7() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_6") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_8() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_8") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function delete_image_9() {
+              var id_encontrado = -1;
+              for (let i = 0; i < array_imagenes.length; i++) {
+                  if (array_imagenes[i].name == "image_9") {
+                      id_encontrado = i;
+                  }
+              }
+              if (id_encontrado != -1) {
+                  array_imagenes.splice(id_encontrado, 1);
+                  for (let i = 0; i < 10; i++) {
+                      $('#image_' + i).attr("src", imagen_default);
+                      $('#add_image_' + i).val("");
+                      $('#span_delete_' + i).hide();
+                      $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
+                  }
+                  if (array_imagenes.length > 0) {
+                      array_imagenes.forEach(function(item, index, array) {
+                          item.name = "image_" + index;
+                          $('#image_' + index).attr("src", item.imagen);
+                          $('#span_delete_' + index).show();
+                          if (index == 0) {
+                              $('#span_add_' + index).text("Portada");
+                          } else {
+                              $('#span_add_' + index).text("Cargada");
+                          }
+                      });
+                  }
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'La imagen se eliminó correctamente',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          }
+
+          function llamar_add_imagen_0() {
+              $('#add_image_0').click();
+              imagen_click = 0;
+          }
+
+          function llamar_add_imagen_1() {
+              $('#add_image_1').click();
+              imagen_click = 1;
+          }
+
+          function llamar_add_imagen_2() {
+              $('#add_image_2').click();
+              imagen_click = 2;
+          }
+
+          function llamar_add_imagen_3() {
+              $('#add_image_3').click();
+              imagen_click = 3;
+          }
+
+          function llamar_add_imagen_4() {
+              $('#add_image_4').click();
+              imagen_click = 4;
+          }
+
+          function llamar_add_imagen_5() {
+              $('#add_image_5').click();
+              imagen_click = 5;
+          }
+
+          function llamar_add_imagen_6() {
+              $('#add_image_6').click();
+              imagen_click = 6;
+          }
+
+          function llamar_add_imagen_7() {
+              $('#add_image_7').click();
+              imagen_click = 7;
+          }
+
+          function llamar_add_imagen_8() {
+              $('#add_image_8').click();
+              imagen_click = 8;
+          }
+
+          function llamar_add_imagen_9() {
+              $('#add_image_9').click();
+              imagen_click = 9;
+          }
+
+          $(document).ready(function() {
+
+              $("#subcategoria").select2({
+                  placeholder: 'Seleccione la subcategoria',
+                  allowClear: true,
+                  width: '100%'
+              });
+              initMap();
+          });
+
+          $("#btn_add_anuncio").click(async function() {
+              var titulo = $('#titulo');
+              var categoria = $('#categoria');
+              var subcategoria = $('#subcategoria');
+              var precio = $('#precio');
+              var whatsapp = $('#whatsapp');
+              var decripcion = $('#descripcion');
+              var url = $('#url');
+              var seleccion_pais = $('#pais').val().trim();
+              if (titulo.val().trim() == "") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: titulo.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                          titulo.focus();
+                      } else {
+                          titulo.focus();
+                      }
+                  });
+              } else if (categoria.val() == "0") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: categoria.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                          categoria.focus();
+                      } else {
+                          categoria.focus();
+                      }
+                  });
+              } else if (subcategoria.val() == "0") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: subcategoria.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (subcategoria.isConfirmed) {
+                          subcategoria.focus();
+                      } else {
+                          subcategoria.focus();
+                      }
+                  });
+              } else if (precio.val().trim() == "") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: precio.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                          precio.focus();
+                          precio.blur(function() {
+                              precio.focus();
+                          });
+                      } else {
+                          precio.focus();
+                      }
+                  });
+              } else if (whatsapp.val().trim() == "") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: whatsapp.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                          whatsapp.focus();
+                      } else {
+                          whatsapp.focus();
+                      }
+                  });
+              } else if (decripcion.val().trim() == "") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: decripcion.prop('placeholder') + ' es un campo requerido',
+                      showConfirmButton: true
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                          decripcion.focus();
+
+                      } else {
+                          decripcion.focus();
+
+                      }
+                  });
+              } else if (array_imagenes.length == 0) {
+                  Swal.fire({
+                      icon: 'info',
+                      title: 'No hay imagenes cargadas',
+                      showConfirmButton: true
+                  });
+              } else if (seleccion_pais == "") {
+                  $('#pac-input').val("");
+                  initMap();
+              } else if (seleccion_pais != "Ecuador") {
+                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
+                  $('#modal_error_ciudad').modal('show');
+                  initMap();
+                  $('#btn_add_anuncio').prop('disabled', false);
+              } else {
+                  swal.fire({
+                      title: '',
+                      html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4 id="mensajeAlert">Creando el anuncio...</h4></div>',
+                      showConfirmButton: false,
+                      allowOutsideClick: false,
+                      footer: '<h6>No realice acciones sobre la página</h6>'
+                  });
+                  $('#btn_add_anuncio').prop('disabled', true);
+                  var latAds = $("#lat").val();
+                  var lngAds = $('#lng').val();
+                  var cityAds = $('#city_main').val();
+                  var addressAds = $('#pac-input').val();
+                  var photoMain = {
+                      imagen: array_imagenes[0].imagen
+                  };
+                  var resultCreateAds = await createAds(titulo.val().trim(), categoria.val(), subcategoria
+                      .val(), precio.val().trim(), whatsapp.val().trim(), decripcion.val().trim(), JSON
+                      .stringify(photoMain), cityAds, latAds, lngAds, addressAds, url.val().trim())
+                  resultCreateAds = JSON.parse(resultCreateAds);
+                  if (resultCreateAds.status == 404) {
+                      $('#btn_add_anuncio').prop('disabled', false);
+                      Swal.fire({
+                          icon: 'info',
+                          title: 'Lo sentimos esta opción solo esta disponible para los clientes',
+                          showConfirmButton: true
+                      });
+                  } else if (resultCreateAds.status == 500) {
+                      $('#btn_add_anuncio').prop('disabled', false);
+                      Swal.fire({
+                          icon: 'info',
+                          title: 'Lo sentimos esta opción solo esta disponible para los clientes registrados',
+                          showConfirmButton: true
+                      });
+                  } else {
+                      array_imagenes.splice(0, 1);
+                      if (array_imagenes.length > 0) {
+                          $('#mensajeAlert').text("Guardando imagenes");
+                          setTimeout(async () => {
+                              resultPhoto = await createPhoto(resultCreateAds.id, JSON
+                                  .stringify(array_imagenes));
+                              resultPhoto = JSON.parse(resultPhoto);
+                              if (resultPhoto.status == 200) {
+                                  let role_id = '<?= $this->session->userdata('role_id') ?>';
+                                  if (role_id == '1') {
+                                      setTimeout(() => {
+                                          window.location =
+                                              '<?= site_url("anuncio/index") ?>';
+                                      }, 1000);
+                                  } else {
+                                      setTimeout(() => {
+                                          window.location =
+                                              '<?= site_url("perfil/page") ?>';
+                                      }, 1000);
+                                  }
+                                  Swal.fire({
+                                      icon: 'success',
+                                      title: 'Anuncio creado correctamente',
+                                      showConfirmButton: false,
+                                      timer: 1500
+                                  });
+                              } else {
+                                  Swal.fire({
+                                      icon: 'error',
+                                      title: 'Ocurrido un error vuelva a intentarlo',
+                                      showConfirmButton: false,
+                                      timer: 1500
+                                  }).then((result) => {
+                                      if (result.isConfirmed) {
+                                          location.reload();
+                                      } else {
+                                          location.reload();
+                                      }
+                                  });
+                              }
+                          }, 2000);
+                      } else {
+                          let role_id = '<?= $this->session->userdata('role_id') ?>';
+                          if (role_id == '1') {
+                              setTimeout(() => {
+                                  window.location =
+                                      '<?= site_url("anuncio/index") ?>';
+                              }, 1000);
+                          } else {
+                              setTimeout(() => {
+                                  window.location =
+                                      '<?= site_url("perfil/page") ?>';
+                              }, 1000);
                           }
                           Swal.fire({
                               icon: 'success',
-                              title: 'La imagen se ha subido correctamente',
+                              title: 'Anuncio creado correctamente',
                               showConfirmButton: false,
                               timer: 1500
                           });
-                          // $progress.show();
                       }
-                  });
+
+                  }
+              }
+
+          });
+
+          async function createAds(titulo, categoria, subcategoria, precio, whatsapp, descripcion, photo, city_main,
+              lat, lng, pac_input, url) {
+              return $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/add_anuncio') ?>",
+                  data: {
+                      titulo,
+                      categoria,
+                      subcategoria,
+                      precio,
+                      whatsapp,
+                      descripcion,
+                      photo,
+                      city_main,
+                      lat,
+                      lng,
+                      pac_input,
+                      url
+                  },
+                  success: function(result) {
+                      result = JSON.parse(result);
+                  }
+              })
+          }
+
+          async function createPhoto(id, photos) {
+              return $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/add_photo_anuncio') ?>",
+                  data: {
+                      id,
+                      photos
+                  },
+                  success: function(result) {
+                      result = JSON.parse(result);
+                  }
+              })
+          }
+
+          function change_categoria() {
+              var a = $("select[name=categoria]").val();
+              $('#subcategoria').empty();
+              $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/get_subcate') ?>",
+                  data: {
+                      categoria_id: a
+                  },
+                  success: function(result) {
+                      result = JSON.parse(result);
+
+                      var cadena = "";
+                      for (let i = 0; i < result.length; i++) {
+                          cadena = cadena + "<option value='" + result[i].subcate_id + "'>" + result[i]
+                              .nombre + "</option>";
+                      }
+
+                      $('#subcategoria').html(cadena);
+                  }
               });
 
-              function delete_image_0() {
 
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_0") {
-                          id_encontrado = i;
-                      }
+          }
+
+          function getReverseGeocodingData(lat, lng) {
+              var latlng = new google.maps.LatLng(lat, lng);
+
+              // This is making the Geocode request
+              var geocoder = new google.maps.Geocoder();
+              geocoder.geocode({
+                  'latLng': latlng
+              }, function(results, status) {
+                  if (status !== google.maps.GeocoderStatus.OK) {
+                      //    alert(status);
                   }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
+                  // This is checking to see if the Geoeode Status is OK before proceeding
+                  if (status == google.maps.GeocoderStatus.OK) {
+
+                      var address = (results[0].formatted_address);
+                      //  alert(address);
+                      $('#pac-input').val(address);
+
                   }
-              }
-
-              function delete_image_1() {
-
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_1") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_2() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_2") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_3() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_3") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_4() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_4") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_5() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_5") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_6() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_6") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_7() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_6") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_8() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_8") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function delete_image_9() {
-                  var id_encontrado = -1;
-                  for (let i = 0; i < array_imagenes.length; i++) {
-                      if (array_imagenes[i].name == "image_9") {
-                          id_encontrado = i;
-                      }
-                  }
-                  if (id_encontrado != -1) {
-                      array_imagenes.splice(id_encontrado, 1);
-                      for (let i = 0; i < 10; i++) {
-                          $('#image_' + i).attr("src", imagen_default);
-                          $('#add_image_' + i).val("");
-                          $('#span_delete_' + i).hide();
-                          $('#span_add_' + i).html('<i class="fa fa-upload" aria-hidden="true"></i> Agregar imagen');
-                      }
-                      if (array_imagenes.length > 0) {
-                          array_imagenes.forEach(function(item, index, array) {
-                              item.name = "image_" + index;
-                              $('#image_' + index).attr("src", item.imagen);
-                              $('#span_delete_' + index).show();
-                              if (index == 0) {
-                                  $('#span_add_' + index).text("Portada");
-                              } else {
-                                  $('#span_add_' + index).text("Cargada");
-                              }
-                          });
-                      }
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'La imagen se eliminó correctamente',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
-              }
-
-              function llamar_add_imagen_0() {
-                  $('#add_image_0').click();
-                  imagen_click = 0;
-              }
-
-              function llamar_add_imagen_1() {
-                  $('#add_image_1').click();
-                  imagen_click = 1;
-              }
-
-              function llamar_add_imagen_2() {
-                  $('#add_image_2').click();
-                  imagen_click = 2;
-              }
-
-              function llamar_add_imagen_3() {
-                  $('#add_image_3').click();
-                  imagen_click = 3;
-              }
-
-              function llamar_add_imagen_4() {
-                  $('#add_image_4').click();
-                  imagen_click = 4;
-              }
-
-              function llamar_add_imagen_5() {
-                  $('#add_image_5').click();
-                  imagen_click = 5;
-              }
-
-              function llamar_add_imagen_6() {
-                  $('#add_image_6').click();
-                  imagen_click = 6;
-              }
-
-              function llamar_add_imagen_7() {
-                  $('#add_image_7').click();
-                  imagen_click = 7;
-              }
-
-              function llamar_add_imagen_8() {
-                  $('#add_image_8').click();
-                  imagen_click = 8;
-              }
-
-              function llamar_add_imagen_9() {
-                  $('#add_image_9').click();
-                  imagen_click = 9;
-              }
-
-              $(document).ready(function() {
-
-                  $("#subcategoria").select2({
-                      placeholder: 'Seleccione la subcategoria',
-                      allowClear: true,
-                      width: '100%'
-                  });
-                  initMap();
               });
+          }
+          //Funcion principal
+          function initMap() {
 
-              $("#btn_add_anuncio").click(async function() {
-                  var titulo = $('#titulo');
-                  var categoria = $('#categoria');
-                  var subcategoria = $('#subcategoria');
-                  var precio = $('#precio');
-                  var whatsapp = $('#whatsapp');
-                  var decripcion = $('#descripcion');
-                  var url = $('#url');
-                  var seleccion_pais = $('#pais').val().trim();
-                  if (titulo.val().trim() == "") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: titulo.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              titulo.focus();
-                          } else {
-                              titulo.focus();
-                          }
-                      });
-                  } else if (categoria.val() == "0") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: categoria.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              categoria.focus();
-                          } else {
-                              categoria.focus();
-                          }
-                      });
-                  } else if (subcategoria.val() == "0") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: subcategoria.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (subcategoria.isConfirmed) {
-                              subcategoria.focus();
-                          } else {
-                              subcategoria.focus();
-                          }
-                      });
-                  } else if (precio.val().trim() == "") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: precio.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              precio.focus();
-                              precio.blur(function() {
-                                  precio.focus();
-                              });
-                          } else {
-                              precio.focus();
-                          }
-                      });
-                  } else if (whatsapp.val().trim() == "") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: whatsapp.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              whatsapp.focus();
-                          } else {
-                              whatsapp.focus();
-                          }
-                      });
-                  } else if (decripcion.val().trim() == "") {
-                      Swal.fire({
-                          icon: 'info',
-                          title: decripcion.prop('placeholder') + ' es un campo requerido',
-                          showConfirmButton: true
-                      }).then((result) => {
-                          if (result.isConfirmed) {
-                              decripcion.focus();
+              $('#pac-input').val("");
+              var country = "ecuador"
+              $.ajax({
+                  url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + country +
+                      ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
+                  dataType: 'json',
+                  success: function(response) {
+                      //console.log(response);
+                      var pos = {
+                          lat: parseFloat(response.results[0].geometry.location.lat),
 
-                          } else {
-                              decripcion.focus();
-
-                          }
-                      });
-                  } else if (array_imagenes.length == 0) {
-                      Swal.fire({
-                          icon: 'info',
-                          title: 'No hay imagenes cargadas',
-                          showConfirmButton: true
-                      });
-                  } else if (seleccion_pais == "") {
-                      $('#pac-input').val("");
-                      initMap();
-                  } else if (seleccion_pais != "Ecuador") {
-                      $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                      $('#modal_error_ciudad').modal('show');
-                      initMap();
-                      $('#btn_add_anuncio').prop('disabled', false);
-                  } else {
-                      swal.fire({
-                          title: '',
-                          html: '<div class="save_loading"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div><div><h4 id="mensajeAlert">Creando el anuncio...</h4></div>',
-                          showConfirmButton: false,
-                          allowOutsideClick: false,
-                          footer: '<h6>No realice acciones sobre la página</h6>'
-                      });
-                      $('#btn_add_anuncio').prop('disabled', true);
-                      var latAds = $("#lat").val();
-                      var lngAds = $('#lng').val();
-                      var cityAds = $('#city_main').val();
-                      var addressAds = $('#pac-input').val();
-                      var photoMain = {
-                          imagen: array_imagenes[0].imagen
+                          lng: parseFloat(response.results[0].geometry.location.lng)
                       };
-                      var resultCreateAds = await createAds(titulo.val().trim(), categoria.val(), subcategoria
-                          .val(), precio.val().trim(), whatsapp.val().trim(), decripcion.val().trim(), JSON
-                          .stringify(photoMain), cityAds, latAds, lngAds, addressAds, url.val().trim())
-                      resultCreateAds = JSON.parse(resultCreateAds);
-                      if (resultCreateAds.status == 404) {
-                          $('#btn_add_anuncio').prop('disabled', false);
-                          Swal.fire({
-                              icon: 'info',
-                              title: 'Lo sentimos esta opción solo esta disponible para los clientes',
-                              showConfirmButton: true
-                          });
-                      } else if (resultCreateAds.status == 500) {
-                          $('#btn_add_anuncio').prop('disabled', false);
-                          Swal.fire({
-                              icon: 'info',
-                              title: 'Lo sentimos esta opción solo esta disponible para los clientes registrados',
-                              showConfirmButton: true
-                          });
-                      } else {
-                          array_imagenes.splice(0, 1);
-                          if (array_imagenes.length > 0) {
-                              $('#mensajeAlert').text("Guardando imagenes");
-                              setTimeout(async () => {
-                                  resultPhoto = await createPhoto(resultCreateAds.id, JSON
-                                      .stringify(array_imagenes));
-                                  resultPhoto = JSON.parse(resultPhoto);
-                                  if (resultPhoto.status == 200) {
-                                      let role_id = '<?= $this->session->userdata('role_id') ?>';
-                                      if (role_id == '1') {
-                                          setTimeout(() => {
-                                              window.location =
-                                                  '<?= site_url("anuncio/index") ?>';
-                                          }, 1000);
-                                      } else {
-                                          setTimeout(() => {
-                                              window.location =
-                                                  '<?= site_url("perfil/page") ?>';
-                                          }, 1000);
-                                      }
-                                      Swal.fire({
-                                          icon: 'success',
-                                          title: 'Anuncio creado correctamente',
-                                          showConfirmButton: false,
-                                          timer: 1500
-                                      });
-                                  } else {
-                                      Swal.fire({
-                                          icon: 'error',
-                                          title: 'Ocurrido un error vuelva a intentarlo',
-                                          showConfirmButton: false,
-                                          timer: 1500
-                                      }).then((result) => {
-                                          if (result.isConfirmed) {
-                                              location.reload();
-                                          } else {
-                                              location.reload();
-                                          }
-                                      });
-                                  }
-                              }, 2000);
-                          } else {
-                              let role_id = '<?= $this->session->userdata('role_id') ?>';
-                              if (role_id == '1') {
-                                  setTimeout(() => {
-                                      window.location =
-                                          '<?= site_url("anuncio/index") ?>';
-                                  }, 1000);
-                              } else {
-                                  setTimeout(() => {
-                                      window.location =
-                                          '<?= site_url("perfil/page") ?>';
-                                  }, 1000);
-                              }
-                              Swal.fire({
-                                  icon: 'success',
-                                  title: 'Anuncio creado correctamente',
-                                  showConfirmButton: false,
-                                  timer: 1500
-                              });
+
+                      var map = new google.maps.Map(document.getElementById('map'), {
+                          center: pos,
+                          scrollwheel: false,
+                          zoom: 7
+                      });
+                      var marker = new google.maps.Marker({
+                          position: pos,
+                          map: map,
+                          draggable: true
+                      });
+
+                      marker.addListener("dragend", function() {
+                          var currentLocation = marker.getPosition();
+                          var lat = currentLocation.lat(); //latitude
+                          var lng = currentLocation.lng(); //longitude
+                          search_city(lat, lng);
+                          getReverseGeocodingData2(lat, lng);
+                          $('#lat').val(lat);
+                          $('#lng').val(lng);
+                          map.setZoom(16);
+                          map.setCenter(currentLocation);
+
+                      });
+                      // Create the search box and link it to the UI element.
+                      var input = document.getElementById('pac-input');
+                      var searchBox = new google.maps.places.SearchBox(input);
+                      // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+                      $('#lat').val(pos.lat);
+                      $('#lng').val(pos.lng);
+                      // Bias the SearchBox results towards current map's viewport.
+                      map.addListener('bounds_changed', function() {
+
+                          searchBox.setBounds(map.getBounds());
+                      });
+
+                      var markers = [];
+
+                      // Listen for the event fired when the user selects a prediction and retrieve
+                      // more details for that place.
+                      searchBox.addListener('places_changed', function() {
+                          var places = searchBox.getPlaces();
+
+                          if (places.length == 0) {
+                              return;
                           }
 
-                      }
-                  }
-
-              });
-
-              async function createAds(titulo, categoria, subcategoria, precio, whatsapp, descripcion, photo, city_main,
-                  lat, lng, pac_input, url) {
-                  return $.ajax({
-                      type: 'POST',
-                      url: "<?= site_url('front/add_anuncio') ?>",
-                      data: {
-                          titulo,
-                          categoria,
-                          subcategoria,
-                          precio,
-                          whatsapp,
-                          descripcion,
-                          photo,
-                          city_main,
-                          lat,
-                          lng,
-                          pac_input,
-                          url
-                      },
-                      success: function(result) {
-                          result = JSON.parse(result);
-                      }
-                  })
-              }
-
-              async function createPhoto(id, photos) {
-                  return $.ajax({
-                      type: 'POST',
-                      url: "<?= site_url('front/add_photo_anuncio') ?>",
-                      data: {
-                          id,
-                          photos
-                      },
-                      success: function(result) {
-                          result = JSON.parse(result);
-                      }
-                  })
-              }
-
-              function change_categoria() {
-                  var a = $("select[name=categoria]").val();
-                  $('#subcategoria').empty();
-                  $.ajax({
-                      type: 'POST',
-                      url: "<?= site_url('front/get_subcate') ?>",
-                      data: {
-                          categoria_id: a
-                      },
-                      success: function(result) {
-                          result = JSON.parse(result);
-
-                          var cadena = "";
-                          for (let i = 0; i < result.length; i++) {
-                              cadena = cadena + "<option value='" + result[i].subcate_id + "'>" + result[i]
-                                  .nombre + "</option>";
-                          }
-
-                          $('#subcategoria').html(cadena);
-                      }
-                  });
-
-
-              }
-
-              function getReverseGeocodingData(lat, lng) {
-                  var latlng = new google.maps.LatLng(lat, lng);
-
-                  // This is making the Geocode request
-                  var geocoder = new google.maps.Geocoder();
-                  geocoder.geocode({
-                      'latLng': latlng
-                  }, function(results, status) {
-                      if (status !== google.maps.GeocoderStatus.OK) {
-                          //    alert(status);
-                      }
-                      // This is checking to see if the Geoeode Status is OK before proceeding
-                      if (status == google.maps.GeocoderStatus.OK) {
-
-                          var address = (results[0].formatted_address);
-                          //  alert(address);
-                          $('#pac-input').val(address);
-
-                      }
-                  });
-              }
-              //Funcion principal
-              function initMap() {
-
-                  $('#pac-input').val("");
-                  var country = "ecuador"
-                  $.ajax({
-                      url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + country +
-                          ",+EC&key=AIzaSyCxSjmDtXEki2dmimctXMPd5y-FQrZpGmQ",
-                      dataType: 'json',
-                      success: function(response) {
-                          //console.log(response);
-                          var pos = {
-                              lat: parseFloat(response.results[0].geometry.location.lat),
-
-                              lng: parseFloat(response.results[0].geometry.location.lng)
-                          };
-
-                          var map = new google.maps.Map(document.getElementById('map'), {
-                              center: pos,
-                              scrollwheel: false,
-                              zoom: 7
+                          // Clear out the old markers.
+                          markers.forEach(function(marker) {
+                              marker.setMap(null);
                           });
-                          var marker = new google.maps.Marker({
-                              position: pos,
-                              map: map,
-                              draggable: true
-                          });
+                          //  marker = [];
 
-                          marker.addListener("dragend", function() {
-                              var currentLocation = marker.getPosition();
-                              var lat = currentLocation.lat(); //latitude
-                              var lng = currentLocation.lng(); //longitude
-                              search_city(lat, lng);
-                              getReverseGeocodingData2(lat, lng);
-                              $('#lat').val(lat);
-                              $('#lng').val(lng);
-                              map.setZoom(16);
-                              map.setCenter(currentLocation);
-
-                          });
-                          // Create the search box and link it to the UI element.
-                          var input = document.getElementById('pac-input');
-                          var searchBox = new google.maps.places.SearchBox(input);
-                          // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-                          $('#lat').val(pos.lat);
-                          $('#lng').val(pos.lng);
-                          // Bias the SearchBox results towards current map's viewport.
-                          map.addListener('bounds_changed', function() {
-
-                              searchBox.setBounds(map.getBounds());
-                          });
-
-                          var markers = [];
-
-                          // Listen for the event fired when the user selects a prediction and retrieve
-                          // more details for that place.
-                          searchBox.addListener('places_changed', function() {
-                              var places = searchBox.getPlaces();
-
-                              if (places.length == 0) {
+                          // For each place, get the icon, name and location.
+                          var bounds = new google.maps.LatLngBounds();
+                          places.forEach(function(place) {
+                              if (!place.geometry) {
+                                  console.log("Returned place contains no geometry");
                                   return;
                               }
+                              var icon = {
+                                  url: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+                                  size: new google.maps.Size(71, 71),
+                                  origin: new google.maps.Point(0, 0),
+                                  anchor: new google.maps.Point(17, 34),
+                                  scaledSize: new google.maps.Size(25, 25)
+                              };
 
-                              // Clear out the old markers.
-                              markers.forEach(function(marker) {
-                                  marker.setMap(null);
-                              });
-                              //  marker = [];
+                              if (marker === false) {
 
-                              // For each place, get the icon, name and location.
-                              var bounds = new google.maps.LatLngBounds();
-                              places.forEach(function(place) {
-                                  if (!place.geometry) {
-                                      console.log("Returned place contains no geometry");
-                                      return;
-                                  }
-                                  var icon = {
-                                      url: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-                                      size: new google.maps.Size(71, 71),
-                                      origin: new google.maps.Point(0, 0),
-                                      anchor: new google.maps.Point(17, 34),
-                                      scaledSize: new google.maps.Size(25, 25)
-                                  };
+                                  marker = new google.maps.Marker({
+                                      position: place.geometry.location,
+                                      map: map,
+                                      draggable: true //make it draggable
+                                  });
+                              } else {
 
-                                  if (marker === false) {
-
-                                      marker = new google.maps.Marker({
-                                          position: place.geometry.location,
-                                          map: map,
-                                          draggable: true //make it draggable
-                                      });
-                                  } else {
-
-                                      marker.setPosition(place.geometry.location);
+                                  marker.setPosition(place.geometry.location);
 
 
-                                  }
+                              }
 
 
-                                  if (place.geometry.viewport) {
-                                      // Only geocodes have viewport.
-                                      bounds.union(place.geometry.viewport);
-                                  } else {
+                              if (place.geometry.viewport) {
+                                  // Only geocodes have viewport.
+                                  bounds.union(place.geometry.viewport);
+                              } else {
 
-                                      bounds.extend(place.geometry.location);
-                                  }
-                              });
+                                  bounds.extend(place.geometry.location);
+                              }
+                          });
 
-                              map.fitBounds(bounds);
+                          map.fitBounds(bounds);
+
+                          var currentLocation = marker.getPosition();
+                          var lat = currentLocation.lat(); //latitude
+                          var lng = currentLocation.lng(); //longitude
+                          $('#lat').val(lat);
+                          $('#lng').val(lng);
+                          search_city(lat, lng);
+                          getReverseGeocodingData2(lat, lng)
+                          google.maps.event.addListener(marker, 'dragend', function(event) {
 
                               var currentLocation = marker.getPosition();
+
                               var lat = currentLocation.lat(); //latitude
                               var lng = currentLocation.lng(); //longitude
                               $('#lat').val(lat);
                               $('#lng').val(lng);
                               search_city(lat, lng);
                               getReverseGeocodingData2(lat, lng)
+                          });
+
+                      });
+
+
+                      //Listen for any clicks on the map.
+                      google.maps.event.addListener(map, 'click', function(event) {
+
+                          //Get the location that the user clicked.
+                          var clickedLocation = event.latLng;
+
+                          //If the marker hasn't been added.
+                          if (marker === false) {
+                              //Create the marker.
+                              marker = new google.maps.Marker({
+                                  position: clickedLocation,
+                                  map: map,
+                                  draggable: true //make it draggable
+                              });
+                              //Listen for drag events!
                               google.maps.event.addListener(marker, 'dragend', function(event) {
+                                  // markerLocation();.
 
                                   var currentLocation = marker.getPosition();
 
                                   var lat = currentLocation.lat(); //latitude
                                   var lng = currentLocation.lng(); //longitude
-                                  $('#lat').val(lat);
-                                  $('#lng').val(lng);
-                                  search_city(lat, lng);
-                                  getReverseGeocodingData2(lat, lng)
+
                               });
 
-                          });
+                          } else {
+
+                              //Marker has already been added, so just change its location.
+                              marker.setPosition(clickedLocation);
 
 
-                          //Listen for any clicks on the map.
-                          google.maps.event.addListener(map, 'click', function(event) {
-
-                              //Get the location that the user clicked.
-                              var clickedLocation = event.latLng;
-
-                              //If the marker hasn't been added.
-                              if (marker === false) {
-                                  //Create the marker.
-                                  marker = new google.maps.Marker({
-                                      position: clickedLocation,
-                                      map: map,
-                                      draggable: true //make it draggable
-                                  });
-                                  //Listen for drag events!
-                                  google.maps.event.addListener(marker, 'dragend', function(event) {
-                                      // markerLocation();.
-
-                                      var currentLocation = marker.getPosition();
-
-                                      var lat = currentLocation.lat(); //latitude
-                                      var lng = currentLocation.lng(); //longitude
-
-                                  });
-
-                              } else {
-
-                                  //Marker has already been added, so just change its location.
-                                  marker.setPosition(clickedLocation);
-
-
-                              }
-                              //Get the marker's location.
-                              markerLocation();
-
-
-                              //This function will get the marker's current location and then add the lat/long
-                              //values to our textfields so that we can save the location.
-                              function markerLocation() {
-                                  //Get location.
-                                  var currentLocation = marker.getPosition();
-                                  var lat = currentLocation.lat(); //latitude
-                                  var lng = currentLocation.lng(); //longitude
-                                  var geocoder = new google.maps.Geocoder;
-                                  var infowindow = new google.maps.InfoWindow;
-                                  search_city(lat, lng);
-                                  getReverseGeocodingData2(lat, lng);
-                                  $('#lat').val(lat);
-                                  $('#lng').val(lng);
-
-                              }
-
-
-                          });
-
-
-
-                          function getReverseGeocodingData2(lat, lng) {
-                              var latlng = new google.maps.LatLng(lat, lng);
-                              // This is making the Geocode request
-                              var geocoder = new google.maps.Geocoder();
-                              geocoder.geocode({
-                                  'latLng': latlng
-                              }, function(results, status) {
-                                  //  console.log(results);
-                                  if (status !== google.maps.GeocoderStatus.OK) {
-                                      //alert(status);
-                                  }
-                                  // This is checking to see if the Geoeode Status is OK before proceeding
-                                  if (status == google.maps.GeocoderStatus.OK) {
-
-                                      var address = (results[0].formatted_address);
-                                      var arrayDeCadenas = address.split(",");
-                                      var ciudad = results[0].address_components;
-
-                                      $('#pac-input').val(address);
-
-                                      if (arrayDeCadenas) {
-                                          if (arrayDeCadenas.length > 0) {
-                                              var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
-                                              $('#pais').val(pais);
-
-                                          }
-                                      }
-
-                                      var nombre_pais = 'Ecuador';
-                                      var seleccion_pais = $('#pais').val().trim();
-
-                                      if (nombre_pais != seleccion_pais) {
-                                          $('#pac-input').val("");
-                                          $('#pais').val("");
-                                          $('#error_ubicacion').text(
-                                              "Lo sentimos solo estamos displonibes en Ecuador");
-                                          $('#modal_error_ciudad').modal('show');
-                                          initMap();
-                                      }
-                                  }
-                              });
                           }
+                          //Get the marker's location.
+                          markerLocation();
 
-                          function search_city(lat, lng) {
-                              var latlng;
-                              latlng = new google.maps.LatLng(lat, lng); // New York, US
 
-                              new google.maps.Geocoder().geocode({
-                                  'latLng': latlng
-                              }, function(results, status) {
-                                  if (status == google.maps.GeocoderStatus.OK) {
-                                      if (results[1]) {
-                                          var country = null,
-                                              countryCode = null,
-                                              city = null,
-                                              cityAlt = null;
-                                          var c, lc, component;
-                                          for (var r = 0, rl = results.length; r < rl; r += 1) {
-                                              var result = results[r];
+                          //This function will get the marker's current location and then add the lat/long
+                          //values to our textfields so that we can save the location.
+                          function markerLocation() {
+                              //Get location.
+                              var currentLocation = marker.getPosition();
+                              var lat = currentLocation.lat(); //latitude
+                              var lng = currentLocation.lng(); //longitude
+                              var geocoder = new google.maps.Geocoder;
+                              var infowindow = new google.maps.InfoWindow;
+                              search_city(lat, lng);
+                              getReverseGeocodingData2(lat, lng);
+                              $('#lat').val(lat);
+                              $('#lng').val(lng);
 
-                                              if (!city && result.types[0] === 'locality') {
-                                                  for (c = 0, lc = result.address_components.length; c <
-                                                      lc; c += 1) {
-                                                      component = result.address_components[c];
-
-                                                      if (component.types[0] === 'locality') {
-                                                          city = component.long_name;
-                                                          break;
-                                                      }
-                                                  }
-                                              } else if (!city && !cityAlt && result.types[0] ===
-                                                  'administrative_area_level_1') {
-                                                  for (c = 0, lc = result.address_components.length; c <
-                                                      lc; c += 1) {
-                                                      component = result.address_components[c];
-
-                                                      if (component.types[0] ===
-                                                          'administrative_area_level_1') {
-                                                          cityAlt = component.long_name;
-                                                          break;
-                                                      }
-                                                  }
-                                              } else if (!country && result.types[0] === 'country') {
-                                                  country = result.address_components[0].long_name;
-                                                  countryCode = result.address_components[0].short_name;
-                                              }
-
-                                              if (city && country) {
-                                                  break;
-                                              }
-                                          }
-                                          $("#city_main").val(city);
-                                          // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
-                                      }
-                                  }
-                              });
                           }
 
 
+                      });
+
+
+
+                      function getReverseGeocodingData2(lat, lng) {
+                          var latlng = new google.maps.LatLng(lat, lng);
+                          // This is making the Geocode request
+                          var geocoder = new google.maps.Geocoder();
+                          geocoder.geocode({
+                              'latLng': latlng
+                          }, function(results, status) {
+                              //  console.log(results);
+                              if (status !== google.maps.GeocoderStatus.OK) {
+                                  //alert(status);
+                              }
+                              // This is checking to see if the Geoeode Status is OK before proceeding
+                              if (status == google.maps.GeocoderStatus.OK) {
+
+                                  var address = (results[0].formatted_address);
+                                  var arrayDeCadenas = address.split(",");
+                                  var ciudad = results[0].address_components;
+
+                                  $('#pac-input').val(address);
+
+                                  if (arrayDeCadenas) {
+                                      if (arrayDeCadenas.length > 0) {
+                                          var pais = arrayDeCadenas[arrayDeCadenas.length - 1];
+                                          $('#pais').val(pais);
+
+                                      }
+                                  }
+
+                                  var nombre_pais = 'Ecuador';
+                                  var seleccion_pais = $('#pais').val().trim();
+
+                                  if (nombre_pais != seleccion_pais) {
+                                      $('#pac-input').val("");
+                                      $('#pais').val("");
+                                      $('#error_ubicacion').text(
+                                          "Lo sentimos solo estamos displonibes en Ecuador");
+                                      $('#modal_error_ciudad').modal('show');
+                                      initMap();
+                                  }
+                              }
+                          });
                       }
-                  });
+
+                      function search_city(lat, lng) {
+                          var latlng;
+                          latlng = new google.maps.LatLng(lat, lng); // New York, US
+
+                          new google.maps.Geocoder().geocode({
+                              'latLng': latlng
+                          }, function(results, status) {
+                              if (status == google.maps.GeocoderStatus.OK) {
+                                  if (results[1]) {
+                                      var country = null,
+                                          countryCode = null,
+                                          city = null,
+                                          cityAlt = null;
+                                      var c, lc, component;
+                                      for (var r = 0, rl = results.length; r < rl; r += 1) {
+                                          var result = results[r];
+
+                                          if (!city && result.types[0] === 'locality') {
+                                              for (c = 0, lc = result.address_components.length; c <
+                                                  lc; c += 1) {
+                                                  component = result.address_components[c];
+
+                                                  if (component.types[0] === 'locality') {
+                                                      city = component.long_name;
+                                                      break;
+                                                  }
+                                              }
+                                          } else if (!city && !cityAlt && result.types[0] ===
+                                              'administrative_area_level_1') {
+                                              for (c = 0, lc = result.address_components.length; c <
+                                                  lc; c += 1) {
+                                                  component = result.address_components[c];
+
+                                                  if (component.types[0] ===
+                                                      'administrative_area_level_1') {
+                                                      cityAlt = component.long_name;
+                                                      break;
+                                                  }
+                                              }
+                                          } else if (!country && result.types[0] === 'country') {
+                                              country = result.address_components[0].long_name;
+                                              countryCode = result.address_components[0].short_name;
+                                          }
+
+                                          if (city && country) {
+                                              break;
+                                          }
+                                      }
+                                      $("#city_main").val(city);
+                                      // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
+                                  }
+                              }
+                          });
+                      }
 
 
-              }
-          </script>
-
-          <style>
-              .postdetails label span {
-                  font-size: 12px;
-                  color: #777;
-              }
-
-              .sweet-alert-trigger {
-                  padding: 5px 10px;
-                  border: 0;
-                  border-radius: 3px;
-                  background: #0F74F4;
-                  color: white;
-              }
-
-              .save_loading {
-                  width: 140px;
-                  height: 140px;
-                  margin: 0 auto;
-                  animation-duration: 0.5s;
-                  animation-timing-function: linear;
-                  animation-iteration-count: infinite;
-                  animation-name: ro;
-                  transform-origin: 50% 50%;
-              }
-
-              @keyframes ro {
-                  100% {
-                      transform: rotate(-360deg) translate(0, 0);
                   }
+              });
+
+
+          }
+      </script>
+
+      <style>
+          .postdetails label span {
+              font-size: 12px;
+              color: #777;
+          }
+
+          .sweet-alert-trigger {
+              padding: 5px 10px;
+              border: 0;
+              border-radius: 3px;
+              background: #0F74F4;
+              color: white;
+          }
+
+          .save_loading {
+              width: 140px;
+              height: 140px;
+              margin: 0 auto;
+              animation-duration: 0.5s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              animation-name: ro;
+              transform-origin: 50% 50%;
+          }
+
+          @keyframes ro {
+              100% {
+                  transform: rotate(-360deg) translate(0, 0);
               }
+          }
 
-              /* save success icon */
+          /* save success icon */
 
-              #add_image_1 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_1 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_2 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_2 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_3 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_3 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_4 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_4 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_5 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_5 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_6 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_6 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_7 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_7 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_8 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_8 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_9 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_9 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
-              #add_image_0 {
-                  opacity: 0;
-                  position: absolute;
-                  z-index: -1;
-              }
+          #add_image_0 {
+              opacity: 0;
+              position: absolute;
+              z-index: -1;
+          }
 
 
-              h6 a:hover {
-                  color: #8c1822 !important;
-              }
+          h6 a:hover {
+              color: #8c1822 !important;
+          }
 
-              h6 a {
-                  color: #000 !important;
-              }
+          h6 a {
+              color: #000 !important;
+          }
 
-              /* Carousel base class */
-              .carousel {
-                  margin-bottom: 58px;
-              }
+          /* Carousel base class */
+          .carousel {
+              margin-bottom: 58px;
+          }
 
-              /* Since positioning the image, we need to help out the caption */
-              .carousel-caption {
-                  z-index: 1;
-              }
+          /* Since positioning the image, we need to help out the caption */
+          .carousel-caption {
+              z-index: 1;
+          }
 
-              /* Declare heights because of positioning of img element */
+          /* Declare heights because of positioning of img element */
+          .carousel .item {
+              height: 500px;
+              background-color: #555;
+          }
+
+          .carousel img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              min-height: 500px;
+          }
+
+          .banner2 {
+              padding-top: 107px !important
+          }
+
+          @media screen and (max-width: 992px) {
+
               .carousel .item {
-                  height: 500px;
+                  height: 300px;
                   background-color: #555;
               }
 
@@ -2433,55 +2452,37 @@
                   position: absolute;
                   top: 0;
                   left: 0;
-                  min-height: 500px;
+                  min-height: 300px;
+              }
+          }
+
+          @media screen and (max-width: 400px) {
+
+              .carousel .item {
+                  height: 300px;
+                  background-color: #555;
               }
 
-              .banner2 {
-                  padding-top: 107px !important
+              .carousel img {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  min-height: 300px;
               }
+          }
 
-              @media screen and (max-width: 992px) {
+          #uploads {
+              display: block;
+              position: relative;
+          }
 
-                  .carousel .item {
-                      height: 300px;
-                      background-color: #555;
-                  }
+          #uploads li {
+              list-style: none;
+          }
 
-                  .carousel img {
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      min-height: 300px;
-                  }
-              }
-
-              @media screen and (max-width: 400px) {
-
-                  .carousel .item {
-                      height: 300px;
-                      background-color: #555;
-                  }
-
-                  .carousel img {
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      min-height: 300px;
-                  }
-              }
-
-              #uploads {
-                  display: block;
-                  position: relative;
-              }
-
-              #uploads li {
-                  list-style: none;
-              }
-
-              .btn-primary {
-                  color: #fff;
-                  background-color: #8c1822;
-                  border-color: #8c1822;
-              }
-          </style>
+          .btn-primary {
+              color: #fff;
+              background-color: #8c1822;
+              border-color: #8c1822;
+          }
+      </style>
