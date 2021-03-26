@@ -1254,7 +1254,6 @@
                       toggleDragModeOnDblclick: false,
                   });
               }).on('hidden.bs.modal', function() {
-
                   cropper.destroy();
                   cropper = null;
               });
