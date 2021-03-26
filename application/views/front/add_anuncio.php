@@ -1239,13 +1239,22 @@
                       });
                   }
               });
-
               $modal.on('shown.bs.modal', function() {
                   cropper = new Cropper(image, {
-                      aspectRatio: 1,
-                      viewMode: 3,
+                      aspectRatio: 645 / 645,
+                      viewMode: 1,
+                      dragMode: 'move',
+                      autoCropArea: 0.65,
+                      restore: false,
+                      guides: false,
+                      center: false,
+                      highlight: false,
+                      cropBoxMovable: false,
+                      cropBoxResizable: false,
+                      toggleDragModeOnDblclick: false,
                   });
               }).on('hidden.bs.modal', function() {
+
                   cropper.destroy();
                   cropper = null;
               });
