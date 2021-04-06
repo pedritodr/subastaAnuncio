@@ -214,7 +214,7 @@ class Front extends CI_Controller
     }
     public function update_anuncio_index($anuncio_id)
     {
-        if (!in_array($this->session->userdata('role_id'), [1,2])) {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
             $this->log_out();
             redirect('login');
         }
@@ -275,7 +275,7 @@ class Front extends CI_Controller
             exit();
         }
         if ($this->session->userdata('role_id')) {
-            if (!in_array($this->session->userdata('role_id'), [1,2])) {
+            if (!in_array($this->session->userdata('role_id'), [1, 2])) {
                 echo json_encode(['status' => 404]);
                 exit();
             }
@@ -350,7 +350,7 @@ class Front extends CI_Controller
                     'ciudad_id' => $ciudad_id,
                     'direccion' => $direccion,
                     'photo' => $new_imagen,
-                    'url'=>$url
+                    'url' => $url
                 ];
             } else {
                 $datos = [
@@ -363,7 +363,7 @@ class Front extends CI_Controller
                     'lng' => $lng,
                     'ciudad_id' => $ciudad_id,
                     'direccion' => $direccion,
-                    'url'=>$url
+                    'url' => $url
                 ];
             }
         } else {
@@ -377,7 +377,7 @@ class Front extends CI_Controller
                 'lng' => $lng,
                 'ciudad_id' => $ciudad_id,
                 'direccion' => $direccion,
-                'url'=>$url
+                'url' => $url
             ];
         }
         $row = $this->anuncio->update($anuncio_id, $datos);
@@ -964,7 +964,7 @@ class Front extends CI_Controller
             exit();
         }
         if ($this->session->userdata('role_id')) {
-            if (!in_array($this->session->userdata('role_id'), [1,2])) {
+            if (!in_array($this->session->userdata('role_id'), [1, 2])) {
                 echo json_encode(['status' => 404]);
                 exit();
             }
@@ -1029,7 +1029,7 @@ class Front extends CI_Controller
             'fecha' =>  date("Y-m-d"),
             'destacado' => 0,
             'fecha_vencimiento' => $fecha_fin,
-            'url'=>$url
+            'url' => $url
         ];
         $id = false;
         if ($membresia) {
@@ -2444,57 +2444,12 @@ class Front extends CI_Controller
         }
 
         $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id, 'is_delete' => 0]);
-
-        $config['base_url'] = site_url('perfil/page/');
-
         /*Obtiene el total de registros a paginar */
         $contador = count($all_anuncios);
-        $config['total_rows'] = $contador;
 
+        // $anuncios_partes = $this->anuncio->get_all_by_anuncios_with_pagination($user_id, 100, 0);
 
-        /*Obtiene el numero de registros a mostrar por pagina */
-        $config['per_page'] = '6';
-        $config['uri_segment'] = 3;
-        /*Se personaliza la paginación para que se adapte a bootstrap*/
-
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-
-        $config['cur_tag_close'] = '</a></li>';
-
-        $config['num_tag_open'] = '<li>';
-
-        $config['num_tag_close'] = '</li>';
-
-        $config['last_link'] = FALSE;
-
-        $config['first_link'] = FALSE;
-
-        $config['next_link'] = '&raquo;';
-
-        $config['next_tag_open'] = '<li>';
-
-        $config['next_tag_close'] = '</li>';
-
-        $config['prev_link'] = '&laquo;';
-
-        $config['prev_tag_open'] = '<li>';
-
-        $config['prev_tag_close'] = '</li>';
-
-
-        /* Se inicializa la paginacion*/
-
-        $this->pagination->initialize($config);
-        $page = $this->uri->segment(3);
-        if ($page) {
-            if ($page >= 4) {
-                $this->session->set_userdata('validando', 2);
-            }
-        }
-        $offset = !$page ? 0 : $page;
-        $anuncios_partes = $this->anuncio->get_all_by_anuncios_with_pagination($user_id, $config['per_page'], $offset);
-
-        foreach ($anuncios_partes as $item) {
+        foreach ($all_anuncios as $item) {
             $nombre = strlen($item->titulo);
 
             if ($nombre > 54) {
@@ -2512,21 +2467,9 @@ class Front extends CI_Controller
             $item->ciudad = $all_ciudad;
         }
 
-        $data['all_anuncios'] = $anuncios_partes;
+        $data['all_anuncios'] = $all_anuncios;
 
         $data['resultados'] = $contador;
-        if ($offset == 0) {
-            $data['inicio'] = 1;
-            $data['fin'] =  6;
-        } else {
-            $data['inicio'] = $offset + 1;
-            $intervalo = 6 + $offset;
-            if ($intervalo > $contador) {
-                $data['fin'] = $contador;
-            } else {
-                $data['fin'] = $intervalo;
-            }
-        }
 
         $user_membresia = $this->membresia->get_membresia_by_user_id($user_id);
         if ($user_membresia) {
@@ -2534,7 +2477,6 @@ class Front extends CI_Controller
         } else {
             $all_membresia = null;
         }
-
 
         $city = $this->pais->get_by_city_all($ciudad_id);
         $all_pais = $this->pais->get_all();
@@ -2549,7 +2491,6 @@ class Front extends CI_Controller
         $data['mis_subastas_inversas'] = $subastas_inversas;
         $data['mis_subastas_directas'] = $mis_subastas;
         $data['user_membresia'] = $user_membresia;
-
 
         $this->load_view_front('front/perfil', $data);
     }
