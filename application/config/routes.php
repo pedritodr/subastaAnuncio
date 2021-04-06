@@ -73,7 +73,7 @@ $route['search_anuncios'] = 'front/buscar_anuncio';
 $route['search_categoria_anuncios'] = 'front/busquedade_anuncio';
 
 $route['faqs'] = 'front/faq';
-//$route['payment/(:any)'] = 'front/pago_exitoso/$1';
+$route['referrer/(:any)'] = 'front/referrer/$1';
 $route['payment'] = 'front/pago_exitoso';
 $route['payment-test'] = 'front/pago_exitoso_2';
 $route['transaccion_cancelada'] = 'front/pago_cancelada';

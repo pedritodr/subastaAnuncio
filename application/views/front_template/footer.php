@@ -836,29 +836,36 @@
 
 
 <script type="text/javascript">
-   (function($) {
-      "use strict";
-      var slider = new MasterSlider();
+   const encodeB64Utf8 = (str) => {
+      return btoa(unescape(encodeURIComponent(str)));
+   }
 
-      // adds Arrows navigation control to the slider.
-      slider.control('arrows');
-      slider.control('timebar', {
-         insertTo: '#masterslider'
-      });
-      slider.control('bullets');
+   const decodeB64Utf8 = (str) => {
+         return decodeURIComponent(escape(atob(str)));
+      }
+      (function($) {
+         "use strict";
+         var slider = new MasterSlider();
 
-      slider.setup('masterslider', {
-         width: 1919, // slider standard width
-         height: 500, // slider standard height
-         space: 1,
-         layout: 'fullwidth',
-         loop: true,
-         preload: 0,
-         instantStartLayers: true,
-         autoplay: true,
-         autoHeight: false
-      });
-   })(jQuery);
+         // adds Arrows navigation control to the slider.
+         slider.control('arrows');
+         slider.control('timebar', {
+            insertTo: '#masterslider'
+         });
+         slider.control('bullets');
+
+         slider.setup('masterslider', {
+            width: 1919, // slider standard width
+            height: 500, // slider standard height
+            space: 1,
+            layout: 'fullwidth',
+            loop: true,
+            preload: 0,
+            instantStartLayers: true,
+            autoplay: true,
+            autoHeight: false
+         });
+      })(jQuery);
    $('#btn_modal_membresia').click(function() {
       if ($('#condiciones_membresia').prop('checked') == true) {
          $('#btn_modal_membresia').hide();

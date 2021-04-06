@@ -704,81 +704,65 @@ class Front extends CI_Controller
         $email = $this->input->post('email');
         $password = $this->input->post('password');
         $phone = $this->input->post('phone');
-        $repeat_password = $this->input->post('repeat_password');
         $tipo_documento = $this->input->post('tipo_documento');
         $nro_documento = $this->input->post('nro_documento');
-
+        $referidor = trim($this->input->post('referidor'));
         if ($tipo_documento == 1) {
             // Crear nuevo objecto
             $validador = new validar_cedula();
-
             // validar CI
             if ($validador->validarCedula($nro_documento)) {
                 //valida
             } else {
-                $this->response->set_message("El cédula introducida no es correcta.", ResponseMessage::SUCCESS);
-                redirect("registrarse");
+                echo json_encode(['status' => 500, 'msj' => 'El cédula introducida no es correcta.']);
+                exit();
             }
         }
+        $userReferidor = null;
+        if($referidor !=''){
+            $userReferidor  = $this->user->
+        }
+        $data_user = [
+            'name' => $name,
+            'email' => $email,
+            'password' => md5($password),
+            'phone' => $phone,
+            'role_id' => 2,
+            'status' => 0,
+            'is_active' => 0,
+            'surname' => $apellido,
+            'cedula' => $nro_documento,
+            'tipo_documento' => $tipo_documento
+        ];
 
-        //establecer reglas de validacion
-        $this->form_validation->set_rules('name', translate('primer_nombre_lang'), 'required');
-        $this->form_validation->set_rules('surname', translate('primer_apellido_lang'), 'required');
-        $this->form_validation->set_rules('email', translate('email_lang'), 'required|is_unique[user.email]');
-        if ($password !=  $repeat_password) {
-            $this->response->set_message("El campo contraseña no coinciden con el repetir contraseña", ResponseMessage::SUCCESS);
-            redirect("registrarse");
+        $user_id =  $this->user->create($data_user);
+        $fecha = date("Y-m-d H:i:s");
+        $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+
+        $codigo_seguridad = '';
+        $caracteres = '0123456789';
+
+        for ($i = 0; $i < 4; $i++) {
+            $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
         }
 
-        if ($this->form_validation->run() == FALSE) { //si alguna de las reglas de validacion fallaron
-            $this->response->set_message(validation_errors(), ResponseMessage::ERROR);
-            redirect("registrarse");
-        } else { //en caso de que todo este bien
-            $data_user = [
-                'name' => $name,
-                'email' => $email,
-                'password' => md5($password),
-                'phone' => $phone,
-                'role_id' => 2,
-                'status' => 0,
-                'is_active' => 0,
-                'surname' => $apellido,
-                'cedula' => $nro_documento,
-                'tipo_documento' => $tipo_documento
-            ];
+        $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
 
-            $user_id =  $this->user->create($data_user);
-            $fecha = date("Y-m-d H:i:s");
-            $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
-            $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
-
-            $codigo_seguridad = '';
-            $caracteres = '0123456789';
-
-            for ($i = 0; $i < 4; $i++) {
-                $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
-            }
-
-            $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
-
-            $this->load->model("Correo_model", "correo");
-            $asunto = "Validación de usuario";
-            $motivo = 'Validación de usuario Subasta anuncios';
-            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-            $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
-            $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
-            $mensaje .= "" . $codigo_seguridad . "<br>";
-            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-            $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
-            $mensaje .= "Saludos,<br>";
-            $mensaje .= "El equipo de SUBASTANUNCIOS";
-            $this->correo->sent($email, $mensaje, $asunto, $motivo);
-            //   $session_data = object_to_array($user);
-            //  $this->session->set_userdata($session_data);
-            $this->response->set_message('Solo te queda un paso para completar tu registro', ResponseMessage::SUCCESS);
-            // $this->session->set_userdata('validando', 1);
-            redirect("activacion");
-        }
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Validación de usuario";
+        $motivo = 'Validación de usuario Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "Hola <br>Nos complace darte la bienvenida a SUBASTANUNCIOS.COM <br>";
+        $mensaje .= "Tu usuario (" . $email . ") sea creado satisfactoriamente. Para completar tu registro de manera efectiva debes ingresar el siguiente código de verificación en tu perfil dentro de la Web o cualquiera de las aplicaciones móviles. Tu Código de verificación es:<br>";
+        $mensaje .= "" . $codigo_seguridad . "<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por sumarte a nuestra plataforma.<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($email, $mensaje, $asunto, $motivo);
+        echo json_encode(['status' => 200, 'msj' => 'Solo te queda un paso para completar tu registro']);
+        exit();
     }
     public function activacion_user()
     {
@@ -2348,6 +2332,7 @@ class Front extends CI_Controller
             redirect('login');
         }
 
+
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('User_model', 'user');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
@@ -2494,6 +2479,7 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/perfil', $data);
     }
+
     public function contacto_mensaje()
     {
         $name = $this->input->post('name');
@@ -3448,5 +3434,16 @@ class Front extends CI_Controller
             echo json_encode(['status' => 500]);
         }
         exit();
+    }
+    public function referrer($email = "")
+    {
+        $this->load->model('Banner_model', 'banner');
+        $this->load->model('User_model', 'user');
+        $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
+        $user = $this->user->get_user_by_email_active($email);
+        $data['user'] = $user;
+        $data['all_banners'] = $all_banners;
+
+        $this->load_view_front('front/add_cliente', $data);
     }
 }
