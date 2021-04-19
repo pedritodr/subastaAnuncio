@@ -11,23 +11,16 @@ class Tree_model extends CI_Model
 
     function create($data)
     {
-        $this->db->insert('tree', $data);
+        $this->db->insert('tree_node', $data);
         $id = $this->db->insert_id();
-        // $this->activelog($id,$data['name'],1);
         return $id;
     }
 
     function get_by_id($id)
     {
-        $this->db->where('tree_id', $id);
-        $query = $this->db->get('tree');
+        $this->db->where('tree_node_id', $id);
+        $query = $this->db->get('tree_node');
 
-        return $query->row();
-    }
-    function get_node_son($id)
-    {
-        $this->db->where('user_id', $id);
-        $query = $this->db->get('cliente');
         return $query->row();
     }
 
@@ -43,7 +36,7 @@ class Tree_model extends CI_Model
             foreach ($conditions as $key => $value) {
                 $this->db->where($key, $value);
             }
-        $query = $this->db->get('tree');
+        $query = $this->db->get('tree_node');
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
@@ -51,11 +44,11 @@ class Tree_model extends CI_Model
     function update($id, $data)
     {
         $old = $this->get_by_id($id);
-        $this->db->where('tree_id', $id);
+        $this->db->where('tree_node_id', $id);
         foreach ($data as $key => $value) {
             $this->db->set($key, $value);
         }
-        $this->db->update('tree');
+        $this->db->update('tree_node');
         $afec = $this->db->affected_rows();
 
         if ($afec > 0) {
@@ -68,50 +61,42 @@ class Tree_model extends CI_Model
 
     function delete($id)
     {
-        $this->db->where('tree_id', $id);
-        $this->db->delete('tree');
+        $this->db->where('tree_node_id', $id);
+        $this->db->delete('tree_node');
         $afec = $this->db->affected_rows();
         if ($afec > 0) {
             //  $this->activelog($id,null,3);
         }
-
         return $afec;
     }
 
-    function create_node($data)
+    function get_node_by_user_id($id)
     {
-        $this->db->insert('node', $data);
-        $id = $this->db->insert_id();
-        // $this->activelog($id,$data['name'],1);
-        return $id;
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('tree_node');
+
+        return $query->row();
     }
 
-    function get_all_clientes()
+    function get_all_children($user_id)
     {
         $this->db->select('*');
-        $this->db->from('cliente');
-        $this->db->join('user', 'user.user_id = cliente.user_id');
-        $this->db->join('country', 'country.country_id = cliente.country_id');
-
-
+        $this->db->from('tree_node');
+        $this->db->join('user', 'user.user_id = tree_node.user_id');
+        $this->db->where('tree_node.parent', $user_id);
         $query = $this->db->get();
         return $query->result();
     }
-    function get_all_clientes_by_destinations($id)
+
+    function get_parent_by_user_id($user_id)
     {
-        $this->db->select('dialing.dialing_id,cliente.cliente_id,dialing.name,destination.name as name_destination,country.name as name_country');
-        $this->db->from('cliente');
-        $this->db->join('user', 'user.user_id = cliente.user_id');
-        $this->db->join('dialing', 'dialing.cliente_id = cliente.cliente_id');
-        $this->db->join('destination', 'destination.destination_id = dialing.destination_id');
-        $this->db->join('country', 'country.country_id = cliente.country_id');
-        $this->db->where('dialing.cliente_id', $id);
-
-
+        $this->db->select('*');
+        $this->db->from('tree_node');
+        $this->db->join('user', 'user.user_id = tree_node.parent');
+        $this->db->where('tree_node.user', $user_id);
         $query = $this->db->get();
-        return $query->result();
+        return $query->row();
     }
-
 
     //------------------------------------------------------------------------------------------------------------------------------------------
 }

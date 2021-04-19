@@ -718,10 +718,7 @@ class Front extends CI_Controller
                 exit();
             }
         }
-        $userReferidor = null;
-        if($referidor !=''){
-            $userReferidor  = $this->user->
-        }
+
         $data_user = [
             'name' => $name,
             'email' => $email,
@@ -732,7 +729,7 @@ class Front extends CI_Controller
             'is_active' => 0,
             'surname' => $apellido,
             'cedula' => $nro_documento,
-            'tipo_documento' => $tipo_documento
+            'tipo_documento' => $tipo_documento,
         ];
 
         $user_id =  $this->user->create($data_user);
@@ -746,8 +743,34 @@ class Front extends CI_Controller
         for ($i = 0; $i < 4; $i++) {
             $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
         }
-
-        $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+        if ($user_id) {
+            $userReferidor = null;
+            if ($referidor != '') {
+                $response  = $this->user->get_user_by_email_active($referidor);
+                if ($response) {
+                    $this->load->model('Tree_node_model', 'tree_node');
+                    $userReferidor = $response->user_id;
+                    $node = $this->tree_node->get_node_by_user_id($response->user_id);
+                    $data_node = [
+                        'membre_user_id' => 0,
+                        'variable_config' => 0,
+                        'is_active' => 0,
+                        'is_delete' => 0,
+                        'points' => 0,
+                        'date_create' => date('Y-m-d H:i:s'),
+                        'parent' => $userReferidor,
+                        'user_id' => $user_id
+                    ];
+                    $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                    $this->tree_node->create($data_node);
+                } else {
+                    $userReferidor = null;
+                }
+                $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $userReferidor]);
+            } else {
+                $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+            }
+        }
 
         $this->load->model("Correo_model", "correo");
         $asunto = "Validación de usuario";
@@ -2061,8 +2084,6 @@ class Front extends CI_Controller
         $this->load_view_front('front/anuncios', $data);
     }
 
-    ////
-
     public function busquedade_anuncio()
     {
         $mastercat = $this->input->post("category");
@@ -2250,7 +2271,6 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/anuncios', $data);
     }
-    ////
 
     public function about()
     {
@@ -2280,6 +2300,7 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/vacio');
     }
+
     public function membresia()
     {
 
@@ -2302,6 +2323,7 @@ class Front extends CI_Controller
 
         $this->load_view_front('front/membresia', $data_object);
     }
+
     public function financiamiento()
     {
 
@@ -2325,6 +2347,7 @@ class Front extends CI_Controller
         $data_header = array($e, $title = 'Financiamiennto', $desc = substr(strip_tags($description), 0, 250), $imgurl = 'https://www.subastanuncios.com/assets_front/images/logo-subasta-anuncio.png', $url = site_url());
         $this->load_view_front('front/financiamiento', $data_object, 0, $data_header);
     }
+
     public function perfil()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
@@ -2544,6 +2567,7 @@ class Front extends CI_Controller
             redirect("contacto");
         }
     }
+
     public function solicitar_financiamiento()
     {
 
@@ -2628,6 +2652,7 @@ class Front extends CI_Controller
             redirect("financiamientos");
         }
     }
+
     public function pagar_membresia()
     {
         $user_id = $this->session->userdata('user_id');
@@ -2697,6 +2722,7 @@ class Front extends CI_Controller
         $this->response->set_message(translate('piso_pagado_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
     }
+
     public function pagar_entrada_ajax()
     {
         $user_id = $this->session->userdata('user_id');
@@ -2743,6 +2769,7 @@ class Front extends CI_Controller
         // $this->response->set_message(translate('piso_pagado_lang'), ResponseMessage::SUCCESS);
         // redirect("perfil");
     }
+
     public function pagar_inversa()
     {
         $user_id = $this->session->userdata('user_id');
@@ -2765,6 +2792,7 @@ class Front extends CI_Controller
         $this->response->set_message(translate('compra_exitosa_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
     }
+
     public function pujar_ajax()
     {
         $user_id = $this->session->userdata('user_id');
@@ -2816,6 +2844,7 @@ class Front extends CI_Controller
         // $this->response->set_message(translate('pujar_valor_lang'), ResponseMessage::SUCCESS);
         // redirect("perfil");
     }
+
     public function pujar()
     {
 
@@ -2831,6 +2860,7 @@ class Front extends CI_Controller
         $this->response->set_message(translate('pujar_valor_lang'), ResponseMessage::SUCCESS);
         redirect("perfil");
     }
+
     public function desactivar()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
@@ -2853,6 +2883,7 @@ class Front extends CI_Controller
             redirect("perfil/page/");
         }
     }
+
     public function subasta_directas_ajax()
     {
         $this->load->model('Subasta_model', 'subasta');
@@ -2885,6 +2916,7 @@ class Front extends CI_Controller
         echo json_encode($all_subastas);
         exit();
     }
+
     public function subastas_ajax()
     {
         $this->load->model('Subasta_model', 'subasta');
@@ -3038,6 +3070,7 @@ class Front extends CI_Controller
         echo json_encode(['trakey' => $resultado, 'nonce' => $randomString, 'date' => Date("Y-m-d\TH:i:sP")]);
         exit();
     }
+
     public function pago_cancelada()
     {
         $this->load->model('Banner_model', 'banner');
@@ -3045,6 +3078,7 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $this->load_view_front('front/fallida', $data);
     }
+
     public function transaccion()
     {
         $this->load->model('Banner_model', 'banner');
@@ -3052,6 +3086,7 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
         $this->load_view_front('front/exitosa', $data);
     }
+
     public function pago_exitoso()
     {
         $this->load->model('payment_model', 'payment');
@@ -3166,6 +3201,7 @@ class Front extends CI_Controller
             }
         }
     }
+
     public function update_request_id()
     {
         $this->load->model('payment_model', 'payment');
@@ -3182,6 +3218,7 @@ class Front extends CI_Controller
 
         exit();
     }
+
     public function get_payments_user()
     {
         $this->load->model('payment_model', 'payment');
@@ -3204,6 +3241,7 @@ class Front extends CI_Controller
 
         exit();
     }
+
     public function validaced()
     {
         require(APPPATH . "libraries/validar_cedula.php");
@@ -3218,6 +3256,7 @@ class Front extends CI_Controller
             echo 'Cédula incorrecta: ';
         }
     }
+
     public function get_membresia_user_ajax()
     {
         $this->load->model('Membresia_model', 'membresia');
@@ -3234,6 +3273,7 @@ class Front extends CI_Controller
         }
         exit();
     }
+
     public function update_password_cliente()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
@@ -3266,6 +3306,7 @@ class Front extends CI_Controller
             }
         }
     }
+
     public function ok()
     {
         $path = 'https://www.subastanuncios.com/uploads/anuncio/5f00a7ad833e7.jpg';
@@ -3393,6 +3434,7 @@ class Front extends CI_Controller
             }
         }
     }
+
     public function generar_pedido_inversa()
     {
         $this->load->model('User_model', 'user');
@@ -3435,6 +3477,7 @@ class Front extends CI_Controller
         }
         exit();
     }
+
     public function referrer($email = "")
     {
         $this->load->model('Banner_model', 'banner');
