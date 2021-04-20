@@ -4,8 +4,8 @@
         <h1>
             <?= "Gestión de Clientes"; ?>
             <small><?= translate('users_lang'); ?></small>
-            <!--  | <a href="<?= site_url('user/add_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
-            </a> -->
+            | <a href="<?= site_url('user/add_cliente_index'); ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?= translate('add_item_lang'); ?>
+            </a>
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
@@ -38,7 +38,6 @@
                             <tbody>
                                 <?php foreach ($all_users as $item) { ?>
                                     <tr>
-
                                         <?php
                                         if ($item->photo == "") {
                                         ?>
@@ -50,18 +49,13 @@
                                         <?php
                                         }
                                         ?>
-
-
                                         <td><?= $item->name; ?> <?= $item->surname; ?></td>
                                         <td><?= $item->cedula; ?></td>
                                         <td><?= $item->direccion; ?></td>
                                         <td><?= $item->email; ?></td>
 
-
                                         <td>
-
                                             <a style="color:black;" href="tel:<?= $item->phone ?>"><?= $item->phone; ?></a>
-
                                         </td>
                                         <td>
                                             <!-- Single button -->
@@ -72,16 +66,12 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="<?= site_url('user/detalles/' . $item->user_id); ?>"><i class="fa fa-search"></i>Detalles</a></li>
-
+                                                        <li><a href="javascrip:void()" onclick="modalReferidor('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-smile-o"></i>Referidor</a></li>
                                                     </ul>
                                                 </div>
                                             <?php } ?>
                                         </td>
                                     </tr>
-
-
-
-
                                 <?php } ?>
 
                             </tbody>
@@ -103,10 +93,112 @@
         </div><!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+<div class="modal fade" id="modalReferidor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="titulo_detalle">Referidor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="user_id">
+                    <div class="col-lg-12">
+                        <label>Email referidor</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">@</span>
+                            <input placeholder="Ej. referidor@subastanuncio.com" class="form-control input-sm" type="email" id="referidor" required>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+            <div class="modal-footer">
+                <button onclick="updateReferido()" type="button" class="btn btn-success">Actualizar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function() {
         $("#example1").DataTable();
-
     });
+
+    const encodeB64Utf8 = (str) => {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    const decodeB64Utf8 = (str) => {
+        return decodeURIComponent(escape(atob(str)));
+    }
+
+    const modalReferidor = (obj) => {
+        obj = JSON.parse(decodeB64Utf8(obj));;
+        $('#user_id').val(obj.user_id);
+        if (obj.referidor !== undefined) {
+            $('#referidor').val(obj.referidor.email ? obj.referidor.email : '');
+        } else {
+            $('#referidor').val('');
+        }
+        $('#modalReferidor').modal('show');
+    }
+
+    const submitRegister = () => {
+        let referidor = $('#referidor').val().trim();
+        let userId = $('#user_id').val();
+        if (referidor == '') {
+            Swal.fire({
+                icon: 'info',
+                text: 'El campo nombre es obligatorio',
+                showCancelButton: false,
+                confirmButtonText: 'Continuar',
+            }).then((result) => {
+                $('#referidor').focus();
+            })
+        } else {
+            Swal.fire({
+                title: 'Completando operación',
+                text: 'Actualizando...',
+                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                imageAlt: 'No realice acciones sobre la página',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                footer: '<a href>No realice acciones sobre la página</a>',
+            });
+            let data = {
+                referidor,
+                userId
+            }
+            setTimeout(() => {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?= site_url('user/update_referidor') ?>",
+                    data: data,
+                    success: function(result) {
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                text: result.msj,
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                            })
+                            setTimeout(() => {
+                                window.location = '<?= site_url('user/cliente') ?>';
+                            }, 1000);
+                        } else {
+                            Swal.close();
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: result.msj,
+                                padding: '2em'
+                            });
+                        }
+                    }
+                });
+            }, 1500)
+
+        }
+    }
 </script>

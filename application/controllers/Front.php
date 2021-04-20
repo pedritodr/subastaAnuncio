@@ -707,6 +707,11 @@ class Front extends CI_Controller
         $tipo_documento = $this->input->post('tipo_documento');
         $nro_documento = $this->input->post('nro_documento');
         $referidor = trim($this->input->post('referidor'));
+        $validEmail = $this->user->get_user_by_email($email);
+        if ($validEmail) {
+            echo json_encode(['status' => 500, 'msj' => 'El email ya esta registrado.']);
+            exit();
+        }
         if ($tipo_documento == 1) {
             // Crear nuevo objecto
             $validador = new validar_cedula();
@@ -750,7 +755,16 @@ class Front extends CI_Controller
                 if ($response) {
                     $this->load->model('Tree_node_model', 'tree_node');
                     $userReferidor = $response->user_id;
-                    $node = $this->tree_node->get_node_by_user_id($response->user_id);
+                    $node_parent = $this->tree_node->get_node_by_user_id($response->user_id);
+                    $node = null;
+                    if (count($node_parent) > 0) {
+                        for ($i = 0; $i < count($node_parent); $i++) {
+                            if ($node_parent[$i]->is_culminated == 0) {
+                                $node = $node_parent[$i];
+                                break;
+                            }
+                        }
+                    }
                     $data_node = [
                         'membre_user_id' => 0,
                         'variable_config' => 0,
@@ -758,8 +772,9 @@ class Front extends CI_Controller
                         'is_delete' => 0,
                         'points' => 0,
                         'date_create' => date('Y-m-d H:i:s'),
-                        'parent' => $userReferidor,
-                        'user_id' => $user_id
+                        'parent' => $node->tree_node_id,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0
                     ];
                     $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                     $this->tree_node->create($data_node);
@@ -2303,7 +2318,6 @@ class Front extends CI_Controller
 
     public function membresia()
     {
-
         $this->load->model('Empresa_model', 'empresa');
         $this->load->model('Membresia_model', 'membresia');
         $this->load->model('Banner_model', 'banner');
@@ -2315,7 +2329,7 @@ class Front extends CI_Controller
 
         $empresa_object = $this->empresa->get_by_id($empresa_id);
 
-        $all_membresia = $this->membresia->get_all();
+        $all_membresia = $this->membresia->get_all(['is_delete' => 0]);
 
         $data_object['all_membresia'] = $all_membresia;
 
@@ -2992,8 +3006,16 @@ class Front extends CI_Controller
             $nonce .= $characters[rand(0, $charactersLength - 1)];
         }
         //carga las credenciales de login,secretkey, para luego crear el trankey y las variables necesarias para realizar la peticion.
-        $login = $payment->login;
-        $secretkey = $payment->secret_key;
+        if (ENVIRONMENT == 'development') {
+            $login = '6dd79d14d110adedc41f3fbab8e58461';
+            $secretkey = 'h61ByK5IO930k2T8';
+            $url = 'https://test.placetopay.ec/redirection/api/session';
+        } else {
+            $login = $payment->login;
+            $secretkey = $payment->secret_key;
+            $url = $payment->end_ponit . 'api/session';
+        }
+
         $seed = Date("Y-m-d\TH:i:sP");
         $tranKey = base64_encode(sha1($nonce . $seed . $secretkey, true));
         $nonce = base64_encode($nonce);
@@ -3044,7 +3066,7 @@ class Front extends CI_Controller
         ];
 
         $json = json_encode($request);
-        $url = $payment->end_ponit . 'api/session';
+
         $curl = new Curl();
         $response = $curl->full_consulta_post($url, $json);
         $payment_id =  $this->payment->create(['user_id' => $user_id, 'detalle' => $detalle, 'status' => 0, 'id' => $id, 'tipo' => $tipo, 'monto' => $monto, 'request_id' => "a", 'reference' => $reference, 'date' => $fecha, 'estado_reverso' => 0]);
@@ -3115,10 +3137,46 @@ class Front extends CI_Controller
                 if ($obj->tipo == 0) { //membresia
                     $user_id = $obj->user_id;
                     $this->load->model('User_model', 'user');
-                    $user_obj = $this->user->get_by_id($user_id);
                     $this->load->model('Membresia_model', 'membresia');
                     $object_membresia = $this->membresia->get_by_id($obj->id);
+                    $user_obj = $this->user->get_by_id($user_id);
                     $fecha = date('Y-m-d H:i:s');
+                    if ($user_obj->parent != 0) {
+                        $this->load->model('Wallet_model', 'wallet');
+                        $this->load->model('Transaction_model', 'transaction');
+                        $wallet_parent = $this->wallet->get_wallet_by_user_id($user_obj->parent);
+                        $amount = (float)$object_membresia->precio * 0.20;
+                        $data_transactions = [
+                            'date_create' => $fecha,
+                            'amount' => $amount,
+                            'wallet_send' => 0,
+                            'type' => 3
+                        ];
+                        $wallet_id = 0;
+                        $balance = 0;
+                        if ($wallet_parent) {
+                            $wallet_id = $wallet_parent->wallet_id;
+                            $balance = (float)$wallet_parent->balance + $amount;
+                            $data_transactions['balance_previous'] = $wallet_parent->balance;
+                            $data_transactions['balance'] = $balance;
+                            $data_transactions['wallet_receives'] = $wallet_id;
+                        } else {
+                            $link_wallet = md5($user_obj->email . $user_obj->password);
+                            $data_wallet = [
+                                'user_id' => $user_id,
+                                'points' => 0,
+                                'balance' => 0,
+                                'link_wallet' => $link_wallet
+                            ];
+                            $wallet_id = $this->wallet->create($data_wallet);
+                            $balance = (float)$wallet_parent->balance + $amount;
+                            $data_transactions['balance_previous'] = 0;
+                            $data_transactions['balance'] = $balance;
+                            $data_transactions['wallet_receives'] = $wallet_id;
+                        }
+                        $this->transaccion->create($data_transactions);
+                        $this->wallet->update($wallet_id, ['balance' => $balance]);
+                    }
                     $duracion = '+' . $object_membresia->duracion . ' day';
                     $fecha_fin = strtotime($duracion, strtotime($fecha));
                     $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
@@ -3138,6 +3196,31 @@ class Front extends CI_Controller
                     ];
                     $id = $this->membresia->create_membresia_user($data);
                     if ($id) {
+                        $this->load->model('Tree_node_model', 'tree_node');
+                        if ($user_obj->parent == 0) {
+                            $data_node = [
+                                'membre_user_id' => $id,
+                                'variable_config' => 0,
+                                'is_active' => 1,
+                                'is_delete' => 0,
+                                'points' => 0,
+                                'date_create' => $fecha,
+                                'date_active' => $fecha,
+                                'parent' => 0,
+                                'position' => 0,
+                                'user_id' => $user_id,
+                                'is_culminated' => 0
+                            ];
+                            $this->tree_node->create($data_node);
+                        } else {
+                            $node_parent = $this->tree_node->get_node_by_user_id_and_parent($user_obj->user_id, $user_obj->parent);
+                            $data_node = [
+                                'membre_user_id' => $id,
+                                'is_active' => 1,
+                                'date_active' => $fecha
+                            ];
+                            $this->tree_node->update($node_parent->tree_node_id, $data_node);
+                        }
                         $this->load->model("Correo_model", "correo");
                         $asunto = "Membresia adquirida";
                         $motivo = 'Membresia adquirida Subasta anuncios';

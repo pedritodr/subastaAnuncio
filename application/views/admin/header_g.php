@@ -85,6 +85,7 @@
     <!-- Bootstrap WYSIHTML5 -->
     <script src="<?= base_url(); ?>admin_lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
+    <script src="<?= base_url('admin_lte/bootstrap/js/alert_notificacion.js'); ?>"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

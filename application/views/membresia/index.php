@@ -32,6 +32,7 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th><?= translate("description_lang"); ?></th>
                                     <th><?= translate("precios_lang"); ?></th>
+                                    <th>Points</th>
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
@@ -44,7 +45,8 @@
                                     <tr>
                                         <td> <?= $item->nombre; ?></td>
                                         <td> <?= $item->descripcion; ?></td>
-                                        <td> <label class="label label-success">$<?= $item->precio; ?></label> </td>
+                                        <td> <label class="label label-success">$<?= number_format($item->precio, 2); ?></label> </td>
+                                        <td> <label class="label label-danger"><?= $item->points; ?></label> </td>
                                         <td>
                                             <?php if ($item->sorteo == 1) { ?>
                                                 <label class="label label-primary">SI</label>
@@ -77,6 +79,7 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th><?= translate("description_lang"); ?></th>
                                     <th><?= translate("precios_lang"); ?></th>
+                                    <th>Points</th>
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>

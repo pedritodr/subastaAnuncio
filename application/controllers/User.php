@@ -48,9 +48,10 @@ class User extends CI_Controller
         }
 
         $all_users = $this->user->get_all(['role_id' => 2]);
-
+        foreach ($all_users as $item) {
+            $item->referidor = $this->user->get_by_id($item->parent);
+        }
         $data['all_users'] = $all_users;
-
         $this->load_view_admin_g("user/cliente", $data);
     }
 
@@ -93,6 +94,17 @@ class User extends CI_Controller
         $this->load->model('Role_model', 'role');
         $data['all_roles'] = $this->role->get_all();
         $this->load_view_admin_g('user/add', $data);
+    }
+
+    public function add_cliente_index()
+    {
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            $this->log_out();
+            redirect('login');
+        }
+        $this->load->model('Role_model', 'role');
+        $data['all_roles'] = $this->role->get_all();
+        $this->load_view_admin_g('user/add_cliente', $data);
     }
 
     public function add()
@@ -325,5 +337,125 @@ class User extends CI_Controller
             $this->response->set_message("Compruebe sus contraseñas", ResponseMessage::ERROR);
             redirect("user/credenciales_index/");
         }
+    }
+    public function add_cliente()
+    {
+        require(APPPATH . "libraries/validar_cedula.php");
+
+        $name = $this->input->post('name');
+        $apellido = $this->input->post('surname');
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        $phone = $this->input->post('phone');
+        $tipo_documento = $this->input->post('tipo_documento');
+        $nro_documento = $this->input->post('nro_documento');
+        $referidor = trim($this->input->post('referidor'));
+        $validEmail = $this->user->get_user_by_email($email);
+        if ($validEmail) {
+            echo json_encode(['status' => 500, 'msj' => 'El email ya esta registrado.']);
+            exit();
+        }
+        if ($tipo_documento == 1) {
+            // Crear nuevo objecto
+            $validador = new validar_cedula();
+            // validar CI
+            if ($validador->validarCedula($nro_documento)) {
+                //valida
+            } else {
+                echo json_encode(['status' => 500, 'msj' => 'El cédula introducida no es correcta.']);
+                exit();
+            }
+        }
+
+        $data_user = [
+            'name' => $name,
+            'email' => $email,
+            'password' => md5($password),
+            'phone' => $phone,
+            'role_id' => 2,
+            'status' => 0,
+            'is_active' => 1,
+            'surname' => $apellido,
+            'cedula' => $nro_documento,
+            'tipo_documento' => $tipo_documento,
+        ];
+
+        $user_id =  $this->user->create($data_user);
+        $fecha = date("Y-m-d H:i:s");
+        $fecha_vencimiento = strtotime('+5 minute', strtotime($fecha));
+        $fecha_vencimiento = date("Y-m-d H:i:s", $fecha_vencimiento);
+
+        $codigo_seguridad = '';
+        $caracteres = '0123456789';
+
+        for ($i = 0; $i < 4; $i++) {
+            $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
+        }
+        if ($user_id) {
+            $userReferidor = null;
+            if ($referidor != '') {
+                $response  = $this->user->get_user_by_email_active($referidor);
+                if ($response) {
+                    $this->load->model('Tree_node_model', 'tree_node');
+                    $userReferidor = $response->user_id;
+                    $node_parent = $this->tree_node->get_node_by_user_id($response->user_id);
+                    $node = null;
+                    if (count($node_parent) > 0) {
+                        for ($i = 0; $i < count($node_parent); $i++) {
+                            if ($node_parent[$i]->is_culminated == 0) {
+                                $node = $node_parent[$i];
+                                break;
+                            }
+                        }
+                    }
+                    $data_node = [
+                        'membre_user_id' => 0,
+                        'variable_config' => 0,
+                        'is_active' => 0,
+                        'is_delete' => 0,
+                        'points' => 0,
+                        'date_create' => date('Y-m-d H:i:s'),
+                        'parent' => $node->tree_node_id,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0
+                    ];
+                    $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                    $this->tree_node->create($data_node);
+                } else {
+                    $userReferidor = null;
+                }
+                $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $userReferidor]);
+            }
+        }
+
+        echo json_encode(['status' => 200, 'msj' => 'Cliente creado correctamente']);
+        exit();
+    }
+    public function update_referidor()
+    {
+        if (!$this->session->userdata('user_id')) {
+            echo json_encode(['status' => 500, 'msj' => 'Esta opción solo esta disponible para los usuarios autenticados']);
+            exit();
+        }
+        if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+            echo json_encode(['status' => 500, 'msj' => 'Esta opción solo esta disponible para los administradores']);
+            exit();
+        }
+        $referidor = trim($this->input->post('referidor'));
+        $user_id = $this->input->post('userId');
+
+        $userReferidor = null;
+        if ($referidor != '') {
+            $response  = $this->user->get_user_by_email_active($referidor);
+            if ($response) {
+                $userReferidor = $response->user_id;
+            } else {
+                $userReferidor = null;
+            }
+            $this->user->update($user_id, ['parent' => $userReferidor]);
+        }
+
+        echo json_encode(['status' => 200, 'msj' => 'Cliente creado correctamente']);
+        exit();
     }
 }

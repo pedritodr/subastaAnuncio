@@ -54,20 +54,20 @@
 
                             </div>
 
-                            
+
 
                             <div class="col-lg-4">
-                                 
-                                      <label><?= translate("phone_lang"); ?></label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control input-sm" name="phone" placeholder="<?= translate('phone_lang'); ?>">
-                                        </div>
 
-                                
-                                
-                                <br/>
-   
+                                <label><?= translate("phone_lang"); ?></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control input-sm" name="phone" placeholder="<?= translate('phone_lang'); ?>">
+                                </div>
+
+
+
+                                <br />
+
                                 <label><?= translate("repeat_password_lang"); ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
@@ -89,20 +89,22 @@
                                         <?php
                                         if (isset($all_roles))
                                             foreach ($all_roles as $item) { ?>
-                                            <option value="<?= $item->role_id; ?>"><?= $item->name; ?></option>
+                                            <?php if ($item->role_id != 2) { ?>
+                                                <option value="<?= $item->role_id; ?>"><?= $item->name; ?></option>
+                                            <?php } ?>
                                         <?php } ?>
                                     </select>
 
                                 </div>
-                                 
-                                 <br>
-                                
+
+                                <br>
+
                                 <label><?= translate("email_lang"); ?></label>
                                 <div class="input-group">
                                     <span class="input-group-addon">@</span>
                                     <input type="email" class="form-control input-sm" required name="email" placeholder="<?= translate('email_lang') ?>">
                                 </div>
-                            
+
 
                             </div>
 

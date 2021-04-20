@@ -25,7 +25,7 @@ class Membresia extends CI_Controller
             redirect('login');
         }
 
-        $all_membresia = $this->membresia->get_all();
+        $all_membresia = $this->membresia->get_all(['is_delete' => 0]);
         $data['all_membresia'] = $all_membresia;
         $this->load_view_admin_g("membresia/index", $data);
     }
@@ -42,6 +42,42 @@ class Membresia extends CI_Controller
         $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
+        if ($cliente->parent != 0) {
+            $this->load->model('Wallet_model', 'wallet');
+            $this->load->model('Transaction_model', 'transaction');
+            $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
+            $amount = (float)$object_membresia->precio * 0.20;
+            $data_transactions = [
+                'date_create' => $fecha,
+                'amount' => $amount,
+                'wallet_send' => 0,
+                'type' => 3
+            ];
+            $wallet_id = 0;
+            $balance = 0;
+            if ($wallet_parent) {
+                $wallet_id = $wallet_parent->wallet_id;
+                $balance = (float)$wallet_parent->balance + $amount;
+                $data_transactions['balance_previous'] = $wallet_parent->balance;
+                $data_transactions['balance'] = $balance;
+                $data_transactions['wallet_receives'] = $wallet_id;
+            } else {
+                $link_wallet = md5($cliente->email . $cliente->password);
+                $data_wallet = [
+                    'user_id' => $user_id,
+                    'points' => 0,
+                    'balance' => 0,
+                    'link_wallet' => $link_wallet
+                ];
+                $wallet_id = $this->wallet->create($data_wallet);
+                $balance = (float)$wallet_parent->balance + $amount;
+                $data_transactions['balance_previous'] = 0;
+                $data_transactions['balance'] = $balance;
+                $data_transactions['wallet_receives'] = $wallet_id;
+            }
+            $this->transaccion->create($data_transactions);
+            $this->wallet->update($wallet_id, ['balance' => $balance]);
+        }
         $data = [
             'user_id' => $user_id,
             'membresia_id' => $membresia,
@@ -55,6 +91,31 @@ class Membresia extends CI_Controller
         ];
         $valor = $this->membresia->create_membresia_user($data);
         if ($valor) {
+            $this->load->model('Tree_node_model', 'tree_node');
+            if ($cliente->parent == 0) {
+                $data_node = [
+                    'membre_user_id' => $valor,
+                    'variable_config' => 0,
+                    'is_active' => 1,
+                    'is_delete' => 0,
+                    'points' => 0,
+                    'date_create' => $fecha,
+                    'date_active' => $fecha,
+                    'parent' => 0,
+                    'position' => 0,
+                    'user_id' => $user_id,
+                    'is_culminated' => 0
+                ];
+                $this->tree_node->create($data_node);
+            } else {
+                $node_parent = $this->tree_node->get_node_by_user_id_and_parent($cliente->user_id, $cliente->parent);
+                $data_node = [
+                    'membre_user_id' => $valor,
+                    'is_active' => 1,
+                    'date_active' => $fecha
+                ];
+                $this->tree_node->update($node_parent->tree_node_id, $data_node);
+            }
             $this->load->model("Correo_model", "correo");
             $asunto = "Membresia adquirida";
             $motivo = 'Membresia adquirida Subasta anuncios';
@@ -119,6 +180,7 @@ class Membresia extends CI_Controller
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
         $duracion = $this->input->post('duracion');
+        $points = $this->input->post('points');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -137,7 +199,9 @@ class Membresia extends CI_Controller
                 'sorteo' => $sorteo,
                 'descripcion' => $descripcion,
                 'qty_subastas' => $subastas,
-                'duracion' => $duracion
+                'duracion' => $duracion,
+                'points' => $points,
+                'is_delete' => 0
             ];
             $this->membresia->create($data);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -181,6 +245,7 @@ class Membresia extends CI_Controller
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
         $duracion = $this->input->post('duracion');
+        $points = $this->input->post('points');
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
         if ($membresia_object) {
@@ -194,7 +259,8 @@ class Membresia extends CI_Controller
                 'sorteo' => $sorteo,
                 'descripcion' => $descripcion,
                 'qty_subastas' => $subastas,
-                'duracion' => $duracion
+                'duracion' => $duracion,
+                'points' => $points
             ];
             $this->membresia->update($membresia_id, $data_membresia);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -214,7 +280,8 @@ class Membresia extends CI_Controller
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
         if ($membresia_object) {
-            $this->membresia->delete($membresia_id);
+            $this->membresia->update($membresia_id, ['is_delete' => 1]);
+            // $this->membresia->delete($membresia_id);
             $this->response->set_message(translate('data_deleted_ok'), ResponseMessage::SUCCESS);
             redirect("membresia/index");
         } else {

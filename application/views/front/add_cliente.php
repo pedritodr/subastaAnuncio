@@ -270,6 +270,7 @@
                     name,
                     surname,
                     nro_documento,
+                    tipo_documento,
                     email,
                     phone,
                     password

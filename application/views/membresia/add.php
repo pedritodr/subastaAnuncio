@@ -50,18 +50,20 @@
 
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <label><?= translate("precios_lang"); ?></label>
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
                                             <input required step="any" type="number" class="form-control input-sm" name="precio" placeholder="<?= translate('precios_lang'); ?>">
                                         </div>
-
                                     </div>
-
-
-
+                                    <div class="col-lg-2">
+                                        <label>Puntos</label>
+                                        <div class="input-group"> <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
+                                            <input required step="any" type="number" class="form-control input-sm" name="points" placeholder="Puntos">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-2">
                                         <label><?= translate("cant_anuncios_lang"); ?></label>
                                         <div class="input-group">

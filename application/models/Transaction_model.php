@@ -1,6 +1,6 @@
 <?php
 
-class Tree_model extends CI_Model
+class Transaction_model extends CI_Model
 {
 
     function __construct()
@@ -11,15 +11,15 @@ class Tree_model extends CI_Model
 
     function create($data)
     {
-        $this->db->insert('tree_node', $data);
+        $this->db->insert('transaction', $data);
         $id = $this->db->insert_id();
         return $id;
     }
 
     function get_by_id($id)
     {
-        $this->db->where('tree_node_id', $id);
-        $query = $this->db->get('tree_node');
+        $this->db->where('transaction_id', $id);
+        $query = $this->db->get('transaction');
 
         return $query->row();
     }
@@ -36,7 +36,7 @@ class Tree_model extends CI_Model
             foreach ($conditions as $key => $value) {
                 $this->db->where($key, $value);
             }
-        $query = $this->db->get('tree_node');
+        $query = $this->db->get('transaction');
 
         return ($get_as_row) ? $query->row() : $query->result();
     }
@@ -44,11 +44,11 @@ class Tree_model extends CI_Model
     function update($id, $data)
     {
         $old = $this->get_by_id($id);
-        $this->db->where('tree_node_id', $id);
+        $this->db->where('transaction_id', $id);
         foreach ($data as $key => $value) {
             $this->db->set($key, $value);
         }
-        $this->db->update('tree_node');
+        $this->db->update('transaction');
         $afec = $this->db->affected_rows();
 
         if ($afec > 0) {
@@ -61,8 +61,8 @@ class Tree_model extends CI_Model
 
     function delete($id)
     {
-        $this->db->where('tree_node_id', $id);
-        $this->db->delete('tree_node');
+        $this->db->where('transaction_id', $id);
+        $this->db->delete('transaction');
         $afec = $this->db->affected_rows();
         if ($afec > 0) {
             //  $this->activelog($id,null,3);
@@ -70,33 +70,13 @@ class Tree_model extends CI_Model
         return $afec;
     }
 
-    function get_node_by_user_id($id)
+    function get_wallet_by_user_id($id)
     {
         $this->db->where('user_id', $id);
-        $query = $this->db->get('tree_node');
+        $query = $this->db->get('transaction');
 
         return $query->row();
     }
-
-    function get_all_children($user_id)
-    {
-        $this->db->select('*');
-        $this->db->from('tree_node');
-        $this->db->join('user', 'user.user_id = tree_node.user_id');
-        $this->db->where('tree_node.parent', $user_id);
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    function get_parent_by_user_id($user_id)
-    {
-        $this->db->select('*');
-        $this->db->from('tree_node');
-        $this->db->join('user', 'user.user_id = tree_node.parent');
-        $this->db->where('tree_node.user', $user_id);
-        $query = $this->db->get();
-        return $query->row();
-    }
-
     //------------------------------------------------------------------------------------------------------------------------------------------
+
 }
