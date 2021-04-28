@@ -768,17 +768,39 @@
                                         <div role="tabpanel" class="tab-pane" id="actual">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
                                         <div role="tabpanel" class="tab-pane" id="equipo">
                                             <div class="row">
-                                                <div class="col-lg-4 col-xs-12 col-sm-12 col-md-4">
+                                                <div class="col-lg-4 text-center">
+                                                    <div style="margin-top:15px;">
+                                                        <h5 style="text-align:center;">Variable de configuración</h5>
+                                                        <?php if ($node) {
+                                                            if ($node->variable_config == 0) {
+                                                                echo '<p class="text-center"><span class="label label-success">Derecha</span></p>';
+                                                            } else {
+                                                                echo '<p class="text-center"><span class="label label-success">Izquierda</span></p>';
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                    <button class="btn btn-primary margin-bottom-10" onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>
+                                                </div>
+                                                <div class="col-lg-8 col-xs-12 col-sm-8 col-md-8">
                                                     <div style="margin-top:15px;">
                                                         <h5 style="text-align:center;">Datos generales</h5>
                                                     </div>
                                                     <div id="areaDatosGeneralesEquipo"></div>
                                                 </div>
-                                                <div class="col-lg-8 col-xs-12 col-sm-12 col-md-8">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
                                                     <div style="margin-top:15px;">
-                                                        <h5 style="text-align:center;">Estructura organizativa</h5>
+                                                        <h5 style="text-align:center;">Estructura organizativa Izquierda</h5>
                                                     </div>
                                                     <div id="basicDiagram" style="width: 100%; height: 480px;"></div>
+                                                </div>
+                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
+                                                    <div style="margin-top:15px;">
+                                                        <h5 style="text-align:center;">Estructura organizativa Derecha</h5>
+                                                    </div>
+                                                    <div id="basicDiagramRight" style="width: 100%; height: 480px;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -963,6 +985,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade price-quote" id="modalVariableConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Variable de configuración</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-lg-offset-2 col-lg-8 ">
+                            <div class="form-group">
+                                <label>Variable <span class="color-red">*</span></label>
+                                <select id="variableConfig" class="form-control select2">
+                                    <option <?php if ($node) { ?> <?php if ($node->variable_config == 0) { ?>selected<?php } ?><?php } ?> value="0">Derecha</option>
+                                    <option <?php if ($node) { ?> <?php if ($node->variable_config == 1) { ?>selected<?php } ?><?php } ?> value="1">Izquierda</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20">
+                        <button type="buttom" onclick="updateVariableConfig()" class="btn btn-theme btn-block">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
     <!--     <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script> -->
@@ -1066,6 +1117,10 @@
                     });
                 }, 1500)
             }
+        }
+
+        const handleMondalVariebleConfig = () => {
+            $('#modalVariableConfiguracion').modal('show');
         }
 
         const handleModalTransferencia = () => {
@@ -1303,108 +1358,152 @@
 
             $("#areaDatosGeneralesEquipo").empty();
             $("#areaDatosGeneralesEquipo").html(
-                "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargado.gif'); ?>' style='width:92px;height:92px' /></a><br /><a style='color:#fa3f59;font-weight:bold;font-size:16px;'>Cargando datos generales del equipo</a></div></div>"
+                "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando datos generales del equipo</a></div></div>"
             );
 
             $("#basicDiagram").empty();
             $("#basicDiagram").html(
-                "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargado.gif'); ?>' style='width:92px;height:92px' /></a><br /><a style='color:#fa3f59;font-weight:bold;font-size:16px;'>Cargando árbol de afiliados</a></div></div>"
+                "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando árbol de afiliados</a></div></div>"
             );
+            $("#basicDiagramRight").empty();
+            $("#basicDiagramRight").html(
+                "<div id='cargandoArbolRight' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando árbol de afiliados</a></div></div>"
+            );
+            setTimeout(() => {
+                $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
+                    let responseJSON = JSON.parse(response);
 
-            $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
-                var responseJSON = JSON.parse(response);
-                console.log(responseJSON.lista);
-                $("#cargandoArbol").remove();
-                $("#cargandoDatosGeneralesEquipo").remove();
-                var options = new primitives.OrgConfig();
-                options.hasSelectorCheckbox = primitives.Enabled.False;
-                options.hasButtons = primitives.Enabled.False;
-                options.templates = [getItemTemplate1()];
-                options.onItemRender = onTemplateRender;
-                options.defaultTemplateName = "itemTemplate1";
-                options.normalItemsInterval = 20; /*add space for badge */
+                    $("#cargandoArbol").remove();
+                    $("#cargandoArbolRight").remove();
+                    $("#cargandoDatosGeneralesEquipo").remove();
+                    let options = new primitives.OrgConfig();
+                    options.hasSelectorCheckbox = primitives.Enabled.False;
+                    options.hasButtons = primitives.Enabled.False;
+                    options.templates = [getItemTemplate1()];
+                    options.onItemRender = onTemplateRender;
+                    options.defaultTemplateName = "itemTemplate1";
+                    options.normalItemsInterval = 20;
 
-                $("#areaDatosGeneralesEquipo").append(
-                    "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #563084;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #563084;color:#563084;font-weight:bold;'>" +
-                    (responseJSON
-                        .lista.length - 1) + "</label></div></div>");
+                    let optionsRight = new primitives.OrgConfig();
+                    optionsRight.hasSelectorCheckbox = primitives.Enabled.False;
+                    optionsRight.hasButtons = primitives.Enabled.False;
+                    optionsRight.templates = [getItemTemplateRight()];
+                    optionsRight.onItemRender = onTemplateRender;
+                    optionsRight.defaultTemplateName = "itemTemplateRight";
+                    optionsRight.normalItemsInterval = 20;
 
-                let items = [];
-                let activos = 0;
-                let inactivos = 0;
-                let contador = 1;
-                let urlImage = '<?= base_url('assets/user.png') ?>';
+                    $("#areaDatosGeneralesEquipo").append(
+                        "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #563084;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #563084;color:#563084;font-weight:bold;'>" +
+                        ((responseJSON.lista_left.length - 1) + (responseJSON.lista_right.length - 1)) + "</label></div></div>");
 
-                responseJSON.lista.forEach(function(item1) {
+                    let items = [];
+                    let itemsRight = [];
+                    let activos = 0;
+                    let inactivos = 0;
+                    let contador = 1;
+                    let urlImage = '<?= base_url('assets/user.png') ?>';
 
-
-                    let color = "#fa3f59";
-                    if (item1.is_active == 1) {
-                        color = '#0BD34E';
-                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                            activos++;
-                        }
-                    } else {
-                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                            inactivos++;
-                        }
-                    }
-
-
-                    if (item1.parent != 0) {
-                        console.log(1)
-                        idPadre = getIdPadre(item1.padre, items);
-                        console.log(idPadre)
-                        items.push(new primitives.OrgItemConfig({
-                            id: contador,
-                            parent: idPadre,
-                            title: item1.name + ' ' + item1.surname,
-                            phone: item1.phone,
-                            email: item1.email,
-                            usuario_id: item1.user_id,
-                            itemTitleColor: color,
-                            imagen: urlImage
-                        }));
-                    } else {
-                        console.log(2)
-                        if (item1.is_active == '1') {
+                    responseJSON.lista_left.forEach(function(item1) {
+                        let color = "#fa3f59";
+                        if (item1.is_active == 1) {
                             color = '#0BD34E';
+                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                                activos++;
+                            }
+                        } else {
+                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                                inactivos++;
+                            }
                         }
-                        items.push(new primitives.OrgItemConfig({
-                            id: contador,
-                            parent: null,
-                            title: item1.name + ' ' + item1.surname,
-                            phone: item1.phone,
-                            email: item1.email,
-                            usuario_id: '<?= $this->session->userdata("user_id") ?>',
-                            itemTitleColor: color,
-                            imagen: urlImage
-                        }));
-                    }
-                    contador++;
+                        if (item1.parent != 0) {
+                            idPadre = getIdPadre(item1.padre, items);
+                            items.push(new primitives.OrgItemConfig({
+                                id: contador,
+                                parent: idPadre,
+                                title: item1.name + ' ' + item1.surname,
+                                phone: item1.phone,
+                                email: item1.email,
+                                usuario_id: item1.user_id,
+                                itemTitleColor: color,
+                                imagen: urlImage
+                            }));
+                        } else {
+                            if (item1.is_active == '1') {
+                                color = '#0BD34E';
+                            }
+                            items.push(new primitives.OrgItemConfig({
+                                id: contador,
+                                parent: null,
+                                title: item1.name + ' ' + item1.surname,
+                                phone: item1.phone,
+                                email: item1.email,
+                                usuario_id: '<?= $this->session->userdata("user_id") ?>',
+                                itemTitleColor: color,
+                                imagen: urlImage
+                            }));
+                        }
+                        contador++;
+                    });
+                    responseJSON.lista_right.forEach(function(item1) {
+                        let color = "#fa3f59";
+                        if (item1.is_active == 1) {
+                            color = '#0BD34E';
+                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                                activos++;
+                            }
+                        } else {
+                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                                inactivos++;
+                            }
+                        }
+                        if (item1.parent != 0) {
+                            idPadre = getIdPadre(item1.padre, itemsRight);
+                            itemsRight.push(new primitives.OrgItemConfig({
+                                id: contador,
+                                parent: idPadre,
+                                title: item1.name + ' ' + item1.surname,
+                                phone: item1.phone,
+                                email: item1.email,
+                                usuario_id: item1.user_id,
+                                itemTitleColor: color,
+                                imagen: urlImage
+                            }));
+                        } else {
+                            if (item1.is_active == '1') {
+                                color = '#0BD34E';
+                            }
+                            itemsRight.push(new primitives.OrgItemConfig({
+                                id: contador,
+                                parent: null,
+                                title: item1.name + ' ' + item1.surname,
+                                phone: item1.phone,
+                                email: item1.email,
+                                usuario_id: '<?= $this->session->userdata("user_id") ?>',
+                                itemTitleColor: color,
+                                imagen: urlImage
+                            }));
+                        }
+                        contador++;
+                    });
+                    options.items = items;
+                    options.cursorItem = 0;
+                    control = primitives.OrgDiagram(document.getElementById("basicDiagram"), options);
+                    optionsRight.items = itemsRight;
+                    optionsRight.cursorItem = 0;
+                    controlRight = primitives.OrgDiagram(document.getElementById("basicDiagramRight"), optionsRight);
+                    let textoAux =
+                        '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #0BD34E;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #0BD34E;color:#0BD34E;font-weight:bold;">' +
+                        activos +
+                        '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #fa3f59;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #fa3f59;color:#fa3f59;font-weight:bold;">' +
+                        inactivos +
+                        '</label></div></div>';
+                    $("#areaDatosGeneralesEquipo").append(textoAux);
                 });
-
-                options.items = items;
-                options.cursorItem = 0;
-
-                control = primitives.OrgDiagram(document.getElementById("basicDiagram"), options);
-
-                var textoAux =
-                    '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #0BD34E;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #0BD34E;color:#0BD34E;font-weight:bold;">' +
-                    activos +
-                    '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #fa3f59;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #fa3f59;color:#fa3f59;font-weight:bold;">' +
-                    inactivos +
-                    '</label></div></div>';
-                $("#areaDatosGeneralesEquipo").append(textoAux);
-            });
-
-
-
-
+            }, 3000);
         }
 
         const getIdPadre = (padreId, pItems) => {
-            var idResult = -1;
+            let idResult = -1;
             pItems.forEach(function(item) {
                 if (item.usuario_id == padreId) {
                     idResult = item.id;
@@ -1415,8 +1514,26 @@
         }
 
         const getItemTemplate1 = () => {
-            var result = new primitives.TemplateConfig();
+            let result = new primitives.TemplateConfig();
             result.name = "itemTemplate1";
+
+            result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
+                '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
+                '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
+                '</div>' +
+                '</div>' +
+                '<div style="text-align:center;color:#000;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
+                '<div style="text-align:center;color:#000;font-weight:bold;" name="phone"></div>' +
+                '<div style="text-align:center;color:#000;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
+                '</div>';
+
+            result.itemSize = new primitives.Size(180, 130);
+            return result;
+        }
+
+        const getItemTemplateRight = () => {
+            let result = new primitives.TemplateConfig();
+            result.name = "itemTemplateRight";
 
             result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
                 '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
@@ -1442,24 +1559,41 @@
                     break;
             }
 
-            var itemConfig = data.context;
+            let itemConfig = data.context;
 
             if (data.templateName == "itemTemplate1") {
 
-
-                var titleBackground = data.element.firstChild;
+                let titleBackground = data.element.firstChild;
                 titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
 
-                var title = data.element.firstChild.firstChild;
+                let title = data.element.firstChild.firstChild;
                 title.textContent = itemConfig.title;
 
-                var img = data.element.childNodes[1];
+                let img = data.element.childNodes[1];
                 img.firstChild.firstChild.src = itemConfig.imagen;
 
-                var phone = data.element.childNodes[2];
+                let phone = data.element.childNodes[2];
                 phone.textContent = itemConfig.phone;
 
-                var email = data.element.childNodes[3];
+                let email = data.element.childNodes[3];
+                email.textContent = itemConfig.email;
+
+            }
+            if (data.templateName == "itemTemplateRight") {
+
+                let titleBackground = data.element.firstChild;
+                titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
+
+                let title = data.element.firstChild.firstChild;
+                title.textContent = itemConfig.title;
+
+                let img = data.element.childNodes[1];
+                img.firstChild.firstChild.src = itemConfig.imagen;
+
+                let phone = data.element.childNodes[2];
+                phone.textContent = itemConfig.phone;
+
+                let email = data.element.childNodes[3];
                 email.textContent = itemConfig.email;
 
             }

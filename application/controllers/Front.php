@@ -2517,7 +2517,8 @@ class Front extends CI_Controller
         } else {
             $transacciones = [];
         }
-
+        $this->load->model('Tree_node_model', 'tree');
+        $node = $this->tree->get_node_header_by_user_id($user_id);
         $data['contador_anuncios'] = $contador;
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;
@@ -2529,6 +2530,7 @@ class Front extends CI_Controller
         $data['wallet'] = $wallet;
         $data['transacciones'] = $transacciones;
         $data['bank_data'] = $bank_data;
+        $data['node'] = $node;
 
         $this->load_view_front('front/perfil', $data);
     }
@@ -3594,13 +3596,16 @@ class Front extends CI_Controller
         }
         $this->load->model('Tree_node_model', 'tree');
         $user_id = $this->session->userdata('user_id');
-        $lista_arbol = [];
+        $lista_arbol_left = [];
+        $lista_arbol_right = [];
         $firstUser = $this->tree->get_node_header_by_user_id($user_id);
-        $lista_arbol[] = $firstUser;
-        $childrems = $this->tree->get_all_children($firstUser->tree_node_id);
-        $result = array_merge($lista_arbol, $childrems);
-        $lista_arbol = $result;
-        echo json_encode(['status' => 200, 'lista' => $lista_arbol]);
+        $lista_arbol_left[] = $firstUser;
+        $lista_arbol_right[] = $firstUser;
+        $childremsLeft = $this->tree->get_all_children($firstUser->tree_node_id, 1);
+        $childremsRight = $this->tree->get_all_children($firstUser->tree_node_id, 0);
+        $resultLeft = array_merge($lista_arbol_left, $childremsLeft);
+        $resultRight = array_merge($lista_arbol_left, $childremsRight);
+        echo json_encode(['status' => 200, 'lista_left' => $resultLeft, 'lista_right' => $resultRight]);
         die();
     }
     public function update_bank_data()

@@ -123,6 +123,15 @@ Designed and Development by: ScriptsBundle
         tags: false,
         width: '100%'
     });
+
+    $("#variableConfig").select2({
+        placeholder: 'Seleccione el tipo de cuenta',
+        allowClear: false,
+        tags: false,
+        width: '100%'
+    });
+
+
     /* ======= Profile Image Upload ======= */
     $(document).on('change', '.btn-file :file', function() {
         var input = $(this),
