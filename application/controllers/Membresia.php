@@ -46,12 +46,13 @@ class Membresia extends CI_Controller
             $this->load->model('Wallet_model', 'wallet');
             $this->load->model('Transaction_model', 'transaction');
             $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
+
             $amount = (float)$object_membresia->precio * 0.20;
             $data_transactions = [
                 'date_create' => $fecha,
-                'amount' => $amount,
+                'amount' => number_format($amount, 2),
                 'wallet_send' => 0,
-                'type' => 3
+                'type' => 3,
             ];
             $wallet_id = 0;
             $balance = 0;
@@ -59,23 +60,21 @@ class Membresia extends CI_Controller
                 $wallet_id = $wallet_parent->wallet_id;
                 $balance = (float)$wallet_parent->balance + $amount;
                 $data_transactions['balance_previous'] = $wallet_parent->balance;
-                $data_transactions['balance'] = $balance;
+                $data_transactions['balance'] = number_format($balance, 2);
                 $data_transactions['wallet_receives'] = $wallet_id;
             } else {
-                $link_wallet = md5($cliente->email . $cliente->password);
                 $data_wallet = [
-                    'user_id' => $user_id,
+                    'user_id' => $cliente->parent,
                     'points' => 0,
-                    'balance' => 0,
-                    'link_wallet' => $link_wallet
+                    'balance' => 0
                 ];
                 $wallet_id = $this->wallet->create($data_wallet);
-                $balance = (float)$wallet_parent->balance + $amount;
                 $data_transactions['balance_previous'] = 0;
-                $data_transactions['balance'] = $balance;
+                $data_transactions['balance'] = number_format($amount, 2);
                 $data_transactions['wallet_receives'] = $wallet_id;
+                $balance = number_format($amount, 2);
             }
-            $this->transaccion->create($data_transactions);
+            $this->transaction->create($data_transactions);
             $this->wallet->update($wallet_id, ['balance' => $balance]);
         }
         $data = [
@@ -109,12 +108,29 @@ class Membresia extends CI_Controller
                 $this->tree_node->create($data_node);
             } else {
                 $node_parent = $this->tree_node->get_node_by_user_id_and_parent($cliente->user_id, $cliente->parent);
-                $data_node = [
-                    'membre_user_id' => $valor,
-                    'is_active' => 1,
-                    'date_active' => $fecha
-                ];
-                $this->tree_node->update($node_parent->tree_node_id, $data_node);
+                if ($node_parent) {
+                    $data_node = [
+                        'membre_user_id' => $valor,
+                        'is_active' => 1,
+                        'date_active' => $fecha
+                    ];
+                    $this->tree_node->update($node_parent->tree_node_id, $data_node);
+                } else {
+                    $data_node = [
+                        'membre_user_id' => $valor,
+                        'variable_config' => 0,
+                        'is_active' => 1,
+                        'is_delete' => 0,
+                        'points' => 0,
+                        'date_create' => $fecha,
+                        'date_active' => $fecha,
+                        'parent' => 0,
+                        'position' => 0,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0
+                    ];
+                    $this->tree_node->create($data_node);
+                }
             }
             $this->load->model("Correo_model", "correo");
             $asunto = "Membresia adquirida";

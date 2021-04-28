@@ -283,17 +283,12 @@
                        success: function(result) {
                           result = JSON.parse(result);
                           if (result.status == 200) {
-                             const toast = swal.mixin({
-                                toast: true,
+                             Swal.fire({
                                 position: 'top-end',
+                                icon: 'success',
+                                title: 'Correcto',
                                 showConfirmButton: false,
-                                timer: 2000,
-                                padding: '2em'
-                             });
-                             toast({
-                                type: 'success',
-                                title: '¡Correcto!',
-                                padding: '2em',
+                                timer: 1500
                              })
                              setTimeout(() => {
                                 window.location = '<?= site_url('activacion') ?>';

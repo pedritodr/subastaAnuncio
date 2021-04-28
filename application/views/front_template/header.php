@@ -12,11 +12,11 @@
     <meta name="author" content="ScriptsBundle">
     <title><?= isset($data_seo) ? $data_seo[1] : "Subastas | Anuncios"; ?></title>
     <?php
-   if (isset($data_seo))
-      meta_tags($e = $data_seo[0], $title = $data_seo[1], $desc = $data_seo[2], $imgurl = $data_seo[3], $url = $data_seo[4]);
-   else
-      meta_tags();
-   ?>
+    if (isset($data_seo))
+        meta_tags($e = $data_seo[0], $title = $data_seo[1], $desc = $data_seo[2], $imgurl = $data_seo[3], $url = $data_seo[4]);
+    else
+        meta_tags();
+    ?>
     <!-- =-=-=-=-=-=-= Favicons Icon =-=-=-=-=-=-= -->
     <!--    <link rel="icon" href="<?= base_url('assets_front/favicon/favicon.ico'); ?>" type="image/x-icon" /> -->
     <!-- =-=-=-=-=-=-= Mobile Specific =-=-=-=-=-=-= -->
@@ -123,46 +123,35 @@
                                 <!-- si el usuario no esta autenticado-->
                                 <?php if (!$this->session->userdata('role_id')) { ?>
 
-                                <li><a href="<?= site_url('login') ?>"><i class="fa fa-sign-in"></i>
-                                        <?= translate("login_lang"); ?></a></li>
-                                <li><a href="<?= site_url('registrarse') ?>"><i class="fa fa-unlock"
-                                            aria-hidden="true"></i> <?= translate("registrarse_lang"); ?></a></li>
+                                    <li><a href="<?= site_url('login') ?>"><i class="fa fa-sign-in"></i>
+                                            <?= translate("login_lang"); ?></a></li>
+                                    <li><a href="<?= site_url('registrarse') ?>"><i class="fa fa-unlock" aria-hidden="true"></i> <?= translate("registrarse_lang"); ?></a></li>
 
                                 <?php } else { ?>
-                                <!--usuario autenticado-->
+                                    <!--usuario autenticado-->
 
-                                <?php if ($this->session->userdata('role_id') != 1) { ?>
+                                    <?php if ($this->session->userdata('role_id') != 1) { ?>
 
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male"
-                                            aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span
-                                            class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?= site_url('perfil/page'); ?>"><i class="fa fa-user-o"
-                                                    aria-hidden="true"></i><?= translate("perfil_lang"); ?> </a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="<?= site_url('perfil/page'); ?>"><i class="fa fa-user-o" aria-hidden="true"></i><?= translate("perfil_lang"); ?> </a></li>
 
-                                        <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock"
-                                                    aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
-                                    </ul>
-                                </li>
-                                <?php } else { ?>
-
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male"
-                                            aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span
-                                            class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-user-o"
-                                                    aria-hidden="true"></i><?= translate("administracion_lang"); ?> </a>
+                                                <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock" aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
+                                            </ul>
                                         </li>
+                                    <?php } else { ?>
 
-                                        <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock"
-                                                    aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
-                                    </ul>
-                                </li>
-                                <?php } ?>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon-profile-male" aria-hidden="true"></i> Hola <?= $this->session->userdata('name') ?> <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-user-o" aria-hidden="true"></i><?= translate("administracion_lang"); ?> </a>
+                                                </li>
+
+                                                <li><a href="<?= site_url('login/logout') ?>"><i class="fa fa-unlock" aria-hidden="true"></i><?= translate("sign_out_lang"); ?></a></li>
+                                            </ul>
+                                        </li>
+                                    <?php } ?>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -181,9 +170,7 @@
                             <!-- menu logo -->
                             <ul class="menu-logo">
                                 <li>
-                                    <a href="<?= site_url('portada') ?>"><img
-                                            src="<?= base_url('assets_front/images/subastanuncio-x1.png'); ?>"
-                                            alt="logo"> </a>
+                                    <a href="<?= site_url('portada') ?>"><img src="<?= base_url('assets_front/images/subastanuncio-x1.png'); ?>" alt="logo"> </a>
                                 </li>
                             </ul>
                             <!-- menu links -->
@@ -205,17 +192,17 @@
                                         <i></i></a>
                                 </li>
                                 <?php if (!$this->session->userdata('user_id')) { ?>
-                                <li>
-                                    <a href="<?= site_url('membresia') ?>"> <?= translate('menbresi_lang') ?>
-                                        <i></i></a>
-                                </li>
+                                    <li>
+                                        <a href="<?= site_url('membresia') ?>"> <?= translate('menbresi_lang') ?>
+                                            <i></i></a>
+                                    </li>
                                 <?php } else { ?>
-                                <?php if (!$membresia_user) { ?>
-                                <li>
-                                    <a href="<?= site_url('membresia') ?>"> <?= translate('menbresi_lang') ?>
-                                        <i></i></a>
-                                </li>
-                                <?php } ?>
+                                    <?php if (!$membresia_user) { ?>
+                                        <li>
+                                            <a href="<?= site_url('membresia') ?>"> <?= translate('menbresi_lang') ?>
+                                                <i></i></a>
+                                        </li>
+                                    <?php } ?>
                                 <?php } ?>
                                 <li>
                                     <a href="<?= site_url('contacto') ?>"> <?= translate('contact_lang') ?> <i></i></a>
@@ -224,11 +211,10 @@
                                     <a href="<?= site_url('faqs') ?>"> <?= translate('faq_lang') ?> <i></i></a>
                                 </li>
                                 <?php if ($this->session->userdata('user_id')) { ?>
-                                <li>
-                                    <a href="<?= site_url('crear-anuncio') ?>" class="btn btn-light"><i
-                                            class="fa fa-plus" aria-hidden="true">
-                                        </i><?= translate("name_publi_lang"); ?></a>
-                                </li>
+                                    <li>
+                                        <a href="<?= site_url('crear-anuncio') ?>" class="btn btn-light"><i class="fa fa-plus" aria-hidden="true">
+                                            </i><?= translate("name_publi_lang"); ?></a>
+                                    </li>
                                 <?php } ?>
                             </ul>
 

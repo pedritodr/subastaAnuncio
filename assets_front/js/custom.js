@@ -34,11 +34,11 @@ Designed and Development by: ScriptsBundle
 [ END JQUERY TABLE CONTENT ]
 =====================================
 */
-(function ($) {
+(function($) {
     "use strict";
 
     /* ======= Preloader ======= */
-    setTimeout(function () {
+    setTimeout(function() {
         $('body').addClass('loaded');
     }, 2000);
 
@@ -51,13 +51,13 @@ Designed and Development by: ScriptsBundle
     // }
 
     /* ======= List Grid Style Switcher ======= */
-    $('#list').on("click", function (event) {
+    $('#list').on("click", function(event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#grid').removeClass('active');
         $('#products .item').addClass('list-group-items');
     });
-    $('#grid').on("click", function (event) {
+    $('#grid').on("click", function(event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#list').removeClass('active');
@@ -71,7 +71,7 @@ Designed and Development by: ScriptsBundle
     });
 
     /* ======= Accordion Panels ======= */
-    $('.accordion-title a').on('click', function (event) {
+    $('.accordion-title a').on('click', function(event) {
         event.preventDefault();
         if ($(this).parents('li').hasClass('open')) {
             $(this).parents('li').removeClass('open').find('.accordion-content').slideUp(400);
@@ -83,7 +83,7 @@ Designed and Development by: ScriptsBundle
     });
 
     /* ======= Accordion Style 2 ======= */
-    $('#accordion').on('shown.bs.collapse', function () {
+    $('#accordion').on('shown.bs.collapse', function() {
         var offset = $('.panel.panel-default > .panel-collapse.in').offset();
         if (offset) {
             $('html,body').animate({
@@ -117,13 +117,19 @@ Designed and Development by: ScriptsBundle
         width: '100%'
     });
 
+    $("#typeAccount").select2({
+        placeholder: 'Seleccione el tipo de cuenta',
+        allowClear: false,
+        tags: false,
+        width: '100%'
+    });
     /* ======= Profile Image Upload ======= */
-    $(document).on('change', '.btn-file :file', function () {
+    $(document).on('change', '.btn-file :file', function() {
         var input = $(this),
             label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
         input.trigger('fileselect', [label]);
     });
-    $('.btn-file :file').on('fileselect', function (event, label) {
+    $('.btn-file :file').on('fileselect', function(event, label) {
         var input = $(this).parents('.input-group').find(':text'),
             log = label;
         if (input.length) {
@@ -134,18 +140,18 @@ Designed and Development by: ScriptsBundle
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#img-upload').attr('src', e.target.result);
             };
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#imgInp").change(function () {
+    $("#imgInp").change(function() {
         readURL(this);
     });
 
     /* ======= Masonry Grid System ======= */
-    $('.posts-masonry').imagesLoaded(function () {
+    $('.posts-masonry').imagesLoaded(function() {
         $('.posts-masonry').isotope({
             layoutMode: 'masonry',
             transitionDuration: '0.3s'
@@ -374,14 +380,14 @@ Designed and Development by: ScriptsBundle
         //grab the "back to top" link
         $back_to_top = $('.cd-top');
     //hide or show the "back to top" link
-    $(window).scroll(function () {
+    $(window).scroll(function() {
         ($(this).scrollTop() > offset) ? $back_to_top.addClass('cd-is-visible'): $back_to_top.removeClass('cd-is-visible cd-fade-out');
         if ($(this).scrollTop() > offset_opacity) {
             $back_to_top.addClass('cd-fade-out');
         }
     });
     //smooth scroll to top
-    $back_to_top.on('click', function (event) {
+    $back_to_top.on('click', function(event) {
 
         event.preventDefault();
         $('body,html').animate({

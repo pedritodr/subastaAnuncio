@@ -2369,7 +2369,6 @@ class Front extends CI_Controller
             redirect('login');
         }
 
-
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('User_model', 'user');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
@@ -2504,15 +2503,32 @@ class Front extends CI_Controller
         $all_pais = $this->pais->get_all();
         $data['all_pais'] = $all_pais;
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
+        $user = $this->user->get_by_id($user_id);
+        if ($user) {
+            $user->parent = $this->user->get_by_id($user->parent);
+        }
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $this->load->model('Bank_data_model', 'bank_data');
+        $bank_data = $this->bank_data->get_by_user_id($user_id);
+        $wallet = $this->wallet->get_wallet_by_user_id($user_id);
+        if ($wallet) {
+            $transacciones = $this->transaction->get_all_transaccione_by_id($wallet->wallet_id);
+        } else {
+            $transacciones = [];
+        }
 
         $data['contador_anuncios'] = $contador;
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;
         $data['all_membresia'] = $all_membresia;
-        $data['user_data'] = $this->user->get_by_id($user_id);
+        $data['user_data'] = $user;
         $data['mis_subastas_inversas'] = $subastas_inversas;
         $data['mis_subastas_directas'] = $mis_subastas;
         $data['user_membresia'] = $user_membresia;
+        $data['wallet'] = $wallet;
+        $data['transacciones'] = $transacciones;
+        $data['bank_data'] = $bank_data;
 
         $this->load_view_front('front/perfil', $data);
     }
@@ -3161,17 +3177,14 @@ class Front extends CI_Controller
                             $data_transactions['balance'] = $balance;
                             $data_transactions['wallet_receives'] = $wallet_id;
                         } else {
-                            $link_wallet = md5($user_obj->email . $user_obj->password);
                             $data_wallet = [
                                 'user_id' => $user_id,
                                 'points' => 0,
-                                'balance' => 0,
-                                'link_wallet' => $link_wallet
+                                'balance' => 0
                             ];
                             $wallet_id = $this->wallet->create($data_wallet);
-                            $balance = (float)$wallet_parent->balance + $amount;
                             $data_transactions['balance_previous'] = 0;
-                            $data_transactions['balance'] = $balance;
+                            $data_transactions['balance'] = $amount;
                             $data_transactions['wallet_receives'] = $wallet_id;
                         }
                         $this->transaccion->create($data_transactions);
@@ -3563,6 +3576,7 @@ class Front extends CI_Controller
 
     public function referrer($email = "")
     {
+        $email = base64_decode($email);
         $this->load->model('Banner_model', 'banner');
         $this->load->model('User_model', 'user');
         $all_banners = $this->banner->get_all(['menu_id' => 1]); //todos los banners
@@ -3571,5 +3585,148 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
 
         $this->load_view_front('front/add_cliente', $data);
+    }
+    public function cargar_arbol_afiliados()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            die();
+        }
+        $this->load->model('Tree_node_model', 'tree');
+        $user_id = $this->session->userdata('user_id');
+        $lista_arbol = [];
+        $firstUser = $this->tree->get_node_header_by_user_id($user_id);
+        $lista_arbol[] = $firstUser;
+        $childrems = $this->tree->get_all_children($firstUser->tree_node_id);
+        $result = array_merge($lista_arbol, $childrems);
+        $lista_arbol = $result;
+        echo json_encode(['status' => 200, 'lista' => $lista_arbol]);
+        die();
+    }
+    public function update_bank_data()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $this->load->model('Bank_data_model', 'bank_data');
+        $bankName = $this->input->post('bankName');
+        $numberAcount = $this->input->post('numberAcount');
+        $typeAcount = $this->input->post('typeAccount');
+        $nameTitular = $this->input->post('nameTitular');
+        $emailContact = $this->input->post('emailContact');
+        $phoneContact = $this->input->post('phoneContact');
+        $user_id = $this->session->userdata('user_id');
+        $bank_data = $this->bank_data->get_by_user_id($user_id);
+        if ($bank_data) {
+            $data = [
+                'name_bank' => $bankName,
+                'number_account' => $numberAcount,
+                'type_account' => $typeAcount,
+                'name_titular' => $nameTitular,
+                'number_id' => $numberAcount,
+                'email' => $emailContact,
+                'phone' => $phoneContact
+            ];
+            $this->bank_data->update($user_id, $data);
+            echo json_encode(['status' => 200]);
+            exit();
+        } else {
+            $data = [
+                'user_id' => $user_id,
+                'name_bank' => $bankName,
+                'number_account' => $numberAcount,
+                'type_account' => $typeAcount,
+                'name_titular' => $nameTitular,
+                'number_id' => $numberAcount,
+                'email' => $emailContact,
+                'phone' => $phoneContact
+            ];
+            $id = $this->bank_data->create($data);
+            if ($id) {
+                echo json_encode(['status' => 200]);
+                exit();
+            } else {
+                echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
+                exit();
+            }
+        }
+    }
+    function validate_email()
+    {
+        $email = $this->input->post('email');
+
+        $user = $this->user->get_user_by_email($email);
+        $result = null;
+        if ($user) {
+            $result = json_encode(['status' => 200, 'data' => $user]);
+        } else {
+            $result = json_encode(['status' => 404]);
+        }
+        echo $result;
+        exit();
+    }
+
+    public function tranferir_saldo()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $email = $this->input->post('email');
+        $monto = $this->input->post('monto');
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $user_id = $this->session->userdata('user_id');
+        $fecha = date('Y-m-d H:i:s');
+        $wallet_send = $this->wallet->get_wallet_by_user_id($user_id);
+        $user_receives = $this->user->get_user_by_email($email);
+        $wallet_receives = $this->wallet->get_wallet_by_user_id($user_receives->user_id);
+        if ($wallet_receives) {
+            $balance = (float)$wallet_receives->balance + $monto;
+            $data_transactions = [
+                'date_create' => $fecha,
+                'amount' => number_format($monto, 2),
+                'wallet_send' =>  $wallet_send->wallet_id,
+                'type' => 2,
+                'balance_previous' => $wallet_receives->balance,
+                'balance' => number_format($balance, 2),
+                'wallet_receives' => $wallet_receives->wallet_id
+            ];
+            $this->transaction->create($data_transactions);
+            $this->wallet->update($wallet_receives->wallet_id, ['balance' => number_format($balance, 2)]);
+
+            $balanceSend =  (float)$wallet_send->balance - $monto;
+            $this->wallet->update($wallet_send->wallet_id, ['balance' => number_format($balanceSend, 2)]);
+            echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+            exit();
+        } else {
+            $data_wallet = [
+                'user_id' => $user_receives->user_id,
+                'points' => 0,
+                'balance' => 0
+            ];
+            $wallet_id = $this->wallet->create($data_wallet);
+            if ($wallet_id > 0) {
+                $data_transactions = [
+                    'date_create' => $fecha,
+                    'amount' => number_format($monto, 2),
+                    'wallet_send' =>  $wallet_send->wallet_id,
+                    'type' => 2,
+                    'balance_previous' => 0,
+                    'balance' => number_format($monto, 2),
+                    'wallet_receives' => $wallet_id
+                ];
+                $this->transaction->create($data_transactions);
+                $this->wallet->update($wallet_id, ['balance' => number_format($monto, 2)]);
+                $balanceSend =  (float)$wallet_send->balance - $monto;
+                $this->wallet->update($wallet_send->wallet_id, ['balance' => number_format($balanceSend, 2)]);
+                echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+                exit();
+            } else {
+                echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
+                exit();
+            }
+        }
     }
 }

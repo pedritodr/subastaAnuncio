@@ -795,9 +795,19 @@
       </div>
    </div>
 </div>
+<?php
+$load = false;
+$localhost = $_SERVER['REQUEST_URI'];
+$url_request =  "/perfil";
+$pos = strpos($localhost, $url_request);
+if ($pos === false) {
+   $load = true;
+} ?>
+<?php if ($load) { ?>
+   <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
+   <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+<?php } ?>
 
-<!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
 <!-- Bootstrap Core Css  -->
 <script src="<?= base_url('assets_front/js/bootstrap.min.js') ?>"></script>
 <!-- Jquery Easing -->

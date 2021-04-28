@@ -78,6 +78,17 @@ class Tree_node_model extends CI_Model
         return $query->result();
     }
 
+    function get_node_header_by_user_id($id)
+    {
+
+        $this->db->select('tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,user.name,user.surname,user.phone,user.email,user.parent as padre');
+        $this->db->from('tree_node');
+        $this->db->join('user', 'user.user_id = tree_node.user_id');
+        $this->db->where('tree_node.user_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     function get_node_by_user_id_and_parent($id, $parent)
     {
         $this->db->where(['user_id' => $id, 'parent' => $parent]);
@@ -85,12 +96,12 @@ class Tree_node_model extends CI_Model
         return $query->row();
     }
 
-    function get_all_children($user_id)
+    function get_all_children($id)
     {
-        $this->db->select('*');
+        $this->db->select('tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
-        $this->db->where('tree_node.parent', $user_id);
+        $this->db->where('tree_node.parent', $id);
         $query = $this->db->get();
         return $query->result();
     }
