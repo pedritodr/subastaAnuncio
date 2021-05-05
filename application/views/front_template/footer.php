@@ -753,6 +753,29 @@
       </div>
    </div>
 </div>
+<div id="modalPaymentBilletera" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel">Pago con billetera</h3>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                  <h3 class="text-center" id="nameMembresia"></h3>
+                  <h4 class="text-center" id="priceMembresia"></h4>
+                  <h4 class="text-center" id="saldoWalletMembresia"></h4>
+                  <input id="membresiaId" type="hidden" value="">
+               </div>
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button id="btnPaymentWallet" style="border-color: #2a3681;" onclick="paymentWallet()" type="button" class="btn btn-success btn-block"><?= translate('pagar_lang'); ?></button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <div id="modal_notificacion" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -1969,9 +1992,105 @@ if ($pos === false) {
 
    }
 
+   const handleTypePayment = () => {
+      let typePayment = $('#typePayment').val();
+      let obj = localStorage.getItem('membresia');
+      $('#modalMetodoPago').modal('hide');
+      typePayment == 1 ? seleccionar_membresia(obj) : paymentBilletera(obj);
+   }
+
+   const paymentBilletera = (object) => {
+      object = JSON.parse(decodeB64Utf8(object));
+      localStorage.removeItem('membresia');
+      wallet = JSON.parse(wallet);
+      $('#nameMembresia').text('Membresia: ' + object.nombre);
+      $('#priceMembresia').text('Precio: ' + parseFloat(object.precio).toFixed(2));
+      $('#saldoWalletMembresia').text(wallet ? 'Saldo disponible: ' + parseFloat(wallet.balance).toFixed(2) : 'Saldo disponible: 0.00');
+      $('#membresiaId').text(object.membresia_id);
+      if (wallet) {
+         if (wallet.balance > 0) {
+            $('#btnPaymentWallet').prop('disabled', false)
+         } else {
+            $('#btnPaymentWallet').prop('disabled', true);
+         }
+      } else {
+         $('#btnPaymentWallet').prop('disabled', true);
+      }
+      $('#modalPaymentBilletera').modal('show');
+   }
+
+   const paymentWallet = () => {
+      let membresiaId = $('#membresiaId').val();
+      let priceMembresia = $('#priceMembresia').val();
+      wallet = JSON.parse(wallet);
+      if (wallet) {
+         let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
+         priceMembresia = parseFloat(parseFloat(priceMembresia).toFixed(2))
+         if (balance >= priceMembresia) {
+            Swal.fire({
+               title: 'Completando operación',
+               text: 'Procesando  pago...',
+               imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+               imageAlt: 'No realice acciones sobre la página',
+               showConfirmButton: false,
+               allowOutsideClick: false,
+               footer: '<a href>No realice acciones sobre la página</a>',
+            });
+            setTimeout(function() {
+               $.ajax({
+                  type: 'POST',
+                  url: "<?= site_url('front/payment_membresia_wallet') ?>",
+                  data: {
+                     membresiaId
+                  },
+                  success: function(result) {
+                     Swal.close();
+                     result = JSON.parse(result);
+                     if (result.status == 200) {
+                        Swal.fire({
+                           position: 'top-end',
+                           icon: 'success',
+                           title: 'Datos bancarios actualizados correctamente',
+                           showConfirmButton: false,
+                           timer: 1500
+                        })
+                        setTimeout(() => {
+                           window.location.href = '<?= site_url('perfil/page'); ?>';
+                        }, 1000);
+                     } else {
+                        Swal.close();
+                        swal({
+                           title: '¡Error!',
+                           text: result.msj,
+                           padding: '2em'
+                        });
+                     }
+                  }
+               });
+            }, 1500)
+         } else {
+            Swal.fire({
+               position: 'top-end',
+               icon: 'info',
+               title: 'Su saldo no es suficiente para realizar esta transacción',
+               showConfirmButton: false,
+               timer: 1500
+            })
+         }
+      } else {
+         Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: 'Su saldo no es suficiente para realizar esta transacción',
+            showConfirmButton: false,
+            timer: 1500
+         })
+      }
+   }
+
    function seleccionar_membresia(object) {
-      object = atob(object);
-      object = JSON.parse(object);
+      object = JSON.parse(decodeB64Utf8(object));
+      localStorage.removeItem('membresia');
       let id_pendiente = false;
       let contador_trans = 0;
       var user_id = "<?= $this->session->userdata('user_id'); ?>";

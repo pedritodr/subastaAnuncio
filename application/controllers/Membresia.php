@@ -53,6 +53,7 @@ class Membresia extends CI_Controller
                 'amount' => number_format($amount, 2),
                 'wallet_send' => 0,
                 'type' => 3,
+                'status' => 1
             ];
             $wallet_id = 0;
             $balance = 0;

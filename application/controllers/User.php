@@ -413,7 +413,8 @@ class User extends CI_Controller
                         'variable_config' => 0,
                         'is_active' => 0,
                         'is_delete' => 0,
-                        'points' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
                         'date_create' => date('Y-m-d H:i:s'),
                         'parent' => $node->tree_node_id,
                         'user_id' => $user_id,
@@ -449,13 +450,89 @@ class User extends CI_Controller
             $response  = $this->user->get_user_by_email_active($referidor);
             if ($response) {
                 $userReferidor = $response->user_id;
-            } else {
-                $userReferidor = null;
-            }
-            $this->user->update($user_id, ['parent' => $userReferidor]);
-        }
+                $response =  $this->user->update($user_id, ['parent' => $userReferidor]);
 
-        echo json_encode(['status' => 200, 'msj' => 'Cliente creado correctamente']);
-        exit();
+                if ($response > 0) {
+                    $cliente = $this->user->get_by_id($user_id);
+                    $this->load->model('Membresia_model', 'membresia');
+                    $user_membresia = $this->membresia->get_membresia_by_user_id($user_id);
+                    $this->load->model('Tree_node_model', 'tree_node');
+                    $fecha = date('Y-m-d H:i:s');
+                    if ($cliente->parent == 0) {
+                        $data_node = [
+                            'membre_user_id' => $user_membresia ? $user_membresia->membre_user_id : 0,
+                            'variable_config' => 0,
+                            'is_active' => $user_membresia ? 1 : 0,
+                            'is_delete' => 0,
+                            'points_left' => 0,
+                            'points_right' => 0,
+                            'date_create' => $fecha,
+                            'date_active' => $fecha,
+                            'parent' => 0,
+                            'position' => 0,
+                            'user_id' => $user_id,
+                            'is_culminated' => 0
+                        ];
+                        $this->tree_node->create($data_node);
+                    } else {
+                        $node_parent = $this->tree_node->get_node_by_user_id_and_parent($cliente->user_id, $cliente->parent);
+                        if ($node_parent) {
+                            $data_node = [
+                                'membre_user_id' => $user_membresia ? $user_membresia->membre_user_id : 0,
+                                'is_active' => $user_membresia ? 1 : 0,
+                                'date_active' => $fecha
+                            ];
+                            $this->tree_node->update($node_parent->tree_node_id, $data_node);
+                        } else {
+                            $node = $this->tree_node->get_node_header_by_user_id($cliente->parent);
+                            if ($node) {
+                                $data_node = [
+                                    'membre_user_id' => $user_membresia ? $user_membresia->membre_user_id : 0,
+                                    'variable_config' => 0,
+                                    'is_active' => $user_membresia ? 1 : 0,
+                                    'is_delete' => 0,
+                                    'points_left' => 0,
+                                    'points_right' => 0,
+                                    'date_create' => $fecha,
+                                    'date_active' => $fecha,
+                                    'parent' => $node ? $node->tree_node_id : 0,
+                                    'position' => $node ? $node->variable_config : 0,
+                                    'user_id' => $user_id,
+                                    'is_culminated' => 0
+                                ];
+                                $this->tree_node->create($data_node);
+                            } else {
+                                $data_node = [
+                                    'membre_user_id' => $user_membresia ? $user_membresia->membre_user_id : 0,
+                                    'variable_config' => 0,
+                                    'is_active' => $user_membresia ? 1 : 0,
+                                    'is_delete' => 0,
+                                    'points_left' => 0,
+                                    'points_right' => 0,
+                                    'date_create' => $fecha,
+                                    'date_active' => $fecha,
+                                    'parent' => 0,
+                                    'position' => 0,
+                                    'user_id' => $user_id,
+                                    'is_culminated' => 0
+                                ];
+                                $this->tree_node->create($data_node);
+                            }
+                        }
+                    }
+                    echo json_encode(['status' => 200, 'msj' => 'Cliente actualizado correctamente']);
+                    exit();
+                } else {
+                    echo json_encode(['status' => 500, 'msj' => 'Cliente ya se encuentra actualizado']);
+                    exit();
+                }
+            } else {
+                echo json_encode(['status' => 500, 'msj' => 'El cliente no existe en la base de datos']);
+                exit();
+            }
+        } else {
+            echo json_encode(['status' => 500, 'msj' => 'El campo email no puede estar vacio']);
+            exit();
+        }
     }
 }

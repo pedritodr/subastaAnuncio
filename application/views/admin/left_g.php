@@ -127,6 +127,11 @@
                         <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Financiamientos</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= site_url('Transaccion/index'); ?>">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Solitudes de transferencias</span>
+                    </a>
+                </li>
 
             <?php }  ?>
 

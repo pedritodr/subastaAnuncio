@@ -130,6 +130,12 @@ Designed and Development by: ScriptsBundle
         tags: false,
         width: '100%'
     });
+    $("#typePayment").select2({
+        placeholder: 'Seleccione un tipo de pago',
+        allowClear: false,
+        tags: false,
+        width: '100%'
+    });
 
 
     /* ======= Profile Image Upload ======= */

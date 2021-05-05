@@ -136,7 +136,7 @@
     const modalReferidor = (obj) => {
         obj = JSON.parse(decodeB64Utf8(obj));;
         $('#user_id').val(obj.user_id);
-        if (obj.referidor !== undefined) {
+        if (obj.referidor) {
             $('#referidor').val(obj.referidor.email ? obj.referidor.email : '');
         } else {
             $('#referidor').val('');
@@ -144,13 +144,13 @@
         $('#modalReferidor').modal('show');
     }
 
-    const submitRegister = () => {
+    const updateReferido = () => {
         let referidor = $('#referidor').val().trim();
         let userId = $('#user_id').val();
         if (referidor == '') {
             Swal.fire({
                 icon: 'info',
-                text: 'El campo nombre es obligatorio',
+                text: 'El campo email es obligatorio',
                 showCancelButton: false,
                 confirmButtonText: 'Continuar',
             }).then((result) => {
@@ -158,46 +158,61 @@
             })
         } else {
             Swal.fire({
-                title: 'Completando operación',
-                text: 'Actualizando...',
-                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-                imageAlt: 'No realice acciones sobre la página',
-                showConfirmButton: false,
+                icon: 'info',
+                text: 'Esta seguro de continuar con esta operación',
+                showCancelButton: true,
                 allowOutsideClick: false,
-                footer: '<a href>No realice acciones sobre la página</a>',
-            });
-            let data = {
-                referidor,
-                userId
-            }
-            setTimeout(() => {
-                $.ajax({
-                    type: 'POST',
-                    url: "<?= site_url('user/update_referidor') ?>",
-                    data: data,
-                    success: function(result) {
-                        result = JSON.parse(result);
-                        if (result.status == 200) {
-                            Swal.fire({
-                                icon: 'success',
-                                text: result.msj,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                            })
-                            setTimeout(() => {
-                                window.location = '<?= site_url('user/cliente') ?>';
-                            }, 1000);
-                        } else {
-                            Swal.close();
-                            Swal.fire({
-                                title: '¡Error!',
-                                text: result.msj,
-                                padding: '2em'
-                            });
-                        }
+                confirmButtonText: 'Continuar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Completando operación',
+                        text: 'Actualizando...',
+                        imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                        imageAlt: 'No realice acciones sobre la página',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        footer: '<a href>No realice acciones sobre la página</a>',
+                    });
+                    let data = {
+                        referidor,
+                        userId
                     }
-                });
-            }, 1500)
+                    setTimeout(() => {
+                        $.ajax({
+                            type: 'POST',
+                            url: "<?= site_url('user/update_referidor') ?>",
+                            data: data,
+                            success: function(result) {
+                                result = JSON.parse(result);
+                                if (result.status == 200) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: result.msj,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                    })
+                                    setTimeout(() => {
+                                        window.location = '<?= site_url('user/cliente') ?>';
+                                    }, 1000);
+                                } else {
+                                    Swal.close();
+                                    Swal.fire({
+                                        title: '¡Error!',
+                                        text: result.msj,
+                                        padding: '2em'
+                                    });
+                                }
+                            }
+                        });
+                    }, 1500)
+                }
+
+            })
+
+
+
+
 
         }
     }

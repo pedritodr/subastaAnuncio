@@ -88,7 +88,6 @@
                             <?php } ?>
                         </div>
 
-
                         <div class="profile-detail">
                             <h6 class="text-center"><?= $user_data->name ?></h6>
 
@@ -121,7 +120,6 @@
                         </ul>
                     </div>
                     <!-- Categories -->
-
                 </div>
                 <div class="col-md-9 col-sm-12 col-xs-12">
                     <?= get_message_from_operation(); ?>
@@ -661,8 +659,16 @@
                                         <div class="col-lg-6 margin-bottom-20">
                                             <label> Tipo de cuenta <span class="color-red">*</span></label>
                                             <select id="typeAccount" class="form-control">
-                                                <option value="1">Ahorro</option>
-                                                <option value="2">Corriente</option>
+                                                <option <?php if ($bank_data) {
+                                                            if ($bank_data->type_account == 1) {
+                                                                echo 'selected';
+                                                            }
+                                                        } ?> value="1">Ahorro</option>
+                                                <option <?php if ($bank_data) {
+                                                            if ($bank_data->type_account == 2) {
+                                                                echo 'selected';
+                                                            }
+                                                        } ?> value="2">Corriente</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
@@ -773,14 +779,19 @@
                                                         <h5 style="text-align:center;">Variable de configuración</h5>
                                                         <?php if ($node) {
                                                             if ($node->variable_config == 0) {
-                                                                echo '<p class="text-center"><span class="label label-success">Derecha</span></p>';
+                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Derecha</span></p>';
                                                             } else {
-                                                                echo '<p class="text-center"><span class="label label-success">Izquierda</span></p>';
+                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Izquierda</span></p>';
                                                             }
                                                         }
                                                         ?>
                                                     </div>
-                                                    <button class="btn btn-primary margin-bottom-10" onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>
+                                                    <?php if ($node) {
+                                                        echo ' <button class="btn btn-primary margin-bottom-10" onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
+                                                    } else {
+                                                        echo ' <button class="btn btn-primary margin-bottom-10" disabled onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
+                                                    } ?>
+
                                                 </div>
                                                 <div class="col-lg-8 col-xs-12 col-sm-8 col-md-8">
                                                     <div style="margin-top:15px;">
@@ -789,7 +800,7 @@
                                                     <div id="areaDatosGeneralesEquipo"></div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row" id="bodyEstructura">
                                                 <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
                                                     <div style="margin-top:15px;">
                                                         <h5 style="text-align:center;">Estructura organizativa Izquierda</h5>
@@ -829,7 +840,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <div class='text-center btn-wallet'><img src="<?= base_url('assets/retirada.png') ?>" alt="">
+                                            <div class='text-center btn-wallet' onclick="handleMondalSolicitud()"><img src="<?= base_url('assets/retirada.png') ?>" alt="">
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
                                         </div>
@@ -881,6 +892,12 @@
                                                                     <p>Transferencia</p>
                                                                 <?php } else if ($trx->type == 3) { ?>
                                                                     <p>Comisión de referido</p>
+                                                                <?php } else if ($trx->type == 4) { ?>
+                                                                    <p>Compra de membresia</p>
+                                                                <?php } else if ($trx->type == 5) { ?>
+                                                                    <p>Solicitud de transferencia de saldo</p>
+                                                                <?php } else if ($trx->type == 6) { ?>
+                                                                    <p>Reintegro de la solicitud de transferencia</p>
                                                                 <?php } ?>
                                                             </td>
                                                             <td>
@@ -1014,10 +1031,144 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade price-quote" id="modalSolicitud" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix"></div>
+                    <div class="row" style="margin-left: 20px;">
+                        <div class="col-lg-12">
+                            <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
+                            <div class="form-group">
+                                <label>Monto solicitado</label>
+                                <input class="form-control" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitado" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5 style="text-align:left;">Datos bancarios</h5>
+                            <p class="text-left"><b>Nombre del banco: </b> <?= $bank_data ? $bank_data->name_bank : '' ?></p>
+                            <p class="text-left"><b>Número de cuenta: </b> <?= $bank_data ? $bank_data->number_account : '' ?></p>
+                            <?php if ($bank_data) {
+                                if ($bank_data->type_account == 1) {
+                                    echo '<p class="text-left"> <b>Tipo de cuenta :</b> Ahorro</p>';
+                                } else {
+                                    echo '<p class="text-left"> <b>Tipo de cuenta :</b> Corriente</p>';
+                                }
+                            } ?>
+                            <p class="text-left"> <b>Nombre del titular: </b> <?= $bank_data ? $bank_data->name_titular : '' ?></p>
+                            <p class="text-left"><b>Número de identidad del titular: </b> <?= $bank_data ? $bank_data->number_id : '' ?></p>
+                            <p class="text-left"><b>Email de contacto:</b> <?= $bank_data ? $bank_data->email : '' ?></p>
+                            <p class="text-left"><b>Teléfono de contacto:</b> <?= $bank_data ? $bank_data->phone : '' ?></p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
+                        <button type="buttom" onclick="handleSubmitSolicitud()" class="btn btn-success">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
-    <!-- =-=-=-=-=-=-= JQUERY =-=-=-=-=-=-= -->
-    <!--     <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script> -->
     <script type="text/javascript">
+        const handleMondalSolicitud = () => {
+            let bankData = JSON.parse('<?= $bank_data ? json_encode($bank_data) : null ?>');
+            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+            if (!bankData) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'Los datos bancarios son obligatorios para la solicitud de transferencia de saldo',
+                    showConfirmButton: true,
+                })
+            } else if (billeteraActual <= 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'Su saldo no es suficiente para realizar esta transacción',
+                    showConfirmButton: true,
+                })
+            } else {
+                $('#modalSolicitud').modal('show');
+            }
+        }
+
+        const handleSubmitSolicitud = () => {
+            let montoSolicitado = $('#montoSolicitado').val().trim();
+            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+            if (montoSolicitado == '') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto es un campo requerido',
+                    showConfirmButton: true
+                })
+            } else if (montoSolicitado <= 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto no puede ser 0',
+                    showConfirmButton: true
+                })
+            } else if (billeteraActual < montoSolicitado) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto solicitado es mayor que el disponible en la billetera',
+                    showConfirmButton: true
+                })
+            } else {
+                Swal.fire({
+                    title: 'Completando operación',
+                    text: 'Procesando  solicitud de transferencia de saldo...',
+                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                    imageAlt: 'No realice acciones sobre la página',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    footer: '<a href>No realice acciones sobre la página</a>',
+                });
+                let data = {
+                    montoSolicitado,
+                }
+                setTimeout(function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('front/request_transfer_balance') ?>",
+                        data: data,
+                        success: function(result) {
+                            Swal.close();
+                            result = JSON.parse(result);
+                            if (result.status == 200) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Solicitud de transferencia de saldo creada correctamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                Swal.close();
+                                swal({
+                                    title: '¡Error!',
+                                    text: result.msj,
+                                    padding: '2em'
+                                });
+                            }
+                        }
+                    });
+                }, 1500)
+            }
+        }
+
+
         const handleSubmitBankData = () => {
             let bankName = $('#bankName').val().trim();
             let numberAcount = $('#numberAccount').val().trim();
@@ -1200,6 +1351,49 @@
 
         }
 
+        const updateVariableConfig = () => {
+            let node = '<?= json_encode($node) ?>';
+            $('#modalVariableConfiguracion').modal('hide');
+            let variableConfig = $('#variableConfig').val();
+            Swal.fire({
+                title: 'Completando operación',
+                text: 'Actualizando datos...',
+                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                imageAlt: 'No realice acciones sobre la página',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                footer: '<a href>No realice acciones sobre la página</a>',
+            });
+
+            let url = '<?= site_url("front/variable_config") ?>';
+            $.post(url, {
+                node: node,
+                variable: variableConfig
+            }, function(response) {
+                Swal.close();
+                response = JSON.parse(response);
+                if (response.status == 200) {
+                    variableConfig == 0 ? $('#labelConfig').text('Derecha') : $('#labelConfig').text('Izquierda');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Operación ejecutada',
+                        text: 'Variable de configuración actualizada correctamente',
+                        confirmButtonText: 'Continuar',
+                        allowOutsideClick: false
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se encuentra un usuario con el email especificado',
+                        showConfirmButton: false,
+                        timer: 2500
+                    }).then((result) => {
+                        $('#modalVariableConfiguracion').modal('show');
+                    });
+                }
+            });
+        }
+
         const completarTransferencia = () => {
             let emailDestino = $("#emailDestinatario").val().trim();
             let montoEnviar = $("#montoTransferir").val().trim();
@@ -1372,6 +1566,7 @@
             setTimeout(() => {
                 $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
                     let responseJSON = JSON.parse(response);
+                    responseJSON.lista_left.length > 0 || responseJSON.lista_right.length ? $('#bodyEstructura').show() : $('#bodyEstructura').hide();
 
                     $("#cargandoArbol").remove();
                     $("#cargandoArbolRight").remove();
@@ -1394,7 +1589,7 @@
 
                     $("#areaDatosGeneralesEquipo").append(
                         "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #563084;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #563084;color:#563084;font-weight:bold;'>" +
-                        ((responseJSON.lista_left.length - 1) + (responseJSON.lista_right.length - 1)) + "</label></div></div>");
+                        ((responseJSON.lista_left.length > 0 ? responseJSON.lista_left.length - 1 : 0) + (responseJSON.lista_right.length > 0 ? responseJSON.lista_right.length - 1 : 0)) + "</label></div></div>");
 
                     let items = [];
                     let itemsRight = [];

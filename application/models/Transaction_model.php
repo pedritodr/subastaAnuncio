@@ -79,6 +79,18 @@ class Transaction_model extends CI_Model
 
         return $query->result();
     }
+    function get_all_transfers()
+    {
+        $this->db->select('transaction.transaction_id,transaction.date_create,transaction.amount,transaction.type,transaction.wallet_send,transaction.status,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre,bank_data.name_bank,bank_data.number_account,bank_data.type_account,bank_data.name_titular,bank_data.number_id,bank_data.email as email_bank,bank_data.phone as phone_bank');
+        $this->db->from('transaction');
+        $this->db->join('wallet', 'wallet.wallet_id = transaction.wallet_send');
+        $this->db->join('user', 'user.user_id = wallet.user_id');
+        $this->db->join('bank_data', 'bank_data.user_id = user.user_id');
+        $this->db->where('transaction.status', 1);
+        $this->db->where('transaction.type', 5);
+        $query = $this->db->get();
+        return $query->result();
+    }
     //------------------------------------------------------------------------------------------------------------------------------------------
 
 }
