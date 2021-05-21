@@ -2521,6 +2521,14 @@ class Front extends CI_Controller
         }
         $this->load->model('Tree_node_model', 'tree');
         $node = $this->tree->get_node_header_by_user_id($user_id);
+
+        if ($node) {
+            $data['team_left']  = count($this->tree->get_all_children($node->tree_node_id, 1));
+            $data['team_right']  = count($this->tree->get_all_children($node->tree_node_id, 0));
+        } else {
+            $data['team_left']  = 0;
+            $data['team_right']  = 0;
+        }
         $data['contador_anuncios'] = $contador;
         $data['all_ciudad'] = $all_ciudad;
         $data['city'] = $city;

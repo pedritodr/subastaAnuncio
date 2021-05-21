@@ -41,6 +41,66 @@
         color: #293681;
         background: #ececec;
     }
+
+    .card .tab-pane {
+        padding: 1px 0;
+    }
+
+    .card .tab-content {
+        padding: 1px;
+    }
+
+    .btn.app-download-button i {
+        display: block;
+        font-size: 30px;
+        float: left;
+        padding: 0 65px 0 0;
+    }
+
+    .app-text-section h2 {
+        color: #fff;
+        margin-bottom: 5px;
+        opacity: 0.8;
+        text-transform: none;
+    }
+
+    .app-text-section h5 {
+        color: #fff;
+        margin-bottom: 5px;
+        opacity: 0.8;
+        text-transform: none;
+    }
+
+    .app-text-section p {
+        color: #fff;
+        margin-bottom: 5px;
+        opacity: 0.8;
+        text-transform: none;
+    }
+
+    .app-text-section h6 {
+        color: #fff;
+        margin-bottom: 5px;
+        opacity: 0.8;
+        text-transform: none;
+    }
+
+    .app-download-section.style-2 .app-download-section-container {
+        padding: 1px 0 0 0;
+    }
+
+    .thumbnail {
+        display: block;
+        padding: 2px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: transparent;
+        border: 1px solid #fefdfc;
+        border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+    }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
 <!-- DataTables -->
@@ -711,114 +771,307 @@
                                     <!-- Tab panes -->
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane active" id="general">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                    <h5 class="text-center">Patrocinador <spam><img src="<?= base_url('assets/transfer.png') ?>" alt="" style="width:10%"></spam>
-                                                    </h5>
-                                                    <?php if ($user_data->parent) { ?>
-                                                        <p class="text-center"><b>Nombre y apellidos: </b><?= $user_data->parent->name . ' ' . $user_data->parent->surname ?></p>
-                                                        <p class="text-center"><b>Email: </b> <?= $user_data->parent->email ?></p>
-                                                    <?php } else { ?>
-                                                        <h6 class="text-center">No tiene patrocinador</h6>
-                                                    <?php } ?>
-                                                    <div style="margin-top:20px;text-align:center">
-                                                        <h5 style="text-align: center;">Link Personal</h5>
-                                                        <p style="text-align:center;font-size:14px">Este vínculo puede ser utilizado para compartir a través
-                                                            de los
-                                                            canales socilaes y facilitar el proceso de afiliación de tus referidos.</p>
-                                                        <a href="#" onclick="copyToClipboard('<?= site_url('referrer/' . base64_encode($this->session->userdata('email'))); ?>')" class="btn purple2">Copiar link</a>
+                                            <div class="app-download-section style-2">
+                                                <!-- app-download-section-wrapper -->
+                                                <div class="app-download-section-wrapper">
+                                                    <!-- app-download-section-container -->
+                                                    <div class="app-download-section-container">
+                                                        <!-- container -->
+                                                        <div class="container">
+                                                            <div class="row app-text-section">
+                                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                                                    <h5 class="text-center">Patrocinador <spam><img src="<?= base_url('assets/transfer.png') ?>" alt="" style="width:10%"></spam>
+                                                                    </h5>
+                                                                    <?php if ($user_data->parent) { ?>
+                                                                        <p class="text-center"><b>Nombre y apellidos: </b><?= $user_data->parent->name . ' ' . $user_data->parent->surname ?></p>
+                                                                        <p class="text-center"><b>Email: </b> <?= $user_data->parent->email ?></p>
+                                                                    <?php } else { ?>
+                                                                        <h6 class="text-center">No tiene patrocinador</h6>
+                                                                    <?php } ?>
+                                                                    <div style="margin-top:20px;text-align:center">
+                                                                        <h5 style="text-align: center;">Link Personal</h5>
+                                                                        <p style="text-align:center;font-size:14px">Este vínculo puede ser utilizado para compartir a través
+                                                                            de los
+                                                                            canales socilaes y facilitar el proceso de afiliación de tus referidos.</p>
+                                                                        <a href="#" onclick="copyToClipboard('<?= site_url('referrer/' . base64_encode($this->session->userdata('email'))); ?>')" class="btn app-download-button">
+                                                                            <span class="app-store-btn">
+                                                                                <i class="fa fa-link" aria-hidden="true"></i>
+                                                                                <span>
+                                                                                    <span> Copiar link</span>
+                                                                                </span>
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                                                    <h5 class="text-left">Tipo de membresia <spam><img src="<?= base_url('assets/validation.png') ?>" alt="" style="width:10%"></spam>
+                                                                    </h5>
+                                                                    <?php if ($all_membresia) { ?>
+                                                                        <br>
+                                                                        <p><b><?= translate('membresia_act_lang') ?>:</b> <?= $all_membresia->nombre ?></p>
+
+                                                                        <p><b>Subastas Disponibles:</b> <?= $user_membresia->qty_subastas; ?></p>
+
+                                                                        <p><b>Anuncios Disponibles:</b> <?= $user_membresia->anuncios_publi;  ?></p>
+
+                                                                        <p><b><?= translate('descripcion_lang') ?>:</b> </p>
+                                                                        <p><?= $all_membresia->descripcion; ?></p>
+                                                                    <?php } else { ?>
+                                                                        <br>
+                                                                        <h4 class="text-center">No tiene membresia</h4>
+                                                                        <a href="<?= site_url('membresia') ?>" class="btn btn-block btn-theme">
+                                                                            <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                                                            </span>
+                                                                            <font style="vertical-align: inherit;">
+                                                                                <font style="vertical-align: inherit;">
+                                                                                    <?= translate('adquirir_membresia_btn_lang') ?>
+                                                                                </font>
+                                                                            </font>
+                                                                        </a>
+                                                                    <?php } ?>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                                                    <h5 class="text-left">Vigencia de la membresia <spam><img src="<?= base_url('assets/approve.png') ?>" alt="" style="width:10%"></spam>
+                                                                    </h5>
+                                                                    <?php if ($all_membresia) { ?>
+                                                                        <br>
+                                                                        <p><strong><?= translate('date_compra_lang') ?>: </strong><?= $user_membresia->fecha_inicio ?></p>
+                                                                        <p><strong><?= translate('fecha_vencimiento_lang') ?>: </strong> <?= $user_membresia->fecha_fin ?></p>
+                                                                    <?php } else { ?>
+                                                                        <br>
+                                                                        <h4 class="text-center">No tiene membresia</h4>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                    <h5 class="text-left">Tipo de membresia <spam><img src="<?= base_url('assets/validation.png') ?>" alt="" style="width:10%"></spam>
-                                                    </h5>
-                                                    <?php if ($all_membresia) { ?>
-                                                        <br>
-                                                        <p><b><?= translate('membresia_act_lang') ?>:</b> <?= $all_membresia->nombre ?></p>
-
-                                                        <p><b>Subastas Disponibles:</b> <?= $user_membresia->qty_subastas; ?></p>
-
-                                                        <p><b>Anuncios Disponibles:</b> <?= $user_membresia->anuncios_publi;  ?></p>
-
-                                                        <p><b><?= translate('descripcion_lang') ?>:</b> </p>
-                                                        <p><?= $all_membresia->descripcion; ?></p>
-                                                    <?php } else { ?>
-                                                        <br>
-                                                        <h4 class="text-center">No tiene membresia</h4>
-                                                        <a href="<?= site_url('membresia') ?>" class="btn btn-block btn-theme">
-                                                            <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                            </span>
-                                                            <font style="vertical-align: inherit;">
-                                                                <font style="vertical-align: inherit;">
-                                                                    <?= translate('adquirir_membresia_btn_lang') ?>
-                                                                </font>
-                                                            </font>
-                                                        </a>
-                                                    <?php } ?>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                    <h5 class="text-left">Vigencia de la membresia <spam><img src="<?= base_url('assets/approve.png') ?>" alt="" style="width:10%"></spam>
-                                                    </h5>
-                                                    <?php if ($all_membresia) { ?>
-                                                        <br>
-                                                        <p><strong><?= translate('date_compra_lang') ?>: </strong><?= $user_membresia->fecha_inicio ?></p>
-                                                        <p><strong><?= translate('fecha_vencimiento_lang') ?>: </strong> <?= $user_membresia->fecha_fin ?></p>
-                                                    <?php } else { ?>
-                                                        <br>
-                                                        <h4 class="text-center">No tiene membresia</h4>
-                                                    <?php } ?>
-                                                </div>
-
                                             </div>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane" id="actual">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-                                        <div role="tabpanel" class="tab-pane" id="equipo">
-                                            <div class="row">
-                                                <div class="col-lg-4 text-center">
-                                                    <div style="margin-top:15px;">
-                                                        <h5 style="text-align:center;">Variable de configuración</h5>
-                                                        <?php if ($node) {
-                                                            if ($node->variable_config == 0) {
-                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Derecha</span></p>';
-                                                            } else {
-                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Izquierda</span></p>';
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                    <?php if ($node) {
-                                                        echo ' <button class="btn btn-primary margin-bottom-10" onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
-                                                    } else {
-                                                        echo ' <button class="btn btn-primary margin-bottom-10" disabled onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
-                                                    } ?>
+                                        <div role="tabpanel" class="tab-pane" id="actual">
+                                            <div class="app-download-section style-2">
+                                                <!-- app-download-section-wrapper -->
+                                                <div class="app-download-section-wrapper">
+                                                    <!-- app-download-section-container -->
+                                                    <div class="app-download-section-container">
+                                                        <!-- container -->
+                                                        <div class="container app-text-section">
+                                                            <!-- row -->
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-usd" aria-hidden="true"></i> Saldo</h5>
+                                                                            <p><i class="fa fa-usd" aria-hidden="true"></i>
+                                                                                <?php
+                                                                                if ($node) {
+                                                                                    if ($node->points_left > $node->points_right) {
+                                                                                        $pointToMoney = $node->points_right * 0.15;
+                                                                                        echo number_format($pointToMoney, 2);
+                                                                                    } else {
+                                                                                        $pointToMoney = $node->points_left * 0.15;
+                                                                                        echo  number_format($pointToMoney, 2);
+                                                                                    }
+                                                                                } else {
+                                                                                    echo ' 0.00';
+                                                                                }
+                                                                                ?>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-money" aria-hidden="true"></i> Beneficio Total</h5>
+                                                                            <p><i class="fa fa-money" aria-hidden="true"></i>
+                                                                                <?php
+                                                                                if ($node) {
+                                                                                    echo '$ ' . number_format($node->charged, 2);
+                                                                                } else {
+                                                                                    echo '$ 0.00';
+                                                                                }
+                                                                                ?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-star" aria-hidden="true"></i> Puntos</h5>
+                                                                            <p>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $user_data->rank ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $user_data->rank ?>%;">
+                                                                                    <?= $user_data->rank . '%' ?>
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="text-left" style="color:#fff">1000/1000000</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-shield" aria-hidden="true"></i> Rango</h5>
+                                                                            <p><i class="fa fa-shield" aria-hidden="true"></i></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 219px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"> Equipo izquierdo</h5>
+                                                                            <h2 class="text-center"><i class="fa fa-users" aria-hidden="true"></i><span style="font-size:16px"> <?= $team_left ?> usuarios en total</span></h2>
+                                                                            <h2 class="text-center"><i class="fa fa-star" aria-hidden="true"></i><span style="font-size:16px">
+                                                                                    <?php
+                                                                                    if ($node) {
+                                                                                        echo $node->points_left . ' Puntos';
+                                                                                    } else {
+                                                                                        echo '0 Puntos';
+                                                                                    }
+                                                                                    ?>
+                                                                                </span></h2>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="thumbnail" style="height: 219px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"> Equipo derecho</h5>
+                                                                            <h2 class="text-center"><i class="fa fa-users" aria-hidden="true"></i><span style="font-size:16px"> <?= $team_right ?> usuarios en total</span></h2>
+                                                                            <h2 class="text-center"><i class="fa fa-star" aria-hidden="true"></i><span style="font-size:16px">
+                                                                                    <?php
+                                                                                    if ($node) {
+                                                                                        echo $node->points_right . ' Puntos';
+                                                                                    } else {
+                                                                                        echo '0 Puntos';
+                                                                                    }
+                                                                                    ?></span></h2>
 
-                                                </div>
-                                                <div class="col-lg-8 col-xs-12 col-sm-8 col-md-8">
-                                                    <div style="margin-top:15px;">
-                                                        <h5 style="text-align:center;">Datos generales</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="thumbnail" style="height: 219px;">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"> Ciclo de plan</h5>
+                                                                            <br>
+                                                                            <?php
+                                                                            $porcentaje = 0;
+                                                                            if ($all_membresia) {
+                                                                                if ($all_membresia->type == 0) {
+                                                                                    $totalAcum = ($all_membresia->precio * 200) / 100;
+                                                                                    $totalPuntos = round((($all_membresia->precio * 200) / 100) * 0.15);
+                                                                                    $porcentaje = 200;
+                                                                                    if ($node) {
+                                                                                        $objetive = (($node->points * 100) / $totalPuntos) * 100;
+                                                                                        $totalPuntosGet = round((($node->points * 200) / 100) * 0.15);
+                                                                                    } else {
+                                                                                        $objetive = 0;
+                                                                                        $totalPuntosGet = 0;
+                                                                                    }
+                                                                                } else {
+                                                                                    $totalAcum = ($all_membresia->precio * 160) / 100;
+                                                                                    $totalPuntos = round((($all_membresia->precio * 160) / 100) * 0.15);
+                                                                                    $porcentaje = 160;
+                                                                                    if ($node) {
+                                                                                        $objetive = (($node->points * 100) / $totalPuntos) * 100;
+                                                                                        $totalPuntosGet = round((($node->points * 160) / 100) * 0.15);
+                                                                                    } else {
+                                                                                        $objetive = 0;
+                                                                                        $totalPuntosGet = 0;
+                                                                                    }
+                                                                                }
+                                                                            } else {
+                                                                                $totalPuntos = 0;
+                                                                                $objetive = 0;
+                                                                                $totalPuntosGet = 0;
+                                                                            }
+
+
+
+
+                                                                            ?>
+                                                                            <p>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $objetive ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $objetive ?>%;">
+                                                                                    <?= $objetive ?>%
+                                                                                </div>
+                                                                            </div>
+                                                                            </p>
+                                                                            <br>
+                                                                            <h6 class="text-center"> <b><span style="color:#fff"> Progreso(<?= $totalPuntosGet / 10 ?>%) $ <?= $totalPuntosGet ?> &nbsp; &nbsp;&nbsp;&nbsp;Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</span></b></h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /row -->
+                                                        </div>
+                                                        <!-- /container -->
                                                     </div>
-                                                    <div id="areaDatosGeneralesEquipo"></div>
+                                                    <!-- /app-download-section-container -->
                                                 </div>
+                                                <!-- /download-section-wrapper -->
                                             </div>
-                                            <div class="row" id="bodyEstructura">
-                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
-                                                    <div style="margin-top:15px;">
-                                                        <h5 style="text-align:center;">Estructura organizativa Izquierda</h5>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="equipo">
+                                            <div class="app-download-section style-2">
+                                                <!-- app-download-section-wrapper -->
+                                                <div class="app-download-section-wrapper">
+                                                    <!-- app-download-section-container -->
+                                                    <div class="app-download-section-container">
+                                                        <!-- container -->
+                                                        <div class="container app-text-section">
+                                                            <div class="row ">
+                                                                <div class="col-lg-4 text-center">
+                                                                    <div style="margin-top:15px;">
+                                                                        <h5 style="text-align:center;">Variable de configuración</h5>
+                                                                        <?php if ($node) {
+                                                                            if ($node->variable_config == 0) {
+                                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Derecha</span></p>';
+                                                                            } else {
+                                                                                echo '<p class="text-center"><span class="label label-success" id="labelConfig">Izquierda</span></p>';
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                    <?php if ($node) {
+                                                                        echo ' <button class="btn btn-primary margin-bottom-10" onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
+                                                                    } else {
+                                                                        echo ' <button class="btn btn-primary margin-bottom-10" disabled onclick="handleMondalVariebleConfig()" type="buttom">Cambiar configuración</button>';
+                                                                    } ?>
+
+                                                                </div>
+                                                                <div class="col-lg-8 col-xs-12 col-sm-8 col-md-8">
+                                                                    <div style="margin-top:15px;">
+                                                                        <h5 style="text-align:center;">Datos generales</h5>
+                                                                    </div>
+                                                                    <div id="areaDatosGeneralesEquipo"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" id="bodyEstructura">
+                                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
+                                                                    <div style="margin-top:15px;">
+                                                                        <h5 style="text-align:center;">Estructura organizativa Izquierda</h5>
+                                                                    </div>
+                                                                    <div id="basicDiagram" style="width: 100%; height: 480px;"></div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
+                                                                    <div style="margin-top:15px;">
+                                                                        <h5 style="text-align:center;">Estructura organizativa Derecha</h5>
+                                                                    </div>
+                                                                    <div id="basicDiagramRight" style="width: 100%; height: 480px;"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div id="basicDiagram" style="width: 100%; height: 480px;"></div>
-                                                </div>
-                                                <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
-                                                    <div style="margin-top:15px;">
-                                                        <h5 style="text-align:center;">Estructura organizativa Derecha</h5>
-                                                    </div>
-                                                    <div id="basicDiagramRight" style="width: 100%; height: 480px;"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div id="panel_wallet" class="profile-section margin-bottom-20">
@@ -1552,16 +1805,16 @@
 
             $("#areaDatosGeneralesEquipo").empty();
             $("#areaDatosGeneralesEquipo").html(
-                "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando datos generales del equipo</a></div></div>"
+                "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando datos generales del equipo</a></div></div>"
             );
 
             $("#basicDiagram").empty();
             $("#basicDiagram").html(
-                "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando árbol de afiliados</a></div></div>"
+                "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
             );
             $("#basicDiagramRight").empty();
             $("#basicDiagramRight").html(
-                "<div id='cargandoArbolRight' class='row'><div class='col-lg-12' style='text-align:center;'><a><img src='<?= base_url('assets/cargando.gif'); ?>' style='width:15%' /></a><br /><a style='color:#8c1822;font-weight:bold;font-size:16px;'>Cargando árbol de afiliados</a></div></div>"
+                "<div id='cargandoArbolRight' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
             );
             setTimeout(() => {
                 $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
@@ -1588,7 +1841,7 @@
                     optionsRight.normalItemsInterval = 20;
 
                     $("#areaDatosGeneralesEquipo").append(
-                        "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #563084;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #563084;color:#563084;font-weight:bold;'>" +
+                        "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #65438e;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #65438e;color:#fff;font-weight:bold;'>" +
                         ((responseJSON.lista_left.length > 0 ? responseJSON.lista_left.length - 1 : 0) + (responseJSON.lista_right.length > 0 ? responseJSON.lista_right.length - 1 : 0)) + "</label></div></div>");
 
                     let items = [];
@@ -1599,9 +1852,9 @@
                     let urlImage = '<?= base_url('assets/user.png') ?>';
 
                     responseJSON.lista_left.forEach(function(item1) {
-                        let color = "#fa3f59";
+                        let color = "#ff5970";
                         if (item1.is_active == 1) {
-                            color = '#0BD34E';
+                            color = '#45a766';
                             if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
                                 activos++;
                             }
@@ -1624,7 +1877,7 @@
                             }));
                         } else {
                             if (item1.is_active == '1') {
-                                color = '#0BD34E';
+                                color = '#45a766';
                             }
                             items.push(new primitives.OrgItemConfig({
                                 id: contador,
@@ -1640,9 +1893,9 @@
                         contador++;
                     });
                     responseJSON.lista_right.forEach(function(item1) {
-                        let color = "#fa3f59";
+                        let color = "#ff5970";
                         if (item1.is_active == 1) {
-                            color = '#0BD34E';
+                            color = '#45a766';
                             if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
                                 activos++;
                             }
@@ -1665,7 +1918,7 @@
                             }));
                         } else {
                             if (item1.is_active == '1') {
-                                color = '#0BD34E';
+                                color = '#45a766';
                             }
                             itemsRight.push(new primitives.OrgItemConfig({
                                 id: contador,
@@ -1687,9 +1940,9 @@
                     optionsRight.cursorItem = 0;
                     controlRight = primitives.OrgDiagram(document.getElementById("basicDiagramRight"), optionsRight);
                     let textoAux =
-                        '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #0BD34E;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #0BD34E;color:#0BD34E;font-weight:bold;">' +
+                        '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #45a766;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #45a766;color:#fff;font-weight:bold;">' +
                         activos +
-                        '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #fa3f59;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #fa3f59;color:#fa3f59;font-weight:bold;">' +
+                        '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #ff5970;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #ff5970;color:#fff;font-weight:bold;">' +
                         inactivos +
                         '</label></div></div>';
                     $("#areaDatosGeneralesEquipo").append(textoAux);
@@ -1717,9 +1970,9 @@
                 '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
                 '</div>' +
                 '</div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;" name="phone"></div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
                 '</div>';
 
             result.itemSize = new primitives.Size(180, 130);
@@ -1735,9 +1988,9 @@
                 '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
                 '</div>' +
                 '</div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;" name="phone"></div>' +
-                '<div style="text-align:center;color:#000;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
+                '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
                 '</div>';
 
             result.itemSize = new primitives.Size(180, 130);

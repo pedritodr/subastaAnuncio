@@ -197,7 +197,8 @@ class Membresia extends CI_Controller
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
         $duracion = $this->input->post('duracion');
-        $points = $this->input->post('points');
+        $type = $this->input->post('type');
+        $bono = $this->input->post('bono');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -217,7 +218,8 @@ class Membresia extends CI_Controller
                 'descripcion' => $descripcion,
                 'qty_subastas' => $subastas,
                 'duracion' => $duracion,
-                'points' => $points,
+                'type' => $type,
+                'bono' => $bono,
                 'is_delete' => 0
             ];
             $this->membresia->create($data);
@@ -262,7 +264,8 @@ class Membresia extends CI_Controller
         $descripcion = $this->input->post('descripcion');
         $subastas = $this->input->post('subastas');
         $duracion = $this->input->post('duracion');
-        $points = $this->input->post('points');
+        $type = $this->input->post('type');
+        $bono = $this->input->post('bono');
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
         if ($membresia_object) {
@@ -277,7 +280,8 @@ class Membresia extends CI_Controller
                 'descripcion' => $descripcion,
                 'qty_subastas' => $subastas,
                 'duracion' => $duracion,
-                'points' => $points
+                'type' => $type,
+                'bono' => $bono
             ];
             $this->membresia->update($membresia_id, $data_membresia);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);

@@ -32,7 +32,6 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th><?= translate("description_lang"); ?></th>
                                     <th><?= translate("precios_lang"); ?></th>
-                                    <th>Points</th>
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
@@ -44,19 +43,33 @@
                                 <?php foreach ($all_membresia as $item) { ?>
                                     <tr>
                                         <td> <?= $item->nombre; ?></td>
-                                        <td> <?= $item->descripcion; ?></td>
-                                        <td> <label class="label label-success">$<?= number_format($item->precio, 2); ?></label> </td>
-                                        <td> <label class="label label-danger"><?= $item->points; ?></label> </td>
+                                        <td> <?= $item->descripcion; ?>
+                                            <p><b>Bono: </b>$ <?= number_format($item->bono, 2) ?></p>
+                                            <?php if ($item->type == 0) { ?>
+                                                <label class="label label-primary">Emprendedor</label>
+                                            <?php } else { ?>
+                                                <label class="label label-success">Inversionista</label>
+                                            <?php } ?>
+                                        </td>
+                                        <td>
+                                            <p>$<?= number_format($item->precio, 2); ?></p>
+                                        </td>
                                         <td>
                                             <?php if ($item->sorteo == 1) { ?>
                                                 <label class="label label-primary">SI</label>
                                             <?php } else { ?>
-                                                <label class="label label-primary">NO</label>
+                                                <label class="label label-danger">NO</label>
                                             <?php } ?>
                                         </td>
-                                        <td><label class="label label-info"><?= $item->descuento; ?></label></td>
-                                        <td><label class="label label-primary"><?= $item->cant_anuncio; ?></label></td>
-                                        <td><label class="label label-primary"><?= $item->duracion; ?></label></td>
+                                        <td>
+                                            <p><?= $item->descuento; ?>%</p>
+                                        </td>
+                                        <td>
+                                            <p><?= $item->cant_anuncio; ?></p>
+                                        </td>
+                                        <td>
+                                            <p><?= $item->duracion; ?> días</p>
+                                        </td>
                                         <td>
                                             <!-- Single button -->
                                             <div class="btn-group">
@@ -79,7 +92,6 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th><?= translate("description_lang"); ?></th>
                                     <th><?= translate("precios_lang"); ?></th>
-                                    <th>Points</th>
                                     <th><?= translate("sorteo_lang"); ?></th>
                                     <th><?= translate("descuento_lang"); ?></th>
                                     <th><?= translate("cant_anuncios_lang") ?></th>
