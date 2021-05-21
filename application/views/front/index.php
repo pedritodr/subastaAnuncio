@@ -442,41 +442,6 @@
             }
          </style>
          <script>
-            /*     var subastas = <?= json_encode($all_subastas); ?>;
-
-      for (let i = 0; i < subastas.length; i++) {
-
-         var x = setInterval(function() {
-            var fecha = subastas[i].fecha_cierre;
-            var deadline = new Date(fecha).getTime();
-            var currentTime = new Date().getTime();
-            var t = deadline - currentTime;
-            var days = Math.floor(t / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((t % (1000 * 60)) / 1000);
-            $('#day' + subastas[i].subasta_id).html(days);
-            $('#hour' + subastas[i].subasta_id).html(hours);
-            $('#minute' + subastas[i].subasta_id).html(minutes);
-            $('#second' + subastas[i].subasta_id).html(seconds);
-
-            if (t < 0) {
-
-               clearInterval(x);
-
-               $('#day' + subastas[i].subasta_id).html(0);
-               $('#hour' + subastas[i].subasta_id).html(0);
-               $('#minute' + subastas[i].subasta_id).html(0);
-               $('#second' + subastas[i].subasta_id).html(0);
-
-            }
-
-         }, 1000);
-
-
-      } */
-
-
             function cargar_input(params) {
                $('#category').val(params);
                $("#buscar_categoria").submit();

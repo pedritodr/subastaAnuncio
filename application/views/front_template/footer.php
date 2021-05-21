@@ -767,6 +767,7 @@
                   <h4 class="text-center" id="priceMembresia"></h4>
                   <h4 class="text-center" id="saldoWalletMembresia"></h4>
                   <input id="membresiaId" type="hidden" value="">
+                  <input id="priceMembre" type="hidden" value="">
                </div>
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -866,9 +867,16 @@ if ($pos === false) {
 <script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
 <!-- MasterSlider -->
 <script src="<?= base_url('assets_front/js/masterslider/masterslider.min.js') ?>"></script>
-
-
+<?php if (isset($wallet)) {
+   if (!$wallet) {
+      $wallet = null;
+   }
+} else {
+   $wallet = null;
+}
+?>
 <script type="text/javascript">
+   let wallet = <?= json_encode($wallet) ?>;
    const encodeB64Utf8 = (str) => {
       return btoa(unescape(encodeURIComponent(str)));
    }
@@ -2001,12 +2009,12 @@ if ($pos === false) {
 
    const paymentBilletera = (object) => {
       object = JSON.parse(decodeB64Utf8(object));
-      localStorage.removeItem('membresia');
       wallet = JSON.parse(wallet);
       $('#nameMembresia').text('Membresia: ' + object.nombre);
       $('#priceMembresia').text('Precio: ' + parseFloat(object.precio).toFixed(2));
+      $('#priceMembre').val(parseFloat(object.precio).toFixed(2));
       $('#saldoWalletMembresia').text(wallet ? 'Saldo disponible: ' + parseFloat(wallet.balance).toFixed(2) : 'Saldo disponible: 0.00');
-      $('#membresiaId').text(object.membresia_id);
+      $('#membresiaId').val(object.membresia_id);
       if (wallet) {
          if (wallet.balance > 0) {
             $('#btnPaymentWallet').prop('disabled', false)
@@ -2021,11 +2029,10 @@ if ($pos === false) {
 
    const paymentWallet = () => {
       let membresiaId = $('#membresiaId').val();
-      let priceMembresia = $('#priceMembresia').val();
-      wallet = JSON.parse(wallet);
+      let priceMembresia = $('#priceMembre').val();
       if (wallet) {
          let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
-         priceMembresia = parseFloat(parseFloat(priceMembresia).toFixed(2))
+         priceMembresia = parseFloat(parseFloat(priceMembresia).toFixed(2));
          if (balance >= priceMembresia) {
             Swal.fire({
                title: 'Completando operación',
@@ -2044,13 +2051,14 @@ if ($pos === false) {
                      membresiaId
                   },
                   success: function(result) {
+                     localStorage.removeItem('membresia');
                      Swal.close();
                      result = JSON.parse(result);
                      if (result.status == 200) {
                         Swal.fire({
                            position: 'top-end',
                            icon: 'success',
-                           title: 'Datos bancarios actualizados correctamente',
+                           title: 'Membresia adquirida correctamente',
                            showConfirmButton: false,
                            timer: 1500
                         })

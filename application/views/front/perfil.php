@@ -859,18 +859,32 @@
                                                             <!-- row -->
                                                             <div class="row">
                                                                 <div class="col-md-3">
-                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                    <div class="thumbnail" style="height: 160px;">
                                                                         <div class="caption">
                                                                             <h5 class="text-left"><i class="fa fa-usd" aria-hidden="true"></i> Saldo</h5>
                                                                             <p><i class="fa fa-usd" aria-hidden="true"></i>
                                                                                 <?php
                                                                                 if ($node) {
-                                                                                    if ($node->points_left > $node->points_right) {
-                                                                                        $pointToMoney = $node->points_right * 0.15;
-                                                                                        echo number_format($pointToMoney, 2);
+                                                                                    if ($node->active == 0) {
+                                                                                        if ($node->points_left > 0 && $node->points_right > 0) {
+                                                                                            if ($node->points_left > $node->points_right) {
+                                                                                                $pointToMoney = $node->points_right * 0.15;
+                                                                                                echo number_format($pointToMoney, 2);
+                                                                                            } else {
+                                                                                                $pointToMoney = $node->points_left * 0.15;
+                                                                                                echo  number_format($pointToMoney, 2);
+                                                                                            }
+                                                                                        } else {
+                                                                                            echo ' 0.00';
+                                                                                        }
                                                                                     } else {
-                                                                                        $pointToMoney = $node->points_left * 0.15;
-                                                                                        echo  number_format($pointToMoney, 2);
+                                                                                        if ($node->points_left > $node->points_right) {
+                                                                                            $pointToMoney = $node->points_right * 0.15;
+                                                                                            echo number_format($pointToMoney, 2);
+                                                                                        } else {
+                                                                                            $pointToMoney = $node->points_left * 0.15;
+                                                                                            echo  number_format($pointToMoney, 2);
+                                                                                        }
                                                                                     }
                                                                                 } else {
                                                                                     echo ' 0.00';
@@ -881,13 +895,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                    <div class="thumbnail" style="height: 160px;">
                                                                         <div class="caption">
                                                                             <h5 class="text-left"><i class="fa fa-money" aria-hidden="true"></i> Beneficio Total</h5>
                                                                             <p><i class="fa fa-money" aria-hidden="true"></i>
                                                                                 <?php
                                                                                 if ($node) {
-                                                                                    echo '$ ' . number_format($node->charged, 2);
+                                                                                    echo '$ ' . number_format(($node->charged * 0.15), 2);
                                                                                 } else {
                                                                                     echo '$ 0.00';
                                                                                 }
@@ -896,25 +910,80 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                    <div class="thumbnail" style="height: 160px;">
                                                                         <div class="caption">
                                                                             <h5 class="text-left"><i class="fa fa-star" aria-hidden="true"></i> Puntos</h5>
-                                                                            <p>
+                                                                            <?php
+                                                                            $rankActual = 0;
+                                                                            $rankActualPorcentaje = 0;
+                                                                            $rank = 0;
+                                                                            if ($node) {
+                                                                                $rankActual = $node->points;
+                                                                                if ($node->charged > 0  && $node->charged < 10000) {
+                                                                                    $rank = 10000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                } else if ($node->charged > 10001 &&  $node->charged < 100000) {
+                                                                                    $rank = 100000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                } else if ($node->charged > 100001 && $node->charged < 1000000) {
+                                                                                    $rank = 1000000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                } else if ($node->charged > 1000001 && $node->charged < 10000000) {
+                                                                                    $rank = 10000000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                } else {
+                                                                                    $rank = 0;
+                                                                                }
+                                                                            }
+                                                                            ?>
+                                                                            <p style="margin-top:10px">
                                                                             <div class="progress">
-                                                                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $user_data->rank ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $user_data->rank ?>%;">
-                                                                                    <?= $user_data->rank . '%' ?>
+                                                                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $rankActualPorcentaje ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $rankActualPorcentaje ?>%;">
+                                                                                    <?= $rankActualPorcentaje . '%' ?>
                                                                                 </div>
                                                                             </div>
-                                                                            <span class="text-left" style="color:#fff">1000/1000000</span>
+                                                                            <span class="text-left" style="color:#fff"><?= $rankActual . '|' . $rank ?></span>
                                                                             </p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="thumbnail" style="height: 130px;">
+                                                                    <div class="thumbnail" style="height: 160px;">
                                                                         <div class="caption">
                                                                             <h5 class="text-left"><i class="fa fa-shield" aria-hidden="true"></i> Rango</h5>
-                                                                            <p><i class="fa fa-shield" aria-hidden="true"></i></p>
+                                                                            <?php
+                                                                            $typeUser = '';
+                                                                            if ($all_membresia) {
+                                                                                if ($all_membresia->type == 0) {
+                                                                                    $typeUser = 'Emprendedor';
+                                                                                } else {
+                                                                                    $typeUser = 'Inversionista';
+                                                                                }
+                                                                            } else {
+                                                                                $typeUser = 'Básico';
+                                                                            }
+                                                                            if ($rank == 10000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-center">' . $rankActual . '</p>';
+                                                                                echo '  <p class="text-center">Puntos de clasificación</p>';
+                                                                            } else if ($rank == 100000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-center">' . $rankActual . '</p>';
+                                                                                echo '  <p class="text-center">Puntos de clasificación</p>';
+                                                                            } else if ($rank == 1000000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-center">' . $rankActual . '</p>';
+                                                                                echo '  <p class="text-center">Puntos de clasificación</p>';
+                                                                            } else if ($rank == 10000000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-center">' . $rankActual . '</p>';
+                                                                                echo '  <p class="text-center">Puntos de clasificación</p>';
+                                                                            } else {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-center">' . $rankActual . '</p>';
+                                                                                echo '  <p class="text-center">Puntos de clasificación</p>';
+                                                                            }
+                                                                            ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -961,23 +1030,23 @@
                                                                             $porcentaje = 0;
                                                                             if ($all_membresia) {
                                                                                 if ($all_membresia->type == 0) {
-                                                                                    $totalAcum = ($all_membresia->precio * 200) / 100;
-                                                                                    $totalPuntos = round((($all_membresia->precio * 200) / 100) * 0.15);
+                                                                                    $totalAcum = ($all_membresia->precio * 2) + $all_membresia->precio;
+                                                                                    $totalPuntos = round((($all_membresia->precio * 2) + $all_membresia->precio) / 0.15);
                                                                                     $porcentaje = 200;
                                                                                     if ($node) {
-                                                                                        $objetive = (($node->points * 100) / $totalPuntos) * 100;
-                                                                                        $totalPuntosGet = round((($node->points * 200) / 100) * 0.15);
+                                                                                        $objetive = round(($node->points * 100) / $totalPuntos, 2);
+                                                                                        $totalPuntosGet = $node->points * 0.15;
                                                                                     } else {
                                                                                         $objetive = 0;
                                                                                         $totalPuntosGet = 0;
                                                                                     }
                                                                                 } else {
-                                                                                    $totalAcum = ($all_membresia->precio * 160) / 100;
-                                                                                    $totalPuntos = round((($all_membresia->precio * 160) / 100) * 0.15);
+                                                                                    $totalAcum = ($all_membresia->precio * 1.6) + $all_membresia->precio;
+                                                                                    $totalPuntos = round((($all_membresia->precio * 2) + $all_membresia->precio) / 0.15);
                                                                                     $porcentaje = 160;
                                                                                     if ($node) {
                                                                                         $objetive = (($node->points * 100) / $totalPuntos) * 100;
-                                                                                        $totalPuntosGet = round((($node->points * 160) / 100) * 0.15);
+                                                                                        $totalPuntosGet = $node->points  * 0.15;
                                                                                     } else {
                                                                                         $objetive = 0;
                                                                                         $totalPuntosGet = 0;
@@ -987,11 +1056,8 @@
                                                                                 $totalPuntos = 0;
                                                                                 $objetive = 0;
                                                                                 $totalPuntosGet = 0;
+                                                                                $totalAcum = 0;
                                                                             }
-
-
-
-
                                                                             ?>
                                                                             <p>
                                                                             <div class="progress">
@@ -1151,6 +1217,10 @@
                                                                     <p>Solicitud de transferencia de saldo</p>
                                                                 <?php } else if ($trx->type == 6) { ?>
                                                                     <p>Reintegro de la solicitud de transferencia</p>
+                                                                <?php } else if ($trx->type == 7) { ?>
+                                                                    <p>Bono binario</p>
+                                                                <?php } else if ($trx->type == 8) { ?>
+                                                                    <p>Bono diario</p>
                                                                 <?php } ?>
                                                             </td>
                                                             <td>
@@ -1655,8 +1725,8 @@
             if (expr.test(emailDestino)) {
                 if (userEmail !== emailDestino) {
                     if (!isNaN(montoEnviar)) {
-                        let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
-                        if (billeteraActual >= parseFloat(montoEnviar)) {
+                        let billeteraActual = <?= $balance ?>;
+                        if (parseFloat(billeteraActual) >= parseFloat(montoEnviar)) {
                             $('#modalTransferencia').modal('hide');
                             Swal.fire({
                                 title: 'Escribe tu contraseña',

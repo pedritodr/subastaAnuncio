@@ -775,7 +775,9 @@ class Front extends CI_Controller
                         'date_create' => date('Y-m-d H:i:s'),
                         'parent' => $node->tree_node_id,
                         'user_id' => $user_id,
-                        'is_culminated' => 0
+                        'is_culminated' => 0,
+                        'points' => 0,
+                        'charged' => 0
                     ];
                     $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                     $this->tree_node->create($data_node);
@@ -1063,6 +1065,17 @@ class Front extends CI_Controller
                     $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                     $this->anuncio->update($id, ['destacado' => 1]);
                 }
+            }
+            $this->load->model('Tree_node_model', 'tree_node');
+            $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
+            if ($userNode) {
+                $charged = (float)$userNode->charged + 133;
+                $points = (float)$userNode->points + 133;
+                $data_node = [
+                    'points' => $points,
+                    'charged' => $charged
+                ];
+                $this->tree_node->update($userNode->tree_node_id, $data_node);
             }
         } else {
             $id = $this->anuncio->create($data_ads);
@@ -2538,10 +2551,14 @@ class Front extends CI_Controller
         $data['mis_subastas_directas'] = $mis_subastas;
         $data['user_membresia'] = $user_membresia;
         $data['wallet'] = $wallet;
+        if ($wallet) {
+            $data['balance'] = (float)$wallet->balance;
+        } else {
+            $data['balance'] = 0;
+        }
         $data['transacciones'] = $transacciones;
         $data['bank_data'] = $bank_data;
         $data['node'] = $node;
-
         $this->load_view_front('front/perfil', $data);
     }
 
@@ -3693,7 +3710,7 @@ class Front extends CI_Controller
             exit();
         }
         $email = $this->input->post('email');
-        $monto = $this->input->post('monto');
+        $monto = (float)$this->input->post('monto');
         $this->load->model('Wallet_model', 'wallet');
         $this->load->model('Transaction_model', 'transaction');
         $user_id = $this->session->userdata('user_id');
@@ -3705,19 +3722,18 @@ class Front extends CI_Controller
             $balance = (float)$wallet_receives->balance + $monto;
             $data_transactions = [
                 'date_create' => $fecha,
-                'amount' => number_format($monto, 2),
+                'amount' => $monto,
                 'wallet_send' =>  $wallet_send->wallet_id,
                 'type' => 2,
                 'balance_previous' => $wallet_receives->balance,
-                'balance' => number_format($balance, 2),
+                'balance' => $balance,
                 'wallet_receives' => $wallet_receives->wallet_id,
                 'status' => 1
             ];
             $this->transaction->create($data_transactions);
-            $this->wallet->update($wallet_receives->wallet_id, ['balance' => number_format($balance, 2)]);
-
+            $this->wallet->update($wallet_receives->wallet_id, ['balance' => $balance]);
             $balanceSend =  (float)$wallet_send->balance - $monto;
-            $this->wallet->update($wallet_send->wallet_id, ['balance' => number_format($balanceSend, 2)]);
+            $this->wallet->update($wallet_send->wallet_id, ['balance' => $balanceSend]);
             echo json_encode(['status' => 200, 'msg' => "Correcto"]);
             exit();
         } else {
@@ -3730,18 +3746,18 @@ class Front extends CI_Controller
             if ($wallet_id > 0) {
                 $data_transactions = [
                     'date_create' => $fecha,
-                    'amount' => number_format($monto, 2),
+                    'amount' => $monto,
                     'wallet_send' =>  $wallet_send->wallet_id,
                     'type' => 2,
                     'balance_previous' => 0,
-                    'balance' => number_format($monto, 2),
+                    'balance' => $monto,
                     'wallet_receives' => $wallet_id,
                     'status' => 1
                 ];
                 $this->transaction->create($data_transactions);
-                $this->wallet->update($wallet_id, ['balance' => number_format($monto, 2)]);
+                $this->wallet->update($wallet_id, ['balance' => $monto]);
                 $balanceSend =  (float)$wallet_send->balance - $monto;
-                $this->wallet->update($wallet_send->wallet_id, ['balance' => number_format($balanceSend, 2)]);
+                $this->wallet->update($wallet_send->wallet_id, ['balance' => $balanceSend]);
                 echo json_encode(['status' => 200, 'msg' => "Correcto"]);
                 exit();
             } else {
@@ -3771,6 +3787,7 @@ class Front extends CI_Controller
             exit();
         }
         $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Tree_node_model', 'tree_node');
         $this->load->model('Transaction_model', 'transaction');
         $this->load->model('Membresia_model', 'membresia');
         $membresiaId = $this->input->post('membresiaId');
@@ -3784,27 +3801,28 @@ class Front extends CI_Controller
         $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
+
         if ($wallet_cliente) {
             if ($wallet_cliente->balance >= $object_membresia->precio) {
                 $monto = $wallet_cliente->balance - $object_membresia->precio;
                 $data_transactions = [
                     'date_create' => $fecha,
-                    'amount' => number_format($object_membresia->precio, 2),
+                    'amount' => $object_membresia->precio,
                     'wallet_send' =>  $wallet_cliente->wallet_id,
                     'type' => 4,
                     'balance_previous' => $wallet_cliente->balance,
-                    'balance' => number_format($monto, 2),
+                    'balance' => $monto,
                     'wallet_receives' => 0,
                     'status' => 1
                 ];
                 $this->transaction->create($data_transactions);
-                $this->wallet->update($wallet_cliente->wallet_id, ['balance' => number_format($monto, 2)]);
+                $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
                 if ($cliente->parent != 0) {
                     $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
                     $amount = (float)$object_membresia->precio * 0.20;
                     $data_transactions = [
                         'date_create' => $fecha,
-                        'amount' => number_format($amount, 2),
+                        'amount' => $amount,
                         'wallet_send' => 0,
                         'type' => 3,
                     ];
@@ -3814,7 +3832,7 @@ class Front extends CI_Controller
                         $wallet_id = $wallet_parent->wallet_id;
                         $balance = (float)$wallet_parent->balance + $amount;
                         $data_transactions['balance_previous'] = $wallet_parent->balance;
-                        $data_transactions['balance'] = number_format($balance, 2);
+                        $data_transactions['balance'] = $balance;
                         $data_transactions['wallet_receives'] = $wallet_id;
                     } else {
                         $data_wallet = [
@@ -3824,9 +3842,9 @@ class Front extends CI_Controller
                         ];
                         $wallet_id = $this->wallet->create($data_wallet);
                         $data_transactions['balance_previous'] = 0;
-                        $data_transactions['balance'] = number_format($amount, 2);
+                        $data_transactions['balance'] = $amount;
                         $data_transactions['wallet_receives'] = $wallet_id;
-                        $balance = number_format($amount, 2);
+                        $balance = $amount;
                     }
                     $this->transaction->create($data_transactions);
                     $this->wallet->update($wallet_id, ['balance' => $balance]);
@@ -3844,7 +3862,6 @@ class Front extends CI_Controller
                 ];
                 $valor = $this->membresia->create_membresia_user($data);
                 if ($valor) {
-                    $this->load->model('Tree_node_model', 'tree_node');
                     if ($cliente->parent == 0) {
                         $data_node = [
                             'membre_user_id' => $valor,
@@ -3858,12 +3875,40 @@ class Front extends CI_Controller
                             'parent' => 0,
                             'position' => 0,
                             'user_id' => $user_id,
-                            'is_culminated' => 0
+                            'is_culminated' => 0,
+                            'points' => 0,
+                            'charged' => 0
                         ];
                         $this->tree_node->create($data_node);
                     } else {
-                        $node_parent = $this->tree_node->get_node_by_user_id_and_parent($cliente->user_id, $cliente->parent);
+                        $node_parent = $this->tree_node->get_node_header_by_user_id($cliente->user_id);
+
                         if ($node_parent) {
+                            $parent = $node_parent->parent;
+                            $points = round($object_membresia->precio * 0.7);
+                            do {
+                                if ($parent == 0) {
+                                    $continue = false;
+                                } else {
+                                    $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
+                                    $parent = $nodeTemp->parent;
+                                    if ($nodeTemp->position == 0) {
+                                        $pointsRight = (float)$nodeTemp->points_right + $points;
+                                        $data_node = [
+                                            'points_right' => $pointsRight
+                                        ];
+                                        $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                                    } else {
+                                        $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                        $data_node = [
+                                            'points_left' => $pointsLeft
+                                        ];
+                                        $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                                    }
+                                    $continue = true;
+                                }
+                            } while ($continue);
+
                             $data_node = [
                                 'membre_user_id' => $valor,
                                 'is_active' => 1,
@@ -3883,7 +3928,9 @@ class Front extends CI_Controller
                                 'parent' => 0,
                                 'position' => 0,
                                 'user_id' => $user_id,
-                                'is_culminated' => 0
+                                'is_culminated' => 0,
+                                'points' => 0,
+                                'charged' => 0
                             ];
                             $this->tree_node->create($data_node);
                         }
@@ -3917,16 +3964,16 @@ class Front extends CI_Controller
             $balance = (float)$wallet_send->balance - $monto;
             $data_transactions = [
                 'date_create' => $fecha,
-                'amount' => number_format($monto, 2),
+                'amount' => $monto,
                 'wallet_send' =>  $wallet_send->wallet_id,
                 'type' => 5,
                 'balance_previous' => $wallet_send->balance,
-                'balance' => number_format($balance, 2),
+                'balance' => $balance,
                 'wallet_receives' => 0,
                 'status' => 1
             ];
             $this->transaction->create($data_transactions);
-            $this->wallet->update($wallet_send->wallet_id, ['balance' => number_format($balance, 2)]);
+            $this->wallet->update($wallet_send->wallet_id, ['balance' => $balance]);
             echo json_encode(['status' => 200, 'msg' => "Correcto"]);
             exit();
         } else {

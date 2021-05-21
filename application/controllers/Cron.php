@@ -418,4 +418,181 @@ class Cron  extends CI_Controller
             }
         }
     }
+    public function update_points()
+    {
+        $this->load->model('Tree_node_model', 'tree_node');
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $this->load->model('Membresia_model', 'membresia');
+        $nodes = $this->tree_node->get_all(['is_culminated' => 0]);
+        $fecha = date('Y-m-d H:i:s');
+        foreach ($nodes as $node) {
+            $wallet_cliente = $this->wallet->get_wallet_by_user_id($node->user_id);
+            $membresia = $this->membresia->get_by_user_id($node->user_id);
+            if ($membresia) {
+                $pointToMoney = 0;
+                $points_left = 0;
+                $points_right = 0;
+                $charged = 0;
+                $points = 0;
+                $monto = 0;
+                $valid = true;
+                if ($node->active == 0) {
+                    if ($node->points_left > 0 && $node->points_right > 0) {
+                        if ($node->points_left > $node->points_right) {
+                            $pointToMoney = $node->points_right * 0.15;
+                            $points_left = $node->points_left - $node->points_right;
+                            $points_right = 0;
+                            $charged = (float)$node->charged + $node->points_right;
+                            $points = (float)$node->points + $node->points_right;
+                        } else {
+                            $pointToMoney = $node->points_left * 0.15;
+                            $points_right = $node->points_right - $node->points_left;
+                            $points_left = 0;
+                            $charged = (float)$node->charged + $node->points_left;
+                            $points = (float)$node->points + $node->points_left;
+                        }
+                    } else {
+                        $valid = false;
+                    }
+                } else {
+                    if ($node->points_left > 0 && $node->points_right > 0) {
+                        if ($node->points_left > $node->points_right) {
+                            $pointToMoney = $node->points_right * 0.15;
+                            $points_left = $node->points_left - $node->points_right;
+                            $points_right = 0;
+                            $charged = (float)$node->charged + $node->points_right;
+                            $points = (float)$node->points + $node->points_right;
+                        } else {
+                            $pointToMoney = $node->points_left * 0.15;
+                            $points_right = $node->points_right - $node->points_left;
+                            $points_left = 0;
+                            $charged = (float)$node->charged + $node->points_left;
+                            $points = (float)$node->points + $node->points_left;
+                        }
+                    } else {
+                        $valid = false;
+                    }
+                }
+                if ($valid) {
+                    if ($membresia->type == 0) {
+                        $totalPuntos = round((($membresia->precio * 2) + $membresia->precio) / 0.15);
+                    } else {
+                        $totalPuntos = round((($membresia->precio * 1.6) + $membresia->precio) / 0.15);
+                    }
+                    if ($points <= $totalPuntos) {
+                        $data_node = [
+                            'points_right' => $points_right,
+                            'points_left' => $points_left,
+                            'charged' => $charged,
+                            'points' => $points,
+                            'active' => 1
+                        ];
+                    } else {
+                        $points = $points - $totalPuntos;
+                        $data_node = [
+                            'points_right' => $points_right,
+                            'points_left' => $points_left,
+                            'charged' => $charged,
+                            'points' => $points,
+                            'active' => 1,
+                            'is_culminated' => 1
+                        ];
+                    }
+
+                    $this->tree_node->update($node->tree_node_id, $data_node);
+                    if ($wallet_cliente) {
+                        $monto = (float)$wallet_cliente->balance + $pointToMoney;
+                        $data_transactions = [
+                            'date_create' => $fecha,
+                            'amount' => $pointToMoney,
+                            'wallet_send' =>  0,
+                            'type' => 7,
+                            'balance_previous' => $wallet_cliente->balance,
+                            'balance' => $monto,
+                            'wallet_receives' => $wallet_cliente->wallet_id,
+                            'status' => 1
+                        ];
+                        $this->transaction->create($data_transactions);
+                        $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
+                    } else {
+                        $data_wallet = [
+                            'user_id' => $node->user_id,
+                            'points' => 0,
+                            'balance' => 0
+                        ];
+                        $wallet_id = $this->wallet->create($data_wallet);
+                        if ($wallet_id > 0) {
+                            $data_transactions = [
+                                'date_create' => $fecha,
+                                'amount' => $pointToMoney,
+                                'wallet_send' =>  0,
+                                'type' => 7,
+                                'balance_previous' => 0,
+                                'balance' => $pointToMoney,
+                                'wallet_receives' => $wallet_id,
+                                'status' => 1
+                            ];
+                            $this->transaction->create($data_transactions);
+                            $this->wallet->update($wallet_id, ['balance' => $pointToMoney]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function bono_inversionista()
+    {
+        $this->load->model('Tree_node_model', 'tree_node');
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $this->load->model('Membresia_model', 'membresia');
+        $nodes = $this->tree_node->get_all(['is_culminated' => 0]);
+        $fecha = date('Y-m-d H:i:s');
+        foreach ($nodes as $node) {
+            $wallet_cliente = $this->wallet->get_wallet_by_user_id($node->user_id);
+            $membresia = $this->membresia->get_by_user_id($node->user_id);
+            if ($membresia) {
+                if ($membresia->type == 1) {
+                    if ($wallet_cliente) {
+                        $monto = (float)$wallet_cliente->balance + (float)$membresia->bono;
+                        $data_transactions = [
+                            'date_create' => $fecha,
+                            'amount' =>  (float)$membresia->bono,
+                            'wallet_send' =>  0,
+                            'type' => 8,
+                            'balance_previous' => $wallet_cliente->balance,
+                            'balance' => $monto,
+                            'wallet_receives' => $wallet_cliente->wallet_id,
+                            'status' => 1
+                        ];
+                        $this->transaction->create($data_transactions);
+                        $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
+                    } else {
+                        $data_wallet = [
+                            'user_id' => $node->user_id,
+                            'points' => 0,
+                            'balance' => 0
+                        ];
+                        $wallet_id = $this->wallet->create($data_wallet);
+                        if ($wallet_id > 0) {
+                            $data_transactions = [
+                                'date_create' => $fecha,
+                                'amount' => (float)$membresia->bono,
+                                'wallet_send' =>  0,
+                                'type' => 7,
+                                'balance_previous' => 0,
+                                'balance' => (float)$membresia->bono,
+                                'wallet_receives' => $wallet_id,
+                                'status' => 1
+                            ];
+                            $this->transaction->create($data_transactions);
+                            $this->wallet->update($wallet_id, ['balance' => (float)$membresia->bono]);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -97,8 +97,6 @@
           }
       </style>
       <script type="text/javascript">
-          let wallet = <?= ($wallet) ?>;
-
           const modalMetodoPago = (obj) => {
               localStorage.setItem('membresia', obj);
               $('#modalMetodoPago').modal('show');
