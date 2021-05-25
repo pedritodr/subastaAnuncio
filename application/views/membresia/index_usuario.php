@@ -18,8 +18,6 @@
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
-
-
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title"><?= translate('user_list_lang'); ?></h3>
@@ -37,7 +35,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($all_users as $item) { ?>
+                                <?php
+                                $dateActual = date('Y-m-d H:i:s');
+                                foreach ($all_users as $item) { ?>
                                     <tr>
                                         <td><?= $item->name; ?></td>
                                         <td><?= $item->email; ?></td>
@@ -53,18 +53,29 @@
                                                 <label class="label label-danger"> <?= $item->nombre; ?></label>
                                             <?php } ?>
 
-
                                         </td>
                                         <td>
                                             <a class="btn btn-info" style="cursor:pointer" onclick="usuario_perfil('<?= base64_encode(json_encode($item)) ?>')"><i class="fa fa-edit"></i> <?= translate("ver_perfil_lang"); ?></a>
+                                            <?php if (isset($item->node)) {
+                                                if ($item->node) {
+                                                    if ($item->node->is_culminated == 1) {
+                                                        echo ' <a style="cursor:pointer" onclick=handleRenovateMembership("' . base64_encode(json_encode($item)) . '") class="btn btn-success"> Renovar membresia</a>';
+                                                    } elseif (strtotime($dateActual) > strtotime($item->fecha_fin)) {
+                                                        echo ' <a style="cursor:pointer" onclick=handleRenovateMembership("' . base64_encode(json_encode($item)) . '") class="btn btn-success"> Renovar membresia</a>';
+                                                    }
+                                                } else {
+                                                    if (strtotime($dateActual) > strtotime($item->fecha_fin)) {
+                                                        echo ' <a style="cursor:pointer" onclick=handleRenovateMembership("' . base64_encode(json_encode($item)) . '") class="btn btn-success"> Renovar membresia</a>';
+                                                    }
+                                                }
+                                            } else {
+                                                if (strtotime($dateActual) > strtotime($item->fecha_fin)) {
+                                                    echo ' <a style="cursor:pointer" onclick=handleRenovateMembership("' . base64_encode(json_encode($item)) . '") class="btn btn-success"> Renovar membresia</a>';
+                                                }
+                                            } ?>
                                         </td>
                                     </tr>
-
-
-
-
                                 <?php } ?>
-
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -193,10 +204,73 @@
 
     });
 
-    function usuario_perfil(object) {
-        object = atob(object);
-        object = JSON.parse(object);
+    const encodeB64Utf8 = (str) => {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
 
+    const decodeB64Utf8 = (str) => {
+        return decodeURIComponent(escape(atob(str)));
+    }
+
+    const handleRenovateMembership = (object) => {
+        object = JSON.parse(decodeB64Utf8(object));
+        let idMembership = object.membresia_id;
+        let idUser = object.user_id;
+        let idMembershipUser = object.membre_user_id;
+        Swal.fire({
+            title: '¿ Estás seguro de realizar esta operación ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+                Swal.fire({
+                    title: 'Completando operación',
+                    text: 'Actualizando datos...',
+                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                    imageAlt: 'No realice acciones sobre la página',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    footer: '<a href>No realice acciones sobre la página</a>',
+                });
+                setTimeout(() => {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('membresia/renovate_membership') ?>",
+                        data: {
+                            idUser,
+                            idMembership,
+                            idMembershipUser
+                        },
+                        success: function(result) {
+                            result = JSON.parse(result);
+                            if (result.status == 200) {
+                                Swal.fire({
+                                    title: 'Info!',
+                                    text: result.msg,
+                                    padding: '2em'
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                swal({
+                                    title: '¡Error!',
+                                    text: result.msg,
+                                    padding: '2em'
+                                });
+                            }
+
+                        }
+                    });
+                }, 1500);
+            }
+        })
+    }
+
+    function usuario_perfil(object) {
+        object = JSON.parse(decodeB64Utf8(object));
         let photo = object.photo;
         if (photo) {
             let ok = photo.indexOf("uploads");
@@ -207,9 +281,7 @@
             }
         } else {
             $('#img_perfil_2').prop('src', '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>');
-
         }
-
         $('.widget-user-header').css('background', 'url(<?= site_url() ?>)  center');
         $('#nombre_perfil').text(object.name);
 
@@ -225,8 +297,6 @@
         } else {
             $('#ciudad_perfil').text("");
         }
-
         $('#modal_user_perfil').modal('show');
-
     }
 </script>

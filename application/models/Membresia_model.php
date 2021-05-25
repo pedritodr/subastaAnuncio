@@ -64,7 +64,15 @@ class Membresia_model extends CI_Model
         $query = $this->db->get();
         return $query->row();
     }
-
+    function get_membership_by_tree($id)
+    {
+        $this->db->select('membresia.nombre,membresia.descripcion,membresia_user.membre_user_id,membresia_user.qty_subastas,membresia.descuento,membresia_user.anuncios_publi,membresia_user.fecha_inicio,membresia_user.fecha_fin,membresia.precio,membresia.type,membresia.bono');
+        $this->db->from('membresia_user');
+        $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
+        $this->db->where('membresia_user.membre_user_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
 
     function get_all($conditions = [], $get_as_row = FALSE)
     {
@@ -96,12 +104,13 @@ class Membresia_model extends CI_Model
     }
     function get_all_membresias_users()
     {
+        $this->db->distinct('membresia_user.user_id');
         $this->db->select('*');
         $this->db->from('membresia_user');
         $this->db->join('membresia', 'membresia.membresia_id =membresia_user.membresia_id');
         $this->db->join('user', 'user.user_id =membresia_user.user_id');
         // $this->db->join('ciudad', 'ciudad.ciudad_id =user.ciudad_id');
-        $this->db->where('membresia_user.estado', 1);
+        // $this->db->where('membresia_user.estado', 1);
         $query = $this->db->get();
         return $query->result();
     }

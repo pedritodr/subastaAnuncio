@@ -488,13 +488,11 @@ class Cron  extends CI_Controller
                             'points' => $points,
                             'active' => 1
                         ];
-                    } else {
-                        $points = $points - $totalPuntos;
                         $data_node = [
                             'points_right' => $points_right,
                             'points_left' => $points_left,
                             'charged' => $charged,
-                            'points' => $points,
+                            'points' => $totalPuntos,
                             'active' => 1,
                             'is_culminated' => 1
                         ];

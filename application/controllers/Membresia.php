@@ -31,8 +31,11 @@ class Membresia extends CI_Controller
     }
     public function asignar_membresia()
     {
-        $user_id = $this->input->post('id_usuario');
         $this->load->model("User_model", "user");
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Tree_node_model', 'tree_node');
+        $this->load->model('Transaction_model', 'transaction');
+        $user_id = $this->input->post('id_usuario');
         $cliente = $this->user->get_by_id($user_id);
         $membresia = $this->input->post('idmembresia');
         $object_membresia = $this->membresia->get_by_id($membresia);
@@ -43,17 +46,13 @@ class Membresia extends CI_Controller
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
         if ($cliente->parent != 0) {
-            $this->load->model('Wallet_model', 'wallet');
-            $this->load->model('Transaction_model', 'transaction');
             $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
-
             $amount = (float)$object_membresia->precio * 0.20;
             $data_transactions = [
                 'date_create' => $fecha,
-                'amount' => number_format($amount, 2),
+                'amount' => $amount,
                 'wallet_send' => 0,
                 'type' => 3,
-                'status' => 1
             ];
             $wallet_id = 0;
             $balance = 0;
@@ -61,7 +60,7 @@ class Membresia extends CI_Controller
                 $wallet_id = $wallet_parent->wallet_id;
                 $balance = (float)$wallet_parent->balance + $amount;
                 $data_transactions['balance_previous'] = $wallet_parent->balance;
-                $data_transactions['balance'] = number_format($balance, 2);
+                $data_transactions['balance'] = $balance;
                 $data_transactions['wallet_receives'] = $wallet_id;
             } else {
                 $data_wallet = [
@@ -71,9 +70,9 @@ class Membresia extends CI_Controller
                 ];
                 $wallet_id = $this->wallet->create($data_wallet);
                 $data_transactions['balance_previous'] = 0;
-                $data_transactions['balance'] = number_format($amount, 2);
+                $data_transactions['balance'] = $amount;
                 $data_transactions['wallet_receives'] = $wallet_id;
-                $balance = number_format($amount, 2);
+                $balance = $amount;
             }
             $this->transaction->create($data_transactions);
             $this->wallet->update($wallet_id, ['balance' => $balance]);
@@ -91,25 +90,53 @@ class Membresia extends CI_Controller
         ];
         $valor = $this->membresia->create_membresia_user($data);
         if ($valor) {
-            $this->load->model('Tree_node_model', 'tree_node');
             if ($cliente->parent == 0) {
                 $data_node = [
                     'membre_user_id' => $valor,
                     'variable_config' => 0,
                     'is_active' => 1,
                     'is_delete' => 0,
-                    'points' => 0,
+                    'points_left' => 0,
+                    'points_right' => 0,
                     'date_create' => $fecha,
                     'date_active' => $fecha,
                     'parent' => 0,
                     'position' => 0,
                     'user_id' => $user_id,
-                    'is_culminated' => 0
+                    'is_culminated' => 0,
+                    'points' => 0,
+                    'charged' => 0,
+                    'active' => 1
                 ];
                 $this->tree_node->create($data_node);
             } else {
-                $node_parent = $this->tree_node->get_node_by_user_id_and_parent($cliente->user_id, $cliente->parent);
+                $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
                 if ($node_parent) {
+                    $parent = $node_parent->parent;
+                    $points = round($object_membresia->precio * 0.7);
+                    do {
+                        if ($parent == 0) {
+                            $continue = false;
+                        } else {
+                            $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
+                            $parent = $nodeTemp->parent;
+                            if ($nodeTemp->position == 0) {
+                                $pointsRight = (float)$nodeTemp->points_right + $points;
+                                $data_node = [
+                                    'points_right' => $pointsRight
+                                ];
+                                $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                            } else {
+                                $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                $data_node = [
+                                    'points_left' => $pointsLeft
+                                ];
+                                $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                            }
+                            $continue = true;
+                        }
+                    } while ($continue);
+
                     $data_node = [
                         'membre_user_id' => $valor,
                         'is_active' => 1,
@@ -122,36 +149,25 @@ class Membresia extends CI_Controller
                         'variable_config' => 0,
                         'is_active' => 1,
                         'is_delete' => 0,
-                        'points' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
                         'date_create' => $fecha,
                         'date_active' => $fecha,
                         'parent' => 0,
                         'position' => 0,
                         'user_id' => $user_id,
-                        'is_culminated' => 0
+                        'is_culminated' => 0,
+                        'points' => 0,
+                        'charged' => 0,
+                        'active' => 1
                     ];
                     $this->tree_node->create($data_node);
                 }
             }
-            $this->load->model("Correo_model", "correo");
-            $asunto = "Membresia adquirida";
-            $motivo = 'Membresia adquirida Subasta anuncios';
-            $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-            $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
-            $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
-            $mensaje .= "" . $object_membresia->descripcion . "<br>";
-            $mensaje .= "Tu usuario " . $cliente->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
-            $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
-            $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
-            $mensaje .= "Saludos,<br>";
-            $mensaje .= "El equipo de SUBASTANUNCIOS";
-            $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
         }
-        //die(var_dump($valor));
+
         $this->response->set_message("Membresia asignada correctamente.", ResponseMessage::SUCCESS);
         redirect("user/detalles/" . $user_id);
-        // $this->load_view_admin_g("user/cliente");
-
     }
     public function index_usuarios()
     {
@@ -161,15 +177,15 @@ class Membresia extends CI_Controller
             redirect('login');
         }
         $this->load->model('Pais_model', 'pais');
+        $this->load->model('Tree_node_model', 'tree_node');
         $all_users = $this->membresia->get_all_membresias_users();
         foreach ($all_users as $item) {
             $item->ciudad = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
+            $item->node = $this->tree_node->get_node_renovate_by_user_id($item->user_id);
         }
-
         $data['all_users'] = $all_users;
         $this->load_view_admin_g("membresia/index_usuario", $data);
     }
-
 
     public function add_index()
     {
@@ -180,7 +196,6 @@ class Membresia extends CI_Controller
 
         $this->load_view_admin_g('membresia/add');
     }
-
 
     public function add()
     {
@@ -228,7 +243,6 @@ class Membresia extends CI_Controller
         }
     }
 
-
     function update_index($membresia_id = 0)
     {
         if (!in_array($this->session->userdata('role_id'), [1, 2])) {
@@ -245,8 +259,6 @@ class Membresia extends CI_Controller
             show_404();
         }
     }
-
-
 
     public function update()
     {
@@ -308,5 +320,113 @@ class Membresia extends CI_Controller
         } else {
             show_404();
         }
+    }
+
+    public function renovate_membership()
+    {
+        $this->load->model("User_model", "user");
+        $this->load->model('Tree_node_model', 'tree_node');
+        $user_id = $this->input->post('idUser');
+        $cliente = $this->user->get_by_id($user_id);
+        $membresia = $this->input->post('idMembership');
+        $membresiaUser = $this->input->post('idMembershipUser');
+        $object_membresia = $this->membresia->get_by_id($membresia);
+        $fecha = date('Y-m-d H:i:s');
+        $duracion = '+' . $object_membresia->duracion . ' day';
+        $fecha_fin = strtotime($duracion, strtotime($fecha));
+        $fecha_fin = date('Y-m-d H:i:s', $fecha_fin);
+        $fecha_mes = strtotime('+30 day', strtotime($fecha));
+        $fecha_mes = date('Y-m-d', $fecha_mes);
+        $node = $this->tree_node->get_node_renovate_by_user_id($cliente->user_id);
+
+        if ($node) {
+            $dataMembership = [
+                'fecha_inicio' => $fecha,
+                'fecha_fin' => $fecha_fin,
+                'fecha_mes' => $fecha_mes,
+                'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+                'qty_subastas' => (int) $object_membresia->qty_subastas,
+                'estado' => 1,
+                'mes' => 1
+            ];
+            $this->membresia->update_membresia_user($node->membre_user_id, $dataMembership);
+            $dataNode = [
+                'is_active' => 1,
+                'active' => 1,
+                'date_active' => $fecha,
+                'points' => 0,
+                'is_culminated' => 0
+            ];
+            $this->tree_node->update($node->tree_node_id, $dataNode);
+        } else {
+            $dataMembership = [
+                'fecha_inicio' => $fecha,
+                'fecha_fin' => $fecha_fin,
+                'fecha_mes' => $fecha_mes,
+                'anuncios_publi' => (int) $object_membresia->cant_anuncio,
+                'qty_subastas' => (int) $object_membresia->qty_subastas,
+                'estado' => 1,
+                'mes' => 1
+            ];
+            $this->membresia->update_membresia_user($membresiaUser, $dataMembership);
+            if ($cliente->parent != 0) {
+                $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
+                $data_node = [
+                    'membre_user_id' => $membresiaUser,
+                    'variable_config' => 0,
+                    'is_active' => 1,
+                    'is_delete' => 0,
+                    'points_left' => 0,
+                    'points_right' => 0,
+                    'date_create' => date('Y-m-d H:i:s'),
+                    'date_active' => date('Y-m-d H:i:s'),
+                    'parent' => $nodeParent->tree_node_id,
+                    'user_id' => $user_id,
+                    'is_culminated' => 0,
+                    'points' => 0,
+                    'charged' => 0,
+                    'active' => 1
+                ];
+                $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                $this->tree_node->create($data_node);
+            } else {
+
+                $data_node = [
+                    'membre_user_id' => $membresiaUser,
+                    'variable_config' => 0,
+                    'is_active' => 1,
+                    'is_delete' => 0,
+                    'points_left' => 0,
+                    'points_right' => 0,
+                    'date_create' => date('Y-m-d H:i:s'),
+                    'date_active' => date('Y-m-d H:i:s'),
+                    'parent' => 0,
+                    'user_id' => $user_id,
+                    'is_culminated' => 0,
+                    'points' => 0,
+                    'charged' => 0,
+                    'position' => 0,
+                    'active' => 1
+                ];
+                $this->tree_node->create($data_node);
+            }
+        }
+
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Membresia adquirida";
+        $motivo = 'Membresia adquirida Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+        $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+        $mensaje .= "" . $object_membresia->descripcion . "<br>";
+        $mensaje .= "Tu usuario " . $cliente->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+
+        echo json_encode(['status' => 200, 'msg' => "Membresia renovada correctamente"]);
+        exit();
     }
 }

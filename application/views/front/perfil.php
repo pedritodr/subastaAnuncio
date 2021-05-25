@@ -857,6 +857,45 @@
                                                         <!-- container -->
                                                         <div class="container app-text-section">
                                                             <!-- row -->
+                                                            <?php
+                                                            $dateActual = date('Y-m-d H:i:s');
+                                                            if ($node) { ?>
+                                                                <?php if ($node->is_culminated == 1) { ?>
+                                                                    <div class="row" style="margin-bottom:20px">
+                                                                        <div class="col-md-6">
+                                                                            <p class="text-center">Para continuar con el programa tienes que renovar la mebresia</p>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <a href="#" onclick="handleRenovateMembership()" class="btn app-download-button">
+                                                                                <span class="app-store-btn">
+                                                                                    <i class="fa fa-repeat" aria-hidden="true"></i>
+                                                                                    <span>
+                                                                                        <span> Renovar</span>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php } elseif (strtotime($dateActual) > strtotime($user_membresia->fecha_fin)) { ?>
+                                                                    <div class="row" style="margin-bottom:20px">
+                                                                        <div class="col-md-6">
+                                                                            <p class="text-center">Para continuar con el programa tienes que renovar la mebresia</p>
+                                                                            <p class="text-center">Solo tienes 48 horas para renovar, para mayor información contactanos <span>info@subastanuncios.com</span></p>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <a href="#" onclick="handleRenovateMembership()" class="btn app-download-button">
+                                                                                <span class="app-store-btn">
+                                                                                    <i class="fa fa-repeat" aria-hidden="true"></i>
+                                                                                    <span>
+                                                                                        <span> Renovar</span>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            <?php } ?>
+
                                                             <div class="row">
                                                                 <div class="col-md-3">
                                                                     <div class="thumbnail" style="height: 160px;">
@@ -918,19 +957,19 @@
                                                                             $rankActualPorcentaje = 0;
                                                                             $rank = 0;
                                                                             if ($node) {
-                                                                                $rankActual = $node->points;
+                                                                                $rankActual = $node->charged;
                                                                                 if ($node->charged > 0  && $node->charged < 10000) {
                                                                                     $rank = 10000;
-                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
                                                                                 } else if ($node->charged > 10001 &&  $node->charged < 100000) {
                                                                                     $rank = 100000;
-                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
                                                                                 } else if ($node->charged > 100001 && $node->charged < 1000000) {
                                                                                     $rank = 1000000;
-                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
                                                                                 } else if ($node->charged > 1000001 && $node->charged < 10000000) {
                                                                                     $rank = 10000000;
-                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank) * 100;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
                                                                                 } else {
                                                                                     $rank = 0;
                                                                                 }
@@ -939,7 +978,7 @@
                                                                             <p style="margin-top:10px">
                                                                             <div class="progress">
                                                                                 <div class="progress-bar" role="progressbar" aria-valuenow="<?= $rankActualPorcentaje ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $rankActualPorcentaje ?>%;">
-                                                                                    <?= $rankActualPorcentaje . '%' ?>
+                                                                                    <?= $rankActualPorcentaje ?>%
                                                                                 </div>
                                                                             </div>
                                                                             <span class="text-left" style="color:#fff"><?= $rankActual . '|' . $rank ?></span>
@@ -1186,7 +1225,7 @@
                                 <div class="card">
 
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 table-responsive">
                                             <h5 class="text-left"> Transacciones</h5>
                                             <table id="example" class="table table-bordered table-striped">
                                                 <thead>
@@ -1397,8 +1436,45 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade price-quote" id="modalMetodoPago" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Métodos de pagos</h3>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id='subasta_id' name="subasta_id">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label> Tipos de pagos<span class="color-red">*</span></label>
+                                <select id="typePayment" class="form-control select2">
+                                    <option value="1">Tarjeta</option>
+                                    <option value="2">Billetera</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right">
+                        <button type="button" onclick="handleTypePayment()" class="btn btn-blue margin-bottom-10">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <script type="text/javascript">
+        const handleRenovateMembership = () => {
+            let membresiaUserActive = '<?= json_encode($all_membresia) ?>';
+            membresiaUserActive = JSON.parse(membresiaUserActive);
+            membresiaUserActive.renovate = true;
+            localStorage.setItem('membresia', encodeB64Utf8(JSON.stringify(membresiaUserActive)));
+            $('#modalMetodoPago').modal('show');
+        }
+
         const handleMondalSolicitud = () => {
             let bankData = JSON.parse('<?= $bank_data ? json_encode($bank_data) : null ?>');
             let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');

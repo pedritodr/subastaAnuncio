@@ -2009,7 +2009,14 @@ if ($pos === false) {
 
    const paymentBilletera = (object) => {
       object = JSON.parse(decodeB64Utf8(object));
-      wallet = JSON.parse(wallet);
+      if (object.renovate !== undefined) {
+         if (!object.renovate) {
+            wallet = JSON.parse(wallet);
+         }
+      } else {
+         wallet = JSON.parse(wallet);
+      }
+
       $('#nameMembresia').text('Membresia: ' + object.nombre);
       $('#priceMembresia').text('Precio: ' + parseFloat(object.precio).toFixed(2));
       $('#priceMembre').val(parseFloat(object.precio).toFixed(2));
@@ -2043,12 +2050,21 @@ if ($pos === false) {
                allowOutsideClick: false,
                footer: '<a href>No realice acciones sobre la página</a>',
             });
+            let obj = localStorage.getItem('membresia');
+            obj = JSON.parse(decodeB64Utf8(obj));
+            let renovate = false;
+            if (obj.renovate !== undefined) {
+               if (obj.renovate) {
+                  renovate = true;
+               }
+            }
             setTimeout(function() {
                $.ajax({
                   type: 'POST',
                   url: "<?= site_url('front/payment_membresia_wallet') ?>",
                   data: {
-                     membresiaId
+                     membresiaId,
+                     renovate
                   },
                   success: function(result) {
                      localStorage.removeItem('membresia');
