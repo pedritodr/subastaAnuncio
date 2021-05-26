@@ -100,7 +100,7 @@
                                     <div class="col-lg-2">
                                         <label>Bono</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i><strong><?= $membresia_object->bono; ?>$</strong></i></i></span>
+                                            <span class="input-group-addon"><i><strong>$</strong></i></i></span>
                                             <input required step="any" type="number" class="form-control input-sm" name="bono" placeholder="Bono" value="<?= $membresia_object->bono; ?>">
                                         </div>
                                     </div>
