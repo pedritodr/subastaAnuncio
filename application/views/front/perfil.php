@@ -1069,8 +1069,8 @@
                                                                             $porcentaje = 0;
                                                                             if ($all_membresia) {
                                                                                 if ($all_membresia->type == 0) {
-                                                                                    $totalAcum = ($all_membresia->precio * 2) + $all_membresia->precio;
-                                                                                    $totalPuntos = round((($all_membresia->precio * 2) + $all_membresia->precio) / 0.15);
+                                                                                    $totalAcum = ($all_membresia->precio * 2);
+                                                                                    $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
                                                                                     $porcentaje = 200;
                                                                                     if ($node) {
                                                                                         $objetive = round(($node->points * 100) / $totalPuntos, 2);
@@ -1080,8 +1080,8 @@
                                                                                         $totalPuntosGet = 0;
                                                                                     }
                                                                                 } else {
-                                                                                    $totalAcum = ($all_membresia->precio * 1.6) + $all_membresia->precio;
-                                                                                    $totalPuntos = round((($all_membresia->precio * 2) + $all_membresia->precio) / 0.15);
+                                                                                    $totalAcum = ($all_membresia->precio * 1.6);
+                                                                                    $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
                                                                                     $porcentaje = 160;
                                                                                     if ($node) {
                                                                                         $objetive = (($node->points * 100) / $totalPuntos);

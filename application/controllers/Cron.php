@@ -476,9 +476,9 @@ class Cron  extends CI_Controller
                 }
                 if ($valid) {
                     if ($membresia->type == 0) {
-                        $totalPuntos = round((($membresia->precio * 2) + $membresia->precio) / 0.15);
+                        $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                     } else {
-                        $totalPuntos = round((($membresia->precio * 1.6) + $membresia->precio) / 0.15);
+                        $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                     }
                     if ($points <= $totalPuntos) {
                         $data_node = [
@@ -497,7 +497,6 @@ class Cron  extends CI_Controller
                             'is_culminated' => 1
                         ];
                     }
-
                     $this->tree_node->update($node->tree_node_id, $data_node);
                     if ($wallet_cliente) {
                         $monto = (float)$wallet_cliente->balance + $pointToMoney;
