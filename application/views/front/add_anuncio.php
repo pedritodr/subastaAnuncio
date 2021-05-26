@@ -1745,7 +1745,6 @@
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
               var url = $('#url').val() !== undefined ? $('#url').val().trim() : '';
-
               if (titulo.val().trim() == "") {
                   Swal.fire({
                       icon: 'info',
@@ -2284,8 +2283,7 @@
                                               }
                                           } else if (!city && !cityAlt && result.types[0] ===
                                               'administrative_area_level_1') {
-                                              for (c = 0, lc = result.address_components.length; c <
-                                                  lc; c += 1) {
+                                              for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
                                                   component = result.address_components[c];
                                                   console.log(component)
                                                   if (component.types[0] ===
@@ -2303,10 +2301,8 @@
                                               break;
                                           }
                                       }
-                                      console.log(city);
-                                      if (city === 'Ecuador') {
+                                      if (country === 'Ecuador') {
                                           $("#city_main").val(city);
-
                                       } else {
                                           $("#city_main").val('');
                                           $('#pac-input').val('');
@@ -2315,7 +2311,6 @@
                                               title: 'Lo sentimos esta opción solo esta disponible para Ecuador',
                                               showConfirmButton: true
                                           });
-
                                       }
                                       // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
                                   }
