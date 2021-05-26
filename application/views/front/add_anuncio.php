@@ -1744,7 +1744,7 @@
               var precio = $('#precio');
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
-              var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
+              //    var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
               var seleccion_pais = $('#pais').val();
               if (titulo.val().trim() == "") {
                   Swal.fire({
