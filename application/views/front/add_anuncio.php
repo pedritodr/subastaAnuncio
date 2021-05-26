@@ -1745,6 +1745,7 @@
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
               var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
+              alert(url)
               var seleccion_pais = $('#pais').val().trim();
               if (titulo.val().trim() == "") {
                   Swal.fire({
