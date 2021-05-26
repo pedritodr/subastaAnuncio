@@ -768,8 +768,8 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="card">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab" aria-expanded="false">General</a></li>
-                                        <li role="presentation" class=""><a href="#actual" aria-controls="actual" role="tab" data-toggle="tab" aria-expanded="false">Actual</a></li>
+                                        <li role="presentation" class="active"><a href="#actual" aria-controls="actual" role="tab" data-toggle="tab" aria-expanded="false">Actual</a></li>
+                                        <li role="presentation" class=""><a href="#general" aria-controls="general" role="tab" data-toggle="tab" aria-expanded="false">General</a></li>
                                         <li role="presentation" class=""><a href="#equipo" aria-controls="equipo" role="tab" data-toggle="tab" aria-expanded="true" onclick="initDiagram();">Equipo</a></li>
                                     </ul>
                                     <!-- Tab panes -->
