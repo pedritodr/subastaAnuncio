@@ -2303,6 +2303,7 @@
                                               break;
                                           }
                                       }
+                                      console.log(city);
                                       if (city === 'Ecuador') {
                                           $("#city_main").val(city);
 
