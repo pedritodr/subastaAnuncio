@@ -71,7 +71,7 @@
                                         <label><?= translate("cant_anuncios_lang"); ?></label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i><strong>N°</strong></i></i></span>
-                                            <input step="any" type="number" class="form-control input-sm" name="cant_anuncio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->cant_anuncio; ?>">
+                                            <input type="number" class="form-control input-sm" name="cant_anuncio" required placeholder="<?= translate('precios_lang'); ?>" value="<?= $membresia_object->cant_anuncio; ?>">
                                         </div>
 
                                     </div>

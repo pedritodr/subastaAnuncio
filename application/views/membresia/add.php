@@ -55,7 +55,7 @@
                                         <div class="input-group">
 
                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                            <input required step="any" type="number" class="form-control input-sm" name="precio" placeholder="<?= translate('precios_lang'); ?>">
+                                            <input required type="number" class="form-control input-sm" name="precio" placeholder="<?= translate('precios_lang'); ?>">
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
