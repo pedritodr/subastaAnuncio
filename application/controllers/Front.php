@@ -2559,8 +2559,6 @@ class Front extends CI_Controller
             $data['balance'] = 0;
         }
         $data['transacciones'] = $transacciones;
-        var_dump($bank_data);
-        die();
         $data['bank_data'] = $bank_data;
         $data['node'] = $node;
         $this->load_view_front('front/perfil', $data);
