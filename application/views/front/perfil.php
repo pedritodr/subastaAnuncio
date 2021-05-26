@@ -1078,8 +1078,13 @@
                                                                                     $porcentaje = 200;
                                                                                     if ($node) {
                                                                                         $totalAcum = $totalAcum - $node->points_ads;
-                                                                                        $objetive = round(($node->points * 100) / $totalPuntos, 2);
-                                                                                        $totalPuntosGet = $node->points * 0.15;
+                                                                                        $pointsAds = $node->points_ads;
+                                                                                        $qtyAds = $pointsAds / 20;
+                                                                                        $qtyPoinstAds =  $qtyAds * 20;
+                                                                                        $qtyPoinstToAmount =  $qtyAds * 133.333333;
+                                                                                        $pointsTotal = ($node->points - $qtyPoinstAds) + $qtyPoinstToAmount;
+                                                                                        $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
+                                                                                        $totalPuntosGet = $pointsTotal * 0.15;
                                                                                     } else {
                                                                                         $objetive = 0;
                                                                                         $totalPuntosGet = 0;
@@ -1090,8 +1095,13 @@
                                                                                     $porcentaje = 160;
                                                                                     if ($node) {
                                                                                         $totalAcum = $totalAcum - $node->points_ads;
-                                                                                        $objetive = (($node->points * 100) / $totalPuntos);
-                                                                                        $totalPuntosGet = $node->points  * 0.15;
+                                                                                        $pointsAds = $node->points_ads;
+                                                                                        $qtyAds = $pointsAds / 20;
+                                                                                        $qtyPoinstAds =  $qtyAds * 20;
+                                                                                        $qtyPoinstToAmount =  $qtyAds * 133.333333;
+                                                                                        $pointsTotal = ($node->points - $qtyPoinstAds) + $qtyPoinstToAmount;
+                                                                                        $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
+                                                                                        $totalPuntosGet = $pointsTotal * 0.15;
                                                                                     } else {
                                                                                         $objetive = 0;
                                                                                         $totalPuntosGet = 0;
