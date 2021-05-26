@@ -429,4 +429,80 @@ class Membresia extends CI_Controller
         echo json_encode(['status' => 200, 'msg' => "Membresia renovada correctamente"]);
         exit();
     }
+
+    public function createArbolMembership()
+    {
+        $this->load->model('Tree_node_model', 'tree_node');
+        $all_users = $this->membresia->get_all_membresias_users();
+        $fecha = date('Y-m-d H:i:s');
+        foreach ($all_users as $item) {
+            $node = $this->tree_node->get_node_renovate_by_user_id($item->user_id);
+            if ($node) {
+                if ($item->parent == 0) {
+                    $data_node = [
+                        'membre_user_id' => $item->membre_user_id,
+                        'variable_config' => 0,
+                        'is_active' => 1,
+                        'is_delete' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
+                        'date_create' => $fecha,
+                        'date_active' => $fecha,
+                        'parent' => 0,
+                        'position' => 0,
+                        'user_id' => $item->user_id,
+                        'is_culminated' => 0,
+                        'points' => 0,
+                        'charged' => 0,
+                        'active' => 1
+                    ];
+                    $this->tree_node->create($data_node);
+                } else {
+                    $node_parent = $this->tree_node->get_node_by_user($item->parent);
+                    if ($node_parent) {
+                        $data_node = [
+                            'membre_user_id' => $item->membre_user_id,
+                            'variable_config' => 0,
+                            'is_active' => 1,
+                            'is_delete' => 0,
+                            'points_left' => 0,
+                            'points_right' => 0,
+                            'date_create' => $fecha,
+                            'date_active' => $fecha,
+                            'parent' => $node_parent->tree_node_id,
+                            'position' => 0,
+                            'user_id' => $item->user_id,
+                            'is_culminated' => 0,
+                            'points' => 0,
+                            'charged' => 0,
+                            'active' => 1
+                        ];
+                        $this->tree_node->create($data_node);
+                    } else {
+                        $data_node = [
+                            'membre_user_id' => $item->membre_user_id,
+                            'variable_config' => 0,
+                            'is_active' => 1,
+                            'is_delete' => 0,
+                            'points_left' => 0,
+                            'points_right' => 0,
+                            'date_create' => $fecha,
+                            'date_active' => $fecha,
+                            'parent' => 0,
+                            'position' => 0,
+                            'user_id' => $item->user_id,
+                            'is_culminated' => 0,
+                            'points' => 0,
+                            'charged' => 0,
+                            'active' => 1
+                        ];
+                        $this->tree_node->create($data_node);
+                    }
+                }
+            }
+        }
+        $data['all_users'] = $all_users;
+        var_dump($data);
+        die();
+    }
 }
