@@ -1744,7 +1744,7 @@
               var precio = $('#precio');
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
-              var url = $('#url');
+              var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
               var seleccion_pais = $('#pais').val().trim();
               if (titulo.val().trim() == "") {
                   Swal.fire({
@@ -1855,7 +1855,7 @@
                   };
                   var resultCreateAds = await createAds(titulo.val().trim(), categoria.val(), subcategoria
                       .val(), precio.val().trim(), whatsapp.val().trim(), decripcion.val().trim(), JSON
-                      .stringify(photoMain), cityAds, latAds, lngAds, addressAds, url.val().trim())
+                      .stringify(photoMain), cityAds, latAds, lngAds, addressAds, url)
                   resultCreateAds = JSON.parse(resultCreateAds);
                   if (resultCreateAds.status == 404) {
                       $('#btn_add_anuncio').prop('disabled', false);
