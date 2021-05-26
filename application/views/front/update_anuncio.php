@@ -1817,7 +1817,7 @@
                   var whatsapp = $('#whatsapp');
                   var decripcion = $('#descripcion');
                   var seleccion_pais = $('#pais').val().trim();
-                  var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
+                  var url = $('#url').val() !== undefined ? $('#url').val().trim() : '';
                   if (titulo.val().trim() == "") {
                       Swal.fire({
                           icon: 'info',
