@@ -942,9 +942,9 @@
                                                                                 if ($node) {
                                                                                     $pointsAds = $node->points_ads;
                                                                                     $qtyAds = $pointsAds / 20;
-                                                                                    $qtyPoinstAds =  $qtyAds * 3;
-                                                                                    $pointsCharged = (float) number_format(($node->charged * 0.15), 2) - $qtyPoinstAds;
-                                                                                    echo '$ ' . number_format(($pointsCharged), 2);
+                                                                                    $qtyPoinstAds =  $qtyAds * 20;
+                                                                                    $pointsCharged = ($node->charged - $qtyPoinstAds) + $pointsAds;
+                                                                                    echo '$ ' . number_format(($pointsCharged * 0.15), 2);
                                                                                 } else {
                                                                                     echo '$ 0.00';
                                                                                 }
