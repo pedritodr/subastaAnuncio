@@ -375,6 +375,7 @@ class User extends CI_Controller
             'role_id' => 2,
             'status' => 0,
             'is_active' => 1,
+            'status' => 1,
             'surname' => $apellido,
             'cedula' => $nro_documento,
             'tipo_documento' => $tipo_documento,
