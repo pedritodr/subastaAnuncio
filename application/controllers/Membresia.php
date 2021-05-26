@@ -251,8 +251,6 @@ class Membresia extends CI_Controller
         }
 
         $membresia_object = $this->membresia->get_by_id($membresia_id);
-        var_dump($membresia_object);
-        die();
 
         if ($membresia_object) {
             $data['membresia_object'] = $membresia_object;
