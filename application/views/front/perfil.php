@@ -1084,7 +1084,7 @@
                                                                                     $totalPuntos = round((($all_membresia->precio * 2) + $all_membresia->precio) / 0.15);
                                                                                     $porcentaje = 160;
                                                                                     if ($node) {
-                                                                                        $objetive = (($node->points * 100) / $totalPuntos) * 100;
+                                                                                        $objetive = (($node->points * 100) / $totalPuntos);
                                                                                         $totalPuntosGet = $node->points  * 0.15;
                                                                                     } else {
                                                                                         $objetive = 0;
