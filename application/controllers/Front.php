@@ -1071,7 +1071,7 @@ class Front extends CI_Controller
             if ($userNode) {
                 $charged = (float)$userNode->charged + 20;
                 $points = (float)$userNode->points + 20;
-                $points_ads = (int)$userNode->points_ads + 20;
+                $points_ads = (float)$userNode->points_ads + 20;
                 $data_node = [
                     'points' => $points,
                     'charged' => $charged,

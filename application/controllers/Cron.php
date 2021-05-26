@@ -437,6 +437,7 @@ class Cron  extends CI_Controller
                 $points = 0;
                 $monto = 0;
                 $valid = true;
+
                 if ($node->active == 0) {
                     if ($node->points_left > 0 && $node->points_right > 0) {
                         if ($node->points_left > $node->points_right) {

@@ -940,7 +940,11 @@
                                                                             <p><i class="fa fa-money" aria-hidden="true"></i>
                                                                                 <?php
                                                                                 if ($node) {
-                                                                                    echo '$ ' . number_format(($node->charged * 0.15), 2);
+                                                                                    $pointsAds = $node->points_ads;
+                                                                                    $qtyAds = $pointsAds / 20;
+                                                                                    $qtyPoinstAds =  $qtyAds * 20;
+                                                                                    $pointsCharged = $node->charged - $qtyPoinstAds;
+                                                                                    echo '$ ' . number_format(($pointsCharged * 0.15), 2);
                                                                                 } else {
                                                                                     echo '$ 0.00';
                                                                                 }
