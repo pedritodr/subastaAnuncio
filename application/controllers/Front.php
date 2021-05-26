@@ -1069,11 +1069,13 @@ class Front extends CI_Controller
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
             if ($userNode) {
-                $charged = (float)$userNode->charged + 133;
-                $points = (float)$userNode->points + 133;
+                $charged = (float)$userNode->charged + 20;
+                $points = (float)$userNode->points + 20;
+                $points_ads = (int)$userNode->points_ads + 20;
                 $data_node = [
                     'points' => $points,
-                    'charged' => $charged
+                    'charged' => $charged,
+                    'points_ads' => $points_ads
                 ];
                 $this->tree_node->update($userNode->tree_node_id, $data_node);
             }
