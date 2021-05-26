@@ -1122,7 +1122,7 @@
                                                                             </div>
                                                                             </p>
                                                                             <br>
-                                                                            <h6 class="text-center"> <b><span style="color:#fff"> Progreso(<?= $totalPuntosGet / 10 ?>%) $ <?= $totalPuntosGet ?> &nbsp; &nbsp;&nbsp;&nbsp;Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</span></b></h6>
+                                                                            <h6 class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format($totalPuntosGet / 10, 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?> &nbsp; &nbsp;&nbsp;&nbsp;Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</span></b></h6>
                                                                         </div>
                                                                     </div>
                                                                 </div>
