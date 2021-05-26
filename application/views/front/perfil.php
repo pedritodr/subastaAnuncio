@@ -101,6 +101,10 @@
         -o-transition: border .2s ease-in-out;
         transition: border .2s ease-in-out;
     }
+
+    .progress-bar {
+        color: #343a47;
+    }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
 <!-- DataTables -->
