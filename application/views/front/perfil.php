@@ -774,7 +774,7 @@
                                     </ul>
                                     <!-- Tab panes -->
                                     <div class="tab-content">
-                                        <div role="tabpanel" class="tab-pane active" id="general">
+                                        <div role="tabpanel" class="tab-pane " id="general">
                                             <div class="app-download-section style-2">
                                                 <!-- app-download-section-wrapper -->
                                                 <div class="app-download-section-wrapper">
@@ -852,7 +852,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div role="tabpanel" class="tab-pane" id="actual">
+                                        <div role="tabpanel" class="tab-pane active" id="actual">
                                             <div class="app-download-section style-2">
                                                 <!-- app-download-section-wrapper -->
                                                 <div class="app-download-section-wrapper">
