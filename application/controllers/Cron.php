@@ -552,42 +552,40 @@ class Cron  extends CI_Controller
             $wallet_cliente = $this->wallet->get_wallet_by_user_id($node->user_id);
             $membresia = $this->membresia->get_by_user_id($node->user_id);
             if ($membresia) {
-                if ($membresia->type == 1) {
-                    if ($wallet_cliente) {
-                        $monto = (float)$wallet_cliente->balance + (float)$membresia->bono;
+                if ($wallet_cliente) {
+                    $monto = (float)$wallet_cliente->balance + (float)$membresia->bono;
+                    $data_transactions = [
+                        'date_create' => $fecha,
+                        'amount' =>  (float)$membresia->bono,
+                        'wallet_send' =>  0,
+                        'type' => 8,
+                        'balance_previous' => $wallet_cliente->balance,
+                        'balance' => $monto,
+                        'wallet_receives' => $wallet_cliente->wallet_id,
+                        'status' => 1
+                    ];
+                    $this->transaction->create($data_transactions);
+                    $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
+                } else {
+                    $data_wallet = [
+                        'user_id' => $node->user_id,
+                        'points' => 0,
+                        'balance' => 0
+                    ];
+                    $wallet_id = $this->wallet->create($data_wallet);
+                    if ($wallet_id > 0) {
                         $data_transactions = [
                             'date_create' => $fecha,
-                            'amount' =>  (float)$membresia->bono,
+                            'amount' => (float)$membresia->bono,
                             'wallet_send' =>  0,
-                            'type' => 8,
-                            'balance_previous' => $wallet_cliente->balance,
-                            'balance' => $monto,
-                            'wallet_receives' => $wallet_cliente->wallet_id,
+                            'type' => 7,
+                            'balance_previous' => 0,
+                            'balance' => (float)$membresia->bono,
+                            'wallet_receives' => $wallet_id,
                             'status' => 1
                         ];
                         $this->transaction->create($data_transactions);
-                        $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
-                    } else {
-                        $data_wallet = [
-                            'user_id' => $node->user_id,
-                            'points' => 0,
-                            'balance' => 0
-                        ];
-                        $wallet_id = $this->wallet->create($data_wallet);
-                        if ($wallet_id > 0) {
-                            $data_transactions = [
-                                'date_create' => $fecha,
-                                'amount' => (float)$membresia->bono,
-                                'wallet_send' =>  0,
-                                'type' => 7,
-                                'balance_previous' => 0,
-                                'balance' => (float)$membresia->bono,
-                                'wallet_receives' => $wallet_id,
-                                'status' => 1
-                            ];
-                            $this->transaction->create($data_transactions);
-                            $this->wallet->update($wallet_id, ['balance' => (float)$membresia->bono]);
-                        }
+                        $this->wallet->update($wallet_id, ['balance' => (float)$membresia->bono]);
                     }
                 }
             }
