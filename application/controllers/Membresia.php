@@ -356,7 +356,8 @@ class Membresia extends CI_Controller
                 'active' => 1,
                 'date_active' => $fecha,
                 'points' => 0,
-                'is_culminated' => 0
+                'is_culminated' => 0,
+                'points_ads' => 0
             ];
             $this->tree_node->update($node->tree_node_id, $dataNode);
         } else {
@@ -386,7 +387,8 @@ class Membresia extends CI_Controller
                     'is_culminated' => 0,
                     'points' => 0,
                     'charged' => 0,
-                    'active' => 1
+                    'active' => 1,
+                    'points_ads' => 0
                 ];
                 $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                 $this->tree_node->create($data_node);
@@ -407,7 +409,8 @@ class Membresia extends CI_Controller
                     'points' => 0,
                     'charged' => 0,
                     'position' => 0,
-                    'active' => 1
+                    'active' => 1,
+                    'points_ads' => 0
                 ];
                 $this->tree_node->create($data_node);
             }

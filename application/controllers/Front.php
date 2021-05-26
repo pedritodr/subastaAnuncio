@@ -4123,7 +4123,8 @@ class Front extends CI_Controller
                         'active' => 1,
                         'date_active' => $fecha,
                         'points' => 0,
-                        'is_culminated' => 0
+                        'is_culminated' => 0,
+                        'points_ads' => 0
                     ];
                     $this->tree_node->update($node->tree_node_id, $dataNode);
                     echo json_encode(['status' => 200, 'msg' => "Correcto"]);
