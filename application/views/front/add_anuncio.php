@@ -2285,7 +2285,6 @@
                                               'administrative_area_level_1') {
                                               for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
                                                   component = result.address_components[c];
-                                                  console.log(component)
                                                   if (component.types[0] ===
                                                       'administrative_area_level_1') {
                                                       cityAlt = component.long_name;

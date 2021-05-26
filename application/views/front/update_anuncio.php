@@ -1902,14 +1902,6 @@
                           title: 'No hay imagenes cargadas',
                           showConfirmButton: true
                       });
-                  } else if (seleccion_pais == "") {
-                      $('#pac-input').val("");
-                      initMap();
-                  } else if (seleccion_pais != "Ecuador") {
-                      $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                      $('#modal_error_ciudad').modal('show');
-                      initMap();
-                      $('#btn_update_anuncio').prop('disabled', false);
                   } else {
                       swal.fire({
                           title: '',
@@ -2393,7 +2385,17 @@
                                                   break;
                                               }
                                           }
-                                          $("#city_main").val(city);
+                                          if (country === 'Ecuador') {
+                                              $("#city_main").val(city);
+                                          } else {
+                                              $("#city_main").val('');
+                                              $('#pac-input').val('');
+                                              Swal.fire({
+                                                  icon: 'info',
+                                                  title: 'Lo sentimos esta opción solo esta disponible para Ecuador',
+                                                  showConfirmButton: true
+                                              });
+                                          }
                                           // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
                                       }
                                   }
