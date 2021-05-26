@@ -1816,8 +1816,6 @@
                   var precio = $('#precio');
                   var whatsapp = $('#whatsapp');
                   var decripcion = $('#descripcion');
-                  var seleccion_pais = $('#pais').val().trim();
-                  console.log(seleccion_pais);
                   var url = $('#url').val() !== undefined ? $('#url').val().trim() : '';
                   if (titulo.val().trim() == "") {
                       Swal.fire({
