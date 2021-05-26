@@ -1746,6 +1746,7 @@
               var decripcion = $('#descripcion');
               var url = $('#url').val() !== undefined ? $('#url').val().trim() : '';
               var seleccion_pais = $('#pais').val();
+              console.log(seleccion_pais);
               if (titulo.val().trim() == "") {
                   Swal.fire({
                       icon: 'info',
