@@ -399,16 +399,7 @@ class User extends CI_Controller
                 if ($response) {
                     $this->load->model('Tree_node_model', 'tree_node');
                     $userReferidor = $response->user_id;
-                    $node_parent = $this->tree_node->get_node_by_user_id($response->user_id);
-                    $node = null;
-                    if (count($node_parent) > 0) {
-                        for ($i = 0; $i < count($node_parent); $i++) {
-                            if ($node_parent[$i]->is_culminated == 0) {
-                                $node = $node_parent[$i];
-                                break;
-                            }
-                        }
-                    }
+                    $node = $this->tree_node->get_node_by_user($response->user_id);
                     $data_node = [
                         'membre_user_id' => 0,
                         'variable_config' => 0,

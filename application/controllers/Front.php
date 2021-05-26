@@ -3292,7 +3292,8 @@ class Front extends CI_Controller
                                 $data_node = [
                                     'membre_user_id' => $id,
                                     'is_active' => 1,
-                                    'date_active' => $fecha
+                                    'date_active' => $fecha,
+                                    'active' => 1
                                 ];
                                 $this->tree_node->update($node_parent->tree_node_id, $data_node);
                             } else {
@@ -3634,7 +3635,8 @@ class Front extends CI_Controller
                                 $data_node = [
                                     'membre_user_id' => $id,
                                     'is_active' => 1,
-                                    'date_active' => $fecha
+                                    'date_active' => $fecha,
+                                    'active' => 1
                                 ];
                                 $this->tree_node->update($node_parent->tree_node_id, $data_node);
                             } else {
@@ -4076,7 +4078,8 @@ class Front extends CI_Controller
                                 $data_node = [
                                     'membre_user_id' => $valor,
                                     'is_active' => 1,
-                                    'date_active' => $fecha
+                                    'date_active' => $fecha,
+                                    'active' => 1
                                 ];
                                 $this->tree_node->update($node_parent->tree_node_id, $data_node);
                             } else {
