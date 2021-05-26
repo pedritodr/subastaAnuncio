@@ -1497,7 +1497,6 @@
 
         const handleMondalSolicitud = () => {
             let bankData = '<?= json_encode($bank_data) ?>';
-            console.log(bankData)
             if (bankData !== '') {
                 bankData = JSON.parse(bankData);
             } else {
