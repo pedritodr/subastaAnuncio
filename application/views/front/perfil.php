@@ -1496,7 +1496,6 @@
         }
 
         const handleMondalSolicitud = () => {
-            console.log('<?= $bank_data ?>');
             let bankData = '<?= $bank_data ?>';
             if (bankData !== '') {
                 bankData = JSON.parse(bankData);
@@ -1681,6 +1680,9 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1000);
                             } else {
                                 Swal.close();
                                 swal({
