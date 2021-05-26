@@ -1738,7 +1738,6 @@
           });
 
           $("#btn_add_anuncio").click(async function() {
-              alert('hola');
               var titulo = $('#titulo');
               var categoria = $('#categoria');
               var subcategoria = $('#subcategoria');
@@ -1746,7 +1745,7 @@
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
               var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
-              var seleccion_pais = $('#pais').val().trim();
+              var seleccion_pais = $('#pais').val();
               if (titulo.val().trim() == "") {
                   Swal.fire({
                       icon: 'info',
