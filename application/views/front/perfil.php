@@ -1497,8 +1497,12 @@
 
         const handleMondalSolicitud = () => {
             console.log('<?= $bank_data ?>');
-            let bankData = JSON.parse('<?= $bank_data ? json_encode($bank_data) : null ?>');
-
+            let bankData = '<?= $bank_data ?>';
+            if (bankData !== '') {
+                bankData = JSON.parse(bankData);
+            } else {
+                bankData = null;
+            }
             let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
             if (!bankData) {
                 Swal.fire({
