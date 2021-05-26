@@ -1745,8 +1745,7 @@
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
               var url = $('#url').val() !== undefined ? $('#url').val().trim() : '';
-              var seleccion_pais = $('#pais').val();
-              console.log(seleccion_pais);
+
               if (titulo.val().trim() == "") {
                   Swal.fire({
                       icon: 'info',
@@ -1830,14 +1829,12 @@
                       title: 'No hay imagenes cargadas',
                       showConfirmButton: true
                   });
-              } else if (seleccion_pais == "") {
-                  $('#pac-input').val("");
-                  initMap();
-              } else if (seleccion_pais != "Ecuador") {
-                  $('#error_ubicacion').text("Lo sentimos solo estamos displonibes en Ecuador");
-                  $('#modal_error_ciudad').modal('show');
-                  initMap();
-                  $('#btn_add_anuncio').prop('disabled', false);
+              } else if ($('#pac-input').val().trim() == "") {
+                  Swal.fire({
+                      icon: 'info',
+                      title: 'La dirección es un campo obligatorio',
+                      showConfirmButton: true
+                  });
               } else {
                   swal.fire({
                       title: '',
@@ -2306,7 +2303,19 @@
                                               break;
                                           }
                                       }
-                                      $("#city_main").val(city);
+                                      if (city === 'Ecuador') {
+                                          $("#city_main").val(city);
+
+                                      } else {
+                                          $("#city_main").val('');
+                                          $('#pac-input').val('');
+                                          Swal.fire({
+                                              icon: 'info',
+                                              title: 'Lo sentimos esta opción solo esta disponible para Ecuador',
+                                              showConfirmButton: true
+                                          });
+
+                                      }
                                       // console.log("City: " + city + ", City2: " + cityAlt + ", Country: " + country + ", Country Code: " + countryCode);
                                   }
                               }
