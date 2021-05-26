@@ -1738,13 +1738,14 @@
           });
 
           $("#btn_add_anuncio").click(async function() {
+              console.log($('#url').val());
               var titulo = $('#titulo');
               var categoria = $('#categoria');
               var subcategoria = $('#subcategoria');
               var precio = $('#precio');
               var whatsapp = $('#whatsapp');
               var decripcion = $('#descripcion');
-              //    var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
+              var url = $('#url').val() !== '' ? $('#url').val().trim() : '';
               var seleccion_pais = $('#pais').val();
               if (titulo.val().trim() == "") {
                   Swal.fire({
