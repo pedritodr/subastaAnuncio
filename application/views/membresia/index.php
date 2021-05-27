@@ -45,7 +45,7 @@
                                         <td> <?= $item->nombre; ?></td>
                                         <td> <?= $item->descripcion; ?>
                                             <p><b>Bono: </b>$ <?= number_format($item->bono, 2) ?></p>
-                                            <?php if ($item->type == 0) { ?>
+                                            <?php if ($item->type == 1) { ?>
                                                 <label class="label label-primary">Emprendedor</label>
                                             <?php } else { ?>
                                                 <label class="label label-success">Inversionista</label>
