@@ -15,6 +15,9 @@
     .background-rotator .search-section {
         top: 265px;
     }
+    .section-padding-perfil {
+        padding: 50px 10px;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
@@ -22,6 +25,12 @@
     .ad-listing .content-area .btn-success {
         display: none;
     } */
+    .section-rigth-top {
+        margin-top: 30px;
+    }
+    .section-padding-perfil {
+        padding: 50px 10px;
+    }
     .ad-listing .content-area .category-title {
         color: #a0a0a0;
         font-size: 13px;
@@ -199,7 +208,7 @@
     }
     .app-text-section {
         padding-bottom: 104px;
-        padding-top: 0;
+        padding-top: 30px;
     }
     .colored-header .navigation .navbar .navbar-nav>li>a i.fa {
         margin-right: 5px;
