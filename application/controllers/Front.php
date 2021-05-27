@@ -2531,6 +2531,12 @@ class Front extends CI_Controller
         $wallet = $this->wallet->get_wallet_by_user_id($user_id);
         if ($wallet) {
             $transacciones = $this->transaction->get_all_transaccione_by_id($wallet->wallet_id);
+            if ($transacciones) {
+                foreach ($transacciones as $item) {
+                    $item->user_send = $this->wallet->get_wallet_by_id($item->wallet_send);
+                    $item->user_receives = $this->wallet->get_wallet_by_id($item->wallet_receives);
+                }
+            }
         } else {
             $transacciones = [];
         }
@@ -4162,7 +4168,46 @@ class Front extends CI_Controller
                 'balance_previous' => $wallet_send->balance,
                 'balance' => $balance,
                 'wallet_receives' => 0,
-                'status' => 1
+                'status' => 1,
+                'bitcoin' => 0
+            ];
+            $this->transaction->create($data_transactions);
+            $this->wallet->update($wallet_send->wallet_id, ['balance' => $balance]);
+            echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+            exit();
+        } else {
+            echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
+            exit();
+        }
+    }
+    public function request_transfer_bitboin()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $this->load->model('User_model', 'user');
+        $monto = $this->input->post('montoSolicitado');
+        $walletBitcoin = $this->input->post('walletBitcoin');
+        $emailWallet = $this->input->post('emailWallet');
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $user_id = $this->session->userdata('user_id');
+        $fecha = date('Y-m-d H:i:s');
+        $wallet_send = $this->wallet->get_wallet_by_user_id($user_id);
+        $this->user->update($user_id, ['email_wallet' => $emailWallet, 'wallet_bitcoin' => $walletBitcoin]);
+        if ($wallet_send) {
+            $balance = (float)$wallet_send->balance - $monto;
+            $data_transactions = [
+                'date_create' => $fecha,
+                'amount' => $monto,
+                'wallet_send' =>  $wallet_send->wallet_id,
+                'type' => 5,
+                'balance_previous' => $wallet_send->balance,
+                'balance' => $balance,
+                'wallet_receives' => 0,
+                'status' => 1,
+                'bitcoin' => 1
             ];
             $this->transaction->create($data_transactions);
             $this->wallet->update($wallet_send->wallet_id, ['balance' => $balance]);

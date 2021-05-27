@@ -49,18 +49,24 @@
                                             <p><b>Monto:</b> <?= number_format((float)$item->amount, 2); ?></p>
                                         </td>
                                         <td>
-                                            <?php if ($item->type_account == 1) { ?>
-                                                <p><b>Tipo de cuenta:</b> Ahorro</p>
-                                            <?php } else { ?>
-                                                <p><b>Tipo de cuenta:</b> Corriente</p>
-                                            <?php  } ?>
+                                            <?php if ($item->bitcoin == 0) { ?>
+                                                <?php if ($item->type_account == 1) { ?>
+                                                    <p><b>Tipo de cuenta:</b> Ahorro</p>
+                                                <?php } else { ?>
+                                                    <p><b>Tipo de cuenta:</b> Corriente</p>
+                                                <?php  } ?>
 
-                                            <p><b>Banco:</b> <?= $item->name_bank; ?></p>
-                                            <p><b>Nro de cuenta:</b> <?= $item->number_account; ?></p>
-                                            <p><b>Titular de la cuenta:</b> <?= $item->name_titular; ?></p>
-                                            <p><b>Nro de documento de identidad:</b> <?= $item->number_id; ?></p>
-                                            <p><b>Teléfono:</b> <?= $item->phone_bank; ?></p>
-                                            <p><b>email:</b> <?= $item->email_bank; ?></p>
+                                                <p><b>Banco:</b> <?= $item->name_bank; ?></p>
+                                                <p><b>Nro de cuenta:</b> <?= $item->number_account; ?></p>
+                                                <p><b>Titular de la cuenta:</b> <?= $item->name_titular; ?></p>
+                                                <p><b>Nro de documento de identidad:</b> <?= $item->number_id; ?></p>
+                                                <p><b>Teléfono:</b> <?= $item->phone_bank; ?></p>
+                                                <p><b>email:</b> <?= $item->email_bank; ?></p>
+                                            <?php } else { ?>
+                                                <p><b>email:</b> <?= $item->email_wallet; ?></p>
+                                                <p><b>Wallet bitcoin:</b> <?= $item->wallet_bitcoin; ?></p>
+                                            <?php } ?>
+
                                         </td>
                                         <td>
                                             <a style="cursor:pointer" onclick="handleTransaction('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>

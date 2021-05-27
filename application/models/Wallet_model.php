@@ -24,6 +24,16 @@ class Wallet_model extends CI_Model
         return $query->row();
     }
 
+    function get_wallet_by_id($id)
+    {
+        $this->db->select('*');
+        $this->db->from('wallet');
+        $this->db->join('user', 'user.user_id = wallet.user_id');
+        $this->db->where('wallet.wallet_id', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     function get_all($conditions = [], $get_as_row = FALSE, $order = false, $by = false, $cant = false, $active = false)
     {
         if ($order)

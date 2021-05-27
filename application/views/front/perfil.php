@@ -1165,14 +1165,19 @@
                                 <?php } ?>
                             </div>
                             <?php if ($wallet) { ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-12" style="margin-bottom:10px">
+                                <div class="col-lg-6 col-lg-offset-6 col-md-12" style="margin-bottom:10px">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
                                             <div class="text-center btn-wallet" onclick="handleModalTransferencia()"><img src="<?= base_url('assets/money-transfer.png') ?>" alt="">
                                                 <p class="text-center"> Transferir Saldo</p>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
+                                            <div class='text-center btn-wallet' onclick="handleMondalBitcoin()"><img src="<?= base_url('assets/bitcoin.png') ?>" alt="">
+                                                <p class="text-center"> Solicitar Retiro</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
                                             <div class='text-center btn-wallet' onclick="handleMondalSolicitud()"><img src="<?= base_url('assets/retirada.png') ?>" alt="">
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
@@ -1182,12 +1187,17 @@
                             <?php } else { ?>
                                 <div class="col-lg-4 col-lg-offset-4" style="margin-bottom:10px">
                                     <div class="row">
-                                        <div class="col-lg-6 ">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
                                             <div class="text-center btn-wallet-disabled"><img src="<?= base_url('assets/money-transfer.png') ?>" alt="">
                                                 <p class="text-center"> Transferir Saldo</p>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
+                                            <div class="text-center btn-wallet-disabled"><img src="<?= base_url('assets/bitcoin.png') ?>" alt="">
+                                                <p class="text-center"> Solicitar Retiro</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
                                             <div class='text-center btn-wallet-disabled'><img src="<?= base_url('assets/retirada.png') ?>" alt="">
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
@@ -1220,21 +1230,21 @@
                                                             <td><?= $trx->transaction_id; ?></td>
                                                             <td><?= $trx->date_create; ?></td>
                                                             <td><?php if ($trx->type == 1) { ?>
-                                                                    <p>Retiro</p>
+                                                                    <p>Retiro <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 2) { ?>
-                                                                    <p>Transferencia</p>
+                                                                    <p>Transferencia <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 3) { ?>
-                                                                    <p>Comisión de referido</p>
+                                                                    <p>Comisión de referido <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 4) { ?>
-                                                                    <p>Compra de membresia</p>
+                                                                    <p>Compra de membresia <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 5) { ?>
-                                                                    <p>Solicitud de transferencia de saldo</p>
+                                                                    <p>Solicitud de transferencia de saldo <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 6) { ?>
-                                                                    <p>Reintegro de la solicitud de transferencia</p>
+                                                                    <p>Reintegro de la solicitud de transferencia <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 7) { ?>
-                                                                    <p>Bono binario</p>
+                                                                    <p>Bono binario <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 8) { ?>
-                                                                    <p>Bono diario</p>
+                                                                    <p>Bono diario <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } ?>
                                                             </td>
                                                             <td>
@@ -1309,7 +1319,6 @@
                     </div>
                     <!-- Categories -->
                 </div>
-
                 <!-- Middle Content Area  End -->
             </div>
             <!-- Row End -->
@@ -1461,6 +1470,71 @@
         </div>
     </div>
 
+    <div class="modal fade price-quote" id="modalSolicitudBitcoin" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix"></div>
+                    <div class="row" style="margin-left: 20px;">
+                        <div class="col-lg-12">
+                            <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
+                            <div class="form-group">
+                                <label>Monto solicitado</label>
+                                <input class="form-control" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitadoBitcoin" />
+                            </div>
+                        </div>
+                        <?php if ($user_data->email_wallet || $user_data->wallet_bitcoin) { ?>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Wallet</label>
+                                    <input class="form-control" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
+                                <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $bank_data->email_wallet : 'Sin datos' ?></p>
+                                <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : 'Sin datos' ?></p>
+                            </div>
+                        <?php } else { ?>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" value="<?= $user_data->email_wallet ? $bank_data->email_wallet : '' ?>" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Wallet</label>
+                                    <input class="form-control" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" value="<?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : '' ?>" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
+                                <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $bank_data->email_wallet : 'Sin datos' ?></p>
+                                <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : 'Sin datos' ?></p>
+                            </div>
+                        <?php } ?>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
+                        <button type="buttom" onclick="handleSubmitBitcoin()" class="btn btn-success">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade price-quote" id="modalMetodoPago" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1489,8 +1563,75 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade price-quote" id="modalInfoTransaction" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Detalle de la transacción</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-lg-12" id="bodyInfoTransaction">
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <script type="text/javascript">
+        const handleDetailsTransaction = (obj) => {
+            obj = JSON.parse(decodeB64Utf8(obj));
+            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+            $('#bodyInfoTransaction').empty();
+            let stringInfo = '<p class="text-center"> <b>Nro de transacción: </b>' + obj.transaction_id + '</p>';
+            stringInfo += '<p class="text-center"> <b>Fecha de la transacción: </b>' + obj.date_create + '</p>';
+            if (obj.type == 1) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Retiro</p>';
+            } else if (obj.type == 2) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Transferencia</p>';
+            } else if (obj.type == 3) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Comisión de referido</p>';
+            } else if (obj.type == 4) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Compra de membresia</p>';
+            } else if (obj.type == 5) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Solicitud de transferencia de saldo</p>';
+            } else if (obj.type == 6) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Reintegro de la solicitud de transferencia </p>';
+            } else if (obj.type == 7) {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono binario</p>';
+            } else {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono diario</p>';
+            }
+            if (obj.wallet_receives == walletCliente.wallet_id) {
+                stringInfo += '<p class="text-center"><label style="color:green;font-weight:bold">Monto: + $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
+            } else {
+                stringInfo += '<p class="text-center"><label style="color:red;font-weight:bold">monto: - $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
+            }
+            stringInfo += '<hr>';
+            if (obj.user_receives) {
+                stringInfo += '<p class="text-center"><b>Recibe: </b>' + obj.user_receives.name + ' ' + obj.user_receives.surname + '</p>';
+                stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_receives.email + '</p>';
+            } else {
+                stringInfo += '<p class="text-center"><b>Recibe: </b>Administración de la plataforma</p>';
+            }
+            stringInfo += '<hr>';
+            if (obj.user_send) {
+                stringInfo += '<p class="text-center"><b>Envia: </b>' + obj.user_send.name + ' ' + obj.user_send.surname + '</p>';
+                stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_send.email + '</p>';
+            } else {
+                stringInfo += '<p class="text-center"><b>Envia: </b>Administración de la plataforma</p>';
+            }
+            $('#bodyInfoTransaction').html(stringInfo);
+
+            $('#modalInfoTransaction').modal('show');
+        }
+
         const handleRenovateMembership = () => {
             let membresiaUserActive = '<?= json_encode($all_membresia) ?>';
             membresiaUserActive = JSON.parse(membresiaUserActive);
@@ -1523,6 +1664,110 @@
                 })
             } else {
                 $('#modalSolicitud').modal('show');
+            }
+        }
+
+        const handleMondalBitcoin = () => {
+            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+            if (billeteraActual <= 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'Su saldo no es suficiente para realizar esta transacción',
+                    showConfirmButton: true,
+                })
+            } else {
+
+                $('#modalSolicitudBitcoin').modal('show');
+            }
+        }
+
+        const handleSubmitBitcoin = () => {
+            let walletBitcoin = $('#walletBitcoin').val().trim();
+            let emailWallet = $('#emailWallet').val().trim();
+            let montoSolicitado = $('#montoSolicitadoBitcoin').val().trim();
+            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+
+            if (montoSolicitado == '') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto es un campo requerido',
+                    showConfirmButton: true
+                })
+            } else if (montoSolicitado <= 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto no puede ser 0',
+                    showConfirmButton: true
+                })
+            } else if (billeteraActual < montoSolicitado) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El monto solicitado es mayor que el disponible en la billetera',
+                    showConfirmButton: true
+                })
+            } else if (walletBitcoin == '') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'La dirección de la wallet es obligatoria',
+                    showConfirmButton: true
+                })
+            } else if (emailWallet == '') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'El email de la wallet es obligatorio',
+                    showConfirmButton: true
+                })
+            } else {
+                Swal.fire({
+                    title: 'Completando operación',
+                    text: 'Procesando  solicitud de transferencia de saldo...',
+                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                    imageAlt: 'No realice acciones sobre la página',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    footer: '<a href>No realice acciones sobre la página</a>',
+                });
+                let data = {
+                    montoSolicitado,
+                    walletBitcoin,
+                    emailWallet
+                }
+                setTimeout(function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('front/request_transfer_bitboin') ?>",
+                        data: data,
+                        success: function(result) {
+                            Swal.close();
+                            result = JSON.parse(result);
+                            if (result.status == 200) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Solicitud de transferencia de saldo creada correctamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                Swal.close();
+                                swal({
+                                    title: '¡Error!',
+                                    text: result.msj,
+                                    padding: '2em'
+                                });
+                            }
+                        }
+                    });
+                }, 1500)
             }
         }
 
@@ -2350,7 +2595,11 @@
 
         });
 
-        $("#perfil").click(function() {
+        $("#perfil").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#listado_anuncio").hide();
             $('#listado_inversas').hide();
             $("#listado_payments").hide();
@@ -2366,8 +2615,11 @@
             $('#panel_beneficio').hide();
             $('#panel_wallet').hide();
         });
-        $("#ads").click(function() {
-
+        $("#ads").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#subs").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
@@ -2384,8 +2636,11 @@
             $('#panel_beneficio').hide();
             $('#panel_wallet').hide();
         });
-        $("#subs").click(function() {
-
+        $("#subs").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs_inversas").removeClass('active');
@@ -2401,8 +2656,11 @@
             $('#panel_beneficio').hide();
             $('#panel_wallet').hide();
         });
-        $("#subs_inversas").click(function() {
-
+        $("#subs_inversas").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
@@ -2418,8 +2676,11 @@
             $("#panel_perfil").hide();
             $('#panel_wallet').hide();
         });
-        $("#historial").click(function() {
-
+        $("#historial").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
@@ -2435,7 +2696,11 @@
             $("#listado_payments").show();
             $('#panel_wallet').hide();
         });
-        $("#beneficio").click(function() {
+        $("#beneficio").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
@@ -2451,7 +2716,11 @@
             $('#panel_beneficio').show();
             $('#panel_wallet').hide();
         });
-        $("#wallet").click(function() {
+        $("#wallet").click(function(event) {
+            event.preventDefault();
+            $('body,html').animate({
+                scrollTop: 0,
+            }, 500);
             $("#ads").removeClass('active');
             $("#perfil").removeClass('active');
             $("#subs").removeClass('active');
