@@ -121,7 +121,7 @@ class Membresia extends CI_Controller
                             $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                             $parent = $nodeTemp->parent;
                             if ($nodeTemp->position == 0) {
-                                $childremsRight = $this->tree->get_all_children($nodeTemp->tree_node_id, 0);
+                                $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                 if (count($childremsRight) > 0) {
                                     $pointsRight = (float)$nodeTemp->points_right + $points;
                                     $data_node = [
@@ -130,7 +130,7 @@ class Membresia extends CI_Controller
                                     $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                 }
                             } else {
-                                $childremsLeft = $this->tree->get_all_children($nodeTemp->tree_node_id, 1);
+                                $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                 if (count($childremsLeft) > 0) {
                                     $pointsLeft = (float)$nodeTemp->points_left + $points;
                                     $data_node = [

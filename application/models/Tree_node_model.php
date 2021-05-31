@@ -123,15 +123,12 @@ class Tree_node_model extends CI_Model
 
     function get_all_children($id, $position = 0)
     {
-        var_dump($id);
-        die();
         $this->db->select('tree_node.points_ads,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
         $this->db->where('tree_node.parent', $id);
         $this->db->where('tree_node.position', $position);
         $query = $this->db->get();
-
         return $query->result();
     }
 

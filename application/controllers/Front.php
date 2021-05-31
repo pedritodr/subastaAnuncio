@@ -1059,13 +1059,13 @@ class Front extends CI_Controller
         $id = false;
         if ($membresia) {
             $id =  $this->anuncio->create($data_ads);
-            /*    if ($id) {
+            if ($id) {
                 if ((int) $membresia->anuncios_publi > 0) {
                     $qty_anuncios = (int) $membresia->anuncios_publi - 1;
                     $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                     $this->anuncio->update($id, ['destacado' => 1]);
                 }
-            } */
+            }
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
             if ($userNode) {
@@ -1073,10 +1073,7 @@ class Front extends CI_Controller
                 $points = (float)$userNode->points + 20;
                 $points_ads = (float)$userNode->points_ads + 20;
                 if ($userNode->position == 0) {
-
-                    $childremsRight = $this->tree->get_all_children($userNode->tree_node_id, 0);
-                    var_dump($childremsRight);
-                    die();
+                    $childremsRight = $this->tree_node->get_all_children($userNode->tree_node_id, 0);
                     if (count($childremsRight) > 0) {
                         $pointsRight = (float)$userNode->points_right + $points;
                         $data_node = [
@@ -1095,7 +1092,7 @@ class Front extends CI_Controller
                         $this->tree_node->update($userNode->tree_node_id, $data);
                     }
                 } else {
-                    $childremsLeft = $this->tree->get_all_children($userNode->tree_node_id, 1);
+                    $childremsLeft = $this->tree_node->get_all_children($userNode->tree_node_id, 1);
                     if (count($childremsLeft) > 0) {
                         $pointsLeft = (float)$userNode->points_left + $points;
                         $data_node = [
@@ -1124,7 +1121,7 @@ class Front extends CI_Controller
                         $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                         $parent = $nodeTemp->parent;
                         if ($nodeTemp->position == 0) {
-                            $childremsRight = $this->tree->get_all_children($nodeTemp->tree_node_id, 0);
+                            $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                             if (count($childremsRight) > 0) {
                                 $pointsRight = (float)$nodeTemp->points_right + $poinsTree;
                                 $data_node = [
@@ -1133,7 +1130,7 @@ class Front extends CI_Controller
                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                             }
                         } else {
-                            $childremsLeft = $this->tree->get_all_children($nodeTemp->tree_node_id, 1);
+                            $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                             if (count($childremsLeft) > 0) {
                                 $pointsLeft = (float)$nodeTemp->points_left + $poinsTree;
                                 $data_node = [
@@ -3346,7 +3343,7 @@ class Front extends CI_Controller
                                         $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                                         $parent = $nodeTemp->parent;
                                         if ($nodeTemp->position == 0) {
-                                            $childremsRight = $this->tree->get_all_children($nodeTemp->tree_node_id, 0);
+                                            $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
                                                 $data_node = [
@@ -3355,7 +3352,7 @@ class Front extends CI_Controller
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
                                         } else {
-                                            $childremsLeft = $this->tree->get_all_children($nodeTemp->tree_node_id, 1);
+                                            $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
                                                 $data_node = [
@@ -3695,7 +3692,7 @@ class Front extends CI_Controller
                                         $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                                         $parent = $nodeTemp->parent;
                                         if ($nodeTemp->position == 0) {
-                                            $childremsRight = $this->tree->get_all_children($nodeTemp->tree_node_id, 0);
+                                            $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
                                                 $data_node = [
@@ -3704,7 +3701,7 @@ class Front extends CI_Controller
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
                                         } else {
-                                            $childremsLeft = $this->tree->get_all_children($nodeTemp->tree_node_id, 1);
+                                            $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
                                                 $data_node = [
@@ -4144,7 +4141,7 @@ class Front extends CI_Controller
                                         $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                                         $parent = $nodeTemp->parent;
                                         if ($nodeTemp->position == 0) {
-                                            $childremsRight = $this->tree->get_all_children($nodeTemp->tree_node_id, 0);
+                                            $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
                                                 $data_node = [
@@ -4153,7 +4150,7 @@ class Front extends CI_Controller
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
                                         } else {
-                                            $childremsLeft = $this->tree->get_all_children($nodeTemp->tree_node_id, 1);
+                                            $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
                                                 $data_node = [
