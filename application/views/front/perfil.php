@@ -184,11 +184,6 @@
                         <!-- lista de anuncios -->
                         <div id="listado_anuncio" class="row">
                             <!-- Sorting Filters -->
-                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                <ul class="pagination pagination-lg">
-                                    <?php echo $this->pagination->create_links(); ?>
-                                </ul>
-                            </div>
                             <!-- Sorting Filters End-->
                             <div class="clearfix"></div>
                             <!-- Pagination -->
@@ -218,7 +213,7 @@
                                                     <?php } ?>
                                                 </a>
                                                 <?php if ($item->destacado == 1) { ?>
-                                                    <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                                    <div class="ribbon popular"><?= translate("featured_lang") ?>asda</div>
                                                 <?php } ?>
                                             </div>
                                             <!--descripcion -->
