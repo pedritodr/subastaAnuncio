@@ -63,8 +63,8 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-tag"></i></span>
                                             <select required id="type" name="type" class="form-control select2 input-sm" data-placeholder="Seleccione una opción" style="width: 100%">
-                                                <option value="0">Emprendedor</option>
-                                                <option value="1">Inversionista</option>
+                                                <option value="1">Emprendedor</option>
+                                                <option value="2">Inversionista</option>
                                             </select>
                                         </div>
                                     </div>
