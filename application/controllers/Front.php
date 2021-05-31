@@ -2546,6 +2546,8 @@ class Front extends CI_Controller
         }
 
         $all_anuncios = $this->anuncio->get_all(['user_id' => $user_id, 'is_delete' => 0]);
+        var_dump($all_anuncios);
+        die();
         /*Obtiene el total de registros a paginar */
         $contador = count($all_anuncios);
 
