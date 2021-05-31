@@ -1059,15 +1059,17 @@ class Front extends CI_Controller
         $id = false;
         if ($membresia) {
             $id =  $this->anuncio->create($data_ads);
-            if ($id) {
+            /*    if ($id) {
                 if ((int) $membresia->anuncios_publi > 0) {
                     $qty_anuncios = (int) $membresia->anuncios_publi - 1;
                     $this->membresia->update_membresia_user($membresia->membre_user_id, ['anuncios_publi' => $qty_anuncios]);
                     $this->anuncio->update($id, ['destacado' => 1]);
                 }
-            }
+            } */
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
+            var_dump($userNode);
+            die();
             if ($userNode) {
                 $charged = (float)$userNode->charged + 20;
                 $points = (float)$userNode->points + 20;
