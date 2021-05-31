@@ -2544,7 +2544,8 @@
         });
 
         $(function() {
-            $('.quit-position').css('position:relative');
+            $('.quit-position').css('position: relative');
+            $('.quit-position').css('left: 0');
             $("#example").DataTable();
 
             let subastas_directas_perfil = <?= json_encode($mis_subastas_directas); ?>;
