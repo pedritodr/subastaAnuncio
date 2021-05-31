@@ -1086,15 +1086,11 @@ class Front extends CI_Controller
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
-                        var_dump($points);
-                        die();
                         $data = [
                             'points' => $points,
                             'charged' => $charged,
                             'points_ads' => $points_ads
                         ];
-                        var_dump($points);
-                        die();
                         $this->tree_node->update($userNode->tree_node_id, $data);
                     }
                 } else {
