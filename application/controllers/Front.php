@@ -1084,14 +1084,14 @@ class Front extends CI_Controller
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
-                        $data_node = [
+                        $data = [
                             'points' => $points,
                             'charged' => $charged,
                             'points_ads' => $points_ads
                         ];
-                        var_dump($data_node);
+                        var_dump($points);
                         die();
-                        $this->tree_node->update($userNode->tree_node_id, $data_node);
+                        $this->tree_node->update($userNode->tree_node_id, $data);
                     }
                 } else {
                     $childremsLeft = $this->tree->get_all_children($userNode->tree_node_id, 1);
