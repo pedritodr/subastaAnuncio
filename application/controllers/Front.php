@@ -1073,9 +1073,10 @@ class Front extends CI_Controller
                 $points = (float)$userNode->points + 20;
                 $points_ads = (float)$userNode->points_ads + 20;
                 if ($userNode->position == 0) {
-                    $childremsRight = $this->tree->get_all_children($userNode->tree_node_id, 0);
-                    var_dump($childremsRight);
+                    var_dump($userNode->tree_node_id);
                     die();
+                    $childremsRight = $this->tree->get_all_children($userNode->tree_node_id, 0);
+
                     if (count($childremsRight) > 0) {
                         $pointsRight = (float)$userNode->points_right + $points;
                         $data_node = [
