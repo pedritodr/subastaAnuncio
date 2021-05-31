@@ -1068,13 +1068,13 @@ class Front extends CI_Controller
             } */
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
-            var_dump($userNode);
-            die();
             if ($userNode) {
                 $charged = (float)$userNode->charged + 20;
                 $points = (float)$userNode->points + 20;
                 $points_ads = (float)$userNode->points_ads + 20;
                 if ($userNode->position == 0) {
+                    var_dump($userNode->position);
+                    die();
                     $childremsRight = $this->tree->get_all_children($userNode->tree_node_id, 0);
                     if (count($childremsRight) > 0) {
                         $pointsRight = (float)$userNode->points_right + $points;
