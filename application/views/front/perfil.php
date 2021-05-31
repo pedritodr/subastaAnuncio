@@ -191,7 +191,7 @@
                             <!-- mis anuncios -->
                             <div class="posts-masonry">
                                 <!-- primer anuncio -->
-                                <div class="row">
+                                <div class="row" id="bodyAdsUser">
                                     <?php $contador = 1;
                                     foreach ($all_anuncios as $item) { ?>
 
@@ -2614,6 +2614,7 @@
             $('#panel_wallet').hide();
         });
         $("#ads").click(function(event) {
+            $('#bodyAdsUser').css('position', 'relative !important');
             event.preventDefault();
             $('body,html').animate({
                 scrollTop: 0,
