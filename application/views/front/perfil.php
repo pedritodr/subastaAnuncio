@@ -183,13 +183,8 @@
                     <?php if ($all_anuncios) { ?>
                         <!-- lista de anuncios -->
                         <div id="listado_anuncio" class="row">
-                            <!-- Sorting Filters -->
-                            <!-- Sorting Filters End-->
-                            <div class="clearfix"></div>
-                            <!-- Pagination -->
-                            <br>
                             <!-- mis anuncios -->
-                            <div class="posts-masonry">
+                            <div class="posts-masonry-never">
                                 <!-- primer anuncio -->
                                 <div class="row" id="bodyAdsUser">
                                     <?php $contador = 1;
