@@ -189,85 +189,83 @@
                             <!-- Pagination -->
                             <br>
                             <!-- mis anuncios -->
-                            <div class="posts-masonry">
-                                <!-- primer anuncio -->
-                                <?php $contador = 1;
-                                foreach ($all_anuncios as $item) { ?>
-                                    <div>
-                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                            <div class="white category-grid-box-1 ">
-                                                <!-- foto -->
-                                                <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
-                                                        <?php if (strpos($item->photo, 'uploads') !== false) { ?>
-                                                            <?php if (file_exists($item->photo)) { ?>
-                                                                <img class="img-responsive" src="<?= base_url($item->photo) ?>" alt="">
-                                                            <?php } else { ?>
-                                                                <img class="img-responsive" src="<?= base_url('assets/sinImagen.jpg') ?>" alt="">
-                                                            <?php } ?>
-                                                        <?php } else { ?>
-                                                            <?php if (file_exists($item->photo)) { ?>
-                                                                <img class="img-responsive" src="<?= $item->photo ?>" alt="">
-                                                            <?php } else { ?>
-                                                                <img class="img-responsive" src="<?= base_url('assets/sinImagen.jpg') ?>" alt="">
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </a>
-                                                    <?php if ($item->destacado == 1) { ?>
-                                                        <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+
+                            <!-- primer anuncio -->
+                            <?php $contador = 1;
+                            foreach ($all_anuncios as $item) { ?>
+
+                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="white category-grid-box-1 ">
+                                        <!-- foto -->
+                                        <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
+                                                <?php if (strpos($item->photo, 'uploads') !== false) { ?>
+                                                    <?php if (file_exists($item->photo)) { ?>
+                                                        <img class="img-responsive" src="<?= base_url($item->photo) ?>" alt="">
+                                                    <?php } else { ?>
+                                                        <img class="img-responsive" src="<?= base_url('assets/sinImagen.jpg') ?>" alt="">
                                                     <?php } ?>
-                                                </div>
-                                                <!--descripcion -->
-                                                <div style="height:199px !important" class="short-description-1 ">
-                                                    <!-- subcategoria  -->
-                                                    <?php if (isset($item->subcate->nombre)) { ?>
-                                                        <div class="category-title"><?= $item->subcate->nombre; ?> </div>
+                                                <?php } else { ?>
+                                                    <?php if (file_exists($item->photo)) { ?>
+                                                        <img class="img-responsive" src="<?= $item->photo ?>" alt="">
+                                                    <?php } else { ?>
+                                                        <img class="img-responsive" src="<?= base_url('assets/sinImagen.jpg') ?>" alt="">
                                                     <?php } ?>
-                                                    <!-- descripcion -->
-                                                    <h6>
-                                                        <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
-                                                    </h6>
-                                                    <!-- Location -->
-                                                    <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
-                                                    <!-- Rating -->
-                                                    <div class="rating">
-                                                        <ul class="pull-left">
-                                                            <?php if ($item->is_active == 1) { ?>
-                                                                <span class="badge"> Publicado</span>
-                                                            <?php } else { ?>
-                                                                <span class="badge"> Desactivado</span>
-                                                            <?php } ?>
-                                                        </ul>
-                                                    </div>
-                                                    <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
-                                                </div>
-                                                <!-- Ad Meta Stats -->
-                                                <div class="ad-info-1">
-                                                    <ul class="pull-right">
-                                                        <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><i class="fa fa-pencil edit"></i></a> </li>
-                                                        <?php if ($item->is_active == 1) { ?>
-                                                            <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
-                                                        <?php } else { ?>
-                                                            <li>
-                                                                <a title="Activar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($item->destacado == 0) { ?>
-                                                            <li>
-                                                                <a title="Destacar anuncio" onclick="cargar_modal_destacar('<?= base64_encode(json_encode($item)) ?>');"><i class="fa fa-star delete"></i></a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <li>
-                                                            <a title='Eliminar anuncio' onclick="cargar_modal_eliminar_anuncio('<?= $item->anuncio_id ?>');"><i style="font-size: 20px;" class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                <?php } ?>
+                                            </a>
+                                            <?php if ($item->destacado == 1) { ?>
+                                                <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                            <?php } ?>
+                                        </div>
+                                        <!--descripcion -->
+                                        <div style="height:199px !important" class="short-description-1 ">
+                                            <!-- subcategoria  -->
+                                            <?php if (isset($item->subcate->nombre)) { ?>
+                                                <div class="category-title"><?= $item->subcate->nombre; ?> </div>
+                                            <?php } ?>
+                                            <!-- descripcion -->
+                                            <h6>
+                                                <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
+                                            </h6>
+                                            <!-- Location -->
+                                            <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
+                                            <!-- Rating -->
+                                            <div class="rating">
+                                                <ul class="pull-left">
+                                                    <?php if ($item->is_active == 1) { ?>
+                                                        <span class="badge"> Publicado</span>
+                                                    <?php } else { ?>
+                                                        <span class="badge"> Desactivado</span>
+                                                    <?php } ?>
+                                                </ul>
                                             </div>
+                                            <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
+                                        </div>
+                                        <!-- Ad Meta Stats -->
+                                        <div class="ad-info-1">
+                                            <ul class="pull-right">
+                                                <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><i class="fa fa-pencil edit"></i></a> </li>
+                                                <?php if ($item->is_active == 1) { ?>
+                                                    <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
+                                                <?php } else { ?>
+                                                    <li>
+                                                        <a title="Activar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','2');"><i class="fa fa-check delete"></i></a>
+                                                    </li>
+                                                <?php } ?>
+                                                <?php if ($item->destacado == 0) { ?>
+                                                    <li>
+                                                        <a title="Destacar anuncio" onclick="cargar_modal_destacar('<?= base64_encode(json_encode($item)) ?>');"><i class="fa fa-star delete"></i></a>
+                                                    </li>
+                                                <?php } ?>
+                                                <li>
+                                                    <a title='Eliminar anuncio' onclick="cargar_modal_eliminar_anuncio('<?= $item->anuncio_id ?>');"><i style="font-size: 20px;" class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
+                                </div>
+                            <?php } ?>
+                            <!--fin primer anuncio-->
 
-                                <?php } ?>
-                                <!--fin primer anuncio-->
-                            </div>
                         </div><?php } else { ?>
                         <div id="listado_anuncio" class="row">
                             <h4 class="text-center">No tiene anuncios publicados</h4>
