@@ -1074,6 +1074,8 @@ class Front extends CI_Controller
                 $points_ads = (float)$userNode->points_ads + 20;
                 if ($userNode->position == 0) {
                     $childremsRight = $this->tree->get_all_children($userNode->tree_node_id, 0);
+                    var_dump($childremsRight);
+                    die();
                     if (count($childremsRight) > 0) {
                         $pointsRight = (float)$userNode->points_right + $points;
                         $data_node = [
@@ -1084,6 +1086,8 @@ class Front extends CI_Controller
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
+                        var_dump($points);
+                        die();
                         $data = [
                             'points' => $points,
                             'charged' => $charged,
