@@ -1072,12 +1072,50 @@ class Front extends CI_Controller
                 $charged = (float)$userNode->charged + 20;
                 $points = (float)$userNode->points + 20;
                 $points_ads = (float)$userNode->points_ads + 20;
-                $data_node = [
-                    'points' => $points,
-                    'charged' => $charged,
-                    'points_ads' => $points_ads
-                ];
-                $this->tree_node->update($userNode->tree_node_id, $data_node);
+                if ($userNode->position == 0) {
+                    $pointsRight = (float)$userNode->points_right + $points;
+                    $data_node = [
+                        'points' => $points,
+                        'charged' => $charged,
+                        'points_ads' => $points_ads,
+                        'points_right' => $pointsRight
+                    ];
+                    $this->tree_node->update($userNode->tree_node_id, $data_node);
+                } else {
+                    $pointsLeft = (float)$userNode->points_left + $points;
+                    $data_node = [
+                        'points' => $points,
+                        'charged' => $charged,
+                        'points_ads' => $points_ads,
+                        'points_left' => $pointsLeft
+                    ];
+                    $this->tree_node->update($userNode->tree_node_id, $data_node);
+                }
+
+                $parent = $userNode->parent;
+                $poinsTree = 20;
+                do {
+                    if ($parent == 0) {
+                        $continue = false;
+                    } else {
+                        $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
+                        $parent = $nodeTemp->parent;
+                        if ($nodeTemp->position == 0) {
+                            $pointsRight = (float)$nodeTemp->points_right + $poinsTree;
+                            $data_node = [
+                                'points_right' => $pointsRight
+                            ];
+                            $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                        } else {
+                            $pointsLeft = (float)$nodeTemp->points_left + $poinsTree;
+                            $data_node = [
+                                'points_left' => $pointsLeft
+                            ];
+                            $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                        }
+                        $continue = true;
+                    }
+                } while ($continue);
             }
         } else {
             $id = $this->anuncio->create($data_ads);
