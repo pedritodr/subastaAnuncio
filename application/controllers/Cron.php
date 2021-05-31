@@ -476,7 +476,7 @@ class Cron  extends CI_Controller
                     }
                 }
                 if ($valid) {
-                    if ($membresia->type == 0) {
+                    if ($membresia->type == 1) {
                         $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                     } else {
                         $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
