@@ -190,7 +190,7 @@
                                     <?php $contador = 1;
                                     foreach ($all_anuncios as $item) { ?>
 
-                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                        <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">
                                             <div class="white category-grid-box-1 ">
                                                 <!-- foto -->
                                                 <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
