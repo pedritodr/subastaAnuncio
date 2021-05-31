@@ -952,7 +952,7 @@
                                                                         <?php
                                                                         $typeUser = '';
                                                                         if ($all_membresia) {
-                                                                            if ($all_membresia->type == 1 || $all_membresia->type == 0) {
+                                                                            if ($all_membresia->type == 1) {
                                                                                 $typeUser = 'Emprendedor';
                                                                             } else {
                                                                                 $typeUser = 'Inversionista';
@@ -1029,7 +1029,7 @@
                                                                         <?php
                                                                         $porcentaje = 0;
                                                                         if ($all_membresia) {
-                                                                            if ($all_membresia->type == 0 || $all_membresia->type == 1) {
+                                                                            if ($all_membresia->type == 1) {
                                                                                 $totalAcum = ($all_membresia->precio * 2);
                                                                                 $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
                                                                                 $porcentaje = 200;
