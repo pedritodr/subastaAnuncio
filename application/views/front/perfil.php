@@ -194,7 +194,7 @@
                                 <?php $contador = 1;
                                 foreach ($all_anuncios as $item) { ?>
 
-                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12" style="position: relative;left: 0px;">
                                         <div class="white category-grid-box-1 ">
                                             <!-- foto -->
                                             <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
@@ -213,7 +213,7 @@
                                                     <?php } ?>
                                                 </a>
                                                 <?php if ($item->destacado == 1) { ?>
-                                                    <div class="ribbon popular"><?= translate("featured_lang") ?>asda</div>
+                                                    <div class="ribbon popular"><?= translate("featured_lang") ?></div>
                                                 <?php } ?>
                                             </div>
                                             <!--descripcion -->
