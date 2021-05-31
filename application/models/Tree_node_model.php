@@ -129,6 +129,8 @@ class Tree_node_model extends CI_Model
         $this->db->where('tree_node.parent', $id);
         $this->db->where('tree_node.position', $position);
         $query = $this->db->get();
+        var_dump($query);
+        die();
         return $query->result();
     }
 
