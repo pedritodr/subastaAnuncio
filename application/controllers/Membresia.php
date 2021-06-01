@@ -119,6 +119,8 @@ class Membresia extends CI_Controller
                             $continue = false;
                         } else {
                             $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
+                            var_dump($nodeTemp);
+                            die();
                             $parent = $nodeTemp->parent;
                             if ($nodeTemp->position == 0) {
                                 $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
