@@ -323,7 +323,7 @@
           <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0jIY1DdGJ7yWZrPDmhCiupu_K2En_4HY&libraries=places" async defer></script>
           <script src="<?= base_url('assets_front/js/cropper.js') ?>"></script>
           <script type="text/javascript">
-              var peso_maximo = 4 * 1048576;
+              var peso_maximo = 20 * 1048576;
               var array_imagenes = [];
               var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
               var name_foto = '<?= $anuncio_object->photo ?>';

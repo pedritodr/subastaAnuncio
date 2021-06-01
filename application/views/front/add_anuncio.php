@@ -325,7 +325,7 @@
           var longitude = 0;
           var init_lat = -1.831239;
           var init_lng = -78.18340599999999;
-          var peso_maximo = 4 * 1048576;
+          var peso_maximo = 20 * 1048576;
           var array_imagenes = [];
           var imagen_default = '<?= base_url('assets/camera-png-transparent-background-8-original.png') ?>';
           window.addEventListener('DOMContentLoaded', function() {
