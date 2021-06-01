@@ -132,8 +132,7 @@
                               <div class="row">
                                   <br>
                                   <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                                      <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> Hasta 10 Imagenes para el anuncio
-                                              (tamaño recomendado 645x645)</label></p>
+                                      <p class="text-left"> <label style="color:#8c1822;"><span><i style="color:#8c1822;font-size:24px" class="fa fa-upload" aria-hidden="true"></i></span> Hasta 10 Imagenes para el anuncio</label></p>
 
                                       <div class="row" id="bodyCargaImagenes">
                                           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
