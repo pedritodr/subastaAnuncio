@@ -66,6 +66,7 @@
 
     .app-text-section h5 {
         color: #fff;
+        font-size: 14px;
         margin-bottom: 5px;
         opacity: 0.8;
         text-transform: none;
@@ -76,6 +77,7 @@
         margin-bottom: 5px;
         opacity: 0.8;
         text-transform: none;
+        font-size: 14px;
     }
 
     .app-text-section h6 {
@@ -94,9 +96,9 @@
         padding: 2px;
         margin-bottom: 20px;
         line-height: 1.42857143;
-        background-color: transparent;
-        border: 1px solid #fefdfc;
-        border-radius: 4px;
+        background-color: #212233;
+        border: 1px solid #212233;
+        border-radius: 15px;
         -webkit-transition: border .2s ease-in-out;
         -o-transition: border .2s ease-in-out;
         transition: border .2s ease-in-out;
@@ -104,6 +106,26 @@
 
     .progress-bar {
         color: #343a47;
+    }
+
+    .color-1 {
+        background-color: #00bcd4;
+        border-color: #00bcd4;
+    }
+
+    .color-2 {
+        background-color: #ff5970;
+        border-color: #ff5970;
+    }
+
+    .progress {
+        height: 15px;
+        margin-bottom: 10px;
+        overflow: hidden;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+        box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
     }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
@@ -137,7 +159,7 @@
             <!-- Row -->
             <div class="row">
                 <!-- Middle Content Area -->
-                <div class="col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-12 col-xs-12 section-rigth-top">
+                <div class="col-lg-10 col-lg-push-2 col-md-9 col-md-push-3 col-sm-12 col-xs-12 section-rigth-top">
                     <?= get_message_from_operation(); ?>
                     <?php if ($payments) { ?>
                         <!-- lista de anuncios -->
@@ -712,89 +734,10 @@
                         <div class="card">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#actual" aria-controls="actual" role="tab" data-toggle="tab" aria-expanded="false">Actual</a></li>
-                                <li role="presentation" class=""><a href="#general" aria-controls="general" role="tab" data-toggle="tab" aria-expanded="false">General</a></li>
                                 <li role="presentation" class=""><a href="#equipo" aria-controls="equipo" role="tab" data-toggle="tab" aria-expanded="true" onclick="initDiagram();">Equipo</a></li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane " id="general">
-                                    <div class="app-download-section style-2">
-                                        <!-- app-download-section-wrapper -->
-                                        <div class="app-download-section-wrapper">
-                                            <!-- app-download-section-container -->
-                                            <div class="app-download-section-container ">
-                                                <!-- container -->
-                                                <div class="app-text-section">
-                                                    <div class="row">
-                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                                            <h5 class="text-center">Patrocinador <spam><img src="<?= base_url('assets/transfer.png') ?>" alt="" style="width:10%"></spam>
-                                                            </h5>
-                                                            <?php if ($user_data->parent) { ?>
-                                                                <p class="text-center"><b>Nombre y apellidos: </b><?= $user_data->parent->name . ' ' . $user_data->parent->surname ?></p>
-                                                                <p class="text-center"><b>Email: </b> <?= $user_data->parent->email ?></p>
-                                                            <?php } else { ?>
-                                                                <h6 class="text-center">No tiene patrocinador</h6>
-                                                            <?php } ?>
-                                                            <div style="margin-top:20px;text-align:center">
-                                                                <h5 style="text-align: center;">Link Personal</h5>
-                                                                <p style="text-align:center;font-size:14px">Este vínculo puede ser utilizado para compartir a través
-                                                                    de los
-                                                                    canales socilaes y facilitar el proceso de afiliación de tus referidos.</p>
-                                                                <a href="#" onclick="copyToClipboard('<?= site_url('referrer/' . base64_encode($this->session->userdata('email'))); ?>')" class="btn app-download-button">
-                                                                    <span class="app-store-btn">
-                                                                        <i class="fa fa-link" aria-hidden="true"></i>
-                                                                        <span>
-                                                                            <span> Copiar link</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                                            <h5 class="text-center">Tipo de membresia <spam><img src="<?= base_url('assets/validation.png') ?>" alt="" style="width:10%"></spam>
-                                                            </h5>
-                                                            <?php if ($all_membresia) { ?>
-                                                                <br>
-                                                                <p class="text-center"><b><?= translate('membresia_act_lang') ?>:</b> <?= $all_membresia->nombre ?></p>
-
-                                                                <p class="text-center"><b>Subastas Disponibles:</b> <?= $user_membresia->qty_subastas; ?></p>
-
-                                                                <p class="text-center"><b>Anuncios Disponibles:</b> <?= $user_membresia->anuncios_publi;  ?></p>
-
-                                                                <p class="text-center"><b><?= translate('descripcion_lang') ?>:</b> </p>
-                                                                <div class="text-center"><?= $all_membresia->descripcion; ?></div>
-                                                            <?php } else { ?>
-                                                                <br>
-                                                                <h4 class="text-center">No tiene membresia</h4>
-                                                                <a href="<?= site_url('membresia') ?>" class="btn btn-block btn-theme">
-                                                                    <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                                    </span>
-                                                                    <font style="vertical-align: inherit;">
-                                                                        <font style="vertical-align: inherit;">
-                                                                            <?= translate('adquirir_membresia_btn_lang') ?>
-                                                                        </font>
-                                                                    </font>
-                                                                </a>
-                                                            <?php } ?>
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                                                            <h5 class="text-center">Vigencia de la membresia <spam><img src="<?= base_url('assets/approve.png') ?>" alt="" style="width:10%"></spam>
-                                                            </h5>
-                                                            <?php if ($all_membresia) { ?>
-                                                                <br>
-                                                                <p class="text-center"><strong><?= translate('date_compra_lang') ?>: </strong><?= $user_membresia->fecha_inicio ?></p>
-                                                                <p class="text-center"><strong><?= translate('fecha_vencimiento_lang') ?>: </strong> <?= $user_membresia->fecha_fin ?></p>
-                                                            <?php } else { ?>
-                                                                <br>
-                                                                <h4 class="text-center">No tiene membresia</h4>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div role="tabpanel" class="tab-pane active" id="actual">
                                     <div class="app-download-section style-2">
                                         <!-- app-download-section-wrapper -->
@@ -845,15 +788,27 @@
 
                                                     <div class="row">
                                                         <div class="col-lg-12 col-sm-12">
-                                                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                                                <div class="thumbnail" style="height: 160px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"><i class="fa fa-usd" aria-hidden="true"></i> Saldo</h5>
-                                                                        <p><i class="fa fa-usd" aria-hidden="true"></i>
-                                                                            <?php
-                                                                            if ($node) {
-                                                                                if ($node->active == 0) {
-                                                                                    if ($node->points_left > 0 && $node->points_right > 0) {
+                                                            <div class="col-lg-6">
+                                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                    <div class="thumbnail card-80">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-usd" aria-hidden="true" style="color:#36cacc"></i> Saldo</h5>
+                                                                            <p><i class="fa fa-usd" aria-hidden="true"></i>
+                                                                                <?php
+                                                                                if ($node) {
+                                                                                    if ($node->active == 0) {
+                                                                                        if ($node->points_left > 0 && $node->points_right > 0) {
+                                                                                            if ($node->points_left > $node->points_right) {
+                                                                                                $pointToMoney = $node->points_right * 0.15;
+                                                                                                echo number_format($pointToMoney, 2);
+                                                                                            } else {
+                                                                                                $pointToMoney = $node->points_left * 0.15;
+                                                                                                echo  number_format($pointToMoney, 2);
+                                                                                            }
+                                                                                        } else {
+                                                                                            echo ' 0.00';
+                                                                                        }
+                                                                                    } else {
                                                                                         if ($node->points_left > $node->points_right) {
                                                                                             $pointToMoney = $node->points_right * 0.15;
                                                                                             echo number_format($pointToMoney, 2);
@@ -861,224 +816,332 @@
                                                                                             $pointToMoney = $node->points_left * 0.15;
                                                                                             echo  number_format($pointToMoney, 2);
                                                                                         }
-                                                                                    } else {
-                                                                                        echo ' 0.00';
                                                                                     }
                                                                                 } else {
-                                                                                    if ($node->points_left > $node->points_right) {
-                                                                                        $pointToMoney = $node->points_right * 0.15;
-                                                                                        echo number_format($pointToMoney, 2);
-                                                                                    } else {
-                                                                                        $pointToMoney = $node->points_left * 0.15;
-                                                                                        echo  number_format($pointToMoney, 2);
-                                                                                    }
+                                                                                    echo ' 0.00';
                                                                                 }
-                                                                            } else {
-                                                                                echo ' 0.00';
+                                                                                ?>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6  col-sm-6">
+                                                                    <div class="thumbnail card-80">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"><i class="fa fa-money" aria-hidden="true" style="color:#36cacc"></i> Beneficio Total</h5>
+                                                                            <p><i class="fa fa-usd" aria-hidden="true"></i>
+                                                                                <?php
+                                                                                if ($node) {
+                                                                                    $pointsAds = $node->points_ads;
+                                                                                    $qtyAds = $pointsAds / 20;
+                                                                                    $qtyPoinstAds =  $qtyAds * 20;
+                                                                                    $pointsCharged = ($node->charged - $qtyPoinstAds) * 0.15;
+                                                                                    echo number_format(($pointsCharged + $pointsAds), 2);
+                                                                                } else {
+                                                                                    echo ' 0.00';
+                                                                                }
+                                                                                ?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                    <div class="thumbnail" style="height: 80px;">
+                                                                        <div class="caption">
+                                                                            <h5 style="text-align: left;">Enlace de referencia <span><button class="btn btn-outline btn-danger  margin-bottom-10" onclick="copyToClipboard('<?= site_url('referrer/' . base64_encode($this->session->userdata('email'))); ?>')" style="padding: 3px 3px;margin-left: 5px;" type="button"> <i class="fa fa-clipboard" aria-hidden="true"></i></button></span></h5>
+                                                                            <p style="text-align:left;font-size:12px"><span class="span-enlace"><?= site_url('referrer/' . base64_encode($this->session->userdata('email'))); ?></span> </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                                <div class="col-lg-12">
+                                                                    <div class="thumbnail card-180">
+                                                                        <div class=" caption">
+                                                                            <h5 class="text-left"><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> Puntos de carrera</h5>
+                                                                            <?php
+                                                                            $rankActual = 0;
+                                                                            $rankActualPorcentaje = 0;
+                                                                            $rank = 0;
+                                                                            if ($node) {
+                                                                                $rankActual = $node->charged;
+                                                                                if ($node->charged > 0  && $node->charged < 10000) {
+                                                                                    $rank = 10000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
+                                                                                } else if ($node->charged > 10001 &&  $node->charged < 100000) {
+                                                                                    $rank = 100000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
+                                                                                } else if ($node->charged > 100001 && $node->charged < 1000000) {
+                                                                                    $rank = 1000000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
+                                                                                } else if ($node->charged > 1000001 && $node->charged < 10000000) {
+                                                                                    $rank = 10000000;
+                                                                                    $rankActualPorcentaje =  (($rankActual * 100) / $rank);
+                                                                                } else {
+                                                                                    $rank = 0;
+                                                                                }
                                                                             }
                                                                             ?>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                                                <div class="thumbnail" style="height: 160px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"><i class="fa fa-money" aria-hidden="true"></i> Beneficio Total</h5>
-                                                                        <p><i class="fa fa-money" aria-hidden="true"></i>
-                                                                            <?php
-                                                                            if ($node) {
-                                                                                $pointsAds = $node->points_ads;
-                                                                                $qtyAds = $pointsAds / 20;
-                                                                                $qtyPoinstAds =  $qtyAds * 20;
-                                                                                $pointsCharged = ($node->charged - $qtyPoinstAds) * 0.15;
-                                                                                echo '$ ' . number_format(($pointsCharged + $pointsAds), 2);
-                                                                            } else {
-                                                                                echo '$ 0.00';
-                                                                            }
-                                                                            ?></p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                                                <div class="thumbnail" style="height: 160px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"><i class="fa fa-star" aria-hidden="true"></i> Puntos</h5>
-                                                                        <?php
-                                                                        $rankActual = 0;
-                                                                        $rankActualPorcentaje = 0;
-                                                                        $rank = 0;
-                                                                        if ($node) {
-                                                                            $rankActual = $node->charged;
-                                                                            if ($node->charged > 0  && $node->charged < 10000) {
-                                                                                $rank = 10000;
-                                                                                $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                            } else if ($node->charged > 10001 &&  $node->charged < 100000) {
-                                                                                $rank = 100000;
-                                                                                $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                            } else if ($node->charged > 100001 && $node->charged < 1000000) {
-                                                                                $rank = 1000000;
-                                                                                $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                            } else if ($node->charged > 1000001 && $node->charged < 10000000) {
-                                                                                $rank = 10000000;
-                                                                                $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                            } else {
-                                                                                $rank = 0;
-                                                                            }
-                                                                        }
-                                                                        ?>
-                                                                        <p style="margin-top:10px">
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar" aria-valuenow="<?= $rankActualPorcentaje ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $rankActualPorcentaje ?>%;">
-                                                                                <?= $rankActualPorcentaje ?>%
+                                                                            <p style="margin-top:10px">
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar color-1" role="progressbar" aria-valuenow="<?= $rankActualPorcentaje ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $rankActualPorcentaje ?>%;">
+                                                                                    <?= $rankActualPorcentaje ?>%
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <span class="text-left" style="color:#fff"><?= $rankActual . '|' . $rank ?></span>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-12 col-sm-6">
-                                                                <div class="thumbnail" style="height: 160px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"><i class="fa fa-shield" aria-hidden="true"></i> Rango</h5>
-                                                                        <?php
-                                                                        $typeUser = '';
-                                                                        if ($all_membresia) {
-                                                                            if ($all_membresia->type == 1) {
-                                                                                $typeUser = 'Emprendedor';
+                                                                            <span class="text-left" style="color:#fff;font-size:12px"><?= $rankActual . '|' . $rank ?></span>
+                                                                            </p>
+                                                                            <h5 class="text-left">RANGO</h5>
+                                                                            <?php
+                                                                            $typeUser = '';
+                                                                            if ($all_membresia) {
+                                                                                if ($all_membresia->type == 1) {
+                                                                                    $typeUser = 'Emprendedor';
+                                                                                } else {
+                                                                                    $typeUser = 'Inversionista';
+                                                                                }
                                                                             } else {
-                                                                                $typeUser = 'Inversionista';
+                                                                                $typeUser = 'Básico';
                                                                             }
-                                                                        } else {
-                                                                            $typeUser = 'Básico';
-                                                                        }
-                                                                        if ($rank == 10000) {
-                                                                            echo '  <p><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
-                                                                            echo '  <p class="text-center">' . $rankActual . '</p>';
-                                                                            echo '  <p class="text-center">Puntos de clasificación</p>';
-                                                                        } else if ($rank == 100000) {
-                                                                            echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
-                                                                            echo '  <p class="text-center">' . $rankActual . '</p>';
-                                                                            echo '  <p class="text-center">Puntos de clasificación</p>';
-                                                                        } else if ($rank == 1000000) {
-                                                                            echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
-                                                                            echo '  <p class="text-center">' . $rankActual . '</p>';
-                                                                            echo '  <p class="text-center">Puntos de clasificación</p>';
-                                                                        } else if ($rank == 10000000) {
-                                                                            echo '  <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
-                                                                            echo '  <p class="text-center">' . $rankActual . '</p>';
-                                                                            echo '  <p class="text-center">Puntos de clasificación</p>';
-                                                                        } else {
-                                                                            echo '  <p><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
-                                                                            echo '  <p class="text-center">' . $rankActual . '</p>';
-                                                                            echo '  <p class="text-center">Puntos de clasificación</p>';
-                                                                        }
-                                                                        ?>
+                                                                            if ($rank == 10000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
+                                                                            } else if ($rank == 100000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
+                                                                            } else if ($rank == 1000000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
+                                                                            } else if ($rank == 10000000) {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
+                                                                            } else {
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . ' </p>';
+                                                                                echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
+                                                                            }
+                                                                            ?>
+
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-sm-12">
-                                                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                                                <div class="thumbnail" style="height: 219px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"> Equipo izquierdo</h5>
-                                                                        <h2 class="text-center"><i class="fa fa-users" aria-hidden="true"></i><span style="font-size:16px"> <?= $team_left ?> usuarios en total</span></h2>
-                                                                        <h2 class="text-center"><i class="fa fa-star" aria-hidden="true"></i><span style="font-size:16px">
-                                                                                <?php
-                                                                                if ($node) {
-                                                                                    echo $node->points_left . ' Puntos';
-                                                                                } else {
-                                                                                    echo '0 Puntos';
-                                                                                }
-                                                                                ?>
-                                                                            </span></h2>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                                                <div class="thumbnail" style="height: 219px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"> Equipo derecho</h5>
-                                                                        <h2 class="text-center"><i class="fa fa-users" aria-hidden="true"></i><span style="font-size:16px"> <?= $team_right ?> usuarios en total</span></h2>
-                                                                        <h2 class="text-center"><i class="fa fa-star" aria-hidden="true"></i><span style="font-size:16px">
-                                                                                <?php
-                                                                                if ($node) {
-                                                                                    echo $node->points_right . ' Puntos';
-                                                                                } else {
-                                                                                    echo '0 Puntos';
-                                                                                }
-                                                                                ?></span></h2>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-12 col-sm-12">
-                                                                <div class="thumbnail" style="height: 219px;">
-                                                                    <div class="caption">
-                                                                        <h5 class="text-left"> Ciclo de plan</h5>
-                                                                        <br>
-                                                                        <?php
-                                                                        $porcentaje = 0;
-                                                                        if ($all_membresia) {
-                                                                            if ($all_membresia->type == 1) {
-                                                                                $totalAcum = ($all_membresia->precio * 2);
-                                                                                $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
-                                                                                $porcentaje = 200;
-                                                                                if ($node) {
-                                                                                    $totalAcum = $totalAcum - $node->points_ads;
-                                                                                    $pointsAds = $node->points_ads;
-                                                                                    $qtyAds = $pointsAds / 20;
-                                                                                    $qtyPoinstAds =  $qtyAds * 20;
-                                                                                    $qtyPoinstToAmount =  $qtyAds * 133.333333;
-                                                                                    $pointsTotal = ($node->points - $qtyPoinstAds) + $qtyPoinstToAmount;
-                                                                                    $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
-                                                                                    $totalPuntosGet = $pointsTotal * 0.15;
-                                                                                } else {
-                                                                                    $objetive = 0;
-                                                                                    $totalPuntosGet = 0;
-                                                                                }
-                                                                            } else {
-                                                                                $totalAcum = ($all_membresia->precio * 1.6);
-                                                                                $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
-                                                                                $porcentaje = 160;
-                                                                                if ($node) {
-                                                                                    $totalAcum = $totalAcum - $node->points_ads;
-                                                                                    $pointsAds = $node->points_ads;
-                                                                                    $qtyAds = $pointsAds / 20;
-                                                                                    $qtyPoinstAds =  $qtyAds * 20;
-                                                                                    $qtyPoinstToAmount =  $qtyAds * 133.333333;
-                                                                                    $pointsTotal = ($node->points - $qtyPoinstAds) + $qtyPoinstToAmount;
-                                                                                    $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
-                                                                                    $totalPuntosGet = $pointsTotal * 0.15;
-                                                                                } else {
-                                                                                    $objetive = 0;
-                                                                                    $totalPuntosGet = 0;
-                                                                                }
-                                                                            }
-                                                                        } else {
-                                                                            $totalPuntos = 0;
-                                                                            $objetive = 0;
-                                                                            $totalPuntosGet = 0;
-                                                                            $totalAcum = 0;
-                                                                        }
-                                                                        ?>
-                                                                        <p>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar" aria-valuenow="<?= $objetive ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $objetive ?>%;">
-                                                                                <?= number_format($objetive, 2) ?>%
+                                                            <div class="col-lg-12">
+                                                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                                                    <div class="thumbnail card-180">
+                                                                        <div class="caption">
+                                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                                <h5 class="text-center"> EQUIPO IZQUIERDO</h5>
+                                                                                <h2 class="text-center" style="font-size: 26px;"><i class="fa fa-user-o" aria-hidden="true" style="color:rgb(21 206 191)"></i><span style="font-size:16px"> <?= $team_left ?></span></h2>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                                <h5 class="text-center"> PUNTOS TOTALES</h5>
+                                                                                <h2 class="text-center" style="font-size: 26px;"><i class="fa fa-star-o" aria-hidden="true" style="color:rgb(219 166 68)"></i><span style="font-size:16px">
+                                                                                        <?php
+                                                                                        if ($node) {
+                                                                                            echo $node->total_points_left;
+                                                                                        } else {
+                                                                                            echo 0;
+                                                                                        } ?>
+                                                                                    </span></h2>
+                                                                            </div>
+                                                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                                <h2 class="text-center" style="font-size:26px">
+                                                                                    <?php
+                                                                                    if ($node) {
+                                                                                        echo $node->points_left;
+                                                                                    } else {
+                                                                                        echo '0 ';
+                                                                                    }
+                                                                                    ?>
+                                                                                </h2>
+                                                                                <p class="text-center" style="font-size:12px"> PUNTOS DIARIOS</p>
                                                                             </div>
                                                                         </div>
-                                                                        </p>
-                                                                        <br>
-                                                                        <h6 class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format($totalPuntosGet / 10, 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?></span></b></h6>
-                                                                        <h6 class="text-center"> <b>Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</b></h6>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                                                    <div class="thumbnail card-180">
+                                                                        <div class="caption">
+                                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                                <h5 class="text-center"> EQUIPO DERECHO</h5>
+                                                                                <h2 class="text-center" style="font-size: 26px;"><i class="fa fa-user-o" aria-hidden="true" style="color:rgb(21 206 191)"></i><span style="font-size:16px"> <?= $team_right ?></span></h2>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                                <h5 class="text-center"> PUNTOS TOTALES</h5>
+                                                                                <h2 class="text-center" style="font-size: 26px;"><i class="fa fa-star-o" aria-hidden="true" style="color:rgb(219 166 68)"></i><span style="font-size:16px">
+                                                                                        <?php
+                                                                                        if ($node) {
+                                                                                            echo $node->total_point_right;
+                                                                                        } else {
+                                                                                            echo 0;
+                                                                                        } ?>
+                                                                                    </span></h2>
+                                                                            </div>
+                                                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                                <h2 class="text-center" style="font-size:26px">
+                                                                                    <?php
+                                                                                    if ($node) {
+                                                                                        echo $node->points_right;
+                                                                                    } else {
+                                                                                        echo '0 ';
+                                                                                    }
+                                                                                    ?>
+                                                                                </h2>
+                                                                                <p class="text-center" style="font-size:12px"> PUNTOS DIARIOS</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                                                    <div class="thumbnail card-180">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-left"> Ciclo de plan</h5>
+                                                                            <br>
+                                                                            <?php
+                                                                            $porcentaje = 0;
+                                                                            if ($all_membresia) {
+                                                                                if ($all_membresia->type == 1) {
+                                                                                    $totalAcum = ($all_membresia->precio * 2);
+                                                                                    $totalPuntos = round((($all_membresia->precio * 2)) / 0.15);
+                                                                                    $porcentaje = 200;
+                                                                                    if ($node) {
+                                                                                        $pointsAds = $node->points_ads;
+                                                                                        $qtyAds = $pointsAds / 20;
+                                                                                        $poinsAds =  $qtyAds * 133.333333;
+                                                                                        $pointsTotal = $node->points + $poinsAds;
+                                                                                        if ($pointsTotal >= $totalPuntos) {
+                                                                                            $objetive = 100.00;
+                                                                                            $totalPuntosGet =  $totalPuntos;
+                                                                                        } else {
+                                                                                            $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
+                                                                                            $totalPuntosGet = $pointsTotal * 0.15;
+                                                                                        }
+                                                                                    } else {
+                                                                                        $objetive = 0;
+                                                                                        $totalPuntosGet = 0;
+                                                                                    }
+                                                                                } else {
+                                                                                    $totalAcum = ($all_membresia->precio * 1.6);
+                                                                                    $totalPuntos = round((($all_membresia->precio * 1.6)) / 0.15);
+                                                                                    $porcentaje = 160;
+                                                                                    if ($node) {
+                                                                                        $pointsAds = $node->points_ads;
+                                                                                        $qtyAds = $pointsAds / 20;
+                                                                                        $poinsAds =  $qtyAds * 133.333333;
+                                                                                        $pointsTotal = $node->points + $poinsAds;
+                                                                                        if ($pointsTotal >= $totalPuntos) {
+                                                                                            $objetive = 100.00;
+                                                                                            $totalPuntosGet =  $totalPuntos;
+                                                                                        } else {
+                                                                                            $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
+                                                                                            $totalPuntosGet = $pointsTotal  * 0.15;
+                                                                                        }
+                                                                                    } else {
+                                                                                        $objetive = 0;
+                                                                                        $totalPuntosGet = 0;
+                                                                                    }
+                                                                                }
+                                                                            } else {
+                                                                                $totalPuntos = 0;
+                                                                                $objetive = 0;
+                                                                                $totalPuntosGet = 0;
+                                                                                $totalAcum = 0;
+                                                                            }
+                                                                            ?>
+                                                                            <p>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar color-2" role="progressbar" aria-valuenow="<?= $objetive ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $objetive ?>%;">
+                                                                                    <?= number_format($objetive, 2) ?>%
+                                                                                </div>
+                                                                            </div>
+                                                                            </p>
+                                                                            <?= ($totalPuntosGet) ?>
+                                                                            <br>
+                                                                            <h6 class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format((($totalPuntosGet * $porcentaje) / $totalAcum), 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?></span></b></h6>
+                                                                            <h6 class="text-center"> <b>Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</b></h6>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="col-lg-4">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                    <div class="thumbnail">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-center">Patrocinador <spam><img src="<?= base_url('assets/transfer.png') ?>" alt="" style="width:10%"></spam>
+                                                                            </h5>
+                                                                            <?php if ($user_data->parent) { ?>
+                                                                                <p class="text-center"><b>Nombre y apellidos: </b><?= $user_data->parent->name . ' ' . $user_data->parent->surname ?></p>
+                                                                                <p class="text-center"><b>Email: </b> <?= $user_data->parent->email ?></p>
+                                                                            <?php } else { ?>
+                                                                                <h6 class="text-center">No tiene patrocinador</h6>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                    <div class="thumbnail">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-center">Vigencia de la membresia <spam><img src="<?= base_url('assets/approve.png') ?>" alt="" style="width:10%"></spam>
+                                                                            </h5>
+                                                                            <?php if ($all_membresia) { ?>
+                                                                                <br>
+                                                                                <p class="text-center"><strong><?= translate('date_compra_lang') ?>: </strong><?= $user_membresia->fecha_inicio ?></p>
+                                                                                <p class="text-center"><strong><?= translate('fecha_vencimiento_lang') ?>: </strong> <?= $user_membresia->fecha_fin ?></p>
+                                                                            <?php } else { ?>
+                                                                                <br>
+                                                                                <h4 class="text-center">No tiene membresia</h4>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                    <div class="thumbnail">
+                                                                        <div class="caption">
+                                                                            <h5 class="text-center">Tipo de membresia <spam><img src="<?= base_url('assets/validation.png') ?>" alt="" style="width:36.5px;height:36.5px"></spam>
+                                                                            </h5>
+                                                                            <?php if ($all_membresia) { ?>
+                                                                                <br>
+                                                                                <p class="text-center"><b><?= translate('membresia_act_lang') ?>:</b> <?= $all_membresia->nombre ?></p>
+
+                                                                                <p class="text-center"><b>Subastas Disponibles:</b> <?= $user_membresia->qty_subastas; ?></p>
+
+                                                                                <p class="text-center"><b>Anuncios Disponibles:</b> <?= $user_membresia->anuncios_publi;  ?></p>
+
+                                                                                <p class="text-center"><b><?= translate('descripcion_lang') ?>:</b> </p>
+                                                                                <div class="text-center"><?= $all_membresia->descripcion; ?></div>
+                                                                            <?php } else { ?>
+                                                                                <br>
+                                                                                <h4 class="text-center">No tiene membresia</h4>
+                                                                                <a href="<?= site_url('membresia') ?>" class="btn btn-block btn-theme">
+                                                                                    <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                                                                    </span>
+                                                                                    <font style="vertical-align: inherit;">
+                                                                                        <font style="vertical-align: inherit;">
+                                                                                            <?= translate('adquirir_membresia_btn_lang') ?>
+                                                                                        </font>
+                                                                                    </font>
+                                                                                </a>
+                                                                            <?php } ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+
+
+
 
                                                     <!-- /row -->
                                                 </div>
@@ -1264,7 +1327,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-lg-pull-9 col-md-3 col-md-pull-9 col-sm-12 col-xs-12 leftbar-stick blog-sidebar">
+                <div class="col-lg-2 col-lg-pull-10 col-md-3 col-md-pull-9 col-sm-12 col-xs-12 leftbar-stick blog-sidebar">
                     <!-- Sidebar Widgets -->
                     <div style="padding-top: 5%;" class="user-profile">
                         <div class="text-center">

@@ -18,6 +18,9 @@
     .section-padding-perfil {
         padding: 50px 10px;
     }
+    .span-enlace {
+        display: block;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
@@ -25,6 +28,9 @@
     .ad-listing .content-area .btn-success {
         display: none;
     } */
+    .span-enlace {
+        display: block;
+    }
     .section-rigth-top {
         margin-top: 30px;
     }
@@ -435,7 +441,13 @@
         clear: none;
     }
     .app-download-section .app-download-section-wrapper .app-download-section-container i {
-        display: none;
+        display: block;
+    }
+    .card-180 {
+        height: 210px;
+    }
+    .card-80 {
+        height: 105px;
     }
     .hero .content p:first-child {
         font-size: 30px;
@@ -539,6 +551,9 @@
 }
 
 @media screen and (max-width: 600px) {
+    .span-enlace {
+        display: none;
+    }
     .section-padding {
         padding: 70px 0;
     }

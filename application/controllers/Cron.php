@@ -445,13 +445,19 @@ class Cron  extends CI_Controller
                             $points_left = $node->points_left - $node->points_right;
                             $points_right = 0;
                             $charged = (float)$node->charged + $node->points_right;
-                            $points = (float)$node->points + $node->points_right;
+                            $pointsAds = $node->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
+                            $points = (float)$node->points + $poinsAds + $node->points_right;
                         } else {
                             $pointToMoney = $node->points_left * 0.15;
                             $points_right = $node->points_right - $node->points_left;
                             $points_left = 0;
+                            $pointsAds = $node->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
                             $charged = (float)$node->charged + $node->points_left;
-                            $points = (float)$node->points + $node->points_left;
+                            $points = (float)$node->points + $poinsAds + $node->points_left;
                         }
                     } else {
                         $valid = false;
@@ -462,14 +468,20 @@ class Cron  extends CI_Controller
                             $pointToMoney = $node->points_right * 0.15;
                             $points_left = $node->points_left - $node->points_right;
                             $points_right = 0;
+                            $pointsAds = $node->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
                             $charged = (float)$node->charged + $node->points_right;
-                            $points = (float)$node->points + $node->points_right;
+                            $points = (float)$node->points + $node->points_right + $poinsAds;
                         } else {
                             $pointToMoney = $node->points_left * 0.15;
                             $points_right = $node->points_right - $node->points_left;
                             $points_left = 0;
+                            $pointsAds = $node->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
                             $charged = (float)$node->charged + $node->points_left;
-                            $points = (float)$node->points + $node->points_left;
+                            $points = (float)$node->points + $node->points_left + $poinsAds;
                         }
                     } else {
                         $valid = false;

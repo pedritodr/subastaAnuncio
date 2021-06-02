@@ -1076,11 +1076,13 @@ class Front extends CI_Controller
                     $childremsRight = $this->tree_node->get_all_children($userNode->tree_node_id, 0);
                     if (count($childremsRight) > 0) {
                         $pointsRight = (float)$userNode->points_right + $points;
+                        $totalPointsRight = (float)$userNode->total_point_right + $points;
                         $data_node = [
                             'points' => $points,
                             'charged' => $charged,
                             'points_ads' => $points_ads,
-                            'points_right' => $pointsRight
+                            'points_right' => $pointsRight,
+                            'total_point_right' => $totalPointsRight
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
@@ -1095,11 +1097,13 @@ class Front extends CI_Controller
                     $childremsLeft = $this->tree_node->get_all_children($userNode->tree_node_id, 1);
                     if (count($childremsLeft) > 0) {
                         $pointsLeft = (float)$userNode->points_left + $points;
+                        $totalPointsLeft = (float)$userNode->total_points_left + $points;
                         $data_node = [
                             'points' => $points,
                             'charged' => $charged,
                             'points_ads' => $points_ads,
-                            'points_left' => $pointsLeft
+                            'points_left' => $pointsLeft,
+                            'total_points_left' => $totalPointsLeft
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
@@ -1124,8 +1128,10 @@ class Front extends CI_Controller
                             $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                             if (count($childremsRight) > 0) {
                                 $pointsRight = (float)$nodeTemp->points_right + $poinsTree;
+                                $totalPointsRight = (float)$nodeTemp->total_point_right + $poinsTree;
                                 $data_node = [
-                                    'points_right' => $pointsRight
+                                    'points_right' => $pointsRight,
+                                    'total_point_right' => $totalPointsRight
                                 ];
                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                             }
@@ -1133,8 +1139,10 @@ class Front extends CI_Controller
                             $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                             if (count($childremsLeft) > 0) {
                                 $pointsLeft = (float)$nodeTemp->points_left + $poinsTree;
+                                $totalPointsLeft = (float)$nodeTemp->total_points_left + $poinsTree;
                                 $data_node = [
-                                    'points_left' => $pointsLeft
+                                    'points_left' => $pointsLeft,
+                                    'total_points_left' => $totalPointsLeft
                                 ];
                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                             }
@@ -3347,8 +3355,10 @@ class Front extends CI_Controller
                                             $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
+                                                $totalPointsRight = (float)$nodeTemp->total_point_right + $points;
                                                 $data_node = [
-                                                    'points_right' => $pointsRight
+                                                    'points_right' => $pointsRight,
+                                                    'total_point_right' => $totalPointsRight
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
@@ -3356,8 +3366,10 @@ class Front extends CI_Controller
                                             $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                                $totalPointsLeft = (float)$nodeTemp->total_points_left + $points;
                                                 $data_node = [
-                                                    'points_left' => $pointsLeft
+                                                    'points_left' => $pointsLeft,
+                                                    'total_points_left' => $totalPointsLeft
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
@@ -3696,8 +3708,10 @@ class Front extends CI_Controller
                                             $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
+                                                $TotalPointsRight = (float)$nodeTemp->total_point_right + $points;
                                                 $data_node = [
-                                                    'points_right' => $pointsRight
+                                                    'points_right' => $pointsRight,
+                                                    'total_point_right' => $TotalPointsRight
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
@@ -3705,8 +3719,10 @@ class Front extends CI_Controller
                                             $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                                $TotalPointsLeft = (float)$nodeTemp->total_points_left + $points;
                                                 $data_node = [
-                                                    'points_left' => $pointsLeft
+                                                    'points_left' => $pointsLeft,
+                                                    'total_points_left' => $TotalPointsLeft
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
@@ -4145,8 +4161,10 @@ class Front extends CI_Controller
                                             $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                             if (count($childremsRight) > 0) {
                                                 $pointsRight = (float)$nodeTemp->points_right + $points;
+                                                $totalPoinstRight = (float)$nodeTemp->total_point_right + $points;
                                                 $data_node = [
-                                                    'points_right' => $pointsRight
+                                                    'points_right' => $pointsRight,
+                                                    'total_point_right' => $totalPoinstRight
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
@@ -4154,8 +4172,10 @@ class Front extends CI_Controller
                                             $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                             if (count($childremsLeft) > 0) {
                                                 $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                                $totalPoinstLeft = (float)$nodeTemp->total_points_left + $points;
                                                 $data_node = [
-                                                    'points_left' => $pointsLeft
+                                                    'points_left' => $pointsLeft,
+                                                    'total_points_left' => $totalPoinstLeft
                                                 ];
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }

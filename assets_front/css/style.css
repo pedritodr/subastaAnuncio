@@ -218,7 +218,7 @@ object {
 }
 
 .section-padding-perfil {
-    padding: 30px 80px;
+    padding: 30px 5px;
 }
 
 .section-padding-140 {
@@ -7987,14 +7987,14 @@ span.app-store-btn {
 /* =-=-=-=-=-=-= App Download Section 3 =-=-=-=-=-=-= */
 
 .app-download-section {
-    background: rgba(0, 0, 0, 0) url("../images/app.jpg") no-repeat fixed center center / cover;
+    /*  background: rgba(0, 0, 0, 0) url("../images/app.jpg") no-repeat fixed center center / cover; */
     overflow: hidden;
     padding: 0;
     width: 100%;
 }
 
 .app-download-section.style-2 {
-    background: rgba(0, 0, 0, 0) url("../images/banner-4.jpg") no-repeat fixed center center / cover;
+    /*  background: rgba(0, 0, 0, 0) url("../images/banner-4.jpg") no-repeat fixed center center / cover; */
 }
 
 .parallex .app-download-section-wrapper {
@@ -10482,4 +10482,16 @@ ul.listingViewIcon li.shortByListingLi ul li a {
     -ms-transform: rotate(-10deg);
     -o-transform: rotate(-10deg);
     transform: rotate(-10deg);
+}
+
+.card-180 {
+    height: 180px;
+}
+
+.card-80 {
+    height: 80px;
+}
+
+.span-enlace {
+    display: block;
 }

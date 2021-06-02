@@ -124,8 +124,10 @@ class Membresia extends CI_Controller
                                 $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                 if (count($childremsRight) > 0) {
                                     $pointsRight = (float)$nodeTemp->points_right + $points;
+                                    $totalPointsRight = (float)$nodeTemp->total_point_right + $points;
                                     $data_node = [
-                                        'points_right' => $pointsRight
+                                        'points_right' => $pointsRight,
+                                        'total_point_right' => $totalPointsRight
                                     ];
                                     $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                 }
@@ -133,8 +135,10 @@ class Membresia extends CI_Controller
                                 $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
                                 if (count($childremsLeft) > 0) {
                                     $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                    $totalPointsLeft = (float)$nodeTemp->total_points_left + $points;
                                     $data_node = [
-                                        'points_left' => $pointsLeft
+                                        'points_left' => $pointsLeft,
+                                        'total_points_left' => $totalPointsLeft
                                     ];
                                     $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                 }
@@ -363,7 +367,11 @@ class Membresia extends CI_Controller
                 'date_active' => $fecha,
                 'points' => 0,
                 'is_culminated' => 0,
-                'points_ads' => 0
+                'points_ads' => 0,
+                'points_left' => 0,
+                'points_right' => 0,
+                'total_points_left' => 0,
+                'total_point_right' => 0,
             ];
             $this->tree_node->update($node->tree_node_id, $dataNode);
         } else {
@@ -386,6 +394,8 @@ class Membresia extends CI_Controller
                     'is_delete' => 0,
                     'points_left' => 0,
                     'points_right' => 0,
+                    'total_points_left' => 0,
+                    'total_point_right' => 0,
                     'date_create' => date('Y-m-d H:i:s'),
                     'date_active' => date('Y-m-d H:i:s'),
                     'parent' => $nodeParent->tree_node_id,
@@ -407,6 +417,8 @@ class Membresia extends CI_Controller
                     'is_delete' => 0,
                     'points_left' => 0,
                     'points_right' => 0,
+                    'total_points_left' => 0,
+                    'total_point_right' => 0,
                     'date_create' => date('Y-m-d H:i:s'),
                     'date_active' => date('Y-m-d H:i:s'),
                     'parent' => 0,
