@@ -831,10 +831,18 @@
                                                                             <h5 class="text-left"><i class="fa fa-money" aria-hidden="true" style="color:#36cacc"></i> Beneficio Total</h5>
                                                                             <p><i class="fa fa-usd" aria-hidden="true"></i>
                                                                                 <?php
+                                                                                $comisionesEspeciales = 0;
+                                                                                if ($transacciones) {
+                                                                                    foreach ($transacciones as $trx) {
+                                                                                        if ($trx->type == 8 || $trx->type == 3) {
+                                                                                            $comisionesEspeciales += (float) $trx->amount;
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                                 if ($node) {
                                                                                     $pointsAds = $node->points_ads;
                                                                                     $pointsCharged = ($node->charged) * 0.15;
-                                                                                    echo number_format(($pointsCharged + $pointsAds), 2);
+                                                                                    echo number_format(($pointsCharged + $pointsAds + $comisionesEspeciales), 2);
                                                                                 } else {
                                                                                     echo ' 0.00';
                                                                                 }
@@ -1136,10 +1144,6 @@
 
 
                                                     </div>
-
-
-
-
                                                     <!-- /row -->
                                                 </div>
                                                 <!-- /container -->
@@ -1187,13 +1191,13 @@
                                                     <div class="row" id="bodyEstructura">
                                                         <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
                                                             <div style="margin-top:15px;">
-                                                                <h5 style="text-align:center;">Estructura organizativa Izquierda</h5>
+                                                                <h5 style="text-align:center;">Lado Izquierdo</h5>
                                                             </div>
                                                             <div id="basicDiagram" style="width: 100%; height: 480px;"></div>
                                                         </div>
                                                         <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6">
                                                             <div style="margin-top:15px;">
-                                                                <h5 style="text-align:center;">Estructura organizativa Derecha</h5>
+                                                                <h5 style="text-align:center;">Lado Derecho</h5>
                                                             </div>
                                                             <div id="basicDiagramRight" style="width: 100%; height: 480px;"></div>
                                                         </div>
