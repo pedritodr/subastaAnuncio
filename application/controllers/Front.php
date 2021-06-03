@@ -3274,7 +3274,7 @@ class Front extends CI_Controller
                             if ($nodeParent->type == 1) {
                                 $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                             } else {
-                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                                $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                             }
                             $pointsAds = $nodeParent->points_ads;
                             $qtyAds = $pointsAds / 20;
@@ -3656,7 +3656,7 @@ class Front extends CI_Controller
                             if ($nodeParent->type == 1) {
                                 $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                             } else {
-                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                                $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                             }
                             $pointsAds = $nodeParent->points_ads;
                             $qtyAds = $pointsAds / 20;
@@ -4144,7 +4144,7 @@ class Front extends CI_Controller
                             if ($nodeParent->type == 1) {
                                 $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                             } else {
-                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                                $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                             }
                             $pointsAds = $nodeParent->points_ads;
                             $qtyAds = $pointsAds / 20;
