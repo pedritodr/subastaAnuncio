@@ -42,7 +42,12 @@
                             <tbody>
                                 <?php foreach ($all_membresia as $item) { ?>
                                     <tr>
-                                        <td> <?= $item->nombre; ?></td>
+                                        <td> <?= 'Nombre: ' . $item->nombre; ?>
+                                            <br>
+                                            <?= 'Orden: ' . $item->orden; ?>
+                                            <br>
+                                            <h3 style="background: #<?= $item->color; ?>; border:1px solid;color:#000"> <?= 'Color: #' . $item->color; ?></h3>
+                                        </td>
                                         <td> <?= $item->descripcion; ?>
                                             <p><b>Bono: </b>$ <?= number_format($item->bono, 2) ?></p>
                                             <?php if ($item->type == 1) { ?>

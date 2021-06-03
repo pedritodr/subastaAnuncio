@@ -225,6 +225,8 @@ class Membresia extends CI_Controller
         $duracion = $this->input->post('duracion');
         $type = $this->input->post('type');
         $bono = $this->input->post('bono');
+        $order = $this->input->post('order');
+        $color = $this->input->post('color');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -246,7 +248,9 @@ class Membresia extends CI_Controller
                 'duracion' => $duracion,
                 'type' => $type,
                 'bono' => $bono,
-                'is_delete' => 0
+                'is_delete' => 0,
+                'orden' => $order,
+                'color' => $color
             ];
             $this->membresia->create($data);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
@@ -289,6 +293,8 @@ class Membresia extends CI_Controller
         $duracion = $this->input->post('duracion');
         $type = $this->input->post('type');
         $bono = $this->input->post('bono');
+        $order = $this->input->post('order');
+        $color = $this->input->post('color');
         $membresia_object = $this->membresia->get_by_id($membresia_id);
 
         if ($membresia_object) {
@@ -304,7 +310,9 @@ class Membresia extends CI_Controller
                 'qty_subastas' => $subastas,
                 'duracion' => $duracion,
                 'type' => $type,
-                'bono' => $bono
+                'bono' => $bono,
+                'orden' => $order,
+                'color' => $color
             ];
             $this->membresia->update($membresia_id, $data_membresia);
             $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);

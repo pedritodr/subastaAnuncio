@@ -9448,6 +9448,7 @@ a.delete i {
 .pricing .block {
     border: 1px solid #d4dadf;
     padding: 60px 10px;
+    border-radius: 15px;
     margin-bottom: 30px;
 }
 

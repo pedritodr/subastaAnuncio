@@ -79,6 +79,7 @@ class Membresia_model extends CI_Model
         foreach ($conditions as $key => $value) {
             $this->db->where($key, $value);
         }
+        $this->db->order_by("orden", "asc");
         $query = $this->db->get('membresia');
 
         return ($get_as_row) ? $query->row() : $query->result();

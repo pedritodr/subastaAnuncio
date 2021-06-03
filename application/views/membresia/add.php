@@ -88,7 +88,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="control-label"><?= translate('description_lang'); ?></label>
-                                            <textarea name="descripcion" rows="4" class="form-control textarea" required placeholder="<?= translate('description_lang'); ?>">
+                                            <textarea name="descripcion" rows="4" class="form-control textarea" placeholder="<?= translate('description_lang'); ?>">
 
                                     </textarea>
                                         </div>
@@ -123,6 +123,20 @@
                                                 <option value="1">SI</option>
                                                 <option value="2">NO</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label><?= "Orden"; ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i><strong>N</strong></i></i></span>
+                                            <input required type="number" class="form-control input-sm" name="order" value="0" placeholder="<?= "Orden"; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label><?= "Color hexadecimal"; ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i><strong>#</strong></i></i></span>
+                                            <input required type="text" class="form-control input-sm" name="color" placeholder="<?= "#fff"; ?>">
                                         </div>
                                     </div>
                                 </div>
