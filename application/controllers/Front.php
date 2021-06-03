@@ -1087,8 +1087,6 @@ class Front extends CI_Controller
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
                         $data = [
-                            'points' => $points,
-                            'charged' => $charged,
                             'points_ads' => $points_ads
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data);
@@ -1108,8 +1106,6 @@ class Front extends CI_Controller
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
                     } else {
                         $data_node = [
-                            'points' => $points,
-                            'charged' => $charged,
                             'points_ads' => $points_ads
                         ];
                         $this->tree_node->update($userNode->tree_node_id, $data_node);
