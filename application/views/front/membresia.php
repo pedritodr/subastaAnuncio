@@ -126,7 +126,7 @@
                                                   </svg>
                                               </div>
                                           </div>
-                                          <span class="price" style="color:#fff">$<?= number_format($item->precio, 2); ?></span>
+                                          <span class="price" style="color:#fff">$<?= $item->precio ?></span>
                                           <span class="time" style="color:#fff"><?= translate('cant_anuncios_lang') ?> <?= $item->cant_anuncio; ?></span>
                                           <br>
                                           <?php if ($this->session->userdata('user_id')) { ?>
