@@ -1368,7 +1368,7 @@
                         </div>
                         <ul>
                             <li class="forever active" id="beneficio" style="cursor:pointer"><a>Prog. Beneficios</a></li>
-                            <li class="forever" id="wallet" style="cursor:pointer"><a>Billetera</a></li>
+                            <li class="forever" id="wallet" style="cursor:pointer"><a>Retiros</a></li>
                             <li class="forever " id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
                             <li class="forever" id="update_password" style="cursor:pointer"><a><?= translate('update_password_lang') ?></a></li>
                             <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
