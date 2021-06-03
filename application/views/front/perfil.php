@@ -1007,6 +1007,8 @@
                                                                             <br>
                                                                             <?php
                                                                             $porcentaje = 0;
+                                                                            $benefit = 0;
+                                                                            $pointsTotal = 0;
                                                                             if ($all_membresia) {
                                                                                 if ($all_membresia->type == 1) {
                                                                                     $totalAcum = ($all_membresia->precio * 2);
@@ -1016,10 +1018,11 @@
                                                                                         $pointsAds = $node->points_ads;
                                                                                         $qtyAds = $pointsAds / 20;
                                                                                         $poinsAds =  $qtyAds * 133.333333;
-                                                                                        $pointsTotal = $node->points + $poinsAds;
+                                                                                        $benefit = $node->benefit / 0.15;
+                                                                                        $pointsTotal = $node->points + $poinsAds + $benefit;
                                                                                         if ($pointsTotal >= $totalPuntos) {
                                                                                             $objetive = 100.00;
-                                                                                            $totalPuntosGet =  $totalPuntos;
+                                                                                            $totalPuntosGet =  $totalAcum;
                                                                                         } else {
                                                                                             $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
                                                                                             $totalPuntosGet = $pointsTotal * 0.15;
@@ -1036,7 +1039,8 @@
                                                                                         $pointsAds = $node->points_ads;
                                                                                         $qtyAds = $pointsAds / 20;
                                                                                         $poinsAds =  $qtyAds * 133.333333;
-                                                                                        $pointsTotal = $node->points + $poinsAds;
+                                                                                        $benefit = $node->benefit / 0.15;
+                                                                                        $pointsTotal = $node->points + $poinsAds + $benefit;
                                                                                         if ($pointsTotal >= $totalPuntos) {
                                                                                             $objetive = 100.00;
                                                                                             $totalPuntosGet =  $totalPuntos;

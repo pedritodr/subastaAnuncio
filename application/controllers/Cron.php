@@ -493,7 +493,7 @@ class Cron  extends CI_Controller
                     } else {
                         $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                     }
-                    if ($points <= $totalPuntos) {
+                    if ($points < $totalPuntos) {
                         $data_node = [
                             'points_right' => $points_right,
                             'points_left' => $points_left,
@@ -501,6 +501,7 @@ class Cron  extends CI_Controller
                             'points' => $points,
                             'active' => 1
                         ];
+                    } else {
                         $data_node = [
                             'points_right' => $points_right,
                             'points_left' => $points_left,

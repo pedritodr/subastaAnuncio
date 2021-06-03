@@ -3266,6 +3266,35 @@ class Front extends CI_Controller
                     if ($user_obj->parent != 0) {
                         $wallet_parent = $this->wallet->get_wallet_by_user_id($user_obj->parent);
                         $amount = (float)$object_membresia->precio * 0.20;
+                        $nodeParent = $this->tree_node->get_node_renovate_by_user_id($user_obj->parent);
+                        if ($nodeParent) {
+                            $benefit = $nodeParent->benefit + $amount;
+                            $pointBenefit =  $benefit / 0.15;
+                            $totalPuntos = 0;
+                            if ($nodeParent->type == 1) {
+                                $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                            } else {
+                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                            }
+                            $pointsAds = $nodeParent->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
+                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                            if ($points > $totalPuntos) {
+                                $data_node = [
+                                    'points' => $totalPuntos,
+                                    'active' => 1,
+                                    'is_culminated' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            } else {
+                                $data_node = [
+                                    'active' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            }
+                            $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+                        }
                         $data_transactions = [
                             'date_create' => $fecha,
                             'amount' => $amount,
@@ -3619,6 +3648,35 @@ class Front extends CI_Controller
                     if ($user_obj->parent != 0) {
                         $wallet_parent = $this->wallet->get_wallet_by_user_id($user_obj->parent);
                         $amount = (float)$object_membresia->precio * 0.20;
+                        $nodeParent = $this->tree_node->get_node_renovate_by_user_id($user_obj->parent);
+                        if ($nodeParent) {
+                            $benefit = $nodeParent->benefit + $amount;
+                            $pointBenefit =  $benefit / 0.15;
+                            $totalPuntos = 0;
+                            if ($nodeParent->type == 1) {
+                                $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                            } else {
+                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                            }
+                            $pointsAds = $nodeParent->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
+                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                            if ($points > $totalPuntos) {
+                                $data_node = [
+                                    'points' => $totalPuntos,
+                                    'active' => 1,
+                                    'is_culminated' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            } else {
+                                $data_node = [
+                                    'active' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            }
+                            $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+                        }
                         $data_transactions = [
                             'date_create' => $fecha,
                             'amount' => $amount,
@@ -4077,7 +4135,36 @@ class Front extends CI_Controller
                 if ($renovate == 'false') {
                     if ($cliente->parent != 0) {
                         $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
+                        $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
                         $amount = (float)$object_membresia->precio * 0.20;
+                        if ($nodeParent) {
+                            $benefit = $nodeParent->benefit + $amount;
+                            $pointBenefit =  $benefit / 0.15;
+                            $totalPuntos = 0;
+                            if ($nodeParent->type == 1) {
+                                $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                            } else {
+                                $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                            }
+                            $pointsAds = $nodeParent->points_ads;
+                            $qtyAds = $pointsAds / 20;
+                            $poinsAds =  $qtyAds * 133.333333;
+                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                            if ($points > $totalPuntos) {
+                                $data_node = [
+                                    'points' => $totalPuntos,
+                                    'active' => 1,
+                                    'is_culminated' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            } else {
+                                $data_node = [
+                                    'active' => 1,
+                                    'benefit' => $benefit
+                                ];
+                            }
+                            $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+                        }
                         $data_transactions = [
                             'date_create' => $fecha,
                             'amount' => $amount,
@@ -4226,7 +4313,12 @@ class Front extends CI_Controller
                         'date_active' => $fecha,
                         'points' => 0,
                         'is_culminated' => 0,
-                        'points_ads' => 0
+                        'points_ads' => 0,
+                        'benefit' => 0,
+                        'total_points_left' => 0,
+                        'total_point_right' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
                     ];
                     $this->tree_node->update($node->tree_node_id, $dataNode);
                     echo json_encode(['status' => 200, 'msg' => "Correcto"]);

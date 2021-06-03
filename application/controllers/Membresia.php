@@ -48,6 +48,36 @@ class Membresia extends CI_Controller
         if ($cliente->parent != 0) {
             $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
             $amount = (float)$object_membresia->precio * 0.20;
+            $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
+            //  var_dump($nodeParent);
+            if ($nodeParent) {
+                $benefit = $nodeParent->benefit + $amount;
+                $pointBenefit =  $benefit / 0.15;
+                $totalPuntos = 0;
+                if ($nodeParent->type == 1) {
+                    $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                } else {
+                    $nodeParent = round((($nodeParent->precio * 1.6)) / 0.15);
+                }
+                $pointsAds = $nodeParent->points_ads;
+                $qtyAds = $pointsAds / 20;
+                $poinsAds =  $qtyAds * 133.333333;
+                $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                if ($points > $totalPuntos) {
+                    $data_node = [
+                        'points' => $totalPuntos,
+                        'active' => 1,
+                        'is_culminated' => 1,
+                        'benefit' => $benefit
+                    ];
+                } else {
+                    $data_node = [
+                        'active' => 1,
+                        'benefit' => $benefit
+                    ];
+                }
+                $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+            }
             $data_transactions = [
                 'date_create' => $fecha,
                 'amount' => $amount,
@@ -380,6 +410,7 @@ class Membresia extends CI_Controller
                 'points_right' => 0,
                 'total_points_left' => 0,
                 'total_point_right' => 0,
+                'benefit' => 0,
             ];
             $this->tree_node->update($node->tree_node_id, $dataNode);
         } else {
@@ -412,7 +443,8 @@ class Membresia extends CI_Controller
                     'points' => 0,
                     'charged' => 0,
                     'active' => 1,
-                    'points_ads' => 0
+                    'points_ads' => 0,
+                    'benefit' => 0,
                 ];
                 $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                 $this->tree_node->create($data_node);
@@ -436,7 +468,8 @@ class Membresia extends CI_Controller
                     'charged' => 0,
                     'position' => 0,
                     'active' => 1,
-                    'points_ads' => 0
+                    'points_ads' => 0,
+                    'benefit' => 0,
                 ];
                 $this->tree_node->create($data_node);
             }
