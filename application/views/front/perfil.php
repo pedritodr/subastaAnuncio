@@ -833,9 +833,7 @@
                                                                                 <?php
                                                                                 if ($node) {
                                                                                     $pointsAds = $node->points_ads;
-                                                                                    $qtyAds = $pointsAds / 20;
-                                                                                    $qtyPoinstAds =  $qtyAds * 20;
-                                                                                    $pointsCharged = ($node->charged - $qtyPoinstAds) * 0.15;
+                                                                                    $pointsCharged = ($node->charged) * 0.15;
                                                                                     echo number_format(($pointsCharged + $pointsAds), 2);
                                                                                 } else {
                                                                                     echo ' 0.00';

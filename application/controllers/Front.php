@@ -1069,7 +1069,6 @@ class Front extends CI_Controller
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
             if ($userNode) {
-                $charged = (float)$userNode->charged + 20;
                 $points = (float)$userNode->points + 20;
                 $points_ads = (float)$userNode->points_ads + 20;
                 if ($userNode->variable_config == 0) {
@@ -1079,7 +1078,6 @@ class Front extends CI_Controller
                         $totalPointsRight = (float)$userNode->total_point_right + $points;
                         $data_node = [
                             'points' => $points,
-                            'charged' => $charged,
                             'points_ads' => $points_ads,
                             'points_right' => $pointsRight,
                             'total_point_right' => $totalPointsRight
@@ -1098,7 +1096,6 @@ class Front extends CI_Controller
                         $totalPointsLeft = (float)$userNode->total_points_left + $points;
                         $data_node = [
                             'points' => $points,
-                            'charged' => $charged,
                             'points_ads' => $points_ads,
                             'points_left' => $pointsLeft,
                             'total_points_left' => $totalPointsLeft
