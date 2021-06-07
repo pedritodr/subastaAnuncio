@@ -649,7 +649,7 @@ class Cron  extends CI_Controller
                             'date_create' => $fecha,
                             'amount' => (float)$membresia->bono,
                             'wallet_send' =>  0,
-                            'type' => 7,
+                            'type' => 8,
                             'balance_previous' => 0,
                             'balance' => (float)$membresia->bono,
                             'wallet_receives' => $wallet_id,
