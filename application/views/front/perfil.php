@@ -909,16 +909,16 @@
                                                                                 $typeUser = 'Básico';
                                                                             }
                                                                             if ($rank == 30000) {
-                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> Plata</p>';
                                                                                 echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
                                                                             } else if ($rank == 70000) {
-                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> Oro</p>';
                                                                                 echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
                                                                             } else if ($rank == 500000) {
-                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> Diamante</p>';
                                                                                 echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
                                                                             } else if ($rank == 1500000) {
-                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true"></i> ' . $typeUser . '</p>';
+                                                                                echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i><i class="fa fa-star" aria-hidden="true"></i> Platino</p>';
                                                                                 echo '  <p class="text-left" style="font-size:12px">' . $rankActual . ' <span>Puntos de clasificación</span></p>';
                                                                             } else {
                                                                                 echo '  <p><i class="fa fa-star" aria-hidden="true" style="color: #e1bf4d;"></i> ' . $typeUser . ' </p>';
