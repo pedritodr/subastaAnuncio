@@ -871,17 +871,17 @@
                                                                             $rank = 0;
                                                                             if ($node) {
                                                                                 $rankActual = $node->charged;
-                                                                                if ($node->charged > 0  && $node->charged < 10000) {
-                                                                                    $rank = 10000;
+                                                                                if ($node->charged >= 0  && $node->charged < 30000) {
+                                                                                    $rank = 30000;
                                                                                     $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                                } else if ($node->charged > 10001 &&  $node->charged < 100000) {
-                                                                                    $rank = 100000;
+                                                                                } else if ($node->charged > 30001 &&  $node->charged < 70000) {
+                                                                                    $rank = 70000;
                                                                                     $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                                } else if ($node->charged > 100001 && $node->charged < 1000000) {
-                                                                                    $rank = 1000000;
+                                                                                } else if ($node->charged > 70001 && $node->charged < 500000) {
+                                                                                    $rank = 500000;
                                                                                     $rankActualPorcentaje =  (($rankActual * 100) / $rank);
-                                                                                } else if ($node->charged > 1000001 && $node->charged < 10000000) {
-                                                                                    $rank = 10000000;
+                                                                                } else if ($node->charged > 500001 && $node->charged < 1500000) {
+                                                                                    $rank = 1500000;
                                                                                     $rankActualPorcentaje =  (($rankActual * 100) / $rank);
                                                                                 } else {
                                                                                     $rank = 0;
