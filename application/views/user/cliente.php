@@ -107,14 +107,14 @@
                         <label>Email referidor</label>
                         <div class="input-group">
                             <span class="input-group-addon">@</span>
-                            <input placeholder="Ej. referidor@subastanuncio.com" class="form-control input-sm" type="email" id="referidor" required>
+                            <input disabled placeholder="Ej. referidor@subastanuncio.com" class="form-control input-sm" type="email" id="referidor" required>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button onclick="updateReferido()" type="button" class="btn btn-success">Actualizar</button>
+                <!--  <button onclick="updateReferido()" type="button" class="btn btn-success">Actualizar</button> -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

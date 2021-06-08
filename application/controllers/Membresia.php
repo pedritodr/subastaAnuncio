@@ -150,7 +150,7 @@ class Membresia extends CI_Controller
                         } else {
                             $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                             $parent = $nodeTemp->parent;
-                            if ($nodeTemp->variable_config == 0) {
+                            if ($node_parent->position == 0) {
                                 $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                 if (count($childremsRight) > 0) {
                                     $pointsRight = (float)$nodeTemp->points_right + $points;
@@ -375,6 +375,8 @@ class Membresia extends CI_Controller
     {
         $this->load->model("User_model", "user");
         $this->load->model('Tree_node_model', 'tree_node');
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
         $user_id = $this->input->post('idUser');
         $cliente = $this->user->get_by_id($user_id);
         $membresia = $this->input->post('idMembership');
@@ -387,7 +389,6 @@ class Membresia extends CI_Controller
         $fecha_mes = strtotime('+30 day', strtotime($fecha));
         $fecha_mes = date('Y-m-d', $fecha_mes);
         $node = $this->tree_node->get_node_renovate_by_user_id($cliente->user_id);
-
         if ($node) {
             $dataMembership = [
                 'fecha_inicio' => $fecha,
@@ -406,14 +407,109 @@ class Membresia extends CI_Controller
                 'points' => 0,
                 'is_culminated' => 0,
                 'points_ads' => 0,
-                'points_left' => 0,
-                'points_right' => 0,
-                'total_points_left' => 0,
-                'total_point_right' => 0,
                 'benefit' => 0,
             ];
             $this->tree_node->update($node->tree_node_id, $dataNode);
+            //repartir puntos
+            $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
+            if ($node_parent) {
+                $parent = $node_parent->parent;
+                $points = round($object_membresia->precio * 0.7);
+                do {
+                    if ($parent == 0) {
+                        $continue = false;
+                    } else {
+                        $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
+                        $parent = $nodeTemp->parent;
+                        if ($node_parent->position == 0) {
+                            $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
+                            if (count($childremsRight) > 0) {
+                                $pointsRight = (float)$nodeTemp->points_right + $points;
+                                $totalPointsRight = (float)$nodeTemp->total_point_right + $points;
+                                $data_node = [
+                                    'points_right' => $pointsRight,
+                                    'total_point_right' => $totalPointsRight
+                                ];
+                                $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                            }
+                        } else {
+                            $childremsLeft = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 1);
+                            if (count($childremsLeft) > 0) {
+                                $pointsLeft = (float)$nodeTemp->points_left + $points;
+                                $totalPointsLeft = (float)$nodeTemp->total_points_left + $points;
+                                $data_node = [
+                                    'points_left' => $pointsLeft,
+                                    'total_points_left' => $totalPointsLeft
+                                ];
+                                $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
+                            }
+                        }
+                        $continue = true;
+                    }
+                } while ($continue);
+            }
+            //comision
+            $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
+            $amount = (float)$object_membresia->precio * 0.20;
+            $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
+            if ($nodeParent) {
+                $benefit = $nodeParent->benefit + $amount;
+                $pointBenefit =  $benefit / 0.15;
+                $totalPuntos = 0;
+                if ($nodeParent->type == 1) {
+                    $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                } else {
+                    $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
+                }
+                $pointsAds = $nodeParent->points_ads;
+                $qtyAds = $pointsAds / 20;
+                $poinsAds =  $qtyAds * 133.333333;
+                $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                if ($points > $totalPuntos) {
+                    $data_node = [
+                        'points' => $totalPuntos,
+                        'active' => 1,
+                        'is_culminated' => 1,
+                        'benefit' => $benefit
+                    ];
+                } else {
+                    $data_node = [
+                        'active' => 1,
+                        'benefit' => $benefit
+                    ];
+                }
+                $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+            }
+            $data_transactions = [
+                'date_create' => $fecha,
+                'amount' => $amount,
+                'wallet_send' => 0,
+                'type' => 3,
+            ];
+            $wallet_id = 0;
+            $balance = 0;
+            if ($wallet_parent) {
+                $wallet_id = $wallet_parent->wallet_id;
+                $balance = (float)$wallet_parent->balance + $amount;
+                $data_transactions['balance_previous'] = $wallet_parent->balance;
+                $data_transactions['balance'] = $balance;
+                $data_transactions['wallet_receives'] = $wallet_id;
+            } else {
+                $data_wallet = [
+                    'user_id' => $cliente->parent,
+                    'points' => 0,
+                    'balance' => 0
+                ];
+                $wallet_id = $this->wallet->create($data_wallet);
+                $data_transactions['balance_previous'] = 0;
+                $data_transactions['balance'] = $amount;
+                $data_transactions['wallet_receives'] = $wallet_id;
+                $balance = $amount;
+            }
+            $this->transaction->create($data_transactions);
+            $this->wallet->update($wallet_id, ['balance' => $balance]);
         } else {
+
             $dataMembership = [
                 'fecha_inicio' => $fecha,
                 'fecha_fin' => $fecha_fin,
@@ -449,29 +545,115 @@ class Membresia extends CI_Controller
                 $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                 $this->tree_node->create($data_node);
             } else {
+                $emailAdmid = '';
+                if (ENVIRONMENT == "development") {
+                    $emailAdmid = 'pedroduran014@gmail.com';
+                }
+                if (ENVIRONMENT == "production") {
+                    $emailAdmid = 'comercial@subastanuncios.com';
+                }
+                $admin  = $this->user->get_user_by_email_active($emailAdmid);
+                if ($admin) {
+                    $wallet_parent = $this->wallet->get_wallet_by_user_id($admin->user_id);
+                    $amount = (float)$object_membresia->precio * 0.20;
+                    $nodeParent = $this->tree_node->get_node_renovate_by_user_id($admin->user_id);
+                    if ($nodeParent) {
+                        $benefit = $nodeParent->benefit + $amount;
+                        $pointBenefit =  $benefit / 0.15;
+                        $totalPuntos = 0;
+                        if ($nodeParent->type == 1) {
+                            $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
+                        } else {
+                            $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
+                        }
+                        $pointsAds = $nodeParent->points_ads;
+                        $qtyAds = $pointsAds / 20;
+                        $poinsAds =  $qtyAds * 133.333333;
+                        $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
+                        if ($points > $totalPuntos) {
+                            $data_node = [
+                                'points' => $totalPuntos,
+                                'active' => 1,
+                                'is_culminated' => 1,
+                                'benefit' => $benefit
+                            ];
+                        } else {
+                            $data_node = [
+                                'active' => 1,
+                                'benefit' => $benefit
+                            ];
+                        }
+                        $this->tree_node->update($nodeParent->tree_node_id, $data_node);
+                    }
+                    $data_transactions = [
+                        'date_create' => $fecha,
+                        'amount' => $amount,
+                        'wallet_send' => 0,
+                        'type' => 3,
+                    ];
+                    $wallet_id = 0;
+                    $balance = 0;
+                    if ($wallet_parent) {
+                        $wallet_id = $wallet_parent->wallet_id;
+                        $balance = (float)$wallet_parent->balance + $amount;
+                        $data_transactions['balance_previous'] = $wallet_parent->balance;
+                        $data_transactions['balance'] = $balance;
+                        $data_transactions['wallet_receives'] = $wallet_id;
+                    } else {
+                        $data_wallet = [
+                            'user_id' => $admin->user_id,
+                            'points' => 0,
+                            'balance' => 0
+                        ];
+                        $wallet_id = $this->wallet->create($data_wallet);
+                        $data_transactions['balance_previous'] = 0;
+                        $data_transactions['balance'] = $amount;
+                        $data_transactions['wallet_receives'] = $wallet_id;
+                        $balance = $amount;
+                    }
+                    $this->transaction->create($data_transactions);
+                    $this->wallet->update($wallet_id, ['balance' => $balance]);
 
-                $data_node = [
-                    'membre_user_id' => $membresiaUser,
-                    'variable_config' => 0,
-                    'is_active' => 1,
-                    'is_delete' => 0,
-                    'points_left' => 0,
-                    'points_right' => 0,
-                    'total_points_left' => 0,
-                    'total_point_right' => 0,
-                    'date_create' => date('Y-m-d H:i:s'),
-                    'date_active' => date('Y-m-d H:i:s'),
-                    'parent' => 0,
-                    'user_id' => $user_id,
-                    'is_culminated' => 0,
-                    'points' => 0,
-                    'charged' => 0,
-                    'position' => 0,
-                    'active' => 1,
-                    'points_ads' => 0,
-                    'benefit' => 0,
-                ];
-                $this->tree_node->create($data_node);
+                    $node = $this->tree_node->get_node_row_by_user_id($admin->user_id);
+                    $data_node = [
+                        'membre_user_id' => $membresiaUser,
+                        'variable_config' => 0,
+                        'is_active' => 0,
+                        'is_delete' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
+                        'date_create' => date('Y-m-d H:i:s'),
+                        'parent' => $node->tree_node_id,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0
+                    ];
+                    $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                    $this->tree_node->create($data_node);
+                    $this->user->update($user_id, ['parent' => $admin->user_id]);
+                } else {
+                    $data_node = [
+                        'membre_user_id' => $membresiaUser,
+                        'variable_config' => 0,
+                        'is_active' => 1,
+                        'is_delete' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
+                        'total_points_left' => 0,
+                        'total_point_right' => 0,
+                        'date_create' => date('Y-m-d H:i:s'),
+                        'date_active' => date('Y-m-d H:i:s'),
+                        'parent' => 0,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0,
+                        'points' => 0,
+                        'charged' => 0,
+                        'position' => 0,
+                        'active' => 1,
+                        'points_ads' => 0,
+                        'benefit' => 0,
+                    ];
+                    $this->tree_node->create($data_node);
+                }
             }
         }
 

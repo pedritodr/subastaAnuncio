@@ -46,6 +46,7 @@ class User extends CI_Controller
             $this->log_out();
             redirect('login');
         }
+        var_dump(ENVIRONMENT);
 
         $all_users = $this->user->get_all(['role_id' => 2]);
         foreach ($all_users as $item) {
@@ -341,7 +342,7 @@ class User extends CI_Controller
     public function add_cliente()
     {
         require(APPPATH . "libraries/validar_cedula.php");
-
+        $this->load->model('Tree_node_model', 'tree_node');
         $name = $this->input->post('name');
         $apellido = $this->input->post('surname');
         $email = $this->input->post('email');
@@ -365,6 +366,13 @@ class User extends CI_Controller
                 echo json_encode(['status' => 500, 'msj' => 'El cédula introducida no es correcta.']);
                 exit();
             }
+        }
+        $emailAdmid = '';
+        if (ENVIRONMENT == "development") {
+            $emailAdmid = 'pedroduran014@gmail.com';
+        }
+        if (ENVIRONMENT == "production") {
+            $emailAdmid = 'comercial@subastanuncios.com';
         }
 
         $data_user = [
@@ -393,13 +401,10 @@ class User extends CI_Controller
             $codigo_seguridad .= $caracteres[rand(0, strlen($caracteres) - 1)];
         }
         if ($user_id) {
-            $userReferidor = null;
             if ($referidor != '') {
                 $response  = $this->user->get_user_by_email_active($referidor);
                 if ($response) {
-                    $this->load->model('Tree_node_model', 'tree_node');
-                    $userReferidor = $response->user_id;
-                    $node = $this->tree_node->get_node_by_user($response->user_id);
+                    $node = $this->tree_node->get_node_row_by_user_id($response->user_id);
                     $data_node = [
                         'membre_user_id' => 0,
                         'variable_config' => 0,
@@ -414,10 +419,52 @@ class User extends CI_Controller
                     ];
                     $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                     $this->tree_node->create($data_node);
+                    $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $response->user_id]);
                 } else {
-                    $userReferidor = null;
+                    $admin  = $this->user->get_user_by_email_active($emailAdmid);
+                    if ($admin) {
+                        $node = $this->tree_node->get_node_row_by_user_id($admin->user_id);
+                        $data_node = [
+                            'membre_user_id' => 0,
+                            'variable_config' => 0,
+                            'is_active' => 0,
+                            'is_delete' => 0,
+                            'points_left' => 0,
+                            'points_right' => 0,
+                            'date_create' => date('Y-m-d H:i:s'),
+                            'parent' => $node->tree_node_id,
+                            'user_id' => $user_id,
+                            'is_culminated' => 0
+                        ];
+                        $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                        $this->tree_node->create($data_node);
+                        $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $admin->user_id]);
+                    } else {
+                        $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+                    }
                 }
-                $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $userReferidor]);
+            } else {
+                $admin  = $this->user->get_user_by_email_active($emailAdmid);
+                if ($admin) {
+                    $node = $this->tree_node->get_node_row_by_user_id($admin->user_id);
+                    $data_node = [
+                        'membre_user_id' => 0,
+                        'variable_config' => 0,
+                        'is_active' => 0,
+                        'is_delete' => 0,
+                        'points_left' => 0,
+                        'points_right' => 0,
+                        'date_create' => date('Y-m-d H:i:s'),
+                        'parent' => $node->tree_node_id,
+                        'user_id' => $user_id,
+                        'is_culminated' => 0
+                    ];
+                    $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
+                    $this->tree_node->create($data_node);
+                    $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento, 'parent' => $admin->user_id]);
+                } else {
+                    $this->user->update($user_id, ['codigo_seguridad' => $codigo_seguridad, 'fecha_vencimiento_codigo' => $fecha_vencimiento]);
+                }
             }
         }
 

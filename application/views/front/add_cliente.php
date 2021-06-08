@@ -295,7 +295,7 @@
                              }, 1000);
                           } else {
                              Swal.close();
-                             swal({
+                             Swal.fire({
                                 title: '¡Error!',
                                 text: result.msj,
                                 padding: '2em'

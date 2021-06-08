@@ -77,6 +77,13 @@ class Tree_node_model extends CI_Model
 
         return $query->result();
     }
+    function get_node_row_by_user_id($id)
+    {
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('tree_node');
+
+        return $query->row();
+    }
     function get_node_padre_by_id($id)
     {
         $this->db->where('tree_node_id', $id);
