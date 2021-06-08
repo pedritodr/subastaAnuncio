@@ -46,7 +46,7 @@ class User extends CI_Controller
             $this->log_out();
             redirect('login');
         }
-        var_dump(ENVIRONMENT);
+        // var_dump(ENVIRONMENT);
 
         $all_users = $this->user->get_all(['role_id' => 2]);
         foreach ($all_users as $item) {
