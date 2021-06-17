@@ -21,11 +21,12 @@ if (empty($mastercat))
     </div>
 <?php } ?>
 <!-- end Master Slider -->
+
 <div id="search-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-md-12">
-                <!-- Form -->
+                <!--
                 <?= form_open_multipart("search_anuncios", array('class' => 'search-form')); ?>
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <select name="ciudad_id" class="category form-control">
@@ -45,16 +46,16 @@ if (empty($mastercat))
 
                     </select>
                 </div>
-                <!-- Search Field -->
+
                 <div class="col-md-6 col-xs-12 col-sm-4 no-padding">
                     <input name="anuncio_palabra" type="text" class="form-control" placeholder="<?= translate("buscar_palabra_lang"); ?>" />
                 </div>
-                <!-- Search Button -->
+
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <button type="submit" class="btn btn-block btn-light"><?= translate("buscar_lang"); ?></button>
                 </div>
 
-                <?= form_close(); ?>
+                <?= form_close(); ?> -->
                 <!-- end .search-form -->
             </div>
         </div>
@@ -66,158 +67,67 @@ if (empty($mastercat))
     <!-- =-=-=-=-=-=-= Latest Ads =-=-=-=-=-=-= -->
     <section class="section-padding gray">
         <!-- Main Container -->
-        <div class="container">
+        <div class="container-fluid">
             <!-- Row -->
             <div class="row">
                 <!-- Middle Content Area -->
-                <div class="col-md-8 col-md-push-4 col-lg-8 col-sx-12 white-bg">
+                <div class="col-md-9 col-md-push-3 col-lg-9 col-sx-12 white-bg">
                     <!-- Row -->
                     <div class="row">
-                        <?php if ($all_anuncios) { ?>
-                            <?php if (count($all_anuncios) > 0) { ?>
-                                <!-- Sorting Filters -->
-                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                    <!-- Sorting Filters Breadcrumb -->
-                                    <div class="filter-brudcrums">
-                                        <span><?= translate("mostrando_lang"); ?><span class="showed"> <?= $inicio ?> -
-                                                <?= $fin ?></span> <?= translate("de_lang"); ?> <span class="showed"><?= $resultados ?></span>
-                                            <?= translate("resultados_lang"); ?></span>
-                                    </div>
-                                    <!-- Sorting Filters Breadcrumb End -->
-                                </div>
-                            <?php } ?>
-                        <?php } ?>
-                        <!-- Sorting Filters End-->
                         <div class="clearfix"></div>
-                        <!-- Ads Archive --><?php if ($all_anuncios) { ?>
-                            <?php foreach ($all_anuncios as $item) {
+                        <div class="row" id="bodyAds">
+                            <?php if ($all_anuncios) {
+                                foreach ($all_anuncios as $item) {
 
+                                    echo ' <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">';
+                                    echo '<div class="category-grid-box-1">';
+                                    echo '<a style="cursor:pointer" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">';
+                                    echo ' <div class="image">';
+                                    if (file_exists($item->anuncio_photo)) {
+                                        if (strpos($item->anuncio_photo, 'uploads') !== false) {
+                                            echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive">';
+                                        } else {
+                                            echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive">';
+                                        }
+                                    } else {
+                                        echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive">';
+                                    }
+                                    if ($item->destacado == 1) {
+                                        echo '<div class="ribbon popular">Destacado</div>';
+                                    }
+                                    echo ' <div class="price-tag">';
+                                    echo '<div class="price"><span>$' . number_format($item->precio, 2) . '</span></div>';
+                                    echo '</div>';
+                                    echo ' </div>';
+                                    echo '</a>';
+                                    echo ' <div class="short-description-1 clearfix">';
+                                    echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
+                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
+                                    echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
+                                    if (isset($item->url)) {
+                                        if ($item->url != '' || $item->url != null) {
+                                            echo '<a href="' . $item->url . '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                                        }
+                                    }
+                                    echo '</div>';
+                                    echo '<div class="ad-info-1">';
+                                    echo ' <ul>';
+                                    echo '  <li> <i class="fa fa-map-marker"></i>' . $item->ciudad . ' </li>';
+                                    echo ' <li> <i class="fa fa-clock-o"></i>' . $item->fecha . ' </li>';
+                                    echo ' </ul>';
+                                    echo '</div>';
+                                    echo ' </div>';
+                                    echo ' </div>';
+                                }
+                            }
                             ?>
-                                <div class="ads-list-archive">
-                                    <!-- Image Block -->
-                                    <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
-                                        <!-- Img Block -->
-                                        <div class="ad-archive-img">
+                        </div>
 
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
-                                                <!--   <div class="ribbon popular"></div> -->
-
-
-                                                <?php if (strpos($item->anuncio_photo, 'uploads') !== false) { ?>
-
-                                                    <img class="img-responsive" src="<?= base_url($item->anuncio_photo) ?>" alt="">
-                                                <?php } else { ?>
-                                                    <img class="img-responsive" src="<?= $item->anuncio_photo ?>" alt="">
-
-                                                <?php } ?>
-
-                                            </a>
-                                            <?php if ($item->destacado == 1) { ?>
-                                                <div class="ribbon popular"><?= translate("featured_lang") ?></div>
-                                            <?php } ?>
-                                        </div>
-
-                                        <!-- Img Block -->
-                                    </div>
-                                    <!-- Ads Listing -->
-                                    <div class="clearfix visible-xs-block"></div>
-                                    <!-- Content Block -->
-                                    <div class="col-lg-9 col-md-9 col-sm-9 no-padding">
-                                        <!-- Ad Desc -->
-                                        <div class="ad-archive-desc">
-                                            <!-- Price -->
-                                            <div class="ad-price">
-                                                <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;">$
-                                                        <?= number_format($item->precio, 2) ?></font>
-                                                </font>
-                                            </div>
-                                            <!-- Title -->
-                                            <a style="cursor:pointer" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
-                                                <h6>
-                                                    <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;"><?= $item->corto ?></font>
-                                                    </font>
-                                                </h6>
-                                            </a>
-                                            <!-- Category -->
-                                            <div class="category-title"> <span><a href="#">
-                                                        <font style="vertical-align: inherit;">
-                                                            <font style="vertical-align: inherit;">
-                                                                <?= $item->categoria ?>/<?= $item->subcategoria ?></font>
-                                                        </font>
-                                                    </a></span> </div>
-                                            <!-- Short Description -->
-                                            <div class="clearfix visible-xs-block"></div>
-                                            <p class="hidden-sm">
-                                                <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;"><?= $item->corta ?></font>
-                                                </font>
-                                            </p>
-                                            <!-- Ad Features -->
-                                            <ul class="add_info">
-                                                <!-- Contact Details -->
-                                                <li>
-                                                    <div class="custom-tooltip tooltip-effect-4">
-                                                        <span class="tooltip-item"><i class="fa fa-phone"></i></span>
-                                                        <div class="tooltip-content">
-                                                            <span class="label label-success">
-                                                                <font style="vertical-align: inherit;">
-                                                                    <font style="vertical-align: inherit;">+
-                                                                        <?= $item->whatsapp ?></font>
-                                                                </font>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <!-- Address -->
-                                                <li>
-                                                    <div class="custom-tooltip tooltip-effect-4">
-                                                        <span class="tooltip-item"><i class="fa fa-map-marker"></i></span>
-                                                        <div class="tooltip-content">
-
-                                                            <font style="vertical-align: inherit;">
-                                                                <font style="vertical-align: inherit;">
-                                                                    <?= $item->direccion ?>
-                                                                </font>
-                                                            </font>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-
-                                            </ul>
-                                            <!-- Ad History -->
-                                            <div style="margin-top:5px">
-
-                                                <div class="ad-meta"> <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="btn btn-success"><i class="fa fa-eye"></i>
-                                                        <font style="vertical-align: inherit;">
-                                                            <font style="vertical-align: inherit;">
-                                                                <?= translate("ver_info_lang"); ?></font>
-                                                        </font>
-                                                    </a> </div>
-                                                <?php if (isset($item->url)) {
-                                                        if ($item->url != '' || $item->url != null) { ?>
-                                                        <div class="ad-meta"> <a href="<?= $item->url ?>" class="btn btn-primary" style="margin-right:4px">Comprar</a> </div>
-                                                <?php }
-                                                    } ?>
-                                            </div>
-                                        </div>
-                                        <!-- Ad Desc End -->
-                                    </div>
-                                    <!-- Content Block End -->
-                                </div>
-                            <?php } ?>
-                        <?php } else { ?>
-                            <p class="text-center"><?= translate("n_resultados"); ?></p>
-                        <?php } ?>
                         <!-- Ads Archive End -->
                         <div class="clearfix"></div>
                         <!-- Pagination -->
-                        <div class="text-center margin-bottom-30">
-                            <ul class="pagination ">
-                                <?php echo $this->pagination->create_links(); ?>
-                            </ul>
+                        <div id="bodyBtnLoad" class="text-center margin-bottom-30">
+                            <button id="btnLoadAds" class="btn btn-success btn-sm margin-bottom-10" onclick="handleLoadAds()" type="button"><i id="loadindAds" class="fa fa-spinner fa-spin"></i>Cargar más</button>
                         </div>
                         <!-- Pagination End -->
                     </div>
@@ -225,7 +135,7 @@ if (empty($mastercat))
                 </div>
                 <!-- Middle Content Area  End -->
                 <!-- Left Sidebar -->
-                <div class="col-md-4 col-md-pull-8 col-sx-12">
+                <div class="col-md-3 col-md-pull-9 col-sx-12">
                     <!-- Sidebar Widgets -->
                     <div class="sidebar">
                         <!-- Panel group -->
@@ -321,7 +231,6 @@ if (empty($mastercat))
                                                 $i = 0;
                                                 ?>
                                                     <div class="panel-group" id="accordion2">
-
                                                         <?php foreach ($categories as $item) {
                                                             $i++; ?>
                                                             <?php if ($item->cate_anuncio_id == $mastercat) { ?>
@@ -437,7 +346,6 @@ if (empty($mastercat))
                                                                     foreach ($subcategoria as $result) {
                                                                         if (($result->cate_anuncio_id == $item->cate_anuncio_id)) {
 
-
                                                                     ?>
                                                                             <?php
                                                                             if ($result->subcate_id == $subcate) {
@@ -520,7 +428,6 @@ if (empty($mastercat))
                                                                             foreach ($subcategoria as $result) {
                                                                                 if ($result->cate_anuncio_id == $item->cate_anuncio_id) {
                                                                             ?>
-
                                                                                     <?php
                                                                                     if ($result->subcate_id == $subcate) {
                                                                                     ?>
@@ -537,23 +444,17 @@ if (empty($mastercat))
                                                                                     <?php
                                                                                     }
                                                                                     ?>
-
                                                                             <?php
                                                                                 }
                                                                             }
                                                                             ?>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
-
                                                     <?php
-
-
                                                         }
                                                     } ?>
-
                                         </ul>
                                         <input name="category" id="category" class="" type="hidden" value="">
 
@@ -665,66 +566,6 @@ if (empty($mastercat))
                                 <?php } ?>
                             <?php } ?>
                             <!-- Categories Panel End -->
-
-
-
-                            <!-- Featured Ads Panel -->
-                            <!--  <div class="panel panel-default">
-
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a>
-                                            Featured Ads
-                                        </a>
-                                    </h4>
-                                </div>
-
-                                <div class="panel-collapse">
-                                    <div class="panel-body recent-ads">
-                                        <div class="featured-slider-3">
-
-                                            <div class="item">
-                                                <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
-
-                                                    <div class="category-grid-box">
-
-                                                        <div class="category-grid-img">
-                                                            <img class="img-responsive" alt="" src="images/posting/car-3.jpg">
-
-                                                            <div class="user-preview">
-                                                                <a href="#"> <img src="images/users/2.jpg" class="avatar avatar-small" alt=""> </a>
-                                                            </div>
-                                                        <a href="#" class="view-details">View Details</a>
-                                                        </div>
-
-                                                        <div class="short-description">
-
-                                                            <div class="category-title"> <span><a href="#">Cars</a></span> </div>
-
-                                                            <h3><a title="" href="single-page-listing.html">2017 Honda Civic EX</a></h3>
-
-                                                            <div class="price">$18,200 <span class="negotiable">(Negotiable)</span></div>
-                                                        </div>
-
-                                                        <div class="ad-info">
-                                                            <ul>
-                                                                <li><i class="fa fa-map-marker"></i>London</li>
-                                                                <li><i class="fa fa-clock-o"></i> 15 minutes ago </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- Featured Ads Panel End -->
-                            <!-- Latest Ads Panel -->
-
-                            <!-- Latest Ads Panel End -->
                         </div>
                         <!-- panel-group end -->
                     </div>
@@ -736,25 +577,151 @@ if (empty($mastercat))
         </div>
         <!-- Main Container End -->
     </section>
-    <script>
-        //  $('#category').val('');
 
-        function cargar_input_2(params) {
+</div>
+<script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
+<script>
+    const countAds = parseInt('<?= $count_ads ?>');
+    const ads = <?= json_encode($all_anuncios) ?>;
+    const baseUrl = '<?= base_url() ?>';
+    const siteUrl = '<?= site_url('anuncio/') ?>';
+    let offset = 0;
+
+    const encodeB64Utf8Ads = (str) => {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    const decodeB64Utf8Ads = (str) => {
+        return decodeURIComponent(escape(atob(str)));
+    }
+
+    const main = () => {
+        const visible = countAds - ads.length;
+        $('#loadindAds').hide();
+        if (visible > 0) {
+            $('#bodyBtnLoad').show();
+        } else {
+            $('#bodyBtnLoad').hide();
+        }
+    }
+
+    main();
+
+    const handleLoadAds = () => {
+        $('#loadindAds').show();
+        $('#btnLoadAds').prop('disabled', true);
+        offset += 21;
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/load_ads') ?>",
+            data: {
+                offset
+            },
+            success: function(result) {
+                result = JSON.parse(result);
+                if (result.status == 200) {
+                    setTimeout(() => {
+                        loadAds(result.data);
+                        $('#loadindAds').hide();
+                        $('#btnLoadAds').prop('disabled', false);
+                    }, 3000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un problema vuelva a intentarlo',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
+
+    const seo_url = function($text) {
+        return $text.toString() // Convert to string
+            .normalize('NFD') // Change diacritics
+            .replace(/[\u0300-\u036f]/g, '') // Remove illegal characters
+            .replace(/\s+/g, '-') // Change whitespace to dashes
+            .toLowerCase() // Change to lowercase
+            .replace(/&/g, '-') // Replace ampersand
+            .replace(/[^a-z0-9\-]/g, '') // Remove anything that is not a letter, number or dash
+            .replace(/-+/g, '-') // Remove duplicate dashes
+            .replace(/^-*/, '') // Remove starting dashes
+            .replace(/-*$/, '');
+    }
+
+    const loadAds = (data = []) => {
+        if (data.length > 0) {
+            let stringAds = '';
+            data.forEach(item => {
+                const linkPage = siteUrl + '/' + seo_url(item.titulo).toLowerCase() + '/' + item.anuncio_id;;
+                stringAds += ' <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">';
+                stringAds += '<div class="category-grid-box-1">';
+                stringAds += '<a style="cursor:pointer" href="' + linkPage + '">';
+                stringAds += ' <div class="image">';
+                if (item.anuncio_photo) {
+                    stringAds += '<img alt="Tour Package" src="' + baseUrl + item.anuncio_photo + '" class="img-responsive">';
+                } else {
+                    stringAds += '<img alt="Tour Package" src="' + baseUrl + 'assets/image-no-found.jpg" class="img-responsive">';
+                }
+                if (item.destacado == 1) {
+                    stringAds += '<div class="ribbon popular">Destacado</div>';
+                }
+                stringAds += ' <div class="price-tag">';
+                stringAds += '<div class="price"><span>$' + parseFloat(item.precio).toFixed(2) + '</span></div>';
+                stringAds += '</div>';
+                stringAds += ' </div>';
+                stringAds += '</a>';
+                stringAds += ' <div class="short-description-1 clearfix">';
+                stringAds += '<div class="category-title"> <span>' + item.categoria + ' / ' + item.subcategoria + '</span> </div>';
+                stringAds += ' <p><a title="" href="' + linkPage + '">' + item.corto + '</a></p>';
+                stringAds += ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' + item.whatsapp + ' </span> ';
+                if (item.url !== undefined) {
+                    if (item.url != '' || item.url != null) {
+                        stringAds += '<a href="' + item.url + '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                    }
+                }
+                stringAds += '</div>';
+                stringAds += '<div class="ad-info-1">';
+                stringAds += ' <ul>';
+                stringAds += '  <li> <i class="fa fa-map-marker"></i>' + item.ciudad + ' </li>';
+                stringAds += ' <li> <i class="fa fa-clock-o"></i>' + item.fecha + ' </li>';
+                stringAds += ' </ul>';
+                stringAds += '</div>';
+                stringAds += ' </div>';
+                stringAds += ' </div>';
+            });
+            $('#bodyAds').append(stringAds);
+        }
+    }
+    //  $('#category').val('');
+
+    /*     function cargar_input_2(params) {
             $('#category').val(params);
             $("#buscar_categoria").submit();
-        }
-    </script>
-    <style>
-        .banner2 {
-            padding-top: 107px !important
-        }
+        } */
+</script>
+<style>
+    .banner2 {
+        padding-top: 107px !important
+    }
 
-        .recent-ads .recent-ads-list-image-inner {
-            background-color: rgba(0, 0, 0, 0.0) !important;
-            display: block;
-            height: 60px;
-            margin: 0 16px 0 0;
-            position: relative;
-            width: 100px;
-        }
-    </style>
+    .recent-ads .recent-ads-list-image-inner {
+        background-color: rgba(0, 0, 0, 0.0) !important;
+        display: block;
+        height: 60px;
+        margin: 0 16px 0 0;
+        position: relative;
+        width: 100px;
+    }
+
+    .section-padding {
+        padding: 30px 30px;
+    }
+</style>
