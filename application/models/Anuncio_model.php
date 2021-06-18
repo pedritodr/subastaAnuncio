@@ -556,8 +556,7 @@ class Anuncio_model extends CI_Model
                 $where_like = "( anuncio.titulo LIKE '%" . $criteria . "%'"
                     . " OR anuncio.descripcion LIKE '%" . $criteria . "%'"
                     . " OR cate_anuncio.nombre LIKE '%" . $criteria . "%'"
-                    . " OR sub_categoria.nombre LIKE '%" . $criteria . "%'"
-                    . " OR categoria.descripcion LIKE '%" . $criteria . "%'";
+                    . " OR sub_categoria.nombre LIKE '%" . $criteria . "%'";;
                 $where_like .= " )";
 
 

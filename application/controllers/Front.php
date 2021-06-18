@@ -1892,19 +1892,24 @@ class Front extends CI_Controller
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Cate_anuncio_model', 'category');
 
+        $search = $this->input->get('search');
+        $category = $this->input->get('category');
+        $subcategory = $this->input->get('subcategory');
+        $city = $this->input->get('city');
+
         $categories = $this->category->get_all();
 
         foreach ($categories as $item) {
-
+            $item->subCategories = $this->category->get_by_Cate_anuncio_id($item->cate_anuncio_id);
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
-        $data['subcate'] = $subcate;
+
         $data['categories'] = $categories;
 
         $contador = count($this->anuncio->get_anuncios());
 
         //   $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination(21, 0);
-        $all_anuncios = $this->anuncio->searchFull(null, null, null, null, 21, 0);
+        $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, 0);
 
         foreach ($all_anuncios as $item) {
 
@@ -1943,10 +1948,6 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['count_ads'] = $contador;
-
-        $subcategoria = $this->category->get_all_subcate();
-
-        $data['subcategoria'] = $subcategoria;
 
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
 

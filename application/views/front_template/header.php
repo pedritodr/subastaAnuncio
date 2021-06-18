@@ -188,7 +188,7 @@
                                         <i></i></a>
                                 </li>
                                 <li>
-                                    <a href="<?= site_url('anuncios/page') ?>"> <?= translate('Anuncios_lang') ?>
+                                    <a href="<?= site_url('anuncios') ?>"> <?= translate('Anuncios_lang') ?>
                                         <i></i></a>
                                 </li>
                                 <?php if (!$this->session->userdata('user_id')) { ?>
