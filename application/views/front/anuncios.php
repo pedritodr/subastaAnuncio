@@ -32,8 +32,8 @@ if (empty($mastercat))
                         <option value="0">TODAS LAS CIUDADES </option>
                         <?php if ($all_ciudad) { ?>
                             <?php foreach ($all_ciudad as $item) { ?>
-                                <?php if ($this->session->userdata('session_ciudad')) { ?>
-                                    <option <?php if ($this->session->userdata('session_ciudad') == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php if (isset($city)) { ?>
+                                    <option <?php if ($city == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php  } else { ?>
                                     <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
                                 <?php } ?>
@@ -115,6 +115,8 @@ if (empty($mastercat))
                                     echo ' </div>';
                                     echo ' </div>';
                                 }
+                            } else {
+                                echo '<h1 class="text-center">No hay resultados</h1>';
                             }
                             ?>
                         </div>
@@ -146,15 +148,15 @@ if (empty($mastercat))
                                 <?php if ($categories) {
                                     foreach ($categories as $category) {
                                         echo  '<div class="panel panel-default">';
-                                        echo '<div id="category_' . $category->cate_anuncio_id . '" role="tab" class="panel-heading">';
-                                        echo '<h4 id="' . $category->cate_anuncio_id . '"  class="panel-title" onclick="handleSearch(this)" > <a aria-controls="collapse_' . $category->cate_anuncio_id . '"  aria-expanded="false" href="#collapse_' . $category->cate_anuncio_id . '" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed"> <i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i> ' . $category->nombre . '</a> </h4>';
+                                        echo '<div id="body_' . $category->cate_anuncio_id . '" role="tab" class="panel-heading">';
+                                        echo '<h4 id="category_' . $category->cate_anuncio_id . '"  class="panel-title" onclick="handleSearch(this)" > <a id="ancla_' . $category->cate_anuncio_id . '" aria-controls="collapse_' . $category->cate_anuncio_id . '"  aria-expanded="false" href="#collapse_' . $category->cate_anuncio_id . '" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed"> <i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i> ' . $category->nombre . '</a> </h4>';
                                         echo ' </div>';
-                                        echo '<div aria-labelledby="category_' . $category->cate_anuncio_id . '" role="tabpanel" class="panel-collapse collapse" id="collapse_' . $category->cate_anuncio_id . '" aria-expanded="false" style="height: 0px;">';
+                                        echo '<div aria-labelledby="body_' . $category->cate_anuncio_id . '" role="tabpanel" class="panel-collapse collapse" id="collapse_' . $category->cate_anuncio_id . '" aria-expanded="false" style="height: 0px;">';
                                         echo '<div class="panel-body">';
                                         if (count($category->subCategories) > 0) {
                                             echo '<ul>';
                                             foreach ($category->subCategories as $sub) {
-                                                echo '<li>';
+                                                echo '<li id="subCategory_' . $sub->subcate_id . '" style="cursor:pointer" onclick="handleSearch(this)">';
                                                 echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
                                                 echo '</li>';
                                             }
@@ -242,14 +244,14 @@ if (empty($mastercat))
                                             <?php foreach ($recientes as $item) { ?>
                                                 <!-- Ads -->
                                                 <div class="recent-ads-list">
-                                                    <div class="recent-ads-container">
-                                                        <div class="recent-ads-list-image">
-                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>" class="recent-ads-list-image-inner">
+
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                                            <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>">
                                                                 <img src="<?= base_url($item->anuncio_photo) ?>" alt="">
-                                                            </a><!-- /.recent-ads-list-image-inner -->
+                                                            </a>
                                                         </div>
-                                                        <!-- /.recent-ads-list-image -->
-                                                        <div class="recent-ads-list-content">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                                             <h4 class="recent-ads-list-title text-justify">
                                                                 <?php if ($item->titulo_corto) { ?>
                                                                     <a href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id); ?>"><?= $item->titulo_corto ?></a>
@@ -264,11 +266,8 @@ if (empty($mastercat))
                                                             <div class="recent-ads-list-price">
                                                                 $ <?= number_format($item->precio, 2) ?>
                                                             </div>
-                                                            <!-- /.recent-ads-list-price -->
                                                         </div>
-                                                        <!-- /.recent-ads-list-content -->
                                                     </div>
-                                                    <!-- /.recent-ads-container -->
                                                 </div>
                                             <?php } ?>
                                         </div>
@@ -298,11 +297,26 @@ if (empty($mastercat))
     const searchParams = new URLSearchParams(window.location.search);
     const search = searchParams.get('search');
     const category = searchParams.get('category');
-    const subcategory = searchParams.get('subcategory');
+    const subcategory = searchParams.get('subCategory');
     const city = searchParams.get('city');
-    console.log(search)
-    console.log(category)
     let offset = 0;
+
+    $(() => {
+        if (category) {
+            $('#collapse_' + category).collapse({
+                toggle: true
+            });
+            $('#category_' + category).css('color', '#8c1822');
+        } else {
+            $('#category_0').css('color', '#8c1822');
+        }
+        if (subcategory) {
+            $('#subCategory_' + subcategory).css('color', '#8c1822');
+        }
+        if (search) {
+            $('#textSearch').val(search)
+        }
+    })
 
     const encodeB64Utf8Ads = (str) => {
         return btoa(unescape(encodeURIComponent(str)));
@@ -313,11 +327,9 @@ if (empty($mastercat))
     }
 
     const handleSearch = (ev) => {
-        console.log(ev.id)
-        return
         let parents = [];
+        let control = false;
         const textSearch = $('#textSearch').val();
-        console.log(textSearch)
         const cityId = $('#cityId').val();
         if (textSearch !== '') {
             parents.push('search=' + textSearch);
@@ -325,15 +337,55 @@ if (empty($mastercat))
         if (cityId > 0) {
             parents.push('city=' + cityId);
         }
+
+        if (ev !== undefined && ev.id) {
+            let arrayParams = ev.id.split('_');
+            if (arrayParams[0] === 'category') {
+                control = true;
+                parents.push('category=' + arrayParams[1]);
+            } else {
+                parents.push('subCategory=' + arrayParams[1]);
+            }
+        }
+
+        if (category) {
+            if (category !== '0') {
+                const pCategory = parents.find(p => {
+                    const attr = p.split('=');
+                    return attr[0] === 'category';
+                });
+                if (pCategory === undefined) {
+                    parents.push('category=' + category);
+                }
+            }
+        }
+        if (!control) {
+            if (subcategory) {
+                if (category !== '0') {
+                    const pSubcategory = parents.find(p => {
+                        const attr2 = p.split('=');
+                        return attr2[0] === 'subCategory';
+                    });
+                    if (pSubcategory === undefined) {
+                        parents.push('subCategory=' + subcategory);
+                    }
+                }
+            }
+        }
         let params = [];
         parents.forEach((element, index) => {
             if (index == 0) {
-                params.push('?' + element);
+                params.unshift('?' + element);
             } else {
                 params.push('&' + element);
             }
         });
-        window.location = '<?= site_url('anuncios') ?>' + params;
+        let stringParams = '';
+        params.forEach(element => {
+            stringParams += element;
+        });
+        // console.log(stringParams)
+        window.location = '<?= site_url('anuncios') ?>' + stringParams;
     }
 
     const main = () => {
@@ -344,19 +396,29 @@ if (empty($mastercat))
         } else {
             $('#bodyBtnLoad').hide();
         }
+
+
+
     }
+
 
     main();
 
     const handleLoadAds = () => {
         $('#loadindAds').show();
         $('#btnLoadAds').prop('disabled', true);
+        const textSearch = $('#textSearch').val();
+        const cityId = $('#cityId').val();
         offset += 21;
         $.ajax({
             type: 'POST',
             url: "<?= site_url('front/load_ads') ?>",
             data: {
-                offset
+                offset,
+                textSearch,
+                cityId,
+                category,
+                subcategory
             },
             success: function(result) {
                 result = JSON.parse(result);
@@ -464,5 +526,12 @@ if (empty($mastercat))
 
     .section-padding {
         padding: 30px 30px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1279px) {
+        .sidebar #accordion {
+            margin-top: 0px;
+        }
+
     }
 </style>

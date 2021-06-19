@@ -1884,7 +1884,6 @@ class Front extends CI_Controller
     }
     public function anuncios_index()
     {
-        $subcate = "";
         $this->load->model('Banner_model', 'banner');
         $this->load->model('Pais_model', 'pais');
         $all_banners = $this->banner->get_all(['menu_id' => 3]); //todos los banners
@@ -1893,9 +1892,19 @@ class Front extends CI_Controller
         $this->load->model('Cate_anuncio_model', 'category');
 
         $search = $this->input->get('search');
-        $category = $this->input->get('category');
-        $subcategory = $this->input->get('subcategory');
-        $city = $this->input->get('city');
+        $category = (int)$this->input->get('category');
+        if ($category == 0) {
+            $category = null;
+        }
+        $subcategory = (int)$this->input->get('subCategory');
+        if ($subcategory == 0) {
+            $subcategory = null;
+        }
+        $city = (int)$this->input->get('city');
+        $data['city'] = $city;
+        if ($city == 0) {
+            $city = null;
+        }
 
         $categories = $this->category->get_all();
 
@@ -1906,7 +1915,8 @@ class Front extends CI_Controller
 
         $data['categories'] = $categories;
 
-        $contador = count($this->anuncio->get_anuncios());
+
+        $contador = count($this->anuncio->searchFull($search, $city, $subcategory, $category, null, null));
 
         //   $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination(21, 0);
         $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, 0);
@@ -1961,7 +1971,11 @@ class Front extends CI_Controller
         try {
             $this->load->model('Anuncio_model', 'anuncio');
             $offset = (int)$this->input->post('offset');
-            $all_anuncios = $this->anuncio->searchFull(null, null, null, null, 21, $offset);
+            $search = $this->input->post('textSearch');
+            $city = (int)$this->input->post('cityId');
+            $subcategory = (int)$this->input->post('subcategory');
+            $category = (int)$this->input->post('category');
+            $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, $offset);
 
             foreach ($all_anuncios as $item) {
                 if (!file_exists($item->anuncio_photo)) {

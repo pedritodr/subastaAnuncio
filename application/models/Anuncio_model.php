@@ -520,7 +520,8 @@ class Anuncio_model extends CI_Model
         }
 
         $criterias = $cadena;
-        //var_dump($criterias);exit();
+        /*  var_dump($criterias);
+        die(); */
         $result = [];
         //$where_like = false;
         $or = false;
