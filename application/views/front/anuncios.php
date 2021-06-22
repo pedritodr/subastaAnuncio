@@ -139,40 +139,45 @@ if (empty($mastercat))
                         <!-- Panel group -->
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <!-- Categories Panel -->
-                            <div aria-multiselectable="true" role="tablist" id="accordion" style="background:#fff" class="panel-group">
-                                <div class="panel panel-default">
-                                    <div id="categoryAll" role="tab" class="panel-heading">
-                                        <h4 id="category_0" class="panel-title" onclick="handleSearch(this)" style="cursor:pointer;color:#2a3681"> <a aria-controls="collapseOne" aria-expanded="false" href="#collapseOne" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed"><i style="color:#8c1822ab" class="fa fa-tags"></i> Todas las categorías </a> </h4>
+                            <div class="panel panel-default">
+                                <!-- Heading -->
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <!-- Title -->
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                            <i class="more-less glyphicon glyphicon-plus"></i>
+                                            Categorias
+                                        </a>
+                                    </h4>
+                                    <!-- Title End -->
+                                </div>
+                                <!-- Content -->
+                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body categories">
+                                        <ul>
+                                            <?php if ($categories) {
+                                                echo '<li>';
+                                                echo '<a id="category_0"  onclick="handleSearch(this)" >Todas las categorías </a>';
+                                                echo '</li>';
+                                                foreach ($categories as $category) {
+                                                    echo '<li>';
+                                                    echo '<a id="category_' . $category->cate_anuncio_id . '"  onclick="handleSearch(this)" ><i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i> ' . $category->nombre . ' </a>';
+                                                    echo '</li>';
+                                                    if (count($category->subCategories) > 0) {
+                                                        echo '<ul>';
+                                                        foreach ($category->subCategories as $sub) {
+                                                            echo '<li><a id="subCategory_' . $sub->subcate_id . '" onclick="handleSearch(this)" style="margin-left:20px;cursor:pointer">';
+                                                            echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
+                                                            echo '</a></li>';
+                                                        }
+                                                        echo '</ul>';
+                                                    }
+                                                }
+                                            } ?>
+
+                                        </ul>
                                     </div>
                                 </div>
-                                <?php if ($categories) {
-                                    foreach ($categories as $category) {
-                                        echo  '<div class="panel panel-default">';
-                                        echo '<div id="body_' . $category->cate_anuncio_id . '" role="tab" class="panel-heading">';
-                                        echo '<h4 id="category_' . $category->cate_anuncio_id . '"  class="panel-title" onclick="handleSearch(this)" > <a id="ancla_' . $category->cate_anuncio_id . '" aria-controls="collapse_' . $category->cate_anuncio_id . '"  aria-expanded="false" href="#collapse_' . $category->cate_anuncio_id . '" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed"> <i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i> ' . $category->nombre . '</a> </h4>';
-                                        echo ' </div>';
-                                        echo '<div aria-labelledby="body_' . $category->cate_anuncio_id . '" role="tabpanel" class="panel-collapse collapse" id="collapse_' . $category->cate_anuncio_id . '" aria-expanded="false" style="height: 0px;">';
-                                        echo '<div class="panel-body">';
-                                        if (count($category->subCategories) > 0) {
-                                            echo '<ul>';
-                                            foreach ($category->subCategories as $sub) {
-                                                echo '<li id="subCategory_' . $sub->subcate_id . '" style="cursor:pointer" onclick="handleSearch(this)">';
-                                                echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
-                                                echo '</li>';
-                                            }
-                                            echo '</ul>';
-                                        } else {
-                                            echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> No tiene subcategorías';
-                                        }
-
-                                        echo '</div>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                    }
-                                } ?>
-
-
-
                             </div>
                             <!-- Featured Ads -->
                             <?php if ($destacados) { ?>
@@ -303,7 +308,7 @@ if (empty($mastercat))
 
     $(() => {
         if (category) {
-            $('#collapse_' + category).collapse({
+            $('#collapseOne').collapse({
                 toggle: true
             });
             $('#category_' + category).css('color', '#8c1822');

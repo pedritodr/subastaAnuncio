@@ -258,11 +258,21 @@ Designed and Development by: ScriptsBundle
                 nav: true
             },
             600: {
-                items: 2,
+                items: 3,
                 nav: true
             },
             1000: {
                 items: 4,
+                nav: true,
+                loop: false
+            },
+            1440: {
+                items: 5,
+                nav: true,
+                loop: false
+            },
+            1900: {
+                items: 7,
                 nav: true,
                 loop: false
             }

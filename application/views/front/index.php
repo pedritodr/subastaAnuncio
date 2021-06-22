@@ -334,64 +334,76 @@
          <!-- =-=-=-=-=-=-= Popular Categories =-=-=-=-=-=-= -->
          <section class="section-padding gray">
             <!-- Main Container -->
-            <div class="container">
+            <div class="container-fluid">
                <!-- Row -->
-               <div class="row">
+               <div class="row" style="padding-left:30px;padding-right:30px">
                   <!-- Heading Area -->
                   <div class="heading-panel">
                      <div class="col-xs-12 col-md-12 col-sm-12">
-                        <h3 class="main-title text-left">
-                           <?= translate('categorie_popular_lang') ?>
-
-                        </h3>
+                        <h3 class="main-title text-center">Destacados</h3>
                      </div>
                   </div>
                   <div class="row">
-                     <!-- Middle Content Box -->
-                     <?= form_open_multipart("search_categoria_anuncios", array('class' => 'search-form', 'id' => 'buscar_categoria')); ?>
-
-                     <?php
-                     $i = -1;
-                     $color = "";
-                     $j = -1;
-                     foreach ($all_cate_anuncio as $item) {
-                        $j++;
-                        $i++;
-
-                     ?>
-                        <!-- <li><a href="#"><i><img  class="img-responsive img-rounded" src ="<?= base_url($item->photo); ?>"></i> <?= $item->nombre ?> <span class="count">( 0 )</span></a></li>-->
-                        <?php
-                        if ($i == "4") {
-                        ?>
-                        <?php
-                           $i = 0;
-                        }
-
-                        ?>
-                        <div class="col-md-3" style="background-color:white; border-bottom: 10px solid #F0F0F0; border-right: 5px solid #F0F0F0;  border-left: 5px solid #F0F0F0;">
-                           <table class="table-hover" style="width:100%; background-color:white; ">
-                              <tr>
-                                 <td>
-                                    <a onclick="cargar_input('<?= $item->cate_anuncio_id ?>')">
-                                       <center><img style="height:128px; width:128px; " class="" src="<?= base_url($item->photo); ?>"> </center>
-                                       <center>
-                                          <?= $item->nombre ?> <span style="color:#8f8889;"><br>( <?= $item->count ?> ) </span>
-                                       </center>
-                                    </a>
-
-
-                                 </td>
-
-                              </tr>
-                           </table>
+                     <div class="home-category-slider">
+                        <div class="container-fluid no-padding">
+                           <div class="category-slider">
+                              <?php if ($all_anuncios) {
+                                 foreach ($all_anuncios as $item) {
+                                    echo ' <div class="item">';
+                                    echo ' <div class="col-lg-12">';
+                                    echo '<div class="category-grid-box-1">';
+                                    echo '<a style="cursor:pointer" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">';
+                                    echo ' <div class="image">';
+                                    if (file_exists($item->anuncio_photo)) {
+                                       if (strpos($item->anuncio_photo, 'uploads') !== false) {
+                                          echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive">';
+                                       } else {
+                                          echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive">';
+                                       }
+                                    } else {
+                                       echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive">';
+                                    }
+                                    if ($item->destacado == 1) {
+                                       echo '<div class="ribbon popular">Destacado</div>';
+                                    }
+                                    echo ' <div class="price-tag">';
+                                    echo '<div class="price"><span>$' . number_format($item->precio, 2) . '</span></div>';
+                                    echo '</div>';
+                                    echo ' </div>';
+                                    echo '</a>';
+                                    echo ' <div class="short-description-1 clearfix">';
+                                    echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
+                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
+                                    echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
+                                    if (isset($item->url)) {
+                                       if ($item->url != '' || $item->url != null) {
+                                          echo '<a href="' . $item->url . '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                                       }
+                                    }
+                                    echo '</div>';
+                                    echo '<div class="ad-info-1">';
+                                    echo ' <ul>';
+                                    echo '  <li> <i class="fa fa-map-marker"></i>' . $item->ciudad . ' </li>';
+                                    echo ' </ul>';
+                                    echo '</div>';
+                                    echo ' </div>';
+                                    echo ' </div>';
+                                    echo ' </div>';
+                                 }
+                                 echo ' <div class="item">';
+                                 echo ' <div class="col-lg-12">';
+                                 echo '<div class="category-grid-5" style="background:#34495e;min-height:406.84px;">';
+                                 echo '<a href="' . site_url('anuncios') . '" class="btn btn-lg btn-clean">Ver mas</a>';
+                                 echo '</div>';
+                                 echo '</div>';
+                                 echo '</div>';
+                              } else {
+                                 echo '<h1 class="text-center">No hay resultados</h1>';
+                              }
+                              ?>
+                           </div>
                         </div>
-
-                     <?php
-                     } ?>
-
-
-                     <input name="category" id="category" class="" type="hidden" value="">
-                     <?= form_close(); ?>
+                     </div>
                      <!-- Middle Content Box End -->
                   </div>
                </div>

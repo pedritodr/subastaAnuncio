@@ -92,6 +92,19 @@ class Front extends CI_Controller
             $item->all_subastas = $subastas;
         }
 
+        $anuncios = $this->anuncio->searchFull(null, null, null, null, 100, 0);
+        shuffle($anuncios);
+        $all_anuncios =  array_slice($anuncios, 0, 21);
+        foreach ($all_anuncios as $item) {
+            $nombre = strlen($item->titulo);
+            if ($nombre > 19) {
+                $item->corto = substr($item->titulo, 0, 17) . "...";
+            } else {
+
+                $item->corto = $item->titulo;
+            }
+        }
+        $data['all_anuncios'] = $all_anuncios;
         $data['all_categorias'] = $all_categorias;
         $all_subastas = $this->subasta->get_subastas();
 

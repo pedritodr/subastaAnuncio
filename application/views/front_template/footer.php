@@ -906,7 +906,11 @@ if ($pos === false) {
             autoplay: true,
             autoHeight: false
          });
+
+
       })(jQuery);
+
+
    $('#btn_modal_membresia').click(function() {
       if ($('#condiciones_membresia').prop('checked') == true) {
          $('#btn_modal_membresia').hide();
