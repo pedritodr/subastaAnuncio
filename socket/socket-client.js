@@ -1,5 +1,5 @@
 const socket = io('http://localhost:8081');
-console.log(socket);
+console.log(sessionUser);
 socket.on('connect', () => {
     console.log('online');
 })
@@ -12,4 +12,4 @@ socket.on('disconnect', () => {
 const payload = {
 
 }
-socket.emit('send-puja', { message, uid: id });
+socket.emit('send-puja', { payload });

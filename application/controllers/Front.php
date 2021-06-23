@@ -21,7 +21,7 @@ class Front extends CI_Controller
         $this->load->library('recaptcha');
         $this->load->library('pagination');
         $this->load->helper("mabuya");
-
+        header('Access-Control-Allow-Origin');
         @session_start();
         $this->session->set_userdata('lang_subasta', 'es');
         $this->load_language();

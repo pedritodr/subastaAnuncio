@@ -109,7 +109,114 @@
 <!-- Back To Top -->
 <a href="#0" class="cd-top">Top</a>
 <!-- =-=-=-=-=-=-= Inicio Modal fotos =-=-=-=-=-=-= -->
-
+<div style="overflow: scroll !important" class="quick-view-modal modalopen" id="modalDetailSubasta" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog modal-lg ad-modal">
+      <button class="close close-btn popup-cls" aria-label="Close" data-dismiss="modal" type="button"> <i class="fa-times fa"></i> </button>
+      <div class="modal-content single-product">
+         <input id="detalle_subasta_id" type="hidden">
+         <div class="diblock">
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+               <div class="flexslider single-page-slider">
+                  <div class="flex-viewport">
+                     <div id="myCarousel" class="carousel slide2" data-interval="3000" data-ride=" carousel">
+                        <ol class="carousel-indicators">
+                        </ol>
+                        <div id="galeria_main" class="carousel-inner">
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class=" col-sm-6 col-lg-6 col-xs-12">
+               <div class="summary entry-summary">
+                  <div class="ad-preview-details">
+                     <a href="#">
+                        <h4 id="titulo"></h4>
+                     </a>
+                     <div class="overview-price">
+                        <div class="row">
+                           <div class="col-md-4">
+                              <span style="margin-top:5px">
+                                 <h5 style="font-size:14px !important"><?= translate('precios_lang') ?> inicial</h5>
+                                 <h5 style="font-size:14px !important" id="precio"> </h5>
+                              </span>
+                           </div>
+                           <div id="body_valor_alto" class="col-md-8">
+                              <span style="color:#fff" class="label label-success"><?= translate("valor_alto_lang"); ?> <h6 style="font-size:14px !important" id="valor_alto_modal" style="color:#fff"></h6></span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="overview-price"></div>
+                     <h6><strong><?= translate('descripcion_lang') ?></strong></h6>
+                     <p style="font-size:10px !important" id="descripcion"></p>
+                     <ul class="ad-preview-info col-md-12 col-sm-12">
+                        <li id="li_valor_entrada">
+                           <span><?= translate('valor_pagado_lang') ?></span>
+                           <p id="valor_entrada"></p>
+                        </li>
+                        <li>
+                           <span><?= translate('date_cierre_lang') ?></span>
+                           <p id="fecha_cierre"></p>
+                        </li>
+                     </ul>
+                     <div style="display:none" id="body_cronometro" style="margin-left:41px; margin-bottom:5px" class="col-md-12">
+                        <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                           <div class="timer conte">
+                              <span class="days a"></span>
+                           </div>
+                           <div class="smalltext"><?= translate("dias_lang"); ?></div>
+                        </div>
+                        <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                           <div class="timer conte">
+                              <span class="hours b"></span>
+                           </div>
+                           <div class="smalltext"><?= translate("horas_lang"); ?></div>
+                        </div>
+                        <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                           <div class="timer conte">
+                              <span class="minutes c"></span>
+                           </div>
+                           <div class="smalltext"><?= translate("minutos_lang"); ?></div>
+                        </div>
+                        <div style="margin-left:-19px" class="timer col-md-3 col-xs-3">
+                           <div class="timer conte">
+                              <span class="seconds d"></span>
+                           </div>
+                           <div class="smalltext"><?= translate("segundos_lang"); ?></div>
+                        </div>
+                     </div>
+                     <br>
+                     <?php if ($this->session->userdata('user_id')) { ?>
+                        <div class="row" id="btn_modal_detalle_subasta">
+                           <div style="margin-top:5% !important" id="body_entrar_subasta" class="col-md-12">
+                              <button id="btn_entrar_subasta" onclick="" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("entrar_subasta_lang"); ?></button>
+                              <br>
+                           </div>
+                           <div style="margin-top:5% !important" id="body_pujar" class="col-md-12">
+                              <button id="btn_pujar" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("pujar_lang"); ?></button>
+                           </div>
+                           <div style="margin-top:5% !important" style="display:none" id="body_comprar_inversa" class="col-md-12">
+                              <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
+                           </div>
+                        </div>
+                     <?php } else { ?>
+                        <div style="margin-top:5% !important" style="display:none" id="body_comprar_inversa" class="col-md-12">
+                           <button id="btn_comprar_inversa" onclick="" class="btn btn-block btn-success"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> <?= translate("comprar_inversa_lang"); ?></button>
+                        </div>
+                        <div style="margin-top:5% !important" id="body_login_subasta_entrar" class="col-md-12">
+                           <button id="btn_login_subasta" onclick="login(2)" class="btn btn-block btn-success"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= translate("login_lang"); ?></button>
+                        </div>
+                     <?php } ?>
+                  </div>
+               </div>
+               <!-- .summary -->
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 
 <div id="modal_imagen" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog">
@@ -864,6 +971,8 @@ if ($pos === false) {
 <script src="<?= base_url('assets_front/js/color-switcher.js') ?>"></script>
 <!-- Template Core JS -->
 <script src="<?= base_url('assets_front/js/custom.js') ?>"></script>
+<script defer src='http://localhost:8081/socket.io/socket.io.js'></script>
+<script defer src="<?= base_url('socket/socket-client.js') ?>"></script>
 <script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
 <!-- MasterSlider -->
 <script src="<?= base_url('assets_front/js/masterslider/masterslider.min.js') ?>"></script>
@@ -885,6 +994,7 @@ if ($pos === false) {
          return decodeURIComponent(escape(atob(str)));
       }
       (function($) {
+
          "use strict";
          var slider = new MasterSlider();
 
@@ -927,6 +1037,7 @@ if ($pos === false) {
    let session_subasta = null;
    let input_valor = 0;
    let membresia_seleccionada = null;
+   const sessionUser = "<?= $this->session->userdata('user_id') ?>";
 
    function payment() {
       $(".btn-theme").css("background-color", "#8c1822");
@@ -2002,6 +2113,12 @@ if ($pos === false) {
 
       $("#modal_detalle").modal("show");
 
+   }
+
+   const loadDetailSubasta = (object) => {
+      object = JSON.parse(decodeB64Utf8(object));
+      console.log(object)
+      $('#modalDetailSubasta').modal('show');
    }
 
    const handleTypePayment = () => {
