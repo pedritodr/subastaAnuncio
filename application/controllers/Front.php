@@ -541,8 +541,7 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
 
         $all_anuncios = $this->anuncio->get_all_anuncios_id($anuncio_id);
-        var_dump($all_anuncios);
-        die();
+
         if ($all_anuncios) {
             $views = $all_anuncios->views + 1;
             $this->anuncio->update($anuncio_id, ['views' =>  $views]);
