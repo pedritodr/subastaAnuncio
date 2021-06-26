@@ -49,10 +49,10 @@ class Anuncio_model extends CI_Model
 
         $this->db->select('anuncio.views,anuncio.url,anuncio.destacado,cate_anuncio.cate_anuncio_id,user.photo as photo_perfil,user.email,user.phone,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion,anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
         $this->db->from('anuncio');
-        $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id');
-        $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id');
-        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id');
-        $this->db->join('user', 'user.user_id = anuncio.user_id');
+        $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id', 'left');
+        $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id', 'left');
+        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id', 'left');
+        $this->db->join('user', 'user.user_id = anuncio.user_id', 'left');
         $this->db->where('anuncio.anuncio_id', $id);
         $query = $this->db->get();
         return $query->row();
