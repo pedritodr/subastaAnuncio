@@ -92,7 +92,7 @@ class Front extends CI_Controller
             $item->all_subastas = $subastas;
         }
 
-        $anuncios = $this->anuncio->searchFull(null, null, null, null, 100, 0);
+        $anuncios = $this->anuncio->searchFull(null, null, null, null, 42, 0);
         shuffle($anuncios);
         $all_anuncios =  array_slice($anuncios, 0, 21);
         foreach ($all_anuncios as $item) {

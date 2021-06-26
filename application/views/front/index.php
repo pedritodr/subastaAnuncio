@@ -356,12 +356,12 @@
                                     echo ' <div class="image">';
                                     if (file_exists($item->anuncio_photo)) {
                                        if (strpos($item->anuncio_photo, 'uploads') !== false) {
-                                          echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive">';
+                                          echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive"  loading="lazy">';
                                        } else {
-                                          echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive">';
+                                          echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive"  loading="lazy">';
                                        }
                                     } else {
-                                       echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive">';
+                                       echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive"  loading="lazy">';
                                     }
                                     if ($item->destacado == 1) {
                                        echo '<div class="ribbon popular">Destacado</div>';
