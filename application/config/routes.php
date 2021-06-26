@@ -160,7 +160,7 @@ for ($i = 0; $i < 30; $i++) {
     $page6 += 8;
 }
 
-$query = $db->where(['is_active' => 1, 'is_delete' => 0])->get('anuncio');
+$query = $db->where(['is_delete' => 0])->get('anuncio');
 $result = $query->result();
 foreach ($result as $row) {
     $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo))) . '-' . $row->anuncio_id] = 'front/detalle_anuncio/' . $row->anuncio_id;
