@@ -681,13 +681,13 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Nombre del banco <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->name_bank : '' ?>" id="bankName" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->name_bank : "" ?>" id="bankName" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Número de cuenta <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->number_account : '' ?>" name="numberAcount" id="numberAccount" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->number_account : "" ?>" id="numberAccount" class="form-control margin-bottom-20">
                                         </div>
-                                        <div class="col-lg-6 margin-bottom-20">
+                                        <div class="col-lg-6 col-xs-12 margin-bottom-20">
                                             <label> Tipo de cuenta <span class="color-red">*</span></label>
                                             <select id="typeAccount" class="form-control">
                                                 <option <?php if ($bank_data) {
