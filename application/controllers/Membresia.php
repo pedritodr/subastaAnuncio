@@ -141,6 +141,7 @@ class Membresia extends CI_Controller
                 $this->tree_node->create($data_node);
             } else {
                 $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
+
                 if ($node_parent) {
                     $parent = $node_parent->parent;
                     $points = round($object_membresia->precio * 0.7);

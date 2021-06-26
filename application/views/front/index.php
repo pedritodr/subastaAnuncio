@@ -332,7 +332,7 @@
          </section>
          <!-- =-=-=-=-=-=-= Home Tabs End =-=-=-=-=-=-= -->
          <!-- =-=-=-=-=-=-= Popular Categories =-=-=-=-=-=-= -->
-         <section class="section-padding gray">
+         <section class="gray">
             <!-- Main Container -->
             <div class="container-fluid">
                <!-- Row -->
