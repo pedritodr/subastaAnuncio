@@ -352,7 +352,7 @@
                                     echo ' <div class="item">';
                                     echo ' <div class="col-lg-12">';
                                     echo '<div class="category-grid-box-1">';
-                                    echo '<a style="cursor:pointer" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">';
+                                    echo '<a style="cursor:pointer" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">';
                                     echo ' <div class="image">';
                                     if (file_exists($item->anuncio_photo)) {
                                        if (strpos($item->anuncio_photo, 'uploads') !== false) {
@@ -373,7 +373,7 @@
                                     echo '</a>';
                                     echo ' <div class="short-description-1 clearfix">';
                                     echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
+                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
                                     echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
                                     if (isset($item->url)) {
                                        if ($item->url != '' || $item->url != null) {

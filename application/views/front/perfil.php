@@ -215,7 +215,7 @@
                                         <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
                                             <div class="white category-grid-box-1 ">
                                                 <!-- foto -->
-                                                <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>">
+                                                <div class="image"> <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id);  ?>">
                                                         <?php if (strpos($item->photo, 'uploads') !== false) { ?>
                                                             <?php if (file_exists($item->photo)) { ?>
                                                                 <img class="img-responsive" src="<?= base_url($item->photo) ?>" alt="">
@@ -242,7 +242,7 @@
                                                     <?php } ?>
                                                     <!-- descripcion -->
                                                     <h6>
-                                                        <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
+                                                        <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
                                                     </h6>
                                                     <!-- Location -->
                                                     <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
@@ -261,7 +261,7 @@
                                                 <!-- Ad Meta Stats -->
                                                 <div class="ad-info-1">
                                                     <ul class="pull-right">
-                                                        <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))) . $item->anuncio_id);  ?>"><i class="fa fa-pencil edit"></i></a> </li>
+                                                        <li> <a title="Editar anuncio" href=" <?= site_url(strtolower('update_anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id);  ?>"><i class="fa fa-pencil edit"></i></a> </li>
                                                         <?php if ($item->is_active == 1) { ?>
                                                             <li> <a title="Desactivar anuncio" onclick="cargar_modal_desactivar('<?= $item->anuncio_id ?>','1');"><i class="fa fa-times delete"></i></a></li>
                                                         <?php } else { ?>

@@ -49,6 +49,41 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+
+function seo_url($text, $limit = 75)
+{
+
+    // replace non letter or digits by -
+    $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+
+    // trim
+    $text = trim($text, '-');
+
+    // lowercase
+    $text = strtolower($text);
+
+    $unwanted_array = array(
+        'Š' => 'S', 'š' => 's', 'Ž' => 'Z', 'ž' => 'z', 'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',
+        'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U',
+        'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Þ' => 'B', 'ß' => 'Ss', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c',
+        'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o',
+        'ö' => 'o', 'ø' => 'o', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ý' => 'y', 'þ' => 'b', 'ÿ' => 'y'
+    );
+    $text = strtr($text, $unwanted_array);
+    // remove unwanted characters
+    $text = preg_replace('~[^-\w]+~', '', $text);
+
+    if (strlen($text) > 70) {
+        $text = substr($text, 0, 70);
+    }
+
+    if (empty($text)) {
+        //return 'n-a';
+        return time();
+    }
+
+    return $text;
+}
 $route['default_controller'] = 'front';
 $route['404_override'] = 'front/show_404';
 $route['translate_uri_dashes'] = FALSE;
@@ -128,8 +163,8 @@ for ($i = 0; $i < 30; $i++) {
 $query = $db->where('is_active', 1)->get('anuncio');
 $result = $query->result();
 foreach ($result as $row) {
-    $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo))) . $row->anuncio_id] = 'front/detalle_anuncio/' . $row->anuncio_id;
-    $route[strtolower('update_anuncio/' . strtolower(seo_url($row->titulo))) . $row->anuncio_id] = 'front/update_anuncio_index/' . $row->anuncio_id;
+    $route[strtolower('anuncio/' . strtolower(seo_url($row->titulo))) . '-' . $row->anuncio_id] = 'front/detalle_anuncio/' . $row->anuncio_id;
+    $route[strtolower('update_anuncio/' . strtolower(seo_url($row->titulo))) . '-' . $row->anuncio_id] = 'front/update_anuncio_index/' . $row->anuncio_id;
 }
 
 /*
@@ -156,30 +191,3 @@ foreach( $result as $row )
 }
 
 */
-function seo_url($cadena)
-{
-    $cadena = utf8_decode($cadena);
-    $cadena = str_replace(' ', '-', $cadena);
-    $cadena = str_replace('%', '', $cadena);
-    $cadena = str_replace('?', '', $cadena);
-    $cadena = str_replace('+', '', $cadena);
-    $cadena = str_replace('%', '', $cadena);
-    $cadena = str_replace(',', '', $cadena);
-    $cadena = str_replace('?', '', $cadena);
-    $cadena = str_replace('/', '', $cadena);
-    $cadena = str_replace(':', '', $cadena);
-    $cadena = str_replace('(', '', $cadena);
-    $cadena = str_replace(')', '', $cadena);
-    $cadena = str_replace('??', '', $cadena);
-    $cadena = str_replace('`', '', $cadena);
-    $cadena = str_replace('!', '', $cadena);
-    $cadena = str_replace('¿', '', $cadena);
-    $cadena = str_replace('#', '', $cadena);
-    $cadena = str_replace("'", "-", $cadena);
-    $cadena = str_replace("´", "-", $cadena);
-    $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
-    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
-
-    return $cadena;
-}
