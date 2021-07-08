@@ -54,10 +54,22 @@ class Front extends CI_Controller
         $data['all_banners'] = $all_banners;
 
 
-        $all_cate_anuncio = $this->cate_anuncio->get_all();
+        $all_cate_anuncio = $this->cate_anuncio->get_all(['is_front' => 1]);
         foreach ($all_cate_anuncio as $item) {
-            $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
+            $anunciosC = $this->anuncio->fullAds(null, null, null, $item->cate_anuncio_id, 42, 0);
+            shuffle($anunciosC);
+            $all_anunciosC =  array_slice($anunciosC, 0, 21);
+            foreach ($all_anunciosC as $p) {
+                $nombre = strlen($p->titulo);
+                if ($nombre > 19) {
+                    $p->corto = substr($p->titulo, 0, 17) . "...";
+                } else {
+                    $p->corto = $p->titulo;
+                }
+            }
+            $item->ads = $all_anunciosC;
         }
+
         $data['all_cate_anuncio'] = $all_cate_anuncio;
 
         $all_subcate = $this->cate_anuncio->get_all_subcate();
@@ -92,7 +104,7 @@ class Front extends CI_Controller
             $item->all_subastas = $subastas;
         }
 
-        $anuncios = $this->anuncio->searchFull(null, null, null, null, 42, 0);
+        $anuncios = $this->anuncio->fullAds(1, null, null, null, 42, 0);
         shuffle($anuncios);
         $all_anuncios =  array_slice($anuncios, 0, 21);
         foreach ($all_anuncios as $item) {
@@ -531,7 +543,6 @@ class Front extends CI_Controller
 
     public function detalle_anuncio($anuncio_id)
     {
-
         $this->load->model('Anuncio_model', 'anuncio');
         $this->load->model('Photo_anuncio_model', 'photo_anuncio');
         $this->load->model('Cate_anuncio_model', 'cate_anuncio');
@@ -543,8 +554,9 @@ class Front extends CI_Controller
         $all_anuncios = $this->anuncio->get_all_anuncios_id($anuncio_id);
 
         if ($all_anuncios) {
-            $views = $all_anuncios->views + 1;
+            $views = (int)$all_anuncios->views + 1;
             $this->anuncio->update($anuncio_id, ['views' =>  $views]);
+
             $relacionados = $this->anuncio->get_relacionados($all_anuncios->cate_anuncio_id, $anuncio_id);
             foreach ($relacionados as $item) {
                 $long = strlen($item->descripcion);
@@ -572,11 +584,9 @@ class Front extends CI_Controller
             $recientes = $this->anuncio->get_all_anuncios_recientes();
             foreach ($recientes as $item) {
                 $long = strlen($item->titulo);
-
                 if ($long > 22) {
                     $item->titulo_corto = substr($item->titulo, 0, 22) . "...";
                 } else {
-
                     $item->titulo_corto = $item->titulo;
                 }
             }
@@ -584,11 +594,9 @@ class Front extends CI_Controller
             $destacados = $this->anuncio->get_all_anuncios_destacados();
             foreach ($destacados as $item) {
                 $long = strlen($item->titulo);
-
                 if ($long > 20) {
                     $item->titulo_corto = substr($item->titulo, 0, 20) . "...";
                 } else {
-
                     $item->titulo_corto = $item->titulo;
                 }
             }
@@ -599,6 +607,7 @@ class Front extends CI_Controller
                 'twitter' => true,
                 'robot' => true
             );
+
             $data_header = array($e, $title = $all_anuncios->titulo, $desc = substr(strip_tags($all_anuncios->descripcion), 0, 250), $imgurl = base_url($all_anuncios->anuncio_photo), $url =  base_url(strtolower('anuncio/' . strtolower(seo_url($all_anuncios->titulo))) . $all_anuncios->anuncio_id));
             $this->load_view_front('front/detalle_anuncio', $data, 0, $data_header);
         } else {

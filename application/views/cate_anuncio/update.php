@@ -60,6 +60,13 @@
                                             <input type="file" class="form-control input-sm" name="archivo" placeholder="<?= translate('image_lang'); ?>">
                                         </div>
                                     </div>
+                                    <div class="col-lg-12">
+                                        <label>Banner (1620x218)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-image"></i></span>
+                                            <input type="file" class="form-control input-sm" name="banner" placeholder="<?= translate('image_lang'); ?>">
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
