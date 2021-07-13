@@ -1068,8 +1068,14 @@
                                                                             </div>
                                                                             </p>
                                                                             <br>
-                                                                            <p class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format((($totalPuntosGet * $porcentaje) / $totalAcum), 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?></span></b></p>
-                                                                            <p class="text-center"> <b>Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</b></p>
+                                                                            <?php if ($totalPuntosGet > 0) { ?>
+                                                                                <p class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format((($totalPuntosGet * $porcentaje) / $totalAcum), 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?></span></b>
+                                                                                <p class="text-center"> <b>Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</b></p>
+                                                                            <?php } else { ?>
+                                                                                <p class="text-center"> <b><span style="color:#fff"> Progreso(0%) $ 0.00</span></b>
+                                                                                <p class="text-center"> <b>Objetivo de $ 0.00 (0%)</b></p>
+                                                                            <?php } ?>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1747,7 +1753,8 @@
             let walletBitcoin = $('#walletBitcoin').val().trim();
             let emailWallet = $('#emailWallet').val().trim();
             let montoSolicitado = $('#montoSolicitadoBitcoin').val().trim();
-            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+            let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
 
             if (montoSolicitado == '') {
                 Swal.fire({
@@ -1833,8 +1840,10 @@
         }
 
         const handleSubmitSolicitud = () => {
-            let montoSolicitado = $('#montoSolicitado').val().trim();
-            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+            let montoSolicitado = parseFloat($('#montoSolicitado').val().trim())
+            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+            let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
+
             if (montoSolicitado == '') {
                 Swal.fire({
                     position: 'top-end',

@@ -4621,10 +4621,13 @@ class Front extends CI_Controller
                                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                             }
                                         }
+                                        if ($parent > 0) {
+                                            $node_parent = $nodeTemp;
+                                        }
                                         $continue = true;
                                     }
                                 } while ($continue);
-
+                                $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
                                 $data_node = [
                                     'membre_user_id' => $valor,
                                     'is_active' => 1,
