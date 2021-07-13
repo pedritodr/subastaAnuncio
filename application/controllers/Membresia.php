@@ -150,6 +150,7 @@ class Membresia extends CI_Controller
                         } else {
                             $nodeTemp = $this->tree_node->get_node_padre_by_id($parent);
                             $parent = $nodeTemp->parent;
+
                             if ($node_parent->position == 0) {
                                 $childremsRight = $this->tree_node->get_all_children($nodeTemp->tree_node_id, 0);
                                 if (count($childremsRight) > 0) {
@@ -173,6 +174,10 @@ class Membresia extends CI_Controller
                                     $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                                 }
                             }
+
+                            if ($parent > 0) {
+                                $node_parent = $nodeTemp;
+                            }
                             $continue = true;
                         }
                     } while ($continue);
@@ -183,6 +188,7 @@ class Membresia extends CI_Controller
                         'date_active' => $fecha,
                         'active' => 1
                     ];
+                    $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
                     $this->tree_node->update($node_parent->tree_node_id, $data_node);
                 } else {
                     $data_node = [
@@ -443,6 +449,9 @@ class Membresia extends CI_Controller
                                 ];
                                 $this->tree_node->update($nodeTemp->tree_node_id, $data_node);
                             }
+                        }
+                        if ($parent > 0) {
+                            $node_parent = $nodeTemp;
                         }
                         $continue = true;
                     }
