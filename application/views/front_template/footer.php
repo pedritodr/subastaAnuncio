@@ -874,6 +874,13 @@ if ($pos === false) {
 } else {
    $wallet = null;
 }
+if (isset($all_cate_anuncio)) {
+   if (!$all_cate_anuncio) {
+      $all_cate_anuncio = null;
+   }
+} else {
+   $all_cate_anuncio = null;
+}
 ?>
 
 <script type="text/javascript">

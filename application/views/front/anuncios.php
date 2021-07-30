@@ -156,23 +156,24 @@ if (empty($mastercat))
                                     <div class="panel-body categories">
                                         <ul>
                                             <?php if ($categories) {
-                                                echo '<li>';
-                                                echo '<a id="category_0"  onclick="handleSearch(this)" >Todas las categorías </a>';
-                                                echo '</li>';
                                                 foreach ($categories as $category) {
                                                     echo '<li>';
-                                                    echo '<a id="category_' . $category->cate_anuncio_id . '"  onclick="handleSearch(this)" ><i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i> ' . $category->nombre . ' </a>';
+                                                    echo '<a id="category_' . $category->cate_anuncio_id . '"  onclick="handleShowSubcategories(this)" ><i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i>' . $category->nombre . '  <span id="iconArrow' . $category->cate_anuncio_id . '" class="text-right"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></a>';
                                                     echo '</li>';
                                                     if (count($category->subCategories) > 0) {
-                                                        echo '<ul>';
+                                                        echo '<ul id="bodySubCategories' . $category->cate_anuncio_id . '" style="display:none">';
                                                         foreach ($category->subCategories as $sub) {
-                                                            echo '<li><a id="subCategory_' . $sub->subcate_id . '" onclick="handleSearch(this)" style="margin-left:20px;cursor:pointer">';
+                                                            echo '<li><a id="subCategory_' . $sub->subcate_id . '_' . $category->cate_anuncio_id . '" onclick="handleSearch(this)" style="margin-left:20px;cursor:pointer">';
                                                             echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
                                                             echo '</a></li>';
                                                         }
                                                         echo '</ul>';
                                                     }
                                                 }
+
+                                                echo '<li>';
+                                                echo '<a id="category_0"  onclick="handleSearch(this)" >Todas las categorías </a>';
+                                                echo '</li>';
                                             } ?>
 
                                         </ul>
@@ -312,11 +313,15 @@ if (empty($mastercat))
                 toggle: true
             });
             $('#category_' + category).css('color', '#8c1822');
+            $('#bodySubCategories' + category).show();
+            $('#iconArrow' + category).css('transform', 'rotate(90deg)');
+            openBody = true;
         } else {
             $('#category_0').css('color', '#8c1822');
         }
+
         if (subcategory) {
-            $('#subCategory_' + subcategory).css('color', '#8c1822');
+            $('#subCategory_' + subcategory + '_' + category).css('color', '#8c1822');
         }
         if (search) {
             $('#textSearch').val(search)
@@ -330,49 +335,74 @@ if (empty($mastercat))
     const decodeB64Utf8Ads = (str) => {
         return decodeURIComponent(escape(atob(str)));
     }
+    let openBody = false;
+    const handleShowSubcategories = (ev) => {
+        let arrayParams = ev.id.split('_');
+        if (!openBody) {
+            $('#bodySubCategories' + arrayParams[1]).fadeIn();
+            $('#iconArrow' + arrayParams[1]).css('transform', 'rotate(90deg)');
+            openBody = true;
+        } else {
+            $('#bodySubCategories' + arrayParams[1]).fadeOut();
+            $('#iconArrow' + arrayParams[1]).css('transform', 'rotate(0deg)');
+            openBody = false;
+        }
+
+    }
 
     const handleSearch = (ev) => {
         let parents = [];
         let control = false;
+        let notCategory = false;
         const textSearch = $('#textSearch').val();
         const cityId = $('#cityId').val();
+
         if (textSearch !== '') {
             parents.push('search=' + textSearch);
         }
+
         if (cityId > 0) {
             parents.push('city=' + cityId);
         }
 
         if (ev !== undefined && ev.id) {
             let arrayParams = ev.id.split('_');
-            if (arrayParams[0] === 'category') {
+            if (arrayParams[0] === 'subCategory') {
                 control = true;
-                parents.push('category=' + arrayParams[1]);
-            } else {
+                parents.push('category=' + arrayParams[2]);
                 parents.push('subCategory=' + arrayParams[1]);
+            } else {
+                if (arrayParams[0] === 'category' && arrayParams[1] === '0') {
+                    notCategory = true;
+                }
             }
         }
 
         if (category) {
-            if (category !== '0') {
-                const pCategory = parents.find(p => {
-                    const attr = p.split('=');
-                    return attr[0] === 'category';
-                });
-                if (pCategory === undefined) {
-                    parents.push('category=' + category);
+            if (!notCategory) {
+                if (category !== '0') {
+                    const pCategory = parents.find(p => {
+                        const attr = p.split('=');
+                        return attr[0] === 'category';
+                    });
+                    if (pCategory === undefined) {
+                        parents.push('category=' + category);
+                    }
                 }
             }
         }
+
         if (!control) {
-            if (subcategory) {
-                if (category !== '0') {
-                    const pSubcategory = parents.find(p => {
-                        const attr2 = p.split('=');
-                        return attr2[0] === 'subCategory';
-                    });
-                    if (pSubcategory === undefined) {
-                        parents.push('subCategory=' + subcategory);
+            if (!notCategory) {
+                if (subcategory) {
+                    if (category !== '0') {
+                        const pSubcategory = parents.find(p => {
+                            const attr2 = p.split('=');
+                            return attr2[0] === 'subCategory';
+                        });
+                        if (pSubcategory === undefined) {
+                            parents.push('subCategory=' + subcategory);
+                        }
                     }
                 }
             }
@@ -389,7 +419,6 @@ if (empty($mastercat))
         params.forEach(element => {
             stringParams += element;
         });
-        // console.log(stringParams)
         window.location = '<?= site_url('anuncios') ?>' + stringParams;
     }
 
@@ -401,9 +430,6 @@ if (empty($mastercat))
         } else {
             $('#bodyBtnLoad').hide();
         }
-
-
-
     }
 
 
