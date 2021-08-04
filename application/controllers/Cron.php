@@ -438,7 +438,6 @@ class Cron  extends CI_Controller
                 $points = 0;
                 $monto = 0;
                 $valid = true;
-
                 if ($node->active == 0) {
                     if ($node->points_left > 0 && $node->points_right > 0) {
                         if ($node->points_left > $node->points_right) {
@@ -446,21 +445,13 @@ class Cron  extends CI_Controller
                             $points_left = $node->points_left - $node->points_right;
                             $points_right = 0;
                             $charged = (float)$node->charged + $node->points_right;
-                            $pointsAds = $node->points_ads;
-                            $qtyAds = $pointsAds / 20;
-                            $poinsAds =  $qtyAds * 133.333333;
-                            $poinstBenefit = $node->benefit / 0.15;
-                            $points = (float)$node->points + $poinsAds + $node->points_right + $poinstBenefit;
+                            $points = (float)$node->points + $node->points_right;
                         } else {
                             $pointToMoney = $node->points_left * 0.15;
                             $points_right = $node->points_right - $node->points_left;
                             $points_left = 0;
-                            $pointsAds = $node->points_ads;
-                            $qtyAds = $pointsAds / 20;
-                            $poinsAds =  $qtyAds * 133.333333;
                             $charged = (float)$node->charged + $node->points_left;
-                            $poinstBenefit = $node->benefit / 0.15;
-                            $points = (float)$node->points + $poinsAds + $node->points_left + $poinstBenefit;
+                            $points = (float)$node->points  + $node->points_left;
                         }
                     } else {
                         $valid = false;
@@ -471,22 +462,14 @@ class Cron  extends CI_Controller
                             $pointToMoney = $node->points_right * 0.15;
                             $points_left = $node->points_left - $node->points_right;
                             $points_right = 0;
-                            $pointsAds = $node->points_ads;
-                            $qtyAds = $pointsAds / 20;
-                            $poinsAds =  $qtyAds * 133.333333;
                             $charged = (float)$node->charged + $node->points_right;
-                            $poinstBenefit = $node->benefit / 0.15;
-                            $points = (float)$node->points + $node->points_right + $poinsAds + $poinstBenefit;
+                            $points = (float)$node->points + $node->points_right;
                         } else {
                             $pointToMoney = $node->points_left * 0.15;
                             $points_right = $node->points_right - $node->points_left;
                             $points_left = 0;
-                            $pointsAds = $node->points_ads;
-                            $qtyAds = $pointsAds / 20;
-                            $poinsAds =  $qtyAds * 133.333333;
-                            $poinstBenefit = $node->benefit / 0.15;
                             $charged = (float)$node->charged + $node->points_left;
-                            $points = (float)$node->points + $node->points_left + $poinsAds + $poinstBenefit;
+                            $points = (float)$node->points + $node->points_left;
                         }
                     } else {
                         $valid = false;
@@ -494,11 +477,26 @@ class Cron  extends CI_Controller
                 }
                 if ($valid) {
                     if ($membresia->type == 1) {
+                        $totalBeneficio = round($membresia->precio * 2);
                         $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                     } else {
+                        $totalBeneficio = round($membresia->precio * 1.6);
                         $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                     }
-                    if ($points < $totalPuntos) {
+                    $ptsToMoney = $points * 0.15;
+                    $totalMoney = $node->benefit + $ptsToMoney + $node->points_referer + $node->points_ads;
+                    if ($totalMoney >= $totalBeneficio) {
+                        $pointToMoney = $totalBeneficio - ($node->benefit + $node->points_referer + $node->points_ads);
+                        $moneyToPoints =  round($pointToMoney  / 0.15);
+                        $data_node = [
+                            'points_right' => $points_right,
+                            'points_left' => $points_left,
+                            'charged' => $moneyToPoints,
+                            'points' => $totalPuntos,
+                            'active' => 1,
+                            'is_culminated' => 1
+                        ];
+                    } else {
                         $data_node = [
                             'points_right' => $points_right,
                             'points_left' => $points_left,
@@ -506,16 +504,8 @@ class Cron  extends CI_Controller
                             'points' => $points,
                             'active' => 1
                         ];
-                    } else {
-                        $data_node = [
-                            'points_right' => $points_right,
-                            'points_left' => $points_left,
-                            'charged' => $charged,
-                            'points' => $totalPuntos,
-                            'active' => 1,
-                            'is_culminated' => 1
-                        ];
                     }
+
                     $this->tree_node->update($node->tree_node_id, $data_node);
                     if ($wallet_cliente) {
                         $monto = (float)$wallet_cliente->balance + $pointToMoney;
@@ -572,36 +562,43 @@ class Cron  extends CI_Controller
             $membresia = $this->membresia->get_by_user_id($node->user_id);
             if ($membresia) {
                 if ($wallet_cliente) {
-                    $benefit = $node->benefit + (float)$membresia->bono;
-                    $pointBenefit =  $benefit / 0.15;
+                    $bonoDiario = (float)$membresia->bono;
+                    $pointsAds = $node->points_ads;
+                    $pointsReferer = $node->points_referer;
+                    $benefit = $node->benefit;
+                    $pointsToMoney  = $node->points * 0.15;
                     $totalPuntos = 0;
                     if ($membresia->type == 1) {
+                        $totalBeneficio = round($membresia->precio * 2);
                         $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                     } else {
+                        $totalBeneficio = round($membresia->precio * 1.6);
                         $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                     }
-                    $pointsAds = $node->points_ads;
-                    $qtyAds = $pointsAds / 20;
-                    $poinsAds =  $qtyAds * 133.333333;
-                    $points = (float)$node->points  + $poinsAds + $pointBenefit;
-                    if ($points > $totalPuntos) {
+                    $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney +  $bonoDiario;
+                    $bonoPermitido = 0;
+                    if ($totalCicloPlan >= $totalBeneficio) {
+                        $bonoPermitido =  $totalBeneficio - ($pointsAds +  $pointsReferer + $benefit + $pointsToMoney);
+                        $totalBenefit = $benefit + $bonoPermitido;
                         $data_node = [
                             'points' => $totalPuntos,
                             'active' => 1,
                             'is_culminated' => 1,
-                            'benefit' => $benefit
+                            'benefit' => $totalBenefit
                         ];
                     } else {
+                        $totalBenefit = $benefit + $bonoDiario;
+                        $bonoPermitido = $bonoDiario;
                         $data_node = [
                             'active' => 1,
-                            'benefit' => $benefit
+                            'benefit' => $totalBenefit
                         ];
                     }
                     $this->tree_node->update($node->tree_node_id, $data_node);
-                    $monto = (float)$wallet_cliente->balance + (float)$membresia->bono;
+                    $monto = (float)$wallet_cliente->balance + (float)$bonoPermitido;
                     $data_transactions = [
                         'date_create' => $fecha,
-                        'amount' =>  (float)$membresia->bono,
+                        'amount' =>  (float)$bonoPermitido,
                         'wallet_send' =>  0,
                         'type' => 8,
                         'balance_previous' => $wallet_cliente->balance,
@@ -619,44 +616,51 @@ class Cron  extends CI_Controller
                     ];
                     $wallet_id = $this->wallet->create($data_wallet);
                     if ($wallet_id > 0) {
-                        $benefit = $node->benefit + (float)$membresia->bono;
-                        $pointBenefit =  $benefit / 0.15;
+                        $bonoDiario = (float)$membresia->bono;
+                        $pointsAds = $node->points_ads;
+                        $pointsReferer = $node->points_referer;
+                        $benefit = $node->benefit;
+                        $pointsToMoney  = $node->points * 0.15;
                         $totalPuntos = 0;
                         if ($membresia->type == 1) {
+                            $totalBeneficio = round($membresia->precio * 2);
                             $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                         } else {
+                            $totalBeneficio = round($membresia->precio * 1.6);
                             $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                         }
-                        $pointsAds = $node->points_ads;
-                        $qtyAds = $pointsAds / 20;
-                        $poinsAds =  $qtyAds * 133.333333;
-                        $points = (float)$node->points  + $poinsAds + $pointBenefit;
-                        if ($points > $totalPuntos) {
+                        $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney +  $bonoDiario;
+                        $bonoPermitido = 0;
+                        if ($totalCicloPlan >= $totalBeneficio) {
+                            $bonoPermitido =  $totalBeneficio - ($pointsAds +  $pointsReferer + $benefit + $pointsToMoney);
+                            $totalBenefit = $benefit + $bonoPermitido;
                             $data_node = [
                                 'points' => $totalPuntos,
                                 'active' => 1,
                                 'is_culminated' => 1,
-                                'benefit' => $benefit
+                                'benefit' => $totalBenefit
                             ];
                         } else {
+                            $totalBenefit = $benefit + $bonoDiario;
+                            $bonoPermitido = $bonoDiario;
                             $data_node = [
                                 'active' => 1,
-                                'benefit' => $benefit
+                                'benefit' => $totalBenefit
                             ];
                         }
                         $this->tree_node->update($node->tree_node_id, $data_node);
                         $data_transactions = [
                             'date_create' => $fecha,
-                            'amount' => (float)$membresia->bono,
+                            'amount' => (float)$bonoPermitido,
                             'wallet_send' =>  0,
                             'type' => 8,
                             'balance_previous' => 0,
-                            'balance' => (float)$membresia->bono,
+                            'balance' => (float)$bonoPermitido,
                             'wallet_receives' => $wallet_id,
                             'status' => 1
                         ];
                         $this->transaction->create($data_transactions);
-                        $this->wallet->update($wallet_id, ['balance' => (float)$membresia->bono]);
+                        $this->wallet->update($wallet_id, ['balance' => (float)$bonoPermitido]);
                     }
                 }
             }

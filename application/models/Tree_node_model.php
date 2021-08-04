@@ -93,7 +93,7 @@ class Tree_node_model extends CI_Model
     function get_node_header_by_user_id($id)
     {
 
-        $this->db->select('tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
+        $this->db->select('tree_node.points_referer,tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
         $this->db->where('tree_node.user_id', $id);
@@ -103,7 +103,7 @@ class Tree_node_model extends CI_Model
     }
     function get_node_by_user($id)
     {
-        $this->db->select('tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
+        $this->db->select('tree_node.points_referer,tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
         $this->db->where('tree_node.user_id', $id);
@@ -113,7 +113,7 @@ class Tree_node_model extends CI_Model
     function get_node_renovate_by_user_id($id)
     {
 
-        $this->db->select('membresia.type,membresia.precio,tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.membre_user_id,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
+        $this->db->select('tree_node.points_referer,membresia.type,membresia.precio,tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.membre_user_id,tree_node.is_culminated,tree_node.active,tree_node.points_left,tree_node.points_right,tree_node.charged,tree_node.points,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
         $this->db->join('membresia_user', 'membresia_user.user_id = tree_node.user_id');
@@ -132,7 +132,7 @@ class Tree_node_model extends CI_Model
 
     function get_all_children($id, $position = 0)
     {
-        $this->db->select('tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
+        $this->db->select('tree_node.points_referer,tree_node.benefit,tree_node.total_points_left,tree_node.total_point_right,tree_node.points_ads,tree_node.tree_node_id,tree_node.membre_user_id,tree_node.is_active,tree_node.position,tree_node.parent,tree_node.variable_config,user.user_id,user.name,user.surname,user.phone,user.email,user.parent as padre');
         $this->db->from('tree_node');
         $this->db->join('user', 'user.user_id = tree_node.user_id');
         $this->db->where('tree_node.parent', $id);

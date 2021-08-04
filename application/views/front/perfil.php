@@ -1016,16 +1016,16 @@
                                                                                     $porcentaje = 200;
                                                                                     if ($node) {
                                                                                         $pointsAds = $node->points_ads;
-                                                                                        $qtyAds = $pointsAds / 20;
-                                                                                        $poinsAds =  $qtyAds * 133.333333;
-                                                                                        $benefit = $node->benefit / 0.15;
-                                                                                        $pointsTotal = $node->points + $poinsAds + $benefit;
-                                                                                        if ($pointsTotal >= $totalPuntos) {
+                                                                                        $pointsReferer = $node->points_referer;
+                                                                                        $benefit = $node->benefit;
+                                                                                        $pointsToMoney  = $node->points * 0.15;
+                                                                                        $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney;
+                                                                                        if ($totalCicloPlan >= $totalAcum) {
                                                                                             $objetive = 100.00;
                                                                                             $totalPuntosGet =  $totalAcum;
                                                                                         } else {
-                                                                                            $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
-                                                                                            $totalPuntosGet = $pointsTotal * 0.15;
+                                                                                            $objetive = round(($totalCicloPlan * 100) / $totalAcum, 2);
+                                                                                            $totalPuntosGet =   $totalCicloPlan;
                                                                                         }
                                                                                     } else {
                                                                                         $objetive = 0;
@@ -1037,16 +1037,16 @@
                                                                                     $porcentaje = 160;
                                                                                     if ($node) {
                                                                                         $pointsAds = $node->points_ads;
-                                                                                        $qtyAds = $pointsAds / 20;
-                                                                                        $poinsAds =  $qtyAds * 133.333333;
-                                                                                        $benefit = $node->benefit / 0.15;
-                                                                                        $pointsTotal = $node->points + $poinsAds + $benefit;
-                                                                                        if ($pointsTotal >= $totalPuntos) {
+                                                                                        $pointsReferer = $node->points_referer;
+                                                                                        $benefit = $node->benefit;
+                                                                                        $pointsToMoney  = $node->points * 0.15;
+                                                                                        $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney;
+                                                                                        if ($totalCicloPlan >= $totalAcum) {
                                                                                             $objetive = 100.00;
-                                                                                            $totalPuntosGet =  $totalPuntos;
+                                                                                            $totalPuntosGet =  $totalAcum;
                                                                                         } else {
-                                                                                            $objetive = round(($pointsTotal * 100) / $totalPuntos, 2);
-                                                                                            $totalPuntosGet = $pointsTotal  * 0.15;
+                                                                                            $objetive = round(($totalCicloPlan * 100) / $totalAcum, 2);
+                                                                                            $totalPuntosGet =   $totalCicloPlan;
                                                                                         }
                                                                                     } else {
                                                                                         $objetive = 0;
@@ -1069,7 +1069,7 @@
                                                                             </p>
                                                                             <br>
                                                                             <?php if ($totalPuntosGet > 0) { ?>
-                                                                                <p class="text-center"> <b><span style="color:#fff"> Progreso(<?= number_format((($totalPuntosGet * $porcentaje) / $totalAcum), 2) ?>%) $ <?= number_format($totalPuntosGet, 2) ?></span></b>
+                                                                                <p class="text-center"> <b><span style="color:#fff"> Progreso $ <?= number_format($totalPuntosGet, 2) ?> (<?= number_format((($totalPuntosGet * $porcentaje) / $totalAcum), 2) ?>%) </span></b>
                                                                                 <p class="text-center"> <b>Objetivo de $ <?= number_format($totalAcum, 2) ?> (<?= $porcentaje ?>%)</b></p>
                                                                             <?php } else { ?>
                                                                                 <p class="text-center"> <b><span style="color:#fff"> Progreso(0%) $ 0.00</span></b>
@@ -1616,7 +1616,7 @@
                             <div class="form-group">
                                 <label> Tipos de pagos<span class="color-red">*</span></label>
                                 <select id="typePayment" class="form-control select2">
-                                    <option value="1">Tarjeta</option>
+                                    <!--     <option value="1">Tarjeta</option> -->
                                     <option value="2">Billetera</option>
                                 </select>
                             </div>

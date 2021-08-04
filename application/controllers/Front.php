@@ -1068,7 +1068,6 @@ class Front extends CI_Controller
                 $data_ciudad = [
                     'name_ciudad' => $city,
                     'pais_id' => 4,
-
                 ];
                 $ciudad_id = $this->pais->create_cuidad($data_ciudad);
             } else {
@@ -1119,46 +1118,57 @@ class Front extends CI_Controller
             $this->load->model('Tree_node_model', 'tree_node');
             $userNode = $this->tree_node->get_node_header_by_user_id($user_id);
             if ($userNode) {
-                $points = (float)$userNode->points + 20;
-                $points_ads = (float)$userNode->points_ads + 20;
-                if ($userNode->position == 0) {
-                    $childremsRight = $this->tree_node->get_all_children($userNode->tree_node_id, 0);
-                    if (count($childremsRight) > 0) {
-                        $pointsRight = (float)$userNode->points_right + $points;
-                        $totalPointsRight = (float)$userNode->total_point_right + $points;
-                        $data_node = [
-                            'points' => $points,
-                            'points_ads' => $points_ads,
-                            'points_right' => $pointsRight,
-                            'total_point_right' => $totalPointsRight
-                        ];
-                        $this->tree_node->update($userNode->tree_node_id, $data_node);
-                    } else {
-                        $data = [
-                            'points_ads' => $points_ads
-                        ];
-                        $this->tree_node->update($userNode->tree_node_id, $data);
-                    }
+                $pointsAds = $userNode->points_ads;
+                $pointsReferer = $userNode->points_referer;
+                $benefit = $userNode->benefit;
+                $pointsToMoney  = $userNode->points * 0.15;
+                if ($membresia->type == 1) {
+                    $totalBeneficio = round($membresia->precio * 2);
+                    $totalPuntos = round((($membresia->precio * 2)) / 0.15);
                 } else {
-                    $childremsLeft = $this->tree_node->get_all_children($userNode->tree_node_id, 1);
-                    if (count($childremsLeft) > 0) {
-                        $pointsLeft = (float)$userNode->points_left + $points;
-                        $totalPointsLeft = (float)$userNode->total_points_left + $points;
-                        $data_node = [
-                            'points' => $points,
-                            'points_ads' => $points_ads,
-                            'points_left' => $pointsLeft,
-                            'total_points_left' => $totalPointsLeft
-                        ];
-                        $this->tree_node->update($userNode->tree_node_id, $data_node);
-                    } else {
-                        $data_node = [
-                            'points_ads' => $points_ads
-                        ];
-                        $this->tree_node->update($userNode->tree_node_id, $data_node);
-                    }
+                    $totalBeneficio = round($membresia->precio * 1.6);
+                    $totalPuntos = round((($membresia->precio * 1.6)) / 0.15);
                 }
-
+                $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney +  20;
+                if ($totalCicloPlan >= $totalBeneficio) {
+                    $amountAds = $totalBeneficio - ($pointsAds +  $pointsReferer + $benefit + $pointsToMoney);
+                    $data = [
+                        'points' => $totalPuntos,
+                        'active' => 1,
+                        'is_culminated' => 1,
+                        'points_ads' => $amountAds
+                    ];
+                    $moneyToPoints =  $amountAds / 0.15;
+                    if ($userNode->position == 0) {
+                        $pointsRight = (float)$userNode->points_right + $moneyToPoints;
+                        $totalPointsRight = (float)$userNode->total_point_right + $moneyToPoints;
+                        $data['points_right'] = $pointsRight;
+                        $data['total_point_right'] = $totalPointsRight;
+                    } else {
+                        $pointsLeft = (float)$userNode->points_left + $moneyToPoints;
+                        $totalPointsLeft = (float)$userNode->total_points_left + $moneyToPoints;
+                        $data['points_left'] = $pointsLeft;
+                        $data['total_points_left'] = $totalPointsLeft;
+                    }
+                    $this->tree_node->update($userNode->tree_node_id, $data);
+                } else {
+                    $points_ads = (float)$userNode->points_ads + 20;
+                    $data = [
+                        'points_ads' => $points_ads
+                    ];
+                    if ($userNode->position == 0) {
+                        $pointsRight = (float)$userNode->points_right + 20;
+                        $totalPointsRight = (float)$userNode->total_point_right + 20;
+                        $data['points_right'] = $pointsRight;
+                        $data['total_point_right'] = $totalPointsRight;
+                    } else {
+                        $pointsLeft = (float)$userNode->points_left + 20;
+                        $totalPointsLeft = (float)$userNode->total_points_left + 20;
+                        $data['points_left'] = $pointsLeft;
+                        $data['total_points_left'] = $totalPointsLeft;
+                    }
+                    $this->tree_node->update($userNode->tree_node_id, $data);
+                }
                 $parent = $userNode->parent;
                 $poinsTree = 20;
                 do {
@@ -4415,7 +4425,8 @@ class Front extends CI_Controller
                         $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
                         $amount = (float)$object_membresia->precio * 0.20;
                         if ($nodeParent) {
-                            $benefit = $nodeParent->benefit + $amount;
+                            $pointsRefererComision = $amount / 0.15;
+                            $benefit = $nodeParent->benefit;
                             $pointBenefit =  $benefit / 0.15;
                             $totalPuntos = 0;
                             if ($nodeParent->type == 1) {
@@ -4424,27 +4435,38 @@ class Front extends CI_Controller
                                 $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                             }
                             $pointsAds = $nodeParent->points_ads;
+                            $pointsReferer = $nodeParent->points_referer;
                             $qtyAds = $pointsAds / 20;
                             $poinsAds =  $qtyAds * 133.333333;
-                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
-                            if ($points > $totalPuntos) {
+                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
+                            $amountPermitido = 0;
+                            if ($points >= $totalPuntos) {
+                                $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
+                                $amountPermitido = $pointP * 0.15;
+                                $pointRefererTotal = $pointsReferer + $pointP;
+                                $totalBenefit = $benefit + $amountPermitido;
                                 $data_node = [
                                     'points' => $totalPuntos,
                                     'active' => 1,
                                     'is_culminated' => 1,
-                                    'benefit' => $benefit
+                                    'benefit' => $totalBenefit,
+                                    'points_referer' => $pointRefererTotal
                                 ];
                             } else {
+                                $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
+                                $amountPermitido = $amount;
+                                $totalBenefit = $benefit + $amount;
                                 $data_node = [
                                     'active' => 1,
-                                    'benefit' => $benefit
+                                    'benefit' => $totalBenefit,
+                                    'points_referer' => $pointsReferer
                                 ];
                             }
                             $this->tree_node->update($nodeParent->tree_node_id, $data_node);
                         }
                         $data_transactions = [
                             'date_create' => $fecha,
-                            'amount' => $amount,
+                            'amount' => $amountPermitido,
                             'wallet_send' => 0,
                             'type' => 3,
                         ];
@@ -4452,7 +4474,7 @@ class Front extends CI_Controller
                         $balance = 0;
                         if ($wallet_parent) {
                             $wallet_id = $wallet_parent->wallet_id;
-                            $balance = (float)$wallet_parent->balance + $amount;
+                            $balance = (float)$wallet_parent->balance + $amountPermitido;
                             $data_transactions['balance_previous'] = $wallet_parent->balance;
                             $data_transactions['balance'] = $balance;
                             $data_transactions['wallet_receives'] = $wallet_id;
@@ -4464,9 +4486,9 @@ class Front extends CI_Controller
                             ];
                             $wallet_id = $this->wallet->create($data_wallet);
                             $data_transactions['balance_previous'] = 0;
-                            $data_transactions['balance'] = $amount;
+                            $data_transactions['balance'] = $amountPermitido;
                             $data_transactions['wallet_receives'] = $wallet_id;
-                            $balance = $amount;
+                            $balance = $amountPermitido;
                         }
                         $this->transaction->create($data_transactions);
                         $this->wallet->update($wallet_id, ['balance' => $balance]);
@@ -4476,8 +4498,10 @@ class Front extends CI_Controller
                             $wallet_parent = $this->wallet->get_wallet_by_user_id($admin->user_id);
                             $amount = (float)$object_membresia->precio * 0.20;
                             $nodeParent = $this->tree_node->get_node_renovate_by_user_id($admin->user_id);
+                            $amountPermitido = 0;
                             if ($nodeParent) {
-                                $benefit = $nodeParent->benefit + $amount;
+                                $pointsRefererComision = $amount / 0.15;
+                                $benefit = $nodeParent->benefit;
                                 $pointBenefit =  $benefit / 0.15;
                                 $totalPuntos = 0;
                                 if ($nodeParent->type == 1) {
@@ -4486,27 +4510,38 @@ class Front extends CI_Controller
                                     $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                                 }
                                 $pointsAds = $nodeParent->points_ads;
+                                $pointsReferer = $nodeParent->points_referer;
                                 $qtyAds = $pointsAds / 20;
                                 $poinsAds =  $qtyAds * 133.333333;
-                                $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
-                                if ($points > $totalPuntos) {
+                                $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
+                                $amountPermitido = 0;
+                                if ($points >= $totalPuntos) {
+                                    $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
+                                    $amountPermitido = $pointP * 0.15;
+                                    $pointRefererTotal = $pointsReferer + $pointP;
+                                    $totalBenefit = $benefit + $amountPermitido;
                                     $data_node = [
                                         'points' => $totalPuntos,
                                         'active' => 1,
                                         'is_culminated' => 1,
-                                        'benefit' => $benefit
+                                        'benefit' => $totalBenefit,
+                                        'points_referer' => $pointRefererTotal
                                     ];
                                 } else {
+                                    $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
+                                    $amountPermitido = $amount;
+                                    $totalBenefit = $benefit + $amount;
                                     $data_node = [
                                         'active' => 1,
-                                        'benefit' => $benefit
+                                        'benefit' => $totalBenefit,
+                                        'points_referer' => $pointsReferer
                                     ];
                                 }
                                 $this->tree_node->update($nodeParent->tree_node_id, $data_node);
                             }
                             $data_transactions = [
                                 'date_create' => $fecha,
-                                'amount' => $amount,
+                                'amount' => $amountPermitido,
                                 'wallet_send' => 0,
                                 'type' => 3,
                             ];
@@ -4514,7 +4549,7 @@ class Front extends CI_Controller
                             $balance = 0;
                             if ($wallet_parent) {
                                 $wallet_id = $wallet_parent->wallet_id;
-                                $balance = (float)$wallet_parent->balance + $amount;
+                                $balance = (float)$wallet_parent->balance + $amountPermitido;
                                 $data_transactions['balance_previous'] = $wallet_parent->balance;
                                 $data_transactions['balance'] = $balance;
                                 $data_transactions['wallet_receives'] = $wallet_id;
@@ -4526,9 +4561,9 @@ class Front extends CI_Controller
                                 ];
                                 $wallet_id = $this->wallet->create($data_wallet);
                                 $data_transactions['balance_previous'] = 0;
-                                $data_transactions['balance'] = $amount;
+                                $data_transactions['balance'] = $amountPermitido;
                                 $data_transactions['wallet_receives'] = $wallet_id;
-                                $balance = $amount;
+                                $balance = $amountPermitido;
                             }
                             $this->transaction->create($data_transactions);
                             $this->wallet->update($wallet_id, ['balance' => $balance]);
@@ -4562,7 +4597,8 @@ class Front extends CI_Controller
                                     'date_create' => date('Y-m-d H:i:s'),
                                     'parent' => $node->tree_node_id,
                                     'user_id' => $user_id,
-                                    'is_culminated' => 0
+                                    'is_culminated' => 0,
+                                    'points_referer' => 0
                                 ];
                                 $node ? $data_node['position'] = $node->variable_config : $data_node['position'] = 0;
                                 $this->tree_node->create($data_node);
@@ -4583,7 +4619,8 @@ class Front extends CI_Controller
                                     'is_culminated' => 0,
                                     'points' => 0,
                                     'charged' => 0,
-                                    'active' => 1
+                                    'active' => 1,
+                                    'points_referer' => 0
                                 ];
                                 $this->tree_node->create($data_node);
                             }
@@ -4704,8 +4741,10 @@ class Front extends CI_Controller
                     $wallet_parent = $this->wallet->get_wallet_by_user_id($cliente->parent);
                     $amount = (float)$object_membresia->precio * 0.20;
                     $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
+                    $amountPermitido = 0;
                     if ($nodeParent) {
-                        $benefit = $nodeParent->benefit + $amount;
+                        $pointsRefererComision = $amount / 0.15;
+                        $benefit = $nodeParent->benefit;
                         $pointBenefit =  $benefit / 0.15;
                         $totalPuntos = 0;
                         if ($nodeParent->type == 1) {
@@ -4714,27 +4753,38 @@ class Front extends CI_Controller
                             $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                         }
                         $pointsAds = $nodeParent->points_ads;
+                        $pointsReferer = $nodeParent->points_referer;
                         $qtyAds = $pointsAds / 20;
                         $poinsAds =  $qtyAds * 133.333333;
-                        $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit;
-                        if ($points > $totalPuntos) {
+                        $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
+                        $amountPermitido = 0;
+                        if ($points >= $totalPuntos) {
+                            $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
+                            $amountPermitido = $pointP * 0.15;
+                            $pointRefererTotal = $pointsReferer + $pointP;
+                            $totalBenefit = $benefit + $amountPermitido;
                             $data_node = [
                                 'points' => $totalPuntos,
                                 'active' => 1,
                                 'is_culminated' => 1,
-                                'benefit' => $benefit
+                                'benefit' => $totalBenefit,
+                                'points_referer' => $pointRefererTotal
                             ];
                         } else {
+                            $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
+                            $amountPermitido = $amount;
+                            $totalBenefit = $benefit + $amount;
                             $data_node = [
                                 'active' => 1,
-                                'benefit' => $benefit
+                                'benefit' => $totalBenefit,
+                                'points_referer' => $pointsReferer
                             ];
                         }
                         $this->tree_node->update($nodeParent->tree_node_id, $data_node);
                     }
                     $data_transactions = [
                         'date_create' => $fecha,
-                        'amount' => $amount,
+                        'amount' => $amountPermitido,
                         'wallet_send' => 0,
                         'type' => 3,
                     ];
@@ -4742,7 +4792,7 @@ class Front extends CI_Controller
                     $balance = 0;
                     if ($wallet_parent) {
                         $wallet_id = $wallet_parent->wallet_id;
-                        $balance = (float)$wallet_parent->balance + $amount;
+                        $balance = (float)$wallet_parent->balance + $amountPermitido;
                         $data_transactions['balance_previous'] = $wallet_parent->balance;
                         $data_transactions['balance'] = $balance;
                         $data_transactions['wallet_receives'] = $wallet_id;
@@ -4754,9 +4804,9 @@ class Front extends CI_Controller
                         ];
                         $wallet_id = $this->wallet->create($data_wallet);
                         $data_transactions['balance_previous'] = 0;
-                        $data_transactions['balance'] = $amount;
+                        $data_transactions['balance'] = $amountPermitido;
                         $data_transactions['wallet_receives'] = $wallet_id;
-                        $balance = $amount;
+                        $balance = $amountPermitido;
                     }
                     $this->transaction->create($data_transactions);
                     $this->wallet->update($wallet_id, ['balance' => $balance]);
