@@ -31,6 +31,7 @@
                                     <th>Datos del usuario</th>
                                     <th>Datos solicitud</th>
                                     <th>Datos bancarios</th>
+                                    <th>Status</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </thead>
@@ -69,8 +70,22 @@
 
                                         </td>
                                         <td>
-                                            <a style="cursor:pointer" onclick="handleTransaction('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>
-                                            <a style="cursor:pointer" onclick="handleCancel('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-danger"> Cancelar</a>
+                                            <?php
+                                            if ($item->status == 1) {
+                                                echo '<label class="label label-warning">Pendiente</label>';
+                                            } else if ($item->status == 2) {
+                                                echo '<label class="label label-success">Confirmnada</label>';
+                                            } else {
+                                                echo '<label class="label label-danger">Cancelada</label>';
+                                            }
+
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($item->status == 1) { ?>
+                                                <a style="cursor:pointer" onclick="handleTransaction('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>
+                                                <a style="cursor:pointer" onclick="handleCancel('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-danger"> Cancelar</a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
 
@@ -83,6 +98,7 @@
                                     <th>Fecha</th>
                                     <th>Datos solicitud</th>
                                     <th>Datos bancarios</th>
+                                    <th>Status</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </tfoot>
@@ -96,7 +112,11 @@
 
 <script>
     $(function() {
-        $("#example1").DataTable();
+        $("#example1").DataTable({
+            "aaSorting": [
+                [1, "desc"]
+            ]
+        });
     });
 
     const encodeB64Utf8 = (str) => {
