@@ -241,6 +241,7 @@ class Anuncio_model extends CI_Model
         $this->db->where('cate_anuncio.cate_anuncio_id', $id);
         $this->db->where('anuncio.anuncio_id!=', $anuncio);
         $this->db->where('anuncio.is_active', 1);
+        $this->db->limit(5, 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -530,7 +531,7 @@ class Anuncio_model extends CI_Model
             foreach ($criterias as $criteria) {
 
                 $this->db->distinct();
-                $this->db->select('anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+                $this->db->select('anuncio.views,anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
                 $this->db->where('anuncio.is_active', 1);
                 $this->db->where('anuncio.is_delete', 0);
                 //sub-categoria
@@ -569,7 +570,7 @@ class Anuncio_model extends CI_Model
             }
         } else {
             $this->db->distinct();
-            $this->db->select('anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+            $this->db->select('anuncio.views,anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
             $this->db->where('anuncio.is_active', 1);
             $this->db->where('anuncio.is_delete', 0);
             //sub-categoria
@@ -596,6 +597,46 @@ class Anuncio_model extends CI_Model
         }
 
 
+        return $result;
+    }
+    public function fullAds($destacado = null, $ciudad = null, $sub_categoria = null, $categoria = null, $limit = null, $offset = null)
+    {
+        if ($limit > 0)
+            $this->db->limit($limit);
+
+        if ($offset > 0)
+            $this->db->offset($offset);
+
+        $this->db->distinct();
+        $this->db->select('anuncio.views,anuncio.url,anuncio.destacado,user.photo as photo_perfil,anuncio.fecha,anuncio.direccion,anuncio.anuncio_id,anuncio.titulo,anuncio.descripcion, anuncio.subcate_id, anuncio.precio,anuncio.photo as anuncio_photo,anuncio.whatsapp,anuncio.lat,anuncio.lng,user.name as user,user.photo,sub_categoria.nombre as subcategoria,cate_anuncio.nombre as categoria,cate_anuncio.photo as cate_photo,ciudad.name_ciudad as ciudad');
+        $this->db->where('anuncio.is_active', 1);
+        $this->db->where('anuncio.is_delete', 0);
+        //sub-categoria
+        $this->db->join('sub_categoria', 'sub_categoria.subcate_id = anuncio.subcate_id', 'left');
+        //categoria
+        $this->db->join('cate_anuncio', 'cate_anuncio.cate_anuncio_id = sub_categoria.cate_anuncio_id', 'left');
+        //ciudad
+        $this->db->join('ciudad', 'ciudad.ciudad_id = anuncio.ciudad_id', 'left');
+        //user
+        $this->db->join('user', 'user.user_id = anuncio.user_id', 'left');
+        if ($destacado == 1)
+            $this->db->order_by('anuncio.destacado', 'desc');
+
+        $this->db->order_by('anuncio.fecha', 'desc');
+        $this->db->from('anuncio');
+
+        if ($sub_categoria > 0)
+            $this->db->where('sub_categoria.subcate_id', $sub_categoria);
+        if ($ciudad > 0)
+            $this->db->where('anuncio.ciudad_id', $ciudad);
+        if ($categoria > 0)
+            $this->db->where('cate_anuncio.cate_anuncio_id', $categoria);
+
+        if ($destacado > 0)
+            $this->db->where('anuncio.destacado', $destacado);
+
+        $query = $this->db->get();
+        $result = $query->result();
         return $result;
     }
 

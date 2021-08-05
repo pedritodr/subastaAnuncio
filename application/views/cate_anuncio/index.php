@@ -10,8 +10,6 @@
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
             <li class="active"><?= translate('listar_categoria_lang'); ?></li>
-
-
         </ol>
     </section>
 
@@ -30,18 +28,37 @@
                             <thead>
                                 <tr>
                                     <th><?= translate("nombre_lang"); ?></th>
-                                    <th><?= translate("photos_lang"); ?></th>
+                                    <th>Banner</th>
+                                    <th>Icono</th>
+                                    <th>visible</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($all_cate_anuncio as $item) { ?>
                                     <tr>
-
-
                                         <td> <?= $item->nombre; ?></td>
-                                        <td><img style="width:20%" class="img img-rounded img-responsive" src="<?= base_url($item->photo); ?>" /></td>
-
+                                        <td style="width:40%">
+                                            <?php if (file_exists($item->banner)) {
+                                                echo '<img style="width:35%" class="img img-rounded img-responsive" src="' . base_url($item->banner) . '" />';
+                                            } else {
+                                                echo '<img style="width:10%" class="img img-rounded img-responsive" src="' . base_url("assets/image-no-found.jpg") . '" />';
+                                            } ?>
+                                        </td>
+                                        <td style="width:10%">
+                                            <?php if (file_exists($item->photo)) {
+                                                echo '<img style="width:35%" class="img img-rounded img-responsive" src="' . base_url($item->photo) . '" />';
+                                            } else {
+                                                echo '<img style="width:10%" class="img img-rounded img-responsive" src="' . base_url("assets/image-no-found.jpg") . '" />';
+                                            } ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($item->is_front == 1) {
+                                                echo '<i class="fa fa-eye" aria-hidden="true"></i>';
+                                            } else {
+                                                echo '<i class="fa fa-eye-slash" aria-hidden="true"></i>';
+                                            } ?>
+                                        </td>
                                         <td>
                                             <!-- Single button -->
                                             <div class="btn-group">
@@ -49,23 +66,23 @@
                                                     Acciones <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
+                                                    <li><a href="<?= site_url('cate_anuncio/change/' . $item->cate_anuncio_id); ?>"><i class="fa fa-eye"></i> Visible front</a></li>
                                                     <li><a href="<?= site_url('cate_anuncio/update_index/' . $item->cate_anuncio_id); ?>"><i class="fa fa-edit"></i> <?= translate("edit_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('cate_anuncio/delete/' . $item->cate_anuncio_id); ?>"><i class="fa fa-remove"></i> <?= translate("delete_lang"); ?></a></li>
                                                     <li><a href="<?= site_url('cate_anuncio/index_subcate/' . $item->cate_anuncio_id); ?>"><i class="fa fa-folder-open-o" aria-hidden="true"></i> <?= translate("manage_subcate_lang"); ?></a></li>
-
                                                 </ul>
                                             </div>
                                         </td>
-
                                     </tr>
-
                                 <?php } ?>
 
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th><?= translate("nombre_lang"); ?></th>
-                                    <th><?= translate("photos_lang"); ?></th>
+                                    <th>Banner</th>
+                                    <th>Icono</th>
+                                    <th>visible</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
                             </tfoot>

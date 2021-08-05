@@ -256,7 +256,8 @@
                                                             <?php } ?>
                                                         </ul>
                                                     </div>
-                                                    <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span>
+                                                    <!-- Price --><span class="ad-price">$<?= number_format($item->precio, 2); ?></span><br>
+                                                    <span><i class="fa fa-eye" aria-hidden="true"></i> <?= $item->views ?></span>
                                                 </div>
                                                 <!-- Ad Meta Stats -->
                                                 <div class="ad-info-1">

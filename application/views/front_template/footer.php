@@ -874,12 +874,25 @@ if ($pos === false) {
 } else {
    $wallet = null;
 }
+if (isset($all_cate_anuncio)) {
+   if (!$all_cate_anuncio) {
+      $all_cate_anuncio = null;
+   }
+} else {
+   $all_cate_anuncio = null;
+}
 ?>
+
 <script type="text/javascript">
    let wallet = <?= json_encode($wallet) ?>;
+
+   const adsCategory = <?= json_encode($all_cate_anuncio) ?>;
+
    const encodeB64Utf8 = (str) => {
       return btoa(unescape(encodeURIComponent(str)));
    }
+
+
 
    const decodeB64Utf8 = (str) => {
          return decodeURIComponent(escape(atob(str)));
@@ -2815,6 +2828,16 @@ if ($pos === false) {
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
 <style>
+   .category-grid-box-1 .category-title {
+      color: #a0a0a0;
+      font-size: 12px;
+   }
+
+   .title-carousel {
+      line-height: 1.6em;
+      font-size: 14px;
+   }
+
    .sweet-alert-trigger {
       padding: 5px 10px;
       border: 0;

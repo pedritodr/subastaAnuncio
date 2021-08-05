@@ -455,7 +455,4 @@ Designed and Development by: ScriptsBundle
     $(".quick-view-modal").css("display", "block");
 
 
-
-
-
 })(jQuery);
