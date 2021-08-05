@@ -424,6 +424,7 @@ class Membresia extends CI_Controller
                 'is_culminated' => 0,
                 'points_ads' => 0,
                 'benefit' => 0,
+                'points_referer' => 0
             ];
             $this->tree_node->update($node->tree_node_id, $dataNode);
             //repartir puntos

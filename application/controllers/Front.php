@@ -1132,11 +1132,13 @@ class Front extends CI_Controller
                 $totalCicloPlan =  $pointsAds +  $pointsReferer + $benefit + $pointsToMoney +  20;
                 if ($totalCicloPlan >= $totalBeneficio) {
                     $amountAds = $totalBeneficio - ($pointsAds +  $pointsReferer + $benefit + $pointsToMoney);
+                    $totalAds = $userNode->total_ads + $amountAds;
                     $data = [
                         'points' => $totalPuntos,
                         'active' => 1,
                         'is_culminated' => 1,
-                        'points_ads' => $amountAds
+                        'points_ads' => $amountAds,
+                        'total_ads' => $totalAds
                     ];
                     $moneyToPoints =  $amountAds / 0.15;
                     if ($userNode->position == 0) {
@@ -1153,8 +1155,10 @@ class Front extends CI_Controller
                     $this->tree_node->update($userNode->tree_node_id, $data);
                 } else {
                     $points_ads = (float)$userNode->points_ads + 20;
+                    $totalAds = $userNode->total_ads + 20;
                     $data = [
-                        'points_ads' => $points_ads
+                        'points_ads' => $points_ads,
+                        'total_ads' => $totalAds
                     ];
                     if ($userNode->position == 0) {
                         $pointsRight = (float)$userNode->points_right + 20;
@@ -4425,41 +4429,35 @@ class Front extends CI_Controller
                         $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
                         $amount = (float)$object_membresia->precio * 0.20;
                         if ($nodeParent) {
-                            $pointsRefererComision = $amount / 0.15;
-                            $benefit = $nodeParent->benefit;
-                            $pointBenefit =  $benefit / 0.15;
+                            $pointsAds = (float)$nodeParent->points_ads;
+                            $pointsReferer = (float) $nodeParent->points_referer;
+                            $benefit = (float)$nodeParent->benefit;
+                            $points = (float)$nodeParent->points;
+                            $pointsToMoney = $points * 0.15;
                             $totalPuntos = 0;
                             if ($nodeParent->type == 1) {
+                                $totalBeneficio = round($nodeParent->precio * 2);
                                 $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                             } else {
+                                $totalBeneficio = round($nodeParent->precio * 1.6);
                                 $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                             }
-                            $pointsAds = $nodeParent->points_ads;
-                            $pointsReferer = $nodeParent->points_referer;
-                            $qtyAds = $pointsAds / 20;
-                            $poinsAds =  $qtyAds * 133.333333;
-                            $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
-                            $amountPermitido = 0;
-                            if ($points >= $totalPuntos) {
-                                $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
-                                $amountPermitido = $pointP * 0.15;
-                                $pointRefererTotal = $pointsReferer + $pointP;
-                                $totalBenefit = $benefit + $amountPermitido;
+                            $totalAcumPlan = $pointsAds + $pointsReferer + $benefit + $pointsToMoney + $amount;
+
+                            if ($totalAcumPlan >= $totalBeneficio) {
+                                $amountPermitido = $totalBeneficio - ($pointsAds + $pointsReferer + $benefit + $pointsToMoney);
                                 $data_node = [
                                     'points' => $totalPuntos,
                                     'active' => 1,
                                     'is_culminated' => 1,
-                                    'benefit' => $totalBenefit,
-                                    'points_referer' => $pointRefererTotal
+                                    'points_referer' => $amountPermitido
                                 ];
                             } else {
-                                $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
                                 $amountPermitido = $amount;
-                                $totalBenefit = $benefit + $amount;
+                                $totalReferer =   $pointsReferer  + $amount;
                                 $data_node = [
                                     'active' => 1,
-                                    'benefit' => $totalBenefit,
-                                    'points_referer' => $pointsReferer
+                                    'points_referer' => $totalReferer
                                 ];
                             }
                             $this->tree_node->update($nodeParent->tree_node_id, $data_node);
@@ -4500,41 +4498,35 @@ class Front extends CI_Controller
                             $nodeParent = $this->tree_node->get_node_renovate_by_user_id($admin->user_id);
                             $amountPermitido = 0;
                             if ($nodeParent) {
-                                $pointsRefererComision = $amount / 0.15;
-                                $benefit = $nodeParent->benefit;
-                                $pointBenefit =  $benefit / 0.15;
+                                $pointsAds = (float)$nodeParent->points_ads;
+                                $pointsReferer = (float) $nodeParent->points_referer;
+                                $benefit = (float)$nodeParent->benefit;
+                                $points = (float)$nodeParent->points;
+                                $pointsToMoney = $points * 0.15;
                                 $totalPuntos = 0;
                                 if ($nodeParent->type == 1) {
+                                    $totalBeneficio = round($nodeParent->precio * 2);
                                     $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                                 } else {
+                                    $totalBeneficio = round($nodeParent->precio * 1.6);
                                     $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                                 }
-                                $pointsAds = $nodeParent->points_ads;
-                                $pointsReferer = $nodeParent->points_referer;
-                                $qtyAds = $pointsAds / 20;
-                                $poinsAds =  $qtyAds * 133.333333;
-                                $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
-                                $amountPermitido = 0;
-                                if ($points >= $totalPuntos) {
-                                    $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
-                                    $amountPermitido = $pointP * 0.15;
-                                    $pointRefererTotal = $pointsReferer + $pointP;
-                                    $totalBenefit = $benefit + $amountPermitido;
+                                $totalAcumPlan = $pointsAds + $pointsReferer + $benefit + $pointsToMoney + $amount;
+
+                                if ($totalAcumPlan >= $totalBeneficio) {
+                                    $amountPermitido = $totalBeneficio - ($pointsAds + $pointsReferer + $benefit + $pointsToMoney);
                                     $data_node = [
                                         'points' => $totalPuntos,
                                         'active' => 1,
                                         'is_culminated' => 1,
-                                        'benefit' => $totalBenefit,
-                                        'points_referer' => $pointRefererTotal
+                                        'points_referer' => $amountPermitido
                                     ];
                                 } else {
-                                    $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
                                     $amountPermitido = $amount;
-                                    $totalBenefit = $benefit + $amount;
+                                    $totalReferer =   $pointsReferer  + $amount;
                                     $data_node = [
                                         'active' => 1,
-                                        'benefit' => $totalBenefit,
-                                        'points_referer' => $pointsReferer
+                                        'points_referer' => $totalReferer
                                     ];
                                 }
                                 $this->tree_node->update($nodeParent->tree_node_id, $data_node);
@@ -4697,6 +4689,7 @@ class Front extends CI_Controller
                         'is_culminated' => 0,
                         'points_ads' => 0,
                         'benefit' => 0,
+                        'points_referer' => 0
                     ];
                     //repartir puntos
                     $node_parent = $this->tree_node->get_node_by_user($cliente->user_id);
@@ -4743,41 +4736,35 @@ class Front extends CI_Controller
                     $nodeParent = $this->tree_node->get_node_renovate_by_user_id($cliente->parent);
                     $amountPermitido = 0;
                     if ($nodeParent) {
-                        $pointsRefererComision = $amount / 0.15;
-                        $benefit = $nodeParent->benefit;
-                        $pointBenefit =  $benefit / 0.15;
+                        $pointsAds = (float)$nodeParent->points_ads;
+                        $pointsReferer = (float) $nodeParent->points_referer;
+                        $benefit = (float)$nodeParent->benefit;
+                        $points = (float)$nodeParent->points;
+                        $pointsToMoney = $points * 0.15;
                         $totalPuntos = 0;
                         if ($nodeParent->type == 1) {
+                            $totalBeneficio = round($nodeParent->precio * 2);
                             $totalPuntos = round((($nodeParent->precio * 2)) / 0.15);
                         } else {
+                            $totalBeneficio = round($nodeParent->precio * 1.6);
                             $totalPuntos = round((($nodeParent->precio * 1.6)) / 0.15);
                         }
-                        $pointsAds = $nodeParent->points_ads;
-                        $pointsReferer = $nodeParent->points_referer;
-                        $qtyAds = $pointsAds / 20;
-                        $poinsAds =  $qtyAds * 133.333333;
-                        $points = (float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision;
-                        $amountPermitido = 0;
-                        if ($points >= $totalPuntos) {
-                            $pointP = $totalPuntos -  ((float)$nodeParent->points  + $poinsAds + $pointBenefit + $pointsRefererComision);
-                            $amountPermitido = $pointP * 0.15;
-                            $pointRefererTotal = $pointsReferer + $pointP;
-                            $totalBenefit = $benefit + $amountPermitido;
+                        $totalAcumPlan = $pointsAds + $pointsReferer + $benefit + $pointsToMoney + $amount;
+
+                        if ($totalAcumPlan >= $totalBeneficio) {
+                            $amountPermitido = $totalBeneficio - ($pointsAds + $pointsReferer + $benefit + $pointsToMoney);
                             $data_node = [
                                 'points' => $totalPuntos,
                                 'active' => 1,
                                 'is_culminated' => 1,
-                                'benefit' => $totalBenefit,
-                                'points_referer' => $pointRefererTotal
+                                'points_referer' => $amountPermitido
                             ];
                         } else {
-                            $pointsReferer = $nodeParent->points_referer + $pointsRefererComision;
                             $amountPermitido = $amount;
-                            $totalBenefit = $benefit + $amount;
+                            $totalReferer =   $pointsReferer  + $amount;
                             $data_node = [
                                 'active' => 1,
-                                'benefit' => $totalBenefit,
-                                'points_referer' => $pointsReferer
+                                'points_referer' => $totalReferer
                             ];
                         }
                         $this->tree_node->update($nodeParent->tree_node_id, $data_node);

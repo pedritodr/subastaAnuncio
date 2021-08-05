@@ -186,10 +186,10 @@
                                 <li>
                                     <a href="<?= site_url('financiamientos') ?>"> Financiamiento <i></i></a>
                                 </li>
-                                <li>
+                                <!--     <li>
                                     <a href="<?= site_url('subastas_directas') ?>"> <?= translate('subasta_lang') ?>
                                         <i></i></a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a href="<?= site_url('anuncios') ?>"> <?= translate('Anuncios_lang') ?>
                                         <i></i></a>

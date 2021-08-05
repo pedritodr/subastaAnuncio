@@ -841,8 +841,9 @@
                                                                                 }
                                                                                 if ($node) {
                                                                                     $pointsAds = $node->points_ads;
+                                                                                    $totalAds = $node->total_ads;
                                                                                     $pointsCharged = ($node->charged) * 0.15;
-                                                                                    echo number_format(($pointsCharged + $pointsAds + $comisionesEspeciales), 2);
+                                                                                    echo number_format(($pointsCharged + $pointsAds + $comisionesEspeciales + $totalAds), 2);
                                                                                 } else {
                                                                                     echo ' 0.00';
                                                                                 }
@@ -1378,9 +1379,9 @@
                             <li class="forever " id="perfil" style="cursor:pointer"><a><?= translate('perfil_lang') ?></a></li>
                             <li class="forever" id="update_password" style="cursor:pointer"><a><?= translate('update_password_lang') ?></a></li>
                             <li class="forever" id="ads" style="cursor:pointer"><a><?= translate('mis_anuncios_lang') ?><span class="badge"><?php if ($contador_anuncios) { ?> <?= ($contador_anuncios) ?><?php } else { ?>0 <?php } ?></span></a></li>
-                            <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <!--  <li class="forever" id="subs" style="cursor:pointer"><a><?= translate('mis_subastas_lang') ?><span class="badge"><?php if ($mis_subastas_directas) { ?> <?= (count($mis_subastas_directas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
                             <li class="forever" id="subs_inversas" style="cursor:pointer"><a><?= translate('mis_subastas_inversas_lang') ?><span class="badge"><?php if ($mis_subastas_inversas) { ?> <?= (count($mis_subastas_inversas)) ?><?php } else { ?>0 <?php } ?></span></a></li>
-                            <li class="forever" id="historial" style="cursor:pointer"><a><?= translate('historial_payment_lang') ?><span class="badge"><?php if ($payments) { ?> <?= (count($payments)) ?><?php } else { ?>0 <?php } ?></span></a></li>
+                            <li class="forever" id="historial" style="cursor:pointer"><a><?= translate('historial_payment_lang') ?><span class="badge"><?php if ($payments) { ?> <?= (count($payments)) ?><?php } else { ?>0 <?php } ?></span></a></li> -->
                             <li><a href="<?= site_url('login/logout') ?>"><?= translate('sign_out_lang') ?></a></li>
                         </ul>
                     </div>
@@ -2619,7 +2620,11 @@
         });
 
         $(function() {
-            $("#example").DataTable();
+            $("#example").DataTable({
+                "order": [
+                    [1, "desc"]
+                ]
+            });
 
             let subastas_directas_perfil = <?= json_encode($mis_subastas_directas); ?>;
 

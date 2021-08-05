@@ -160,7 +160,7 @@
                               <div class="form-group">
                                   <label> Tipos de pagos<span class="color-red">*</span></label>
                                   <select id="typePayment" class="form-control select2">
-                                      <option value="1">Tarjeta</option>
+                                      <!--  <option value="1">Tarjeta</option> -->
                                       <option value="2">Billetera</option>
                                   </select>
                               </div>
