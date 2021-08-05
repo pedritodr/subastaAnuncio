@@ -111,7 +111,7 @@ if (empty($mastercat))
 
                                     $title = $item->titulo;
                                     if (strlen($title) > 30) {
-                                        $title = substr($item->titulo, 0, 28) . "...";
+                                        $title = substr($item->titulo, 0, 26) . "...";
                                     }
 
                                     echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
@@ -522,9 +522,6 @@ if (empty($mastercat))
                 if (item.destacado == 1) {
                     stringAds += '<div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i></div>';
                 }
-                /*         stringAds += ' <div class="price-tag">';
-                        stringAds += '<div class="price"><span>$' + parseFloat(item.precio).toFixed(2) + '</span></div>';
-                        stringAds += '</div>'; */
                 stringAds += ' </div>';
                 stringAds += '</a>';
                 stringAds += ' <div class="short-description-1 clearfix">';
@@ -544,7 +541,7 @@ if (empty($mastercat))
                 }
                 let title = item.titulo;
                 if (title.length > 30) {
-                    temp = title.substr(0, 28);
+                    temp = title.substr(0, 26);
                     title = temp + ' ...';
                 }
                 stringAds += ' <p><a title="" href="' + linkPage + '">' + title + '</a></p>';
