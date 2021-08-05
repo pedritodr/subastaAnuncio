@@ -26,9 +26,9 @@
                      <div class="col-xs-12 col-md-12 col-sm-12">
                         <h3 class="main-title text-center">Destacados</h3>
                      </div>
-                     <a href="javascript:void(0)" onclick="openMenu()">
+                     <!--      <a href="javascript:void(0)" onclick="openMenu()">
                         <i class="fa fa-bars" aria-hidden="true" style="font-size: 41px;color: #08374C;"></i>
-                     </a>
+                     </a> -->
                   </div>
                   <div class="row">
                      <div class="home-category-slider">
@@ -58,8 +58,8 @@
                                     echo '</a>';
                                     echo ' <div class="short-description-1 clearfix">';
                                     echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
-                                    echo '<p class="text-left" style="font-size:16px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
+                                    echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
+                                    echo '<p class="text-left" style="font-size:14px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
                                     echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
 
                                     if (isset($item->url)) {
@@ -108,7 +108,9 @@
 
                                  echo '<div class="heading-panel text-center" style="margin-top:30px">';
                                  echo '<div class="col-xs-12 col-md-12 col-sm-12">';
+                                 echo '<a href="' . site_url() . 'anuncios?category=' . $cAds->cate_anuncio_id . '" >';
                                  echo '<img style="width: 100%" src="' . base_url($cAds->banner) . '" />';
+                                 echo '</a>';
                                  echo '</div>';
                                  echo '</div>';
                                  echo '<div  class="category-slider" style="margin-top:20px">';
@@ -129,15 +131,15 @@
                                           echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive"  loading="lazy">';
                                        }
                                        if ($item->destacado == 1) {
-                                          echo '<div class="ribbon popular"><i class="fa fa-star" aria-hidden="true"></i>
+                                          echo '<div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i>
                                           </div>';
                                        }
                                        echo ' </div>';
                                        echo '</a>';
                                        echo ' <div class="short-description-1 clearfix">';
                                        echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                       echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
-                                       echo '<p class="text-left" style="font-size:16px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
+                                       echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
+                                       echo '<p class="text-left" style="font-size:14px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
                                        echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
 
                                        if (isset($item->url)) {
@@ -180,7 +182,7 @@
             <!-- Main Container End -->
          </section>
 
-         <section style="margin-top: 30px;" class="home-tabs">
+         <!--      <section style="margin-top: 30px;" class="home-tabs">
             <div class="container">
                <div class="heading-panel">
                   <div class="col-xs-12 col-md-12 col-sm-12">
@@ -381,7 +383,7 @@
                   </div>
                </div>
             </div>
-         </section>
+         </section> -->
       </div>
       <style>
          .strikethrough {
@@ -436,7 +438,7 @@
 
          .ribbon.popular {
             background: none;
-            color: #8c1822;
+            color: #e5124c;
             font-size: 18px;
          }
 

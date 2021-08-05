@@ -2828,6 +2828,16 @@ if (isset($all_cate_anuncio)) {
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
 <style>
+   .category-grid-box-1 .category-title {
+      color: #a0a0a0;
+      font-size: 12px;
+   }
+
+   .title-carousel {
+      line-height: 1.6em;
+      font-size: 14px;
+   }
+
    .sweet-alert-trigger {
       padding: 5px 10px;
       border: 0;
