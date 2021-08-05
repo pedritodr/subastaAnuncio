@@ -51,7 +51,7 @@
                                        echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive"  loading="lazy">';
                                     }
                                     if ($item->destacado == 1) {
-                                       echo '<div class="ribbon popular"><i class="fa fa-star" aria-hidden="true"></i>
+                                       echo '<div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i>
                                        </div>';
                                     }
                                     echo ' </div>';
@@ -78,15 +78,8 @@
                                     echo ' </div>';
                                     echo ' </div>';
                                  }
-                                 echo ' <div class="item">';
-                                 echo ' <div class="col-lg-12">';
-                                 echo '<div class="category-grid-5" style="background:#34495e;min-height:406.84px;">';
-                                 echo '<a href="' . site_url('anuncios') . '" class="btn btn-lg btn-clean">Ver mas</a>';
-                                 echo '</div>';
-                                 echo '</div>';
-                                 echo '</div>';
                               } else {
-                                 echo '<h1 class="text-center">No hay resultados</h1>';
+                                 echo '<h3 class="text-center">No hay resultados</h3>';
                               }
                               ?>
                            </div>
@@ -158,15 +151,8 @@
                                        echo ' </div>';
                                        echo ' </div>';
                                     }
-                                    echo ' <div class="item">';
-                                    echo ' <div class="col-lg-12">';
-                                    echo '<div class="category-grid-5" style="background:#34495e;min-height:406.84px;">';
-                                    echo '<a href="' . site_url('anuncios') . '" class="btn btn-lg btn-clean">Ver mas</a>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '</div>';
                                  } else {
-                                    echo '<h1 class="text-center">No hay resultados</h1>';
+                                    echo '<h3 class="text-center">No hay resultados</h3>';
                                  }
                                  echo '</div>';
                               }
