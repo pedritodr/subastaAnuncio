@@ -107,15 +107,14 @@ class Front extends CI_Controller
         $anuncios = $this->anuncio->fullAds(1, null, null, null, 42, 0);
         shuffle($anuncios);
         $all_anuncios =  array_slice($anuncios, 0, 21);
-        foreach ($all_anuncios as $item) {
+        /*   foreach ($all_anuncios as $item) {
             $nombre = strlen($item->titulo);
             if ($nombre > 19) {
-                $item->corto = substr($item->titulo, 0, 17) . "...";
+                $item->corto = substr($item->titulo, 0, 26) . "...";
             } else {
-
                 $item->corto = $item->titulo;
             }
-        }
+        } */
         $data['all_anuncios'] = $all_anuncios;
         $data['all_categorias'] = $all_categorias;
         $all_subastas = $this->subasta->get_subastas();
@@ -1958,7 +1957,7 @@ class Front extends CI_Controller
         //   $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination(21, 0);
         $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, 0);
 
-        foreach ($all_anuncios as $item) {
+        /*      foreach ($all_anuncios as $item) {
 
             $nombre = strlen($item->titulo);
             if ($nombre > 54) {
@@ -1967,7 +1966,7 @@ class Front extends CI_Controller
 
                 $item->corto = $item->titulo;
             }
-        }
+        } */
         $data['all_anuncios'] = $all_anuncios;
         $data['resultados'] = $contador;
         $recientes = $this->anuncio->get_all_anuncios_recientes();
@@ -2018,13 +2017,13 @@ class Front extends CI_Controller
                 if (!file_exists($item->anuncio_photo)) {
                     $item->anuncio_photo = null;
                 }
-                $nombre = strlen($item->titulo);
+                /*  $nombre = strlen($item->titulo);
                 if ($nombre > 54) {
                     $item->corto = substr($item->titulo, 0, 54) . "...";
                 } else {
 
                     $item->corto = $item->titulo;
-                }
+                } */
             }
             echo json_encode(['status' => 200, 'msj' => 'correcto', 'data' => $all_anuncios]);
             exit();
@@ -2597,9 +2596,9 @@ class Front extends CI_Controller
                 $item->titulo_corto = $item->titulo;
             }
             $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($item->subcate_id);
-
+            $categoria = $this->cate_anuncio->get_by_id($subcate_object->cate_anuncio_id);
             $item->subcate =  $subcate_object;
-
+            $item->categoria = $categoria->nombre;
             $all_ciudad = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
 
             $item->ciudad = $all_ciudad;

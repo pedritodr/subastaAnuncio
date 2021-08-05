@@ -231,15 +231,32 @@
                                                         <?php } ?>
                                                     </a>
                                                     <?php if ($item->destacado == 1) { ?>
-                                                        <div class="ribbon popular"><?= translate("featured_lang") ?></div>
+                                                        <div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i></div>
                                                     <?php } ?>
                                                 </div>
                                                 <!--descripcion -->
                                                 <div style="height:199px !important" class="short-description-1 ">
                                                     <!-- subcategoria  -->
-                                                    <?php if (isset($item->subcate->nombre)) { ?>
+                                                    <!--   <?php if (isset($item->subcate->nombre)) { ?>
                                                         <div class="category-title"><?= $item->subcate->nombre; ?> </div>
-                                                    <?php } ?>
+                                                    <?php } ?> -->
+
+                                                    <?php
+                                                    $subCategoria = $item->subcate->nombre;
+                                                    if (strlen($subCategoria) > 13) {
+                                                        $subCategoria = substr($item->subcategoria, 0, 13) . "...";
+                                                    }
+                                                    if (isset($item->url)) {
+                                                        if ($item->url != '' || $item->url != null) {
+                                                            echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> <span class="text-right"><a href="' . $item->url . '" class="btn-card-2" style="margin-left:4px"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></span></div>';
+                                                        } else {
+                                                            echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
+                                                        }
+                                                    } else {
+                                                        echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
+                                                    }
+
+                                                    ?>
                                                     <!-- descripcion -->
                                                     <h6>
                                                         <a title="" href="<?= site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id);  ?>"><?= $item->titulo_corto; ?></a>
@@ -247,6 +264,7 @@
                                                     <!-- Location -->
                                                     <p class="location"><i class="fa fa-map-marker"></i> <?= $item->ciudad->name_ciudad; ?></p>
                                                     <!-- Rating -->
+
                                                     <div class="rating">
                                                         <ul class="pull-left">
                                                             <?php if ($item->is_active == 1) { ?>

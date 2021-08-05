@@ -57,21 +57,36 @@
                                     echo ' </div>';
                                     echo '</a>';
                                     echo ' <div class="short-description-1 clearfix">';
-                                    echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                    echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
-                                    echo '<p class="text-left" style="font-size:14px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
-                                    echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
-
+                                    $subCategoria = $item->subcategoria;
+                                    if (strlen($subCategoria) > 13) {
+                                       $subCategoria = substr($item->subcategoria, 0, 13) . "...";
+                                    }
                                     if (isset($item->url)) {
                                        if ($item->url != '' || $item->url != null) {
-                                          echo '<a href="' . $item->url . '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                                          echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> <span class="text-right"><a href="' . $item->url . '" class="btn-card" style="margin-left:4px"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></span></div>';
+                                       } else {
+                                          echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                        }
+                                    } else {
+                                       echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                     }
+
+                                    $title = $item->titulo;
+                                    if (strlen($title) > 20) {
+                                       $title = substr($item->titulo, 0, 20) . "...";
+                                    }
+
+                                    echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
+                                    echo '<p style="font-size:14px;color:#fff"><span class="text-left" ><i class="fa fa-usd" aria-hidden="true"></i> ' . number_format($item->precio, 2) . '</span><span class="text-right" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span></p>';
                                     echo '</div>';
                                     echo '<div class="ad-info-1">';
                                     echo ' <ul>';
-                                    echo '  <li> <i class="fa fa-map-marker"></i>' . $item->ciudad . ' </li>';
-                                    echo '  <li> <i class="fa fa-eye"></i>' . $item->views . ' </li>';
+                                    echo '  <li class="text-left"> <i class="fa fa-eye"></i>' . $item->views . ' </li>';
+                                    $city = $item->ciudad;
+                                    if (strlen($city) > 15) {
+                                       $city = substr($item->ciudad, 0, 13) . "...";
+                                    }
+                                    echo '  <li class="text-right"> <i class="fa fa-map-marker"></i>' . $city . ' </li>';
                                     echo ' </ul>';
                                     echo '</div>';
                                     echo ' </div>';
@@ -130,21 +145,36 @@
                                        echo ' </div>';
                                        echo '</a>';
                                        echo ' <div class="short-description-1 clearfix">';
-                                       echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                       echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
-                                       echo '<p class="text-left" style="font-size:14px;color:#fff">$' . number_format($item->precio, 2) . '</p>';
-                                       echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
-
+                                       $subCategoria = $item->subcategoria;
+                                       if (strlen($subCategoria) > 13) {
+                                          $subCategoria = substr($item->subcategoria, 0, 13) . "...";
+                                       }
                                        if (isset($item->url)) {
                                           if ($item->url != '' || $item->url != null) {
-                                             echo '<a href="' . $item->url . '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                                             echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> <span class="text-right"><a href="' . $item->url . '" class="btn-card" style="margin-left:4px"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></span></div>';
+                                          } else {
+                                             echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                           }
+                                       } else {
+                                          echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                        }
+
+                                       $title = $item->titulo;
+                                       if (strlen($title) > 20) {
+                                          $title = substr($item->titulo, 0, 20) . "...";
+                                       }
+
+                                       echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
+                                       echo '<p style="font-size:14px;color:#fff"><span class="text-left" ><i class="fa fa-usd" aria-hidden="true"></i> ' . number_format($item->precio, 2) . '</span><span class="text-right" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span></p>';
                                        echo '</div>';
                                        echo '<div class="ad-info-1">';
                                        echo ' <ul>';
-                                       echo '  <li> <i class="fa fa-map-marker"></i>' . $item->ciudad . ' </li>';
-                                       echo '  <li> <i class="fa fa-eye"></i>' . $item->views . ' </li>';
+                                       echo '  <li class="text-left"> <i class="fa fa-eye"></i>' . $item->views . ' </li>';
+                                       $city = $item->ciudad;
+                                       if (strlen($city) > 15) {
+                                          $city = substr($item->ciudad, 0, 13) . "...";
+                                       }
+                                       echo '  <li class="text-right"> <i class="fa fa-map-marker"></i>' . $city . ' </li>';
                                        echo ' </ul>';
                                        echo '</div>';
                                        echo ' </div>';

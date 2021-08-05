@@ -2846,6 +2846,42 @@ if (isset($all_cate_anuncio)) {
       color: white;
    }
 
+   .btn-card {
+      color: #fff !important;
+      font-size: 18px !important;
+   }
+
+   .btn-card:hover {
+      font-size: 24px !important;
+   }
+
+   .btn-card-2 {
+      color: #000 !important;
+      font-size: 18px !important;
+   }
+
+   .btn-card-2:hover {
+      font-size: 24px !important;
+   }
+
+   .category-grid-box-1 .short-description-1 {
+      padding: 15px 15px 0px 15px;
+      position: relative;
+      background: #243136 none repeat scroll 0 0;
+   }
+
+   .ad-info-1 {
+      background: #1d282c none repeat scroll 0 0;
+      padding: 0px 18px 4px;
+      overflow: hidden;
+      width: 100%;
+   }
+
+   p a:hover {
+      color: #fff !important;
+      font-weight: bold;
+   }
+
    .save_loading {
       width: 140px;
       height: 140px;
@@ -2870,6 +2906,12 @@ if (isset($all_cate_anuncio)) {
 
    .banner2 {
       padding-top: 107px !important
+   }
+
+   .ribbon.popular {
+      background: none;
+      color: #e5124c;
+      font-size: 18px;
    }
 </style>
 

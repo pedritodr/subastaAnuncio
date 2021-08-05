@@ -81,35 +81,50 @@ if (empty($mastercat))
                                     echo ' <div class="image">';
                                     if (file_exists($item->anuncio_photo)) {
                                         if (strpos($item->anuncio_photo, 'uploads') !== false) {
-                                            echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive">';
+                                            echo '<img alt="Tour Package" src="' . base_url($item->anuncio_photo) . '" class="img-responsive"  loading="lazy">';
                                         } else {
-                                            echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive">';
+                                            echo '<img alt="Tour Package" src="' . $item->anuncio_photo . '" class="img-responsive"  loading="lazy">';
                                         }
                                     } else {
-                                        echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive">';
+                                        echo '<img alt="Tour Package" src="' . base_url("assets/image-no-found.jpg") . '" class="img-responsive"  loading="lazy">';
                                     }
                                     if ($item->destacado == 1) {
-                                        echo '<div class="ribbon popular">Destacado</div>';
+                                        echo '<div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i>
+                                       </div>';
                                     }
-                                    echo ' <div class="price-tag">';
-                                    echo '<div class="price"><span>$' . number_format($item->precio, 2) . '</span></div>';
-                                    echo '</div>';
                                     echo ' </div>';
                                     echo '</a>';
                                     echo ' <div class="short-description-1 clearfix">';
-                                    echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $item->subcategoria . '</span> </div>';
-                                    echo ' <p><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $item->corto . '</a></p>';
-                                    echo ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span> ';
+                                    $subCategoria = $item->subcategoria;
+                                    if (strlen($subCategoria) > 20) {
+                                        $subCategoria = substr($item->subcategoria, 0, 20) . "...";
+                                    }
                                     if (isset($item->url)) {
                                         if ($item->url != '' || $item->url != null) {
-                                            echo '<a href="' . $item->url . '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                                            echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> <span class="text-right"><a href="' . $item->url . '" class="btn-card" style="margin-left:4px"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></span></div>';
+                                        } else {
+                                            echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                         }
+                                    } else {
+                                        echo '<div class="category-title"> <span>' . $item->categoria . ' / ' . $subCategoria . '</span> </div>';
                                     }
+
+                                    $title = $item->titulo;
+                                    if (strlen($title) > 30) {
+                                        $title = substr($item->titulo, 0, 28) . "...";
+                                    }
+
+                                    echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
+                                    echo '<p style="font-size:14px;color:#fff"><span class="text-left" ><i class="fa fa-usd" aria-hidden="true"></i> ' . number_format($item->precio, 2) . '</span><span class="text-right" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' . $item->whatsapp . ' </span></p>';
                                     echo '</div>';
                                     echo '<div class="ad-info-1">';
                                     echo ' <ul>';
-                                    echo '  <li> <i class="fa fa-map-marker"></i>' . $item->ciudad . ' </li>';
-                                    echo ' <li> <i class="fa fa-clock-o"></i>' . $item->fecha . ' </li>';
+                                    echo '  <li class="text-left"> <i class="fa fa-eye"></i>' . $item->views . ' </li>';
+                                    $city = $item->ciudad;
+                                    if (strlen($city) > 15) {
+                                        $city = substr($item->ciudad, 0, 13) . "...";
+                                    }
+                                    echo '  <li class="text-right"> <i class="fa fa-map-marker"></i>' . $city . ' </li>';
                                     echo ' </ul>';
                                     echo '</div>';
                                     echo ' </div>';
@@ -505,27 +520,46 @@ if (empty($mastercat))
                     stringAds += '<img alt="Tour Package" src="' + baseUrl + 'assets/image-no-found.jpg" class="img-responsive">';
                 }
                 if (item.destacado == 1) {
-                    stringAds += '<div class="ribbon popular">Destacado</div>';
+                    stringAds += '<div class="ribbon popular"><i class="fa fa-star-o" aria-hidden="true"></i></div>';
                 }
-                stringAds += ' <div class="price-tag">';
-                stringAds += '<div class="price"><span>$' + parseFloat(item.precio).toFixed(2) + '</span></div>';
-                stringAds += '</div>';
+                /*         stringAds += ' <div class="price-tag">';
+                        stringAds += '<div class="price"><span>$' + parseFloat(item.precio).toFixed(2) + '</span></div>';
+                        stringAds += '</div>'; */
                 stringAds += ' </div>';
                 stringAds += '</a>';
                 stringAds += ' <div class="short-description-1 clearfix">';
-                stringAds += '<div class="category-title"> <span>' + item.categoria + ' / ' + item.subcategoria + '</span> </div>';
-                stringAds += ' <p><a title="" href="' + linkPage + '">' + item.corto + '</a></p>';
-                stringAds += ' <span class="text-left" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' + item.whatsapp + ' </span> ';
+                let subCategoria = item.subcategoria;
+                if (subCategoria.length > 20) {
+                    temp = subCategoria.substr(0, 20);
+                    subCategoria = temp + ' ...';
+                }
                 if (item.url !== undefined) {
                     if (item.url != '' || item.url != null) {
-                        stringAds += '<a href="' + item.url + '" class="btn btn-outline btn-default btn-sm" style="margin-left:4px">Comprar</a>';
+                        stringAds += '<div class="category-title"> <span>' + item.categoria + ' / ' + subCategoria + '</span> <span class="text-right"><a href="' + item.url + '" class="btn-card" style="margin-left:4px"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></span> </div>';
+                    } else {
+                        stringAds += '<div class="category-title"> <span>' + item.categoria + ' / ' + subCategoria + '</span> </div>';
                     }
+                } else {
+                    stringAds += '<div class="category-title"> <span>' + item.categoria + ' / ' + subCategoria + '</span> </div>';
                 }
+                let title = item.titulo;
+                if (title.length > 30) {
+                    temp = title.substr(0, 28);
+                    title = temp + ' ...';
+                }
+                stringAds += ' <p><a title="" href="' + linkPage + '">' + title + '</a></p>';
+                stringAds += '<p style="font-size:14px;color:#fff"><span class="text-left" ><i class="fa fa-usd" aria-hidden="true"></i> ' + parseFloat(item.precio).toFixed(2) + '</span><span class="text-right" style="font-size:14px;color:#fff"> <i class="fa fa-whatsapp"></i> ' + item.whatsapp + ' </span></p>';
                 stringAds += '</div>';
                 stringAds += '<div class="ad-info-1">';
                 stringAds += ' <ul>';
-                stringAds += '  <li> <i class="fa fa-map-marker"></i>' + item.ciudad + ' </li>';
-                stringAds += ' <li> <i class="fa fa-clock-o"></i>' + item.fecha + ' </li>';
+                stringAds += '<li class="text-left"> <i class="fa fa-eye"></i>' + item.views + ' </li>';
+                let city = item.ciudad;
+                if (city.length > 15) {
+                    temp = title.substr(0, 12);
+                    city = temp + ' ...';
+                }
+
+                stringAds += '  <li class="text-right"> <i class="fa fa-map-marker"></i>' + city + ' </li>';
                 stringAds += ' </ul>';
                 stringAds += '</div>';
                 stringAds += ' </div>';
@@ -564,5 +598,15 @@ if (empty($mastercat))
             margin-top: 0px;
         }
 
+    }
+
+    .category-grid-box-1 {
+        background: #fff none repeat scroll 0 0;
+        box-shadow: 0 2px 5px -1px rgb(0 0 0 / 16%);
+        margin-bottom: 30px;
+        overflow: hidden;
+        float: left;
+        display: block;
+        width: 95%;
     }
 </style>
