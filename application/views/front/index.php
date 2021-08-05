@@ -73,7 +73,7 @@
 
                                     $title = $item->titulo;
                                     if (strlen($title) > 20) {
-                                       $title = substr($item->titulo, 0, 20) . "...";
+                                       $title = substr($item->titulo, 0, 17) . "...";
                                     }
 
                                     echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
@@ -161,7 +161,7 @@
 
                                        $title = $item->titulo;
                                        if (strlen($title) > 20) {
-                                          $title = substr($item->titulo, 0, 20) . "...";
+                                          $title = substr($item->titulo, 0, 17) . "...";
                                        }
 
                                        echo ' <p class="title-carousel"><a title="" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">' . $title . '</a></p>';
