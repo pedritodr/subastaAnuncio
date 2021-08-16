@@ -2592,13 +2592,17 @@ class Front extends CI_Controller
             if ($nombre > 54) {
                 $item->titulo_corto = substr($item->titulo, 0, 54) . "...";
             } else {
-
                 $item->titulo_corto = $item->titulo;
             }
             $subcate_object = $this->cate_anuncio->get_by_subcate_id_object($item->subcate_id);
-            $categoria = $this->cate_anuncio->get_by_id($subcate_object->cate_anuncio_id);
+            if ($subcate_object) {
+                $categoria = $this->cate_anuncio->get_by_id($subcate_object->cate_anuncio_id);
+                $item->categoria = $categoria->nombre;
+            } else {
+                $item->categoria = null;
+            }
             $item->subcate =  $subcate_object;
-            $item->categoria = $categoria->nombre;
+
             $all_ciudad = $this->pais->get_by_ciudad_id_object($item->ciudad_id);
 
             $item->ciudad = $all_ciudad;
@@ -4255,6 +4259,7 @@ class Front extends CI_Controller
         $this->load->model('Bank_data_model', 'bank_data');
         $bankName = $this->input->post('bankName');
         $numberAcount = $this->input->post('numberAcount');
+        $numberId = $this->input->post('numberId');
         $typeAcount = $this->input->post('typeAccount');
         $nameTitular = $this->input->post('nameTitular');
         $emailContact = $this->input->post('emailContact');
@@ -4267,7 +4272,7 @@ class Front extends CI_Controller
                 'number_account' => $numberAcount,
                 'type_account' => $typeAcount,
                 'name_titular' => $nameTitular,
-                'number_id' => $numberAcount,
+                'number_id' => $numberId,
                 'email' => $emailContact,
                 'phone' => $phoneContact
             ];
@@ -4281,7 +4286,7 @@ class Front extends CI_Controller
                 'number_account' => $numberAcount,
                 'type_account' => $typeAcount,
                 'name_titular' => $nameTitular,
-                'number_id' => $numberAcount,
+                'number_id' => $numberId,
                 'email' => $emailContact,
                 'phone' => $phoneContact
             ];

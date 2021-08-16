@@ -1938,6 +1938,7 @@
             let nameTitular = $('#nameTitular').val().trim();
             let emailContact = $('#emailContact').val().trim();
             let phoneContact = $('#phoneContact').val().trim();
+            let numberId = $('#numberId').val().trim();
 
             if (bankName == '') {
                 Swal.fire({
@@ -2000,7 +2001,8 @@
                     typeAccount,
                     nameTitular,
                     emailContact,
-                    phoneContact
+                    phoneContact,
+                    numberId
                 }
                 setTimeout(function() {
                     $.ajax({
