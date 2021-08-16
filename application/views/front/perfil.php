@@ -1638,6 +1638,7 @@
                                 <select id="typePayment" class="form-control select2">
                                     <!--     <option value="1">Tarjeta</option> -->
                                     <option value="2">Billetera</option>
+                                    <option value="3">Transferencia</option>
                                 </select>
                             </div>
                         </div>

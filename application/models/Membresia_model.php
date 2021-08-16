@@ -41,6 +41,12 @@ class Membresia_model extends CI_Model
 
         return $query->row();
     }
+    function get_membresia_by_user_id_transfer($id)
+    {
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('membresia_user');
+        return $query->row();
+    }
 
     function get_membresia_by_user_id2($id)
     {

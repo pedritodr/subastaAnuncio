@@ -777,6 +777,29 @@
       </div>
    </div>
 </div>
+<div id="modalPaymentTransfer" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title text-center" id="lineModalLabel">Pago con transferencia</h3>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                  <h3 class="text-center" id="nameMembreTransfer"></h3>
+                  <h4 class="text-center" id="priceMembreTransfer"></h4>
+                  <p class="text-center" id="msgTransfer"></p>
+                  <input id="membreTransferId" type="hidden" value="">
+               </div>
+            </div>
+            <div class="col-md-12 margin-bottom-20 margin-top-20">
+               <button id="btnPaymentTransfer" style="border-color: #2a3681;" onclick="handlePaymentTransfer()" type="button" class="btn btn-success btn-block"><?= "Enviar" ?></button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <div id="modal_notificacion" class="modal fade price-quote" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -2018,10 +2041,10 @@ if (isset($all_cate_anuncio)) {
    }
 
    const handleTypePayment = () => {
-      let typePayment = $('#typePayment').val();
+      let typePayment = Number($('#typePayment').val());
       let obj = localStorage.getItem('membresia');
       $('#modalMetodoPago').modal('hide');
-      typePayment == 1 ? seleccionar_membresia(obj) : paymentBilletera(obj);
+      typePayment == 3 ? paymentTransfer(obj) : paymentBilletera(obj);
    }
 
    const paymentBilletera = (object) => {
@@ -2034,7 +2057,7 @@ if (isset($all_cate_anuncio)) {
          wallet = JSON.parse(wallet);
       }
 
-      $('#nameMembresia').text('Membresia: ' + object.nombre);
+      $('#nameMembresia').text('Membresia: Plan ' + object.nombre);
       $('#priceMembresia').text('Precio: ' + parseFloat(object.precio).toFixed(2));
       $('#priceMembre').val(parseFloat(object.precio).toFixed(2));
       $('#saldoWalletMembresia').text(wallet ? 'Saldo disponible: ' + parseFloat(wallet.balance).toFixed(2) : 'Saldo disponible: 0.00');
@@ -2049,6 +2072,15 @@ if (isset($all_cate_anuncio)) {
          $('#btnPaymentWallet').prop('disabled', true);
       }
       $('#modalPaymentBilletera').modal('show');
+   }
+   const paymentTransfer = (object) => {
+      object = JSON.parse(decodeB64Utf8(object));
+
+      $('#nameMembreTransfer').text('Membresia: Plan ' + object.nombre);
+      $('#priceMembreTransfer').text('Precio: ' + parseFloat(object.precio).toFixed(2));
+      $('#msgTransfer').html("texto informativo");
+      $('#membreTransferId').val(object.membresia_id);
+      $('#modalPaymentTransfer').modal('show');
    }
 
    const paymentWallet = () => {
@@ -2127,6 +2159,60 @@ if (isset($all_cate_anuncio)) {
             timer: 1500
          })
       }
+   }
+   const handlePaymentTransfer = () => {
+      let membresiaId = $('#membreTransferId').val();
+      Swal.fire({
+         title: 'Completando operación',
+         text: 'Realizando solicitud de transferencia...',
+         imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+         imageAlt: 'No realice acciones sobre la página',
+         showConfirmButton: false,
+         allowOutsideClick: false,
+         footer: '<a href>No realice acciones sobre la página</a>',
+      });
+      let obj = localStorage.getItem('membresia');
+      obj = JSON.parse(decodeB64Utf8(obj));
+      let renovate = false;
+      if (obj.renovate !== undefined) {
+         if (obj.renovate) {
+            renovate = true;
+         }
+      }
+      setTimeout(function() {
+         $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/payment_membresia_transfer') ?>",
+            data: {
+               membresiaId,
+               renovate
+            },
+            success: function(result) {
+               localStorage.removeItem('membresia');
+               Swal.close();
+               result = JSON.parse(result);
+               if (result.status == 200) {
+                  Swal.fire({
+                     position: 'top-end',
+                     icon: 'success',
+                     title: 'Solicitud procesada correctamente',
+                     showConfirmButton: false,
+                     timer: 1500
+                  })
+                  setTimeout(() => {
+                     window.location.href = '<?= site_url('perfil/page'); ?>';
+                  }, 1000);
+               } else {
+                  Swal.close();
+                  swal({
+                     title: '¡Error!',
+                     text: result.msj,
+                     padding: '2em'
+                  });
+               }
+            }
+         });
+      }, 1500)
    }
 
    function seleccionar_membresia(object) {

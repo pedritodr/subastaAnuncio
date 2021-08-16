@@ -129,6 +129,11 @@
                         <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Solitudes de transferencias</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= site_url('Transaccion/index_request'); ?>">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i> <span>Transferencias procesadas</span>
+                    </a>
+                </li>
 
             <?php }  ?>
 

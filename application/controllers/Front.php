@@ -4823,7 +4823,28 @@ class Front extends CI_Controller
             exit();
         }
     }
-
+    public function payment_membresia_transfer()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $this->load->model('Transfer_model', 'transfer');
+        $membresiaId = $this->input->post('membresiaId');
+        $renovate = $this->input->post('renovate') === "true" ? 1 : 0;
+        $user_id = $this->session->userdata('user_id');
+        $fecha = date('Y-m-d H:i:s');
+        $data = [
+            'date_create' => $fecha,
+            'renovate' => $renovate,
+            'membresia_id' => $membresiaId,
+            'user_id' => $user_id,
+            'status' => 0
+        ];
+        $this->transfer->create($data);
+        echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+        exit();
+    }
     public function request_transfer_balance()
     {
         if (!in_array($this->session->userdata('role_id'), [2])) {
