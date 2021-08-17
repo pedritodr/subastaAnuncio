@@ -86,14 +86,21 @@ class Transfer_model extends CI_Model
     }
     function get_all_requests()
     {
-        $this->db->select('transfer.renovate,transfer.transfer_id,transfer.status,transfer.date_create,transfer.date_update,user.user_id,user.name,user.surname,user.phone,user.email,membresia.membresia_id,membresia.nombre,membresia.precio');
+        $this->db->select('anuncio.titulo,transfer.type,transfer.anuncio_id,transfer.renovate,transfer.transfer_id,transfer.status,transfer.date_create,transfer.date_update,user.user_id,user.name,user.surname,user.phone,user.email,membresia.membresia_id,membresia.nombre,membresia.precio');
         $this->db->from('transfer');
         $this->db->join('user', 'user.user_id = transfer.user_id');
         $this->db->join('membresia', 'membresia.membresia_id = transfer.membresia_id', 'left');
+        $this->db->join('anuncio', 'anuncio.anuncio_id = transfer.anuncio_id', 'left');
         $this->db->where('transfer.status >=', 0);
         $query = $this->db->get();
         return $query->result();
     }
-
+    function get_transfer_by_user_pendientes($id)
+    {
+        $this->db->where('user_id', $id);
+        $this->db->where('status', 0);
+        $query = $this->db->get('transfer');
+        return $query->row();
+    }
     //------------------------------------------------------------------------------------------------------------------------------------------
 }

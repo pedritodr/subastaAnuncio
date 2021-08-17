@@ -1332,7 +1332,9 @@
                                                                     <p>Bono binario <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
                                                                 <?php } else if ($trx->type == 8) { ?>
                                                                     <p>Bono diario <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
-                                                                <?php } ?>
+                                                                <?php } else { ?>
+                                                                    <p>Pago de anuncio destacado <span class="text-right"><button class="btn btn-xs btn-info" onclick="handleDetailsTransaction('<?= base64_encode(json_encode($trx)) ?>')">Ver detalle</button></span></p>
+                                                                <?php  } ?>
                                                             </td>
                                                             <td>
                                                                 <?php
@@ -1693,8 +1695,10 @@
                 stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Reintegro de la solicitud de transferencia </p>';
             } else if (obj.type == 7) {
                 stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono binario</p>';
-            } else {
+            } else if (obj.type == 8) {
                 stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono diario</p>';
+            } else {
+                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Pago de anuncio destacado</p>';
             }
             if (obj.wallet_receives == walletCliente.wallet_id) {
                 stringInfo += '<p class="text-center"><label style="color:green;font-weight:bold">Monto: + $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';

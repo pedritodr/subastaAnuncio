@@ -215,18 +215,16 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
-                  <img src="<?= base_url('assets/logos_EC.png') ?>" alt="">
-               </div>
-               <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
-                  <img style="width:62%; margin-left:-62%;" src="<?= base_url('assets/mastercard.png') ?>" alt="">
-               </div>
-               <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 text-center">
-                  <a href="https://www.placetopay.com"> <img style="width: 33%" src="<?= base_url('assets/Logo_PlacetoPay.png') ?>" alt=""></a>
+               <div class="col-lg-12">
+                  <div class="form-group" style="padding-left: 50px;padding-right: 50px;">
+                     <label> Tipos de pagos<span class="color-red">*</span></label>
+                     <select id="typePaymentAds" class="form-control select2" onchange="handleTypePaymentAds()">
+                        <option value="2">Billetera</option>
+                        <option value="3">Transferencia</option>
+                     </select>
+                  </div>
                </div>
                <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
-
-
                </div>
                <div id="body_condiciones_destacar" class="col-lg-12">
                   <div class="form-group">
@@ -236,15 +234,11 @@
                   </div>
                </div>
                <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
-
-
                </div>
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
-               <button id="btn_destacar" type="button" onclick="pagar_destacar()" class="btn btn-theme btn-block"><?= translate('featured_ads_lang') ?></button>
-
+               <button id="btn_destacar" type="button" onclick="pagar_destacar()" class="btn btn-theme btn-block"><?= "Enviar" ?></button>
             </div>
-
          </div>
       </div>
    </div>
@@ -769,6 +763,17 @@
                   <input id="membresiaId" type="hidden" value="">
                   <input id="priceMembre" type="hidden" value="">
                </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+               </div>
+               <div id="body_condiciones_destacar" class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condiciones_destacar" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
+               </div>
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
                <button id="btnPaymentWallet" style="border-color: #2a3681;" onclick="paymentWallet()" type="button" class="btn btn-success btn-block"><?= translate('pagar_lang'); ?></button>
@@ -791,6 +796,17 @@
                   <h4 class="text-center" id="priceMembreTransfer"></h4>
                   <p class="text-center" id="msgTransfer"></p>
                   <input id="membreTransferId" type="hidden" value="">
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 transaccion_pendiente">
+               </div>
+               <div id="body_condiciones_destacar" class="col-lg-12">
+                  <div class="form-group">
+                     <label style="margin-left: 25%" class="text-center">
+                        <input style="margin-top: 5%;" required id="condicionesTransfer" type="checkbox"> <a href="<?= site_url('condiciones-de-uso') ?>" target="_blank">ACEPTO LAS CONDICIONES DE USO.</a>
+                     </label>
+                  </div>
+               </div>
+               <div style="display:none" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noficacion_error">
                </div>
             </div>
             <div class="col-md-12 margin-bottom-20 margin-top-20">
@@ -1321,93 +1337,131 @@ if (isset($all_cate_anuncio)) {
             $('.noficacion_error').show();
         } */
    }
+   const handleTypePaymentAds = () => {
+      let typePaymentAds = $('#typePaymentAds').val();
+      $('.noficacion_error').html('').hide();
+      if (typePaymentAds === "2") {
+         if (wallet) {
+            $('.noficacion_error').html("<h6 class='text-center'>" + wallet ? 'Saldo disponible: ' + parseFloat(wallet.balance).toFixed(2) : 'Saldo disponible: 0.00' + "</h6>").show();
+         } else {
+            $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario tener saldo en la Billetera.</h6>").show();
+         }
+      } else {
+         $('.noficacion_error').html('').hide();
+      }
+   }
 
-   function pagar_destacar() {
+   async function pagar_destacar() {
       $(".btn-theme").css("background-color", "#8c1822");
       $(".btn-theme").css("color", "#fff");
-
-      var name_destacado = $('#anuncio_detalle_destacar').val();
-      var valor_destacado = 7;
-      var anuncio_destacado_id = $('#anuncio_id_destacar').val();
+      let adsDestacado = $('#anuncio_id_destacar').val();
+      let typePaymentAds = $('#typePaymentAds').val();
+      $('.noficacion_error').html("");
       if ($('#condiciones_destacar').prop('checked') == true) {
          $('#modal_destacar').modal("hide");
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/checkout') ?>",
-            data: {
-               monto: valor_destacado,
-               detalle: name_destacado,
-               id: anuncio_destacado_id,
-               tipo: 2
-            },
-            success: function(data) {
-               data = JSON.parse(data);
-
-               var processUrl = data.processUrl;
-
-               P.init(processUrl);
-               $("#processUrl").val(processUrl);
-            },
-            error: function(data) {
-               data = JSON.parse(data);
-               alert(data.status.message);
-            }
-         });
-         P.on('response', function(data) {
-            let requestId = data.requestId;
-            let reference = data.reference;
-            let estado_payment = 0
-            if (data.status.status == "APPROVED") {
-               estado_payment = 1;
-               $('#icono_notificacion').html("<i class='fa fa-check-circle-o'></i>");
-               $('#status_notificacion').text("Transacción Aprobada");
-               $('#product_adquirido').html("<strong>Anuncio detacado : </strong>" + name_destacado);
-            } else if (data.status.status == "REJECTED") {
-               estado_payment = 2;
-               $('#icono_notificacion').html("<i class='fa fa-times-circle-o'></i>");
-               $('#status_notificacion').text("El pago ha sido rechazado");
-            } else if (data.status.status == "PENDING") {
-               estado_payment = 3;
-               $('#icono_notificacion').html("<i class='fa fa-question-circle-o'></i>");
-               $('#status_notificacion').text("El proceso de pago está pendiente");
-            }
-            $.ajax({
-               type: 'POST',
-               url: "<?= site_url('front/update_request_id') ?>",
-               data: {
-                  request_id: requestId,
-                  reference: reference,
-                  status: estado_payment
-               },
-               success: function(result) {
-                  result = JSON.parse(result);
-                  if (result.status == 200) {
-                     $('#mensaje_notificacion').text(data.status.message);
-                     $('#referencia_notificacion').html("<strong>Referencia de la Transacción: </strong>" + data.reference);
-                     $('#modal_notificacion').modal('show');
-                     setTimeout(() => {
-                        location.reload();
-                     }, 6000);
-                  } else {
-                     alert("Ocurrio un error en el servidor");
-                  }
-
-               },
-               error: function(result) {
-
-                  alert("Ocurrio un error en el servidor");
+         if (typePaymentAds === "2") {
+            if (wallet) {
+               let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
+               if (balance >= 7) {
+                  Swal.fire({
+                     title: 'Completando operación',
+                     text: 'Procesando  pago...',
+                     imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                     imageAlt: 'No realice acciones sobre la página',
+                     showConfirmButton: false,
+                     allowOutsideClick: false,
+                     footer: '<a href>No realice acciones sobre la página</a>',
+                  });
+                  setTimeout(function() {
+                     $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('front/payment_ads_destacado') ?>",
+                        data: {
+                           adsDestacado
+                        },
+                        success: function(result) {
+                           Swal.close();
+                           result = JSON.parse(result);
+                           if (result.status == 200) {
+                              Swal.fire({
+                                 position: 'top-end',
+                                 icon: 'success',
+                                 title: 'Anuncio destacado correctamente',
+                                 showConfirmButton: false,
+                                 timer: 1500
+                              })
+                              setTimeout(() => {
+                                 window.location.href = '<?= site_url('perfil/page'); ?>';
+                              }, 1000);
+                           } else {
+                              Swal.close();
+                              swal({
+                                 title: '¡Error!',
+                                 text: result.msj,
+                                 padding: '2em'
+                              });
+                           }
+                        }
+                     });
+                  }, 1500)
+               } else {
+                  $('.noficacion_error').html("<h6 class='text-center'>Su saldo no es suficiente para realizar esta transacción.</h6>").show();
                }
-            });
-
-         });
-
-         $("#lightboxIt").on('click', function() {
-
-            P.init($("#processUrl").val());
-         });
+            } else {
+               $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario tener saldo en la Billetera.</h6>").show();
+            }
+         } else {
+            let pendientTransaction = await searchTransactions();
+            pendientTransaction = JSON.parse(pendientTransaction);
+            if (pendientTransaction.data) {
+               $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : " + pendientTransaction.data.transfer_id + "</h6>").show();
+            } else {
+               Swal.fire({
+                  title: 'Completando operación',
+                  text: 'Realizando solicitud de transferencia...',
+                  imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                  imageAlt: 'No realice acciones sobre la página',
+                  showConfirmButton: false,
+                  allowOutsideClick: false,
+                  footer: '<a href>No realice acciones sobre la página</a>',
+               });
+               setTimeout(function() {
+                  $.ajax({
+                     type: 'POST',
+                     url: "<?= site_url('front/payment_ads_transfer') ?>",
+                     data: {
+                        adsDestacado
+                     },
+                     success: function(result) {
+                        Swal.close();
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                           Swal.fire({
+                              position: 'top-end',
+                              icon: 'success',
+                              title: 'Solicitud procesada correctamente',
+                              showConfirmButton: false,
+                              timer: 1500
+                           })
+                           setTimeout(() => {
+                              window.location.href = '<?= site_url('perfil/page'); ?>';
+                           }, 1000);
+                        } else {
+                           Swal.close();
+                           swal({
+                              title: '¡Error!',
+                              text: result.msj,
+                              padding: '2em'
+                           });
+                        }
+                     }
+                  });
+               }, 1500)
+            }
+         }
       } else {
          $('#condiciones_destacar').focus();
-         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>")
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>");
          $('.noficacion_error').show();
       }
    }
@@ -1616,44 +1670,11 @@ if (isset($all_cate_anuncio)) {
    }
 
    function cargar_modal_destacar(object) {
-      object = atob(object);
-      object = JSON.parse(object);
+      object = JSON.parse(decodeB64Utf8(object));
+      $('#typePaymentAds').val(null).trigger('change');
       $('.transaccion_pendiente').hide();
-      $.ajax({
-         type: 'POST',
-         url: "<?= site_url('front/get_payments_user') ?>",
-
-         data: {
-            user_id: user_id,
-         },
-         success: function(result) {
-            result = JSON.parse(result);
-            // console.log(result);
-            if (result.status == 500) {
-               if (result.data.length > 0) {
-
-                  let trans_pendiente = "<p class='text-center'><b>Estimado usuario actualmente tiene una transacción pendiente.</b></p>";
-                  for (let i = 0; i < result.data.length; i++) {
-                     trans_pendiente += "<p class='text-center'><b>Referencia: #" + result.data[i].reference + "</b></p>";
-                  }
-
-                  $('#body_condiciones_destacar').hide();
-                  $('#btn_destacar').hide();
-                  $('.transaccion_pendiente').html(trans_pendiente);
-                  $('.transaccion_pendiente').show();
-
-               } else {
-                  $('#body_condiciones_destacar').show();
-                  $('#btn_destacar').show();
-               }
-
-
-            } else if (result.status == 200) {
-               $('#body_condiciones_destacar').show();
-               $('#btn_destacar').show();
-            }
-         }
-      });
+      $('#body_condiciones_destacar').show();
+      $('#btn_destacar').show();
       $('#modal_destacar').modal("show");
       $('#anuncio_id_destacar').val(object.anuncio_id);
       $('#anuncio_detalle_destacar').val(object.titulo);
@@ -2077,22 +2098,116 @@ if (isset($all_cate_anuncio)) {
       object = JSON.parse(decodeB64Utf8(object));
 
       $('#nameMembreTransfer').text('Membresia: Plan ' + object.nombre);
-      $('#priceMembreTransfer').text('Precio: ' + parseFloat(object.precio).toFixed(2));
-      $('#msgTransfer').html("texto informativo");
+      $('#priceMembreTransfer').text('Precio: $' + parseFloat(object.precio).toFixed(2));
+      $('#msgTransfer').html("Completa esta solicitud y te enviaremos vía mail, los dato bancarios de la compañía para que puedas efectuar tu transferencia o depósito.");
       $('#membreTransferId').val(object.membresia_id);
       $('#modalPaymentTransfer').modal('show');
    }
 
+   searchTransactions = async () => {
+      return $.ajax({
+         type: 'GET',
+         url: "<?= site_url('front/search_transacction') ?>",
+         success: function(result) {
+            result = JSON.parse(result);
+         }
+      })
+   }
    const paymentWallet = () => {
       let membresiaId = $('#membresiaId').val();
       let priceMembresia = $('#priceMembre').val();
-      if (wallet) {
-         let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
-         priceMembresia = parseFloat(parseFloat(priceMembresia).toFixed(2));
-         if (balance >= priceMembresia) {
+      if ($('#condiciones_destacar').prop('checked') == true) {
+         if (wallet) {
+            let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
+            priceMembresia = parseFloat(parseFloat(priceMembresia).toFixed(2));
+            if (balance >= priceMembresia) {
+               Swal.fire({
+                  title: 'Completando operación',
+                  text: 'Procesando  pago...',
+                  imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                  imageAlt: 'No realice acciones sobre la página',
+                  showConfirmButton: false,
+                  allowOutsideClick: false,
+                  footer: '<a href>No realice acciones sobre la página</a>',
+               });
+               let obj = localStorage.getItem('membresia');
+               obj = JSON.parse(decodeB64Utf8(obj));
+               let renovate = false;
+               if (obj.renovate !== undefined) {
+                  if (obj.renovate) {
+                     renovate = true;
+                  }
+               }
+               setTimeout(function() {
+                  $.ajax({
+                     type: 'POST',
+                     url: "<?= site_url('front/payment_membresia_wallet') ?>",
+                     data: {
+                        membresiaId,
+                        renovate
+                     },
+                     success: function(result) {
+                        localStorage.removeItem('membresia');
+                        Swal.close();
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                           Swal.fire({
+                              position: 'top-end',
+                              icon: 'success',
+                              title: 'Membresia adquirida correctamente',
+                              showConfirmButton: false,
+                              timer: 1500
+                           })
+                           setTimeout(() => {
+                              window.location.href = '<?= site_url('perfil/page'); ?>';
+                           }, 1000);
+                        } else {
+                           Swal.close();
+                           swal({
+                              title: '¡Error!',
+                              text: result.msj,
+                              padding: '2em'
+                           });
+                        }
+                     }
+                  });
+               }, 1500)
+            } else {
+               Swal.fire({
+                  position: 'top-end',
+                  icon: 'info',
+                  title: 'Su saldo no es suficiente para realizar esta transacción',
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            }
+         } else {
+            Swal.fire({
+               position: 'top-end',
+               icon: 'info',
+               title: 'Su saldo no es suficiente para realizar esta transacción',
+               showConfirmButton: false,
+               timer: 1500
+            })
+         }
+      } else {
+         $('#condiciones_destacar').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>");
+         $('.noficacion_error').show();
+      }
+   }
+   const handlePaymentTransfer = async () => {
+      let membresiaId = $('#membreTransferId').val();
+      $('.noficacion_error').html("");
+      if ($('#condicionesTransfer').prop('checked') == true) {
+         let pendientTransaction = await searchTransactions();
+         pendientTransaction = JSON.parse(pendientTransaction);
+         if (pendientTransaction.data) {
+            $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : " + pendientTransaction.data.transfer_id + "</h6>").show();
+         } else {
             Swal.fire({
                title: 'Completando operación',
-               text: 'Procesando  pago...',
+               text: 'Realizando solicitud de transferencia...',
                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
                imageAlt: 'No realice acciones sobre la página',
                showConfirmButton: false,
@@ -2107,10 +2222,11 @@ if (isset($all_cate_anuncio)) {
                   renovate = true;
                }
             }
+
             setTimeout(function() {
                $.ajax({
                   type: 'POST',
-                  url: "<?= site_url('front/payment_membresia_wallet') ?>",
+                  url: "<?= site_url('front/payment_membresia_transfer') ?>",
                   data: {
                      membresiaId,
                      renovate
@@ -2123,7 +2239,7 @@ if (isset($all_cate_anuncio)) {
                         Swal.fire({
                            position: 'top-end',
                            icon: 'success',
-                           title: 'Membresia adquirida correctamente',
+                           title: 'Solicitud procesada correctamente',
                            showConfirmButton: false,
                            timer: 1500
                         })
@@ -2141,78 +2257,12 @@ if (isset($all_cate_anuncio)) {
                   }
                });
             }, 1500)
-         } else {
-            Swal.fire({
-               position: 'top-end',
-               icon: 'info',
-               title: 'Su saldo no es suficiente para realizar esta transacción',
-               showConfirmButton: false,
-               timer: 1500
-            })
          }
       } else {
-         Swal.fire({
-            position: 'top-end',
-            icon: 'info',
-            title: 'Su saldo no es suficiente para realizar esta transacción',
-            showConfirmButton: false,
-            timer: 1500
-         })
+         $('#condicionesTransfer').focus();
+         $('.noficacion_error').html("<h6 class='text-center'>Para continuar es necesario que acepte las condiciones de uso.</h6>");
+         $('.noficacion_error').show();
       }
-   }
-   const handlePaymentTransfer = () => {
-      let membresiaId = $('#membreTransferId').val();
-      Swal.fire({
-         title: 'Completando operación',
-         text: 'Realizando solicitud de transferencia...',
-         imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-         imageAlt: 'No realice acciones sobre la página',
-         showConfirmButton: false,
-         allowOutsideClick: false,
-         footer: '<a href>No realice acciones sobre la página</a>',
-      });
-      let obj = localStorage.getItem('membresia');
-      obj = JSON.parse(decodeB64Utf8(obj));
-      let renovate = false;
-      if (obj.renovate !== undefined) {
-         if (obj.renovate) {
-            renovate = true;
-         }
-      }
-      setTimeout(function() {
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/payment_membresia_transfer') ?>",
-            data: {
-               membresiaId,
-               renovate
-            },
-            success: function(result) {
-               localStorage.removeItem('membresia');
-               Swal.close();
-               result = JSON.parse(result);
-               if (result.status == 200) {
-                  Swal.fire({
-                     position: 'top-end',
-                     icon: 'success',
-                     title: 'Solicitud procesada correctamente',
-                     showConfirmButton: false,
-                     timer: 1500
-                  })
-                  setTimeout(() => {
-                     window.location.href = '<?= site_url('perfil/page'); ?>';
-                  }, 1000);
-               } else {
-                  Swal.close();
-                  swal({
-                     title: '¡Error!',
-                     text: result.msj,
-                     padding: '2em'
-                  });
-               }
-            }
-         });
-      }, 1500)
    }
 
    function seleccionar_membresia(object) {
@@ -2681,233 +2731,233 @@ if (isset($all_cate_anuncio)) {
       }
 
    }
-   let y = setInterval(function() {
+   /*   let y = setInterval(function() {
 
-      if ($('#modal_detalle').hasClass('in')) {
+        if ($('#modal_detalle').hasClass('in')) {
 
-         let subasta_id = $('#detalle_subasta_id').val();
+           let subasta_id = $('#detalle_subasta_id').val();
 
-         if (subasta_id > 0) {
+           if (subasta_id > 0) {
 
-            $.ajax({
-               type: 'POST',
-               url: "<?= site_url('front/detalle_subasta') ?>",
+              $.ajax({
+                 type: 'POST',
+                 url: "<?= site_url('front/detalle_subasta') ?>",
 
-               data: {
-                  id: subasta_id
-               },
-               success: function(result) {
-                  result = JSON.parse(result);
+                 data: {
+                    id: subasta_id
+                 },
+                 success: function(result) {
+                    result = JSON.parse(result);
 
-                  if (result) {
+                    if (result) {
 
-                     if (result.all_detalle.tipo_subasta == 1) {
+                       if (result.all_detalle.tipo_subasta == 1) {
 
-                        var fecha = result.all_detalle.fecha_cierre;
-                        var date = new Date(fecha);
-                        var hoy = new Date();
+                          var fecha = result.all_detalle.fecha_cierre;
+                          var date = new Date(fecha);
+                          var hoy = new Date();
 
-                        if (date >= hoy) {
+                          if (date >= hoy) {
 
-                           var x = setInterval(function() {
+                             var x = setInterval(function() {
 
-                              var deadline = new Date(fecha).getTime();
-                              var currentTime = new Date().getTime();
-                              var t = deadline - currentTime;
-                              var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                              var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                              var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                              var seconds = Math.floor((t % (1000 * 60)) / 1000);
-                              $('#day-' + subasta_id).html(days);
-                              $('#hour-' + subasta_id).html(hours);
-                              $('#minute-' + subasta_id).html(minutes);
-                              $('#second-' + subasta_id).html(seconds);
+                                var deadline = new Date(fecha).getTime();
+                                var currentTime = new Date().getTime();
+                                var t = deadline - currentTime;
+                                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                                $('#day-' + subasta_id).html(days);
+                                $('#hour-' + subasta_id).html(hours);
+                                $('#minute-' + subasta_id).html(minutes);
+                                $('#second-' + subasta_id).html(seconds);
 
-                              if (t < 0) {
-                                 clearInterval(x);
+                                if (t < 0) {
+                                   clearInterval(x);
 
-                                 $('#day-' + subasta_id).html(0);
-                                 $('#hour-' + subasta_id).html(0);
-                                 $('#minute-' + subasta_id).html(0);
-                                 $('#second-' + subasta_id).html(0);
+                                   $('#day-' + subasta_id).html(0);
+                                   $('#hour-' + subasta_id).html(0);
+                                   $('#minute-' + subasta_id).html(0);
+                                   $('#second-' + subasta_id).html(0);
 
-                              }
+                                }
 
-                           }, 1000);
-                        } else {
+                             }, 1000);
+                          } else {
 
-                           $('#day-' + subasta_id).html(0);
-                           $('#hour-' + subasta_id).html(0);
-                           $('#minute-' + subasta_id).html(0);
-                           $('#second-' + subasta_id).html(0);
-                        }
+                             $('#day-' + subasta_id).html(0);
+                             $('#hour-' + subasta_id).html(0);
+                             $('#minute-' + subasta_id).html(0);
+                             $('#second-' + subasta_id).html(0);
+                          }
 
-                        if (result.puja.valor) {
-                           $("#valor_alto_modal").html("<i class='fa fa-user-o'></i> " + result.user_win.name + " $" + parseFloat(result.puja.valor).toFixed(2));
-                        }
-                        if (result.subasta_user && result.puja.valor == null) {
-                           $('#valor_alto_modal').html("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
-                        }
-                        if (user_id != "") {
-                           if (result.subasta_user == "null") {
-                              $("#body_entrar_subasta").show();
-                              $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
+                          if (result.puja.valor) {
+                             $("#valor_alto_modal").html("<i class='fa fa-user-o'></i> " + result.user_win.name + " $" + parseFloat(result.puja.valor).toFixed(2));
+                          }
+                          if (result.subasta_user && result.puja.valor == null) {
+                             $('#valor_alto_modal').html("$" + parseFloat(result.all_detalle.valor_inicial).toFixed(2));
+                          }
+                          if (user_id != "") {
+                             if (result.subasta_user == "null") {
+                                $("#body_entrar_subasta").show();
+                                $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
 
-                           } else {
-                              if (result.puja_user) {
-                                 if (result.puja_user.valor == "null") {
-                                    $("#body_entrar_subasta").hide();
-                                    $('#btn_pujar_subasta_' + result.subasta_id).show();
-                                    $("#body_pujar").show();
-                                    $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
-                                 } else {
-                                    if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
-                                       puja_mayor_subasta = result.puja.valor;
-                                       $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                                       $("#body_pujar").show();
-                                       $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
-                                    }
-                                 }
-                              }
+                             } else {
+                                if (result.puja_user) {
+                                   if (result.puja_user.valor == "null") {
+                                      $("#body_entrar_subasta").hide();
+                                      $('#btn_pujar_subasta_' + result.subasta_id).show();
+                                      $("#body_pujar").show();
+                                      $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                                   } else {
+                                      if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
+                                         puja_mayor_subasta = result.puja.valor;
+                                         $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                                         $("#body_pujar").show();
+                                         $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
+                                      }
+                                   }
+                                }
 
-                           }
-                        }
-                     }
-
-
-                  }
-
-               }
-            });
-         }
-
-      }
-      if (user_id != "") {
-
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/subasta_directas_ajax') ?>",
-
-            data: {
-               id: 0
-            },
-            success: function(result) {
-               result = JSON.parse(result);
-
-               if (result) {
-
-                  for (let i = 0; i < result.length; i++) {
-                     if (result[i].puja.valor == "null") {
-                        $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));
-                     } else {
-                        if (result[i].user_win) {
-
-                           let name_win = result[i].user_win.name;
-                           $('#user_win_title_' + result[i].subasta_id).show();
-                           $('#user_win_' + result[i].subasta_id).show();
-                           $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
-                        }
-
-                     }
-                     if (result[i].is_open == 0) {
-
-                        $('#btn_subastas_' + result[i].subasta_id).show();
-                        $('#cronometro_subasta_' + result[i].subasta_id).hide();
-                        $('#span_subasta_' + result[i].subasta_id).hide();
-                        $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
-                        $('#body_login_subasta_entrar').hide();
-                        $('#body_entrar_subasta').hide();
-                        $('#body_cronometro').hide();
-                        $("#body_pujar").hide();
-                     } else {
-                        if (result[i].subasta_user != null) {
-
-                           $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
-                           $("#btn_pujar_subasta_" + result[i].subasta_id).remove();
-                           $('#btn_entrar_subasta_' + result[i].subasta_id).after("<button id='btn_pujar_subasta_" + result[i].subasta_id + "' onclick='' class='btn btn-block btn-success'><i class='fa fa-hand-paper-o'></i> <?= translate("pujar_lang"); ?></button>");
-                           $("#btn_pujar_subasta_" + result[i].subasta_id).attr('onclick', 'cargarmodal_pujar("' + result[i].subasta_user.subasta_user_id + '","' + result[i].nombre_espa + '","' + result[i].puja.valor + '","' + result[i].valor_inicial + '")');
+                             }
+                          }
+                       }
 
 
-                        } else {
+                    }
 
-                           $('#btn_entrar_subasta_' + result[i].subasta_id).show();
-                        }
+                 }
+              });
+           }
 
-                        if (result[i].puja.valor != "null") {
+        }
+        if (user_id != "") {
 
-                           if (result[i].puja_user.valor == null) {
+           $.ajax({
+              type: 'POST',
+              url: "<?= site_url('front/subasta_directas_ajax') ?>",
 
-                              $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                           } else {
-                              if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
+              data: {
+                 id: 0
+              },
+              success: function(result) {
+                 result = JSON.parse(result);
 
-                                 $('#btn_pujar_subasta_' + result[i].subasta_id).show();
-                              } else {
+                 if (result) {
 
-                                 $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
-                              }
-                           }
+                    for (let i = 0; i < result.length; i++) {
+                       if (result[i].puja.valor == "null") {
+                          $('#valor_inicial_subasta_' + result[i].subasta_id).html("$" + parseFloat(result[i].valor_inicial).toFixed(2));
+                       } else {
+                          if (result[i].user_win) {
 
-                        }
-                     }
+                             let name_win = result[i].user_win.name;
+                             $('#user_win_title_' + result[i].subasta_id).show();
+                             $('#user_win_' + result[i].subasta_id).show();
+                             $('#valor_inicial_subasta_' + result[i].subasta_id).html("<i class='fa fa-user-o'></i> " + name_win + " $" + parseFloat(result[i].puja.valor).toFixed(2));
+                          }
 
+                       }
+                       if (result[i].is_open == 0) {
 
+                          $('#btn_subastas_' + result[i].subasta_id).show();
+                          $('#cronometro_subasta_' + result[i].subasta_id).hide();
+                          $('#span_subasta_' + result[i].subasta_id).hide();
+                          $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                          $('#body_login_subasta_entrar').hide();
+                          $('#body_entrar_subasta').hide();
+                          $('#body_cronometro').hide();
+                          $("#body_pujar").hide();
+                       } else {
+                          if (result[i].subasta_user != null) {
 
-                  }
-
-
-               }
-
-            }
-         });
-      } else {
-         $.ajax({
-            type: 'POST',
-            url: "<?= site_url('front/subastas_ajax') ?>",
-
-            data: {
-               id: 0
-            },
-            success: function(result) {
-               result = JSON.parse(result);
-
-               if (result) {
-
-                  for (let i = 0; i < result.length; i++) {
-                     if ($('#modal_detalle').hasClass('in')) {
-                        if (result[i].is_open == 0 && subasta_id == result[i].subasta_id) {
-
-                           $('#body_login_subasta_entrar').hide();
-                           $('#body_entrar_subasta').hide();
-                           $('#body_cronometro').hide();
-                           $("#body_pujar").hide();
-                           $('#btn_modal_detalle_subasta').hide();
-
-                        }
-                     } else {
-                        if (result[i].is_open == 0) {
-                           $('#btn_subastas_' + result[i].subasta_id).show();
-                           $('#cronometro_subasta_' + result[i].subasta_id).hide();
-                           $('#span_subasta_' + result[i].subasta_id).hide();
+                             $('#btn_entrar_subasta_' + result[i].subasta_id).hide();
+                             $("#btn_pujar_subasta_" + result[i].subasta_id).remove();
+                             $('#btn_entrar_subasta_' + result[i].subasta_id).after("<button id='btn_pujar_subasta_" + result[i].subasta_id + "' onclick='' class='btn btn-block btn-success'><i class='fa fa-hand-paper-o'></i> <?= translate("pujar_lang"); ?></button>");
+                             $("#btn_pujar_subasta_" + result[i].subasta_id).attr('onclick', 'cargarmodal_pujar("' + result[i].subasta_user.subasta_user_id + '","' + result[i].nombre_espa + '","' + result[i].puja.valor + '","' + result[i].valor_inicial + '")');
 
 
-                        }
-                     }
+                          } else {
+
+                             $('#btn_entrar_subasta_' + result[i].subasta_id).show();
+                          }
+
+                          if (result[i].puja.valor != "null") {
+
+                             if (result[i].puja_user.valor == null) {
+
+                                $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                             } else {
+                                if (parseFloat(result[i].puja_user.valor) < parseFloat(result[i].puja.valor)) {
+
+                                   $('#btn_pujar_subasta_' + result[i].subasta_id).show();
+                                } else {
+
+                                   $('#btn_pujar_subasta_' + result[i].subasta_id).hide();
+                                }
+                             }
+
+                          }
+                       }
 
 
 
-                  }
+                    }
 
 
-               }
+                 }
 
-            }
-         });
-      }
+              }
+           });
+        } else {
+           $.ajax({
+              type: 'POST',
+              url: "<?= site_url('front/subastas_ajax') ?>",
+
+              data: {
+                 id: 0
+              },
+              success: function(result) {
+                 result = JSON.parse(result);
+
+                 if (result) {
+
+                    for (let i = 0; i < result.length; i++) {
+                       if ($('#modal_detalle').hasClass('in')) {
+                          if (result[i].is_open == 0 && subasta_id == result[i].subasta_id) {
+
+                             $('#body_login_subasta_entrar').hide();
+                             $('#body_entrar_subasta').hide();
+                             $('#body_cronometro').hide();
+                             $("#body_pujar").hide();
+                             $('#btn_modal_detalle_subasta').hide();
+
+                          }
+                       } else {
+                          if (result[i].is_open == 0) {
+                             $('#btn_subastas_' + result[i].subasta_id).show();
+                             $('#cronometro_subasta_' + result[i].subasta_id).hide();
+                             $('#span_subasta_' + result[i].subasta_id).hide();
+
+
+                          }
+                       }
 
 
 
-   }, 6000);
+                    }
+
+
+                 }
+
+              }
+           });
+        }
+
+
+
+     }, 6000); */
 </script>
 <!-- =-=-=-=-=-=-= FOOTER END =-=-=-=-=-=-= -->
 </div>

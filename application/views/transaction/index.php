@@ -4,7 +4,6 @@
         <h1>
             <?= 'Gestionar solicitudes de transferencias'; ?>
             <small><?= 'Solicitudes de transferencias'; ?></small>
-            |
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>

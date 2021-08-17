@@ -4830,18 +4830,50 @@ class Front extends CI_Controller
             exit();
         }
         $this->load->model('Transfer_model', 'transfer');
+        $this->load->model('Membresia_model', 'membresia');
+        $this->load->model("User_model", "user");
         $membresiaId = $this->input->post('membresiaId');
+        $object_membresia = $this->membresia->get_by_id($membresiaId);
         $renovate = $this->input->post('renovate') === "true" ? 1 : 0;
         $user_id = $this->session->userdata('user_id');
+        $cliente =  $this->user->get_by_id($user_id);
         $fecha = date('Y-m-d H:i:s');
         $data = [
             'date_create' => $fecha,
             'renovate' => $renovate,
             'membresia_id' => $membresiaId,
             'user_id' => $user_id,
-            'status' => 0
+            'status' => 0,
+            'type' => 1
         ];
         $this->transfer->create($data);
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Solicitud de membresia Subastanuncios";
+        $motivo = 'Solicitud de transferencia';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3>Hola, " . $cliente->name . " " . $cliente->surname . "./h3>";
+        $mensaje .= "<h3>Nos complace informarte que tu solicitud para adquirir el Plan (" . $object_membresia->nombre . "), ha sido procesada con éxito.</h3>";
+        $mensaje .= "<h4>Solo debes abonar el valor correspondiente a la misma ($" . number_format($object_membresia->precio, 2) . "), en la cuenta bancaria de la compañía. Estos son los datos de la misma.</h4>";
+        $mensaje .= "<h2>Datos Bancarios</h2>";
+        $mensaje .= "Banco: Pichincha<br>";
+        $mensaje .= "Tipo de Cuenta: corriente<br>";
+        $mensaje .= "Número de Cuenta: 2100225725<br>";
+        $mensaje .=  "Nombre: Marlon Flores<br>";
+        $mensaje .=  "Mail: comercial@subastanuncios.com<br>";
+        $mensaje .= "Teléfono: 0967133720<br>";
+        $mensaje .= "RUC: 1002444212001<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por pertenecer a nuestra plataforma<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+        $mensajeAdmin = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensajeAdmin .= "<h3>Nos complace informarte que se ha relizado una nueva solicitud para adquirir el Plan (" . $object_membresia->nombre . ")</h3>";
+        $mensajeAdmin .= "<h2>Datos del cliente</h2>";
+        $mensajeAdmin .= "<p><b>Cliente:</b> " . $cliente->name . " " . $cliente->surname . "</p>";
+        $mensajeAdmin .= "<p><b>email:</b> " . $cliente->email . "</p>";
+        $mensajeAdmin .= "<p><b>Teléfono:</b> " . $cliente->phone . "</p>";
+        $this->correo->sent("comercial@suabastanuncios.com", $mensajeAdmin, $asunto, $motivo);
         echo json_encode(['status' => 200, 'msg' => "Correcto"]);
         exit();
     }
@@ -4916,5 +4948,119 @@ class Front extends CI_Controller
             echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
             exit();
         }
+    }
+    public function payment_ads_destacado()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Transaction_model', 'transaction');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $adsDestacado = $this->input->post('adsDestacado');
+        $user_id = $this->session->userdata('user_id');
+        $wallet_cliente = $this->wallet->get_wallet_by_user_id($user_id);
+        $anuncioObject = $this->anuncio->get_by_id($adsDestacado);
+        if (!$anuncioObject) {
+            echo json_encode(['status' => 500, 'msg' => "El anuncio no existe"]);
+            exit();
+        }
+        $fecha = date('Y-m-d H:i:s');
+        if ($wallet_cliente) {
+            if ($wallet_cliente->balance >= 7) {
+                $monto = $wallet_cliente->balance - 7;
+                $data_transactions = [
+                    'date_create' => $fecha,
+                    'amount' => 7,
+                    'wallet_send' =>  $wallet_cliente->wallet_id,
+                    'type' => 9,
+                    'balance_previous' => $wallet_cliente->balance,
+                    'balance' => $monto,
+                    'wallet_receives' => 0,
+                    'status' => 1
+                ];
+                $id = $this->transaction->create($data_transactions);
+                $this->wallet->update($wallet_cliente->wallet_id, ['balance' => $monto]);
+                $fecha_fin = strtotime('+150 day', strtotime($fecha));
+                $this->anuncio->update($adsDestacado, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $id]);
+                echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+                exit();
+            } else {
+                echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
+                exit();
+            }
+        } else {
+            echo json_encode(['status' => 500, 'msg' => "Ocurrió un error vuelva a intentarlo"]);
+            exit();
+        }
+    }
+    public function payment_ads_transfer()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $this->load->model('Transfer_model', 'transfer');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $this->load->model("User_model", "user");
+        $adsDestacado = $this->input->post('adsDestacado');
+        $adsObject = $this->anuncio->get_by_id($adsDestacado);
+        if (!$adsObject) {
+            echo json_encode(['status' => 500, 'msg' => "El anuncio no se encuentra registrado"]);
+            exit();
+        }
+        $user_id = $this->session->userdata('user_id');
+        $cliente =  $this->user->get_by_id($user_id);
+        $fecha = date('Y-m-d H:i:s');
+        $data = [
+            'date_create' => $fecha,
+            'anuncio_id' => $adsDestacado,
+            'user_id' => $user_id,
+            'status' => 0,
+            'type' => 2
+        ];
+        $this->transfer->create($data);
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Solicitud de membresia Subastanuncios";
+        $motivo = 'Solicitud de transferencia';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3>Hola, " . $cliente->name . " " . $cliente->surname . "./h3>";
+        $mensaje .= "<h3>Nos complace informarte que tu solicitud para destacar el anuncio (" . $adsObject->titulo . "), ha sido procesada con éxito.</h3>";
+        $mensaje .= "<h4>Solo debes abonar el valor correspondiente a la misma ($7.00), en la cuenta bancaria de la compañía. Estos son los datos de la misma.</h4>";
+        $mensaje .= "<h2>Datos Bancarios</h2>";
+        $mensaje .= "Banco: Pichincha<br>";
+        $mensaje .= "Tipo de Cuenta: corriente<br>";
+        $mensaje .= "Número de Cuenta: 2100225725<br>";
+        $mensaje .=  "Nombre: Marlon Flores<br>";
+        $mensaje .=  "Mail: comercial@subastanuncios.com<br>";
+        $mensaje .= "Teléfono: 0967133720<br>";
+        $mensaje .= "RUC: 1002444212001<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por pertenecer a nuestra plataforma<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+        $mensajeAdmin = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensajeAdmin .= "<h3>Nos complace informarte que se ha relizado una nueva solicitud para destacar un anuncio (" . $adsObject->titulo . ")</h3>";
+        $mensajeAdmin .= "<h2>Datos del cliente</h2>";
+        $mensajeAdmin .= "<p><b>Cliente:</b> " . $cliente->name . " " . $cliente->surname . "</p>";
+        $mensajeAdmin .= "<p><b>email:</b> " . $cliente->email . "</p>";
+        $mensajeAdmin .= "<p><b>Teléfono:</b> " . $cliente->phone . "</p>";
+        $this->correo->sent("comercial@suabastanuncios.com", $mensajeAdmin, $asunto, $motivo);
+        echo json_encode(['status' => 200, 'msg' => "Correcto"]);
+        exit();
+    }
+    public function search_transacction()
+    {
+        if (!in_array($this->session->userdata('role_id'), [2])) {
+            echo json_encode(['status' => 500, 'msg' => "No tiene permiso para realizar esta tarea"]);
+            exit();
+        }
+        $user_id = $this->session->userdata('user_id');
+        $this->load->model('Transfer_model', 'transfer');
+        $data = $this->transfer->get_transfer_by_user_pendientes($user_id);
+        echo json_encode(['status' => 200, 'data' => $data]);
+        exit();
     }
 }

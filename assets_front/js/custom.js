@@ -136,7 +136,12 @@ Designed and Development by: ScriptsBundle
         tags: false,
         width: '100%'
     });
-
+    $("#typePaymentAds").select2({
+        placeholder: 'Seleccione un tipo de pago',
+        allowClear: true,
+        tags: false,
+        width: '100%'
+    });
 
     /* ======= Profile Image Upload ======= */
     $(document).on('change', '.btn-file :file', function() {

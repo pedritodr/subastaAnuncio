@@ -4,7 +4,6 @@
         <h1>
             <?= 'Gestionar transferencias'; ?>
             <small><?= 'Solicitudes procesadas'; ?></small>
-            |
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?= site_url('dashboard/index'); ?>"><i class="fa fa-dashboard"></i> <?= translate('pizarra_resumen_lang'); ?></a></li>
@@ -46,8 +45,14 @@
                                             <p><b>email:</b> <?= $item->email; ?></p>
                                         </td>
                                         <td>
-                                            <p><b>Membresia:</b> <?= $item->nombre; ?></p>
-                                            <p><b>Monto:</b> <?= number_format($item->precio, 2); ?></p>
+                                            <?php
+                                            if ($item->type == 1) {
+                                                echo '<p><b>Membresia:</b> ' . $item->nombre . '</p>';
+                                                echo '<p><b>Monto:</b> ' . number_format($item->precio, 2) . '</p>';
+                                            } else {
+                                                echo '<p><b>Anuncio:</b> ' . $item->titulo . '</p>';
+                                            }
+                                            ?>
                                         </td>
                                         <td>
                                             <?php
@@ -62,12 +67,13 @@
                                         </td>
                                         <td>
                                             <?php if ($item->status == 0) { ?>
-                                                <?php if ($item->renovate == 0) { ?>
+                                                <?php if ($item->renovate == 0 && $item->type == 1) { ?>
                                                     <a style="cursor:pointer" onclick="handleTransaction('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>
-                                                <?php } else { ?>
+                                                <?php } else if ($item->type == 1) { ?>
                                                     <a style="cursor:pointer" onclick="handleTransactionRenovate('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>
+                                                <?php } else { ?>
+                                                    <a style="cursor:pointer" onclick="handleTransactionAds('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-success"> Confirmar</a>
                                                 <?php } ?>
-
                                                 <a style="cursor:pointer" onclick="handleCancel('<?= base64_encode(json_encode($item)) ?>')" class="btn btn-danger"> Cancelar</a>
                                             <?php } ?>
                                         </td>
@@ -115,7 +121,7 @@
         object = JSON.parse(decodeB64Utf8(object))
         Swal.fire({
             title: '¿ Estás seguro de realizar esta operación ?',
-            html: `<h2>Usted no podrá revertir este cambio</h2><h3>Id: ${object.transfer_id}</h3><h3>Membresia: Plan  ${object.amount}</h3>`,
+            html: `<h6>Usted no podrá revertir este cambio</h6><h5>Id: st- ${object.transfer_id}</h5><h5>Membresia: Plan  ${object.nombre}</h5>`,
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Confirmar',
@@ -152,7 +158,7 @@
                                     location.reload();
                                 }, 1000);
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: '¡Error!',
                                     text: result.msj,
                                     padding: '2em'
@@ -169,7 +175,7 @@
         object = JSON.parse(decodeB64Utf8(object))
         Swal.fire({
             title: '¿ Estás seguro de realizar esta operación ?',
-            html: `<h2>Usted no podrá revertir este cambio</h2><h3>Id: ${object.transfer_id}</h3><h3>Membresia: Plan  ${object.nombre}</h3>`,
+            html: `<h6>Usted no podrá revertir este cambio</h6><h5>Id: st-${object.transfer_id}</h5><h5>Membresia: Plan  ${object.nombre}</h5>`,
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Eliminar',
@@ -205,7 +211,7 @@
                                     location.reload();
                                 }, 1000);
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: '¡Error!',
                                     text: result.msj,
                                     padding: '2em'
@@ -223,7 +229,7 @@
         object = JSON.parse(decodeB64Utf8(object))
         Swal.fire({
             title: '¿ Estás seguro de realizar esta operación ?',
-            html: `<h2>Usted no podrá revertir este cambio</h2><h3>Id: ${object.transfer_id}</h3><h3>Membresia: Plan  ${object.amount}</h3>`,
+            html: `<h6>Usted no podrá revertir este cambio</h6><h5>Id: st-${object.transfer_id}</h5><h5>Membresia: Plan  ${object.nombre}</h5>`,
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Confirmar',
@@ -244,7 +250,7 @@
                         type: 'POST',
                         url: "<?= site_url('transaccion/renovate_membership') ?>",
                         data: {
-                            transaction_id: object.transfer_id,
+                            transfer_id: object.transfer_id,
                             user_id: object.user_id,
                             membresia_id: object.membresia_id
                         },
@@ -260,7 +266,61 @@
                                     location.reload();
                                 }, 1000);
                             } else {
-                                swal({
+                                Swal.fire({
+                                    title: '¡Error!',
+                                    text: result.msj,
+                                    padding: '2em'
+                                });
+                            }
+
+                        }
+                    });
+                }, 1500);
+            }
+        })
+    }
+    const handleTransactionAds = (object) => {
+        object = JSON.parse(decodeB64Utf8(object))
+        Swal.fire({
+            title: '¿ Estás seguro de realizar esta operación ?',
+            html: `<h6>Usted no podrá revertir este cambio</h6><h5>Id: st- ${object.transfer_id}</h5><h5>Anuncio:  ${object.titulo}</h5>`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+                Swal.fire({
+                    title: 'Completando operación',
+                    text: 'Actualizando datos...',
+                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                    imageAlt: 'No realice acciones sobre la página',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    footer: '<a href>No realice acciones sobre la página</a>',
+                });
+                setTimeout(() => {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?= site_url('transaccion/destacar_ads') ?>",
+                        data: {
+                            transaction_id: object.transfer_id,
+                            user_id: object.user_id,
+                            ads_id: object.anuncio_id
+                        },
+                        success: function(result) {
+                            result = JSON.parse(result);
+                            if (result.status == 200) {
+                                Swal.fire({
+                                    title: 'Info!',
+                                    text: result.msj,
+                                    padding: '2em'
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                Swal.fire({
                                     title: '¡Error!',
                                     text: result.msj,
                                     padding: '2em'

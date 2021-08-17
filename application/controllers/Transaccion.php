@@ -310,6 +310,20 @@ class Transaccion extends CI_Controller
             ];
             $this->transfer->update($transfer, $dataT);
         }
+        $this->transfer->update($transfer, $dataT);
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Membresia adquirida";
+        $motivo = 'Membresia adquirida Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "<h3>Membresía “" . $object_membresia->nombre . "”</h3>";
+        $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que has adquirido una nueva membresía, mediante la cual tendrás acceso a los siguientes beneficios:<br>";
+        $mensaje .= "" . $object_membresia->descripcion . "<br>";
+        $mensaje .= "Tu usuario " . $cliente->email . ", tendrá activa esta membresía hasta " . $fecha_fin . ". Para seguir gestionando las ventajas de tu membresía, recuerda renovarla antes de cumplir la anualidad.<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
         echo json_encode(['status' => 200, 'msj' => "Correcto"]);
         exit();
     }
@@ -647,6 +661,43 @@ class Transaccion extends CI_Controller
         $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
 
         echo json_encode(['status' => 200, 'msg' => "Membresia renovada correctamente"]);
+        exit();
+    }
+    public function destacar_ads()
+    {
+        $this->load->model("User_model", "user");
+        $this->load->model('Wallet_model', 'wallet');
+        $this->load->model('Tree_node_model', 'tree_node');
+        $this->load->model('Transaction_model', 'transaction');
+        $this->load->model('Anuncio_model', 'anuncio');
+        $user_id = $this->input->post('user_id');
+        $cliente = $this->user->get_by_id($user_id);
+        $ads_id = $this->input->post('ads_id');
+        $transfer = $this->input->post('transaction_id');
+        $object = $this->anuncio->get_by_id($ads_id);
+        if (!$object) {
+            echo json_encode(['status' => 500, 'msj' => "Anuncio no encontrado"]);
+            exit();
+        }
+        $fecha = date('Y-m-d H:i:s');
+        $fecha_fin = strtotime('+150 day', strtotime($fecha));
+        $this->anuncio->update($ads_id, ['destacado' => 1, 'fecha_vencimiento' => $fecha_fin, 'payment_id' => $transfer]);
+        $dataT = [
+            'date_update' => $fecha,
+            'status' => 1
+        ];
+        $this->transfer->update($transfer, $dataT);
+        $this->load->model("Correo_model", "correo");
+        $asunto = "Anuncio destacado";
+        $motivo = 'Anuncio destacado Subasta anuncios';
+        $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
+        $mensaje .= "¡Felicitaciones! <br>Nos complace informarte que el anuncio : " . $object->titulo . " a sido destacado correctamente<br>";
+        $mensaje .= "Si necesitas contactar con nosotros puedes hacerlo a través del email comercial@suabastanuncios.com <br>";
+        $mensaje .= "Gracias por sumarte a nuestra plataforma<br>";
+        $mensaje .= "Saludos,<br>";
+        $mensaje .= "El equipo de SUBASTANUNCIOS";
+        $this->correo->sent($cliente->email, $mensaje, $asunto, $motivo);
+        echo json_encode(['status' => 200, 'msj' => "Correcto"]);
         exit();
     }
 }
