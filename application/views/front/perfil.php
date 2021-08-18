@@ -167,19 +167,6 @@
         color: #ffffff;
     }
 
-    .form-control {
-        background-color: #363c48;
-        background-image: none;
-        border: 1px solid #2c2d3d;
-        border-radius: 1px;
-        box-shadow: none;
-        color: #fff;
-        font-size: 14px;
-        height: auto;
-        padding: 15px 12px;
-        transition: all 0.2s cubic-bezier(0, 0, 0.58, 1) 0s;
-    }
-
     .pagination>.disabled>span,
     .pagination>.disabled>span:hover,
     .pagination>.disabled>span:focus,
@@ -208,6 +195,29 @@
         -o-transition: border .2s ease-in-out;
         transition: border .2s ease-in-out;
         height: 114px;
+    }
+
+    ::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #003870;
+        opacity: 1;
+        /* Firefox */
+    }
+
+    :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: #003870;
+        opacity: 1;
+    }
+
+    :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: #003870;
+    }
+
+    ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: #003870;
     }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
