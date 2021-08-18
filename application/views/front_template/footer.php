@@ -1356,9 +1356,17 @@ if (isset($all_cate_anuncio)) {
       $(".btn-theme").css("color", "#fff");
       let adsDestacado = $('#anuncio_id_destacar').val();
       let typePaymentAds = $('#typePaymentAds').val();
+      if (!typePaymentAds) {
+         Swal.fire({
+            title: '¡Error!',
+            text: "Seleccione un tipo de pago para continuar",
+            padding: '2em'
+         });
+         return
+      }
       $('.noficacion_error').html("");
       if ($('#condiciones_destacar').prop('checked') == true) {
-         $('#modal_destacar').modal("hide");
+         // $('#modal_destacar').modal("hide");
          if (typePaymentAds === "2") {
             if (wallet) {
                let balance = parseFloat(parseFloat(wallet.balance).toFixed(2));
@@ -1395,7 +1403,7 @@ if (isset($all_cate_anuncio)) {
                               }, 1000);
                            } else {
                               Swal.close();
-                              swal({
+                              Swal.fire({
                                  title: '¡Error!',
                                  text: result.msj,
                                  padding: '2em'
@@ -1414,7 +1422,7 @@ if (isset($all_cate_anuncio)) {
             let pendientTransaction = await searchTransactions();
             pendientTransaction = JSON.parse(pendientTransaction);
             if (pendientTransaction.data) {
-               $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : " + pendientTransaction.data.transfer_id + "</h6>").show();
+               $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : st-" + pendientTransaction.data.transfer_id + "</h6>").show();
             } else {
                Swal.fire({
                   title: 'Completando operación',
@@ -1448,7 +1456,7 @@ if (isset($all_cate_anuncio)) {
                            }, 1000);
                         } else {
                            Swal.close();
-                           swal({
+                           Swal.fire({
                               title: '¡Error!',
                               text: result.msj,
                               padding: '2em'
@@ -2203,7 +2211,7 @@ if (isset($all_cate_anuncio)) {
          let pendientTransaction = await searchTransactions();
          pendientTransaction = JSON.parse(pendientTransaction);
          if (pendientTransaction.data) {
-            $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : " + pendientTransaction.data.transfer_id + "</h6>").show();
+            $('.noficacion_error').html("<h6 class='text-center'>Tiene una solicitud de trasnferecia pendiente ID : st-" + pendientTransaction.data.transfer_id + "</h6>").show();
          } else {
             Swal.fire({
                title: 'Completando operación',

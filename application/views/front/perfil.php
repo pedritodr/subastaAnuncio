@@ -1,34 +1,36 @@
 <style>
     .btn-wallet {
-        background: #fff;
-        -webkit-border-radius: 30px;
-        -moz-border-radius: 30px;
+        background: #2b2c3c;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
         border-radius: 20px;
-        border: 2px solid #8c1822;
+        border: 2px solid #2b2c3c;
         padding: 7px;
         cursor: pointer;
-        color: #8c1822;
+        color: #d6d6d6;
+        height: 114px;
+        opacity: 0.95;
     }
 
-    .btn-wallet img {
-        width: 100px;
-        height: 100px;
+    .btn-wallet i {
+        font-size: 60px;
+        color: #36cacc
     }
 
     .btn-wallet:hover {
-        border: 2px solid #293681;
-        color: #293681;
+        border: 2px solid #e1bf4d;
+        color: #e1bf4d;
     }
 
-    .btn-wallet img:hover {
-        width: 101px;
-        height: 101px;
+    .btn-wallet i:hover {
+        font-size: 62px;
+        color: #e1bf4d;
     }
 
     .btn-wallet-disabled {
         background: #fff;
-        -webkit-border-radius: 30px;
-        -moz-border-radius: 30px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
         border-radius: 20px;
         border: 2px solid #8c1822;
         padding: 7px;
@@ -102,6 +104,7 @@
         -webkit-transition: border .2s ease-in-out;
         -o-transition: border .2s ease-in-out;
         transition: border .2s ease-in-out;
+
     }
 
     .progress-bar {
@@ -126,6 +129,85 @@
         border-radius: 4px;
         -webkit-box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
         box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+    }
+
+    .body-table-transactions {
+        background-color: #2b2c3c;
+        color: #d6d6d6;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+
+    }
+
+    .body-transactions {
+        background-color: #363c48;
+        color: #d6d6d6;
+
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: #2b2c3c;
+    }
+
+    .table-bordered {
+        border: 1px solid #2b2c3c;
+    }
+
+    .table-bordered>thead>tr>th,
+    .table-bordered>tbody>tr>th,
+    .table-bordered>tfoot>tr>th,
+    .table-bordered>thead>tr>td,
+    .table-bordered>tbody>tr>td,
+    .table-bordered>tfoot>tr>td {
+        border: 1px solid #2b2c3c;
+    }
+
+    label {
+        color: #ffffff;
+    }
+
+    .form-control {
+        background-color: #363c48;
+        background-image: none;
+        border: 1px solid #2c2d3d;
+        border-radius: 1px;
+        box-shadow: none;
+        color: #fff;
+        font-size: 14px;
+        height: auto;
+        padding: 15px 12px;
+        transition: all 0.2s cubic-bezier(0, 0, 0.58, 1) 0s;
+    }
+
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:hover,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>a:focus {
+        color: #fff;
+        cursor: not-allowed;
+        background-color: #2c2d3d;
+        border-color: #3f4550;
+    }
+
+    .even {
+        background-color: #2d2e3e;
+    }
+
+    .body-saldo {
+        display: block;
+        padding: 12px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #2b2c3c;
+        border: 1px solid #2b2c3c;
+        border-radius: 15px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+        height: 114px;
     }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
@@ -1241,51 +1323,57 @@
                         </div>
 
                     </div>
-                    <div id="panel_wallet" class="profile-section margin-bottom-20">
+                    <div id="panel_wallet" class="profile-section margin-bottom-20 body-transactions">
                         <div class="row">
-                            <div class="col-lg-4 col-md-12">
-                                <h1 class="text-left">Billetera</h1>
+                            <div class="col-lg-3 body-saldo">
+                                <h4 class="text-left" style="color:#37c2c5">Billetera</h4>
                                 <?php if ($wallet) { ?>
-                                    <h4 class="text-left">Saldo actual: <span style="color:#8c1822">$ <?= number_format($wallet->balance, 2) ?></span></h4>
+                                    <h5 class="text-left" style="color:#e1bf4d">Saldo actual: <span style="color:#d6d6d6">$ <?= number_format($wallet->balance, 2) ?></span></h5>
                                 <?php } else { ?>
-                                    <h4 class="text-left">Saldo actual: <span style="color:#8c1822">$ 0.00</span></h4>
+                                    <h5 class="text-left" style="color:#e1bf4d">Saldo actual: <span style="color:#d6d6d6">$ 0.00</span></h5>
                                 <?php } ?>
                             </div>
                             <?php if ($wallet) { ?>
-                                <div class="col-lg-6 col-lg-offset-6 col-md-12" style="margin-bottom:10px">
+                                <div class="col-lg-9" style="margin-bottom:10px">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class="text-center btn-wallet" onclick="handleModalTransferencia()"><img src="<?= base_url('assets/money-transfer.png') ?>" alt="">
+                                            <div class="text-center btn-wallet" onclick="handleModalTransferencia()">
+                                                <i class="fa fa-exchange" aria-hidden="true"></i>
                                                 <p class="text-center"> Transferir Saldo</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class='text-center btn-wallet' onclick="handleMondalBitcoin()"><img src="<?= base_url('assets/bitcoin.png') ?>" alt="">
+                                            <div class='text-center btn-wallet' onclick="handleMondalBitcoin()">
+                                                <i class="fa fa-btc" aria-hidden="true"></i>
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class='text-center btn-wallet' onclick="handleMondalSolicitud()"><img src="<?= base_url('assets/retirada.png') ?>" alt="">
+                                            <div class='text-center btn-wallet' onclick="handleMondalSolicitud()">
+                                                <i class="fa fa-money" aria-hidden="true"></i>
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             <?php } else { ?>
-                                <div class="col-lg-4 col-lg-offset-4" style="margin-bottom:10px">
+                                <div class="col-lg-9" style="margin-bottom:10px">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class="text-center btn-wallet-disabled"><img src="<?= base_url('assets/money-transfer.png') ?>" alt="">
+                                            <div class="text-center btn-wallet-disabled">
+                                                <i class="fa fa-exchange" aria-hidden="true"></i>
                                                 <p class="text-center"> Transferir Saldo</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class="text-center btn-wallet-disabled"><img src="<?= base_url('assets/bitcoin.png') ?>" alt="">
+                                            <div class="text-center btn-wallet-disabled">
+                                                <i class="fa fa-btc" aria-hidden="true"></i>
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:5px">
-                                            <div class='text-center btn-wallet-disabled'><img src="<?= base_url('assets/retirada.png') ?>" alt="">
+                                            <div class='text-center btn-wallet-disabled'>
+                                                <i class="fa fa-money" aria-hidden="true"></i>
                                                 <p class="text-center"> Solicitar Retiro</p>
                                             </div>
                                         </div>
@@ -1293,19 +1381,19 @@
                                 </div>
 
                             <?php } ?>
-                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background:#fff">
-                                <div class="card">
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 body-table-transactions">
+                                <div class="card body-table-transactions">
 
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 table-responsive">
-                                            <h5 class="text-left"> Transacciones</h5>
+                                            <h5 class="text-left" style="color:#37c2c5"> Transacciones</h5>
                                             <table id="example" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Id</th>
-                                                        <th scope="col">Fecha</th>
-                                                        <th scope="col">Detalle</th>
-                                                        <th scope="col">Monto</th>
+                                                        <th scope="col" style="color:#37c2c5">Id</th>
+                                                        <th scope="col" style="color:#37c2c5">Fecha</th>
+                                                        <th scope="col" style="color:#37c2c5">Detalle</th>
+                                                        <th scope="col" style="color:#37c2c5">Monto</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -1339,9 +1427,9 @@
                                                             <td>
                                                                 <?php
                                                                 if ($trx->wallet_receives == $wallet->wallet_id) {
-                                                                    echo '<label style="color:green;font-weight:bold">+ $ ' . number_format($trx->amount, 2) . '</label>';
+                                                                    echo '<label style="color:#3fc4c7;font-weight:bold">+ $ ' . number_format($trx->amount, 2) . '</label>';
                                                                 } else {
-                                                                    echo '<label style="color:red;font-weight:bold">- $ ' . number_format($trx->amount, 2) . '</label>';
+                                                                    echo '<label style="color:#e1bf4d;font-weight:bold">- $ ' . number_format($trx->amount, 2) . '</label>';
                                                                 }
                                                                 ?>
                                                             </td>

@@ -30,6 +30,7 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th>Banner</th>
                                     <th>Icono</th>
+                                    <th>Orden</th>
                                     <th>visible</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>
@@ -51,6 +52,9 @@
                                             } else {
                                                 echo '<img style="width:10%" class="img img-rounded img-responsive" src="' . base_url("assets/image-no-found.jpg") . '" />';
                                             } ?>
+                                        </td>
+                                        <td>
+                                            <?= $item->orden ?>
                                         </td>
                                         <td>
                                             <?php if ($item->is_front == 1) {
@@ -82,6 +86,7 @@
                                     <th><?= translate("nombre_lang"); ?></th>
                                     <th>Banner</th>
                                     <th>Icono</th>
+                                    <th>Orden</th>
                                     <th>visible</th>
                                     <th><?= translate("actions_lang"); ?></th>
                                 </tr>

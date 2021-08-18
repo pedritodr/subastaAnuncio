@@ -50,7 +50,7 @@ class Cate_anuncio extends CI_Controller
         }
 
         $nombre = $this->input->post('nombre');
-
+        $orden = $this->input->post('orden');
         //establecer reglas de validacion
         $this->form_validation->set_rules('nombre', translate('nombre_lang'), 'required');
 
@@ -72,7 +72,7 @@ class Cate_anuncio extends CI_Controller
             if ($allow_extension || $_FILES['archivo']['error'] == 4) {
                 if ($allow_extension2 || $_FILES['banner']['error'] == 4) {
                     if ($_FILES['archivo']['error'] == 4 && $_FILES['banner']['error'] == 4) {
-                        $data = ['nombre' => $nombre, 'is_active' => 1];
+                        $data = ['nombre' => $nombre, 'orden' => $orden, 'is_active' => 1];
                         $this->cate_anuncio->create($data);
                         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                         redirect("cate_anuncio/index");
@@ -81,7 +81,7 @@ class Cate_anuncio extends CI_Controller
                             $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 128, 128);
                             $result2 = save_image_from_post('banner', './uploads/cate_anuncio/banner', time(), 1620, 218);
                             if ($result[0] && $result2[0]) {
-                                $data = ['nombre' => $nombre, 'photo' =>  $result[1], 'banner' =>  $result2[1], 'is_active' => 1];
+                                $data = ['nombre' => $nombre, 'orden' => $orden, 'photo' =>  $result[1], 'banner' =>  $result2[1], 'is_active' => 1];
                                 $this->cate_anuncio->create($data);
                                 $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                 redirect("cate_anuncio/index");
@@ -93,7 +93,7 @@ class Cate_anuncio extends CI_Controller
                             if ($_FILES['archivo']['error'] == 0 && $_FILES['banner']['error'] == 4) {
                                 $result = save_image_from_post('archivo', './uploads/cate_anuncio', time(), 128, 128);
                                 if ($result[0]) {
-                                    $data = ['nombre' => $nombre, 'photo' => $result[1], 'is_active' => 1];
+                                    $data = ['nombre' => $nombre, 'orden' => $orden, 'photo' => $result[1], 'is_active' => 1];
                                     $this->cate_anuncio->create($data);
                                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                     redirect("cate_anuncio/index");
@@ -104,7 +104,7 @@ class Cate_anuncio extends CI_Controller
                             } else {
                                 $result2 = save_image_from_post('banner', './uploads/cate_anuncio/banner', time(), 1620, 218);
                                 if ($result2[0]) {
-                                    $data = ['nombre' => $nombre, 'banner' => $result2[1], 'is_active' => 1];
+                                    $data = ['nombre' => $nombre, 'orden' => $orden, 'banner' => $result2[1], 'is_active' => 1];
                                     $this->cate_anuncio->create($data);
                                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                     redirect("cate_anuncio/index");
@@ -154,6 +154,7 @@ class Cate_anuncio extends CI_Controller
 
         $nombre = $this->input->post('nombre');
         $cate_anuncio_id = $this->input->post('cate_anuncio_id');
+        $orden = $this->input->post('orden');
         $cate_anuncio_object = $this->cate_anuncio->get_by_id($cate_anuncio_id);
 
         //establecer reglas de validacion
@@ -178,7 +179,7 @@ class Cate_anuncio extends CI_Controller
             if ($allow_extension || $_FILES['archivo']['error'] == 4) {
                 if ($allow_extension2 || $_FILES['banner']['error'] == 4) {
                     if ($_FILES['archivo']['error'] == 4 && $_FILES['banner']['error'] == 4) {
-                        $data = ['nombre' => $nombre];
+                        $data = ['nombre' => $nombre, 'orden' => $orden];
                         $this->cate_anuncio->update($cate_anuncio_id, $data);
                         $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                         redirect("cate_anuncio/index");
@@ -193,7 +194,7 @@ class Cate_anuncio extends CI_Controller
                                 if (file_exists($cate_anuncio_object->banner))
                                     unlink($cate_anuncio_object->banner);
 
-                                $data = ['nombre' => $nombre, 'photo' =>  $result[1], 'banner' =>  $result2[1]];
+                                $data = ['nombre' => $nombre, 'orden' => $orden, 'photo' =>  $result[1], 'banner' =>  $result2[1]];
                                 $this->cate_anuncio->update($cate_anuncio_id, $data);
                                 $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                 redirect("cate_anuncio/index");
@@ -208,7 +209,7 @@ class Cate_anuncio extends CI_Controller
                                     if (file_exists($cate_anuncio_object->photo))
                                         unlink($cate_anuncio_object->photo);
 
-                                    $data = ['nombre' => $nombre, 'photo' => $result[1]];
+                                    $data = ['nombre' => $nombre, 'orden' => $orden, 'photo' => $result[1]];
                                     $this->cate_anuncio->update($cate_anuncio_id, $data);
                                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                     redirect("cate_anuncio/index");
@@ -222,7 +223,7 @@ class Cate_anuncio extends CI_Controller
                                     if (file_exists($cate_anuncio_object->banner))
                                         unlink($cate_anuncio_object->banner);
 
-                                    $data = ['nombre' => $nombre, 'banner' => $result2[1]];
+                                    $data = ['nombre' => $nombre, 'orden' => $orden, 'banner' => $result2[1]];
                                     $this->cate_anuncio->update($cate_anuncio_id, $data);
                                     $this->response->set_message(translate("data_saved_ok"), ResponseMessage::SUCCESS);
                                     redirect("cate_anuncio/index");
