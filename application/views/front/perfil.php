@@ -41,6 +41,16 @@
         cursor: no-drop;
     }
 
+    .btn-wallet-disabled i {
+        font-size: 60px;
+        color: #36cacc
+    }
+
+    .btn-wallet-disabled i:hover {
+        font-size: 62px;
+        color: #e1bf4d;
+    }
+
     .btn-wallet-disabled:hover {
         border: 2px solid #e1bf4d;
         color: #e1bf4d;
