@@ -28,20 +28,22 @@
     }
 
     .btn-wallet-disabled {
-        background: #fff;
+        background: #2b2c3c;
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
         border-radius: 20px;
-        border: 2px solid #8c1822;
+        border: 2px solid #2b2c3c;
         padding: 7px;
+        cursor: pointer;
+        color: #d6d6d6;
+        height: 114px;
+        opacity: 0.95;
         cursor: no-drop;
-        color: #8c1822;
     }
 
     .btn-wallet-disabled:hover {
-        border: 2px solid #293681;
-        color: #293681;
-        background: #ececec;
+        border: 2px solid #e1bf4d;
+        color: #e1bf4d;
     }
 
     .card .tab-pane {
