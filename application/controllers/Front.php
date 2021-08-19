@@ -4851,7 +4851,7 @@ class Front extends CI_Controller
         $asunto = "Solicitud de membresia Subastanuncios";
         $motivo = 'Solicitud de transferencia';
         $mensaje = "<p><img style='width:209px;heigth:44px' src='https://subastanuncios.com/assets/logo_subasta.png'></p>";
-        $mensaje .= "<h3>Hola, " . $cliente->name . " " . $cliente->surname . "./h3>";
+        $mensaje .= "<h3>Hola, " . $cliente->name . " " . $cliente->surname . ".</h3>";
         $mensaje .= "<h3>Nos complace informarte que tu solicitud para adquirir el Plan (" . $object_membresia->nombre . "), ha sido procesada con éxito.</h3>";
         $mensaje .= "<h4>Solo debes abonar el valor correspondiente a la misma ($" . number_format($object_membresia->precio, 2) . "), en la cuenta bancaria de la compañía. Estos son los datos de la misma.</h4>";
         $mensaje .= "<h2>Datos Bancarios</h2>";

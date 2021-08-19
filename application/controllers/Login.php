@@ -161,6 +161,23 @@ class Login extends CI_Controller
             exit();
         }
     }
+    public function validate_password()
+    {
+        $email = $this->session->userdata('email');
+        if ($email) {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $password = md5($data['password']);
+            $user = $this->user->get_all(['email' => $email, 'password' => $password], TRUE);
+            if ($user) {
+                echo json_encode(['status' => 200]);
+            } else {
+                echo json_encode(['status' => 500]);
+            }
+        } else {
+            echo json_encode(['status' => 404]);
+        }
+        exit();
+    }
     public function facebook_auth()
     {
     }

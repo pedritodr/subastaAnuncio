@@ -210,9 +210,9 @@
                                 <li>
                                     <a href="<?= site_url('contacto') ?>"> <?= translate('contact_lang') ?> <i></i></a>
                                 </li>
-                                <li>
+                                <!--   <li>
                                     <a href="<?= site_url('faqs') ?>"> <?= translate('faq_lang') ?> <i></i></a>
-                                </li>
+                                </li> -->
                                 <?php if ($this->session->userdata('user_id')) { ?>
                                     <li>
                                         <a href="<?= site_url('crear-anuncio') ?>" class="btn btn-light"><i class="fa fa-plus" aria-hidden="true">

@@ -219,6 +219,44 @@
         /* Microsoft Edge */
         color: #003870;
     }
+
+    .form-control {
+        background-color: #363c48;
+        color: #d6d6d6;
+    }
+
+    .dl-horizontal dd {
+        border-bottom: 1px solid #363c48;
+        margin-left: 0;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        padding: 10px 0;
+        color: #d6d6d6;
+    }
+
+    .profile-edit dt strong {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #d6d6d6;
+        line-height: 50px;
+    }
+
+    #search-section .select2-container--default .select2-selection--single {
+        background-color: #363c48;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        height: 52px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #363c48;
+        border: 1px solid #ccc;
+        border-radius: 0px;
+        height: 55px;
+    }
 </style>
 <link href="<?= base_url() ?>basic_primitive/primitives.css" media="screen" rel="stylesheet" type="text/css" />
 <!-- DataTables -->
@@ -229,18 +267,6 @@
 <!-- DataTables -->
 <script src="<?= base_url(); ?>admin_lte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= base_url(); ?>admin_lte/plugins/datatables/dataTables.bootstrap.min.js"></script>
-
-<!-- Master Slider -->
-<!--       <?php if (count($all_banners) > 0) { ?>
-          <div class="master-slider ms-skin-default banner2" id="masterslider">
-              <?php foreach ($all_banners as $item) { ?>
-                  <div class="ms-slide slide-1" data-delay="5">
-                      <img class="img-master" src="<?= base_url('assets_front/js/masterslider/style/blank.gif') ?>" data-src="<?= base_url($item->foto) ?>" alt="<?= $item->foto ?>" />
-                  </div>
-              <?php } ?>
-          </div>
-      <?php } ?> -->
-<!-- end Master Slider -->
 <!-- Small Breadcrumb -->
 <!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
 <div class="main-content-area clearfix" style="margin-top: 6%;">
@@ -616,7 +642,7 @@
                                 <li id="bank_data_tab"><a href="#bankData" data-toggle="tab">Datos Bancarios</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="profile-edit tab-pane fade in active" id="profile">
+                                <div class="profile-edit tab-pane fade in active" id="profile" style="background: #363c48;">
 
                                     <dl class="dl-horizontal">
                                         <dt><strong><?= translate('name_cliente_lang') ?></strong></dt>
@@ -667,7 +693,7 @@
                                     </dl>
                                 </div>
                                 <!--editar perfil-->
-                                <div class="profile-edit tab-pane fade" id="edit">
+                                <div class="profile-edit tab-pane fade" id="edit" style="background: #2b2c3c;">
 
                                     <div class="clearfix"></div>
 
@@ -684,7 +710,7 @@
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label> <?= translate('email_lang') ?> <span class="color-red">*</span></label>
-                                            <input disabled type="text" value="<?= $this->session->userdata('email'); ?>" class="form-control margin-bottom-20">
+                                            <input disabled style="background-color:#363c48 !important" type="text" value="<?= $this->session->userdata('email'); ?>" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label> <?= translate('phone_user__lang') ?> <span class="color-red">*</span></label>
@@ -786,17 +812,16 @@
                                     <?= form_close(); ?>
                                 </div>
 
-                                <div class="profile-edit tab-pane fade" id="bankData">
-
+                                <div class="profile-edit tab-pane fade" id="bankData" style="background: #2b2c3c;">
                                     <div class="clearfix"></div>
                                     <div class="row">
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Nombre del banco <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->name_bank : "" ?>" id="bankName" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->name_bank : "" ?>" id="bankName" placeholder="Ingrese el nombre del banco" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Número de cuenta <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->number_account : "" ?>" id="numberAccount" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->number_account : "" ?>" id="numberAccount" placeholder="Ingrese el número de cuenta" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12 margin-bottom-20">
                                             <label> Tipo de cuenta <span class="color-red">*</span></label>
@@ -815,19 +840,19 @@
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Nombre del titular <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->name_titular : '' ?>" id="nameTitular" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->name_titular : '' ?>" id="nameTitular" placeholder="Ingrese el nombre del titular" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Número de identidad del titular <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->number_id : '' ?>" id="numberId" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->number_id : '' ?>" id="numberId" placeholder="Ingrese el número de identidad del titular" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Email de contacto <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->email : '' ?>" id="emailContact" class="form-control margin-bottom-20">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->email : '' ?>" id="emailContact" placeholder="Ingrese el email de contacto del titular" class="form-control margin-bottom-20">
                                         </div>
                                         <div class="col-lg-6 col-xs-12">
                                             <label>Teléfono de contacto <span class="color-red">*</span></label>
-                                            <input type="text" value="<?= $bank_data ? $bank_data->phone : '' ?>" id="phoneContact" class="form-control margin-bottom-20 ">
+                                            <input type="text" value="<?= $bank_data ? $bank_data->phone : '' ?>" id="phoneContact" placeholder="Ingrese el número de teléfono del titular" class="form-control margin-bottom-20 ">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -1512,719 +1537,582 @@
         </div>
         <!-- Main Container End -->
     </section>
-    <!-- Mostrando y ocultando vistas-->
-    <div class="modal fade price-quote" id="modal_cambiar_password" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("update_password_lang"); ?></h3>
-                </div>
-                <div class="modal-body">
-                    <!-- content goes here -->
-                    <?php echo form_open_multipart("front/update_password_cliente") ?>
+</div>
+<div class="modal fade price-quote" id="modal_cambiar_password" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel"><?= translate("update_password_lang"); ?></h3>
+            </div>
+            <div class="modal-body">
+                <!-- content goes here -->
+                <?php echo form_open_multipart("front/update_password_cliente") ?>
 
-                    <div class="clearfix"></div>
-                    <div class="form-group">
-                        <label for="password"><?= translate("anterior_password_lang"); ?></label>
-                        <input placeholder="<?= translate("anterior_password_lang"); ?>" class="form-control" type="password" name="password" id="password">
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label for="password"><?= translate("anterior_password_lang"); ?></label>
+                    <input placeholder="<?= translate("anterior_password_lang"); ?>" style="background-color: #fff !important;" class="form-control" type="password" name="password" id="password">
+                </div>
+                <div class="form-group">
+                    <label for="nueva_password"><?= translate("nueva_password_lang"); ?></label>
+                    <input placeholder="<?= translate("nueva_password_lang"); ?>" style="background-color: #fff !important;" class="form-control" type="password" name="nueva_password" id="nueva_password">
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20">
+                    <button type="submit" class="btn btn-theme btn-block"><?= translate('update_password_lang') ?></button>
+                </div>
+                <?= form_close(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade price-quote" id="modalTransferencia" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Transferir saldo</h3>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-lg-11 col-sm-10 col-10 col-md-11">
+                        <div class="form-group">
+                            <label>Email del destinatario</label>
+                            <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el email de la persona que recibirá los fondos" name="emailDestinatario" id="emailDestinatario" />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="nueva_password"><?= translate("nueva_password_lang"); ?></label>
-                        <input placeholder="<?= translate("nueva_password_lang"); ?>" class="form-control" type="password" name="nueva_password" id="nueva_password">
+                    <div class="col-lg-1 col-sm-2 col-2 col-md-1">
+                        <div style="margin-top:33px">
+                            <a onclick="verificarDatosEmail();" href="#"><svg style="margin-top:10px;margin-left:-10px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fa3f59" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg></a>
+                        </div>
+
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20">
-                        <button type="submit" class="btn btn-theme btn-block"><?= translate('update_password_lang') ?></button>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Monto a transferir</label>
+                            <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el monto a transferir ($.$$)" type="number" min="1" step="0.01" name="montoTransferir" id="montoTransferir" />
+                        </div>
                     </div>
-                    <?= form_close(); ?>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20">
+                    <button type="buttom" onclick="completarTransferencia()" class="btn btn-theme btn-block">Enviar</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade price-quote" id="modalTransferencia" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Transferir saldo</h3>
+<div class="modal fade price-quote" id="modalVariableConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Variable de configuración</h3>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-lg-offset-2 col-lg-8 ">
+                        <div class="form-group">
+                            <label>Variable <span class="color-red">*</span></label>
+                            <select id="variableConfig" class="form-control select2">
+                                <option <?php if ($node) { ?> <?php if ($node->variable_config == 0) { ?>selected<?php } ?><?php } ?> value="0">Derecha</option>
+                                <option <?php if ($node) { ?> <?php if ($node->variable_config == 1) { ?>selected<?php } ?><?php } ?> value="1">Izquierda</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-lg-11 col-sm-10 col-10 col-md-11">
-                            <div class="form-group">
-                                <label>Email del destinatario</label>
-                                <input class="form-control" placeholder="Escribe el email de la persona que recibirá los fondos" name="emailDestinatario" id="emailDestinatario" />
-                            </div>
-                        </div>
-                        <div class="col-lg-1 col-sm-2 col-2 col-md-1">
-                            <div style="margin-top:33px">
-                                <a onclick="verificarDatosEmail();" href="#"><svg style="margin-top:10px;margin-left:-10px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fa3f59" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                    </svg></a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Monto a transferir</label>
-                                <input class="form-control" placeholder="Escribe el monto a transferir ($.$$)" type="number" min="1" step="0.01" name="montoTransferir" id="montoTransferir" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20">
-                        <button type="buttom" onclick="completarTransferencia()" class="btn btn-theme btn-block">Enviar</button>
-                    </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20">
+                    <button type="buttom" onclick="updateVariableConfig()" class="btn btn-theme btn-block">Actualizar</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade price-quote" id="modalVariableConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Variable de configuración</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-lg-offset-2 col-lg-8 ">
-                            <div class="form-group">
-                                <label>Variable <span class="color-red">*</span></label>
-                                <select id="variableConfig" class="form-control select2">
-                                    <option <?php if ($node) { ?> <?php if ($node->variable_config == 0) { ?>selected<?php } ?><?php } ?> value="0">Derecha</option>
-                                    <option <?php if ($node) { ?> <?php if ($node->variable_config == 1) { ?>selected<?php } ?><?php } ?> value="1">Izquierda</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20">
-                        <button type="buttom" onclick="updateVariableConfig()" class="btn btn-theme btn-block">Actualizar</button>
-                    </div>
-                </div>
+<div class="modal fade price-quote" id="modalSolicitud" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
             </div>
-        </div>
-    </div>
-
-    <div class="modal fade price-quote" id="modalSolicitud" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="clearfix"></div>
-                    <div class="row" style="margin-left: 20px;">
-                        <div class="col-lg-12">
-                            <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
-                            <div class="form-group">
-                                <label>Monto solicitado</label>
-                                <input class="form-control" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitado" />
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <h5 style="text-align:left;">Datos bancarios</h5>
-                            <p class="text-left"><b>Nombre del banco: </b> <?= $bank_data ? $bank_data->name_bank : '' ?></p>
-                            <p class="text-left"><b>Número de cuenta: </b> <?= $bank_data ? $bank_data->number_account : '' ?></p>
-                            <?php if ($bank_data) {
-                                if ($bank_data->type_account == 1) {
-                                    echo '<p class="text-left"> <b>Tipo de cuenta :</b> Ahorro</p>';
-                                } else {
-                                    echo '<p class="text-left"> <b>Tipo de cuenta :</b> Corriente</p>';
-                                }
-                            } ?>
-                            <p class="text-left"> <b>Nombre del titular: </b> <?= $bank_data ? $bank_data->name_titular : '' ?></p>
-                            <p class="text-left"><b>Número de identidad del titular: </b> <?= $bank_data ? $bank_data->number_id : '' ?></p>
-                            <p class="text-left"><b>Email de contacto:</b> <?= $bank_data ? $bank_data->email : '' ?></p>
-                            <p class="text-left"><b>Teléfono de contacto:</b> <?= $bank_data ? $bank_data->phone : '' ?></p>
+            <div class="modal-body">
+                <div class="clearfix"></div>
+                <div class="row" style="margin-left: 20px;">
+                    <div class="col-lg-12">
+                        <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
+                        <div class="form-group">
+                            <label>Monto solicitado</label>
+                            <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitado" />
                         </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
-                        <button type="buttom" onclick="handleSubmitSolicitud()" class="btn btn-success">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade price-quote" id="modalSolicitudBitcoin" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="clearfix"></div>
-                    <div class="row" style="margin-left: 20px;">
-                        <div class="col-lg-12">
-                            <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
-                            <div class="form-group">
-                                <label>Monto solicitado</label>
-                                <input class="form-control" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitadoBitcoin" />
-                            </div>
-                        </div>
-                        <?php if ($user_data->email_wallet || $user_data->wallet_bitcoin) { ?>
-
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" />
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Wallet</label>
-                                    <input class="form-control" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" />
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
-                                <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $bank_data->email_wallet : 'Sin datos' ?></p>
-                                <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : 'Sin datos' ?></p>
-                            </div>
-                        <?php } else { ?>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" value="<?= $user_data->email_wallet ? $bank_data->email_wallet : '' ?>" />
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Wallet</label>
-                                    <input class="form-control" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" value="<?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : '' ?>" />
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
-                                <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $bank_data->email_wallet : 'Sin datos' ?></p>
-                                <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : 'Sin datos' ?></p>
-                            </div>
-                        <?php } ?>
-
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
-                        <button type="buttom" onclick="handleSubmitBitcoin()" class="btn btn-success">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade price-quote" id="modalMetodoPago" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Métodos de pagos</h3>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id='subasta_id' name="subasta_id">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label> Tipos de pagos<span class="color-red">*</span></label>
-                                <select id="typePayment" class="form-control select2">
-                                    <!--     <option value="1">Tarjeta</option> -->
-                                    <option value="2">Billetera</option>
-                                    <option value="3">Transferencia</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-12 margin-bottom-20 margin-top-20 text-right">
-                        <button type="button" onclick="handleTypePayment()" class="btn btn-blue margin-bottom-10">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade price-quote" id="modalInfoTransaction" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title text-center" id="lineModalLabel">Detalle de la transacción</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-lg-12" id="bodyInfoTransaction">
-
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <script type="text/javascript">
-        const handleDetailsTransaction = (obj) => {
-            obj = JSON.parse(decodeB64Utf8(obj));
-            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
-            $('#bodyInfoTransaction').empty();
-            let stringInfo = '<p class="text-center"> <b>Nro de transacción: </b>' + obj.transaction_id + '</p>';
-            stringInfo += '<p class="text-center"> <b>Fecha de la transacción: </b>' + obj.date_create + '</p>';
-            if (obj.type == 1) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Retiro</p>';
-            } else if (obj.type == 2) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Transferencia</p>';
-            } else if (obj.type == 3) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Comisión de referido</p>';
-            } else if (obj.type == 4) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Compra de membresia</p>';
-            } else if (obj.type == 5) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Solicitud de transferencia de saldo</p>';
-            } else if (obj.type == 6) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Reintegro de la solicitud de transferencia </p>';
-            } else if (obj.type == 7) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono binario</p>';
-            } else if (obj.type == 8) {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono diario</p>';
-            } else {
-                stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Pago de anuncio destacado</p>';
-            }
-            if (obj.wallet_receives == walletCliente.wallet_id) {
-                stringInfo += '<p class="text-center"><label style="color:green;font-weight:bold">Monto: + $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
-            } else {
-                stringInfo += '<p class="text-center"><label style="color:red;font-weight:bold">monto: - $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
-            }
-            stringInfo += '<hr>';
-            if (obj.user_receives) {
-                stringInfo += '<p class="text-center"><b>Recibe: </b>' + obj.user_receives.name + ' ' + obj.user_receives.surname + '</p>';
-                stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_receives.email + '</p>';
-            } else {
-                stringInfo += '<p class="text-center"><b>Recibe: </b>Administración de la plataforma</p>';
-            }
-            stringInfo += '<hr>';
-            if (obj.user_send) {
-                stringInfo += '<p class="text-center"><b>Envia: </b>' + obj.user_send.name + ' ' + obj.user_send.surname + '</p>';
-                stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_send.email + '</p>';
-            } else {
-                stringInfo += '<p class="text-center"><b>Envia: </b>Administración de la plataforma</p>';
-            }
-            $('#bodyInfoTransaction').html(stringInfo);
-
-            $('#modalInfoTransaction').modal('show');
-        }
-
-        const handleRenovateMembership = () => {
-            let membresiaUserActive = '<?= json_encode($all_membresia) ?>';
-            membresiaUserActive = JSON.parse(membresiaUserActive);
-            membresiaUserActive.renovate = true;
-            localStorage.setItem('membresia', encodeB64Utf8(JSON.stringify(membresiaUserActive)));
-            $('#modalMetodoPago').modal('show');
-        }
-
-        const handleMondalSolicitud = () => {
-            let bankData = '<?= json_encode($bank_data) ?>';
-            if (bankData !== '') {
-                bankData = JSON.parse(bankData);
-            } else {
-                bankData = null;
-            }
-            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
-            if (!bankData) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'Los datos bancarios son obligatorios para la solicitud de transferencia de saldo',
-                    showConfirmButton: true,
-                })
-            } else if (billeteraActual <= 0) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'Su saldo no es suficiente para realizar esta transacción',
-                    showConfirmButton: true,
-                })
-            } else {
-                $('#modalSolicitud').modal('show');
-            }
-        }
-
-        const handleMondalBitcoin = () => {
-            let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
-            if (billeteraActual <= 0) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'Su saldo no es suficiente para realizar esta transacción',
-                    showConfirmButton: true,
-                })
-            } else {
-
-                $('#modalSolicitudBitcoin').modal('show');
-            }
-        }
-
-        const handleSubmitBitcoin = () => {
-            let walletBitcoin = $('#walletBitcoin').val().trim();
-            let emailWallet = $('#emailWallet').val().trim();
-            let montoSolicitado = $('#montoSolicitadoBitcoin').val().trim();
-            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
-            let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
-
-            if (montoSolicitado == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto es un campo requerido',
-                    showConfirmButton: true
-                })
-            } else if (montoSolicitado <= 0) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto no puede ser 0',
-                    showConfirmButton: true
-                })
-            } else if (billeteraActual < montoSolicitado) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto solicitado es mayor que el disponible en la billetera',
-                    showConfirmButton: true
-                })
-            } else if (walletBitcoin == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'La dirección de la wallet es obligatoria',
-                    showConfirmButton: true
-                })
-            } else if (emailWallet == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El email de la wallet es obligatorio',
-                    showConfirmButton: true
-                })
-            } else {
-                Swal.fire({
-                    title: 'Completando operación',
-                    text: 'Procesando  solicitud de transferencia de saldo...',
-                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-                    imageAlt: 'No realice acciones sobre la página',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    footer: '<a href>No realice acciones sobre la página</a>',
-                });
-                let data = {
-                    montoSolicitado,
-                    walletBitcoin,
-                    emailWallet
-                }
-                setTimeout(function() {
-                    $.ajax({
-                        type: 'POST',
-                        url: "<?= site_url('front/request_transfer_bitboin') ?>",
-                        data: data,
-                        success: function(result) {
-                            Swal.close();
-                            result = JSON.parse(result);
-                            if (result.status == 200) {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Solicitud de transferencia de saldo creada correctamente',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1000);
+                    <div class="col-lg-12">
+                        <h5 style="text-align:left;">Datos bancarios</h5>
+                        <p class="text-left"><b>Nombre del banco: </b> <?= $bank_data ? $bank_data->name_bank : '' ?></p>
+                        <p class="text-left"><b>Número de cuenta: </b> <?= $bank_data ? $bank_data->number_account : '' ?></p>
+                        <?php if ($bank_data) {
+                            if ($bank_data->type_account == 1) {
+                                echo '<p class="text-left"> <b>Tipo de cuenta :</b> Ahorro</p>';
                             } else {
-                                Swal.close();
-                                swal({
-                                    title: '¡Error!',
-                                    text: result.msj,
-                                    padding: '2em'
-                                });
+                                echo '<p class="text-left"> <b>Tipo de cuenta :</b> Corriente</p>';
                             }
-                        }
-                    });
-                }, 1500)
+                        } ?>
+                        <p class="text-left"> <b>Nombre del titular: </b> <?= $bank_data ? $bank_data->name_titular : '' ?></p>
+                        <p class="text-left"><b>Número de identidad del titular: </b> <?= $bank_data ? $bank_data->number_id : '' ?></p>
+                        <p class="text-left"><b>Email de contacto:</b> <?= $bank_data ? $bank_data->email : '' ?></p>
+                        <p class="text-left"><b>Teléfono de contacto:</b> <?= $bank_data ? $bank_data->phone : '' ?></p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
+                    <button type="buttom" onclick="handleSubmitSolicitud()" class="btn btn-success">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade price-quote" id="modalSolicitudBitcoin" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Solicitar transferencia de saldo</h3>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix"></div>
+                <div class="row" style="margin-left: 20px;">
+                    <div class="col-lg-12">
+                        <h5 style="text-align:center;">Saldo disponible: <?= $wallet ? number_format($wallet->balance, 2) : 0 ?></h5>
+                        <div class="form-group">
+                            <label>Monto solicitado</label>
+                            <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el monto a solicitar ($.$$)" type="number" min="1" step="0.01" id="montoSolicitadoBitcoin" />
+                        </div>
+                    </div>
+                    <?php if ($user_data->email_wallet || $user_data->wallet_bitcoin) { ?>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Wallet</label>
+                                <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
+                            <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $user_data->email_wallet : 'Sin datos' ?></p>
+                            <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $user_data->wallet_bitcoin : 'Sin datos' ?></p>
+                        </div>
+                    <?php } else { ?>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe el email de la wallet" type="text" id="emailWallet" value="<?= $user_data->email_wallet ? $bank_data->email_wallet : '' ?>" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Wallet</label>
+                                <input class="form-control" style="background-color: #fff !important; color:#000" placeholder="Escribe la dirección de la wallet" type="text" id="walletBitcoin" value="<?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : '' ?>" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5 style="text-align:left;">Datos de la Wallet en Bitcoin</h5>
+                            <p class="text-left"><b>Email: </b> <?= $user_data->email_wallet ? $bank_data->email_wallet : 'Sin datos' ?></p>
+                            <p class="text-left"><b>Wallet </b> <?= $user_data->wallet_bitcoin ? $bank_data->wallet_bitcoin : 'Sin datos' ?></p>
+                        </div>
+                    <?php } ?>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20 text-right" style="margin-left: 20px;">
+                    <button type="buttom" onclick="handleSubmitBitcoin()" class="btn btn-success">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade price-quote" id="modalMetodoPago" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Métodos de pagos</h3>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id='subasta_id' name="subasta_id">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label> Tipos de pagos<span class="color-red">*</span></label>
+                            <select id="typePayment" class="form-control select2">
+                                <!--     <option value="1">Tarjeta</option> -->
+                                <option value="2">Billetera</option>
+                                <option value="3">Transferencia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12 margin-bottom-20 margin-top-20 text-right">
+                    <button type="button" onclick="handleTypePayment()" class="btn btn-blue margin-bottom-10">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade price-quote" id="modalInfoTransaction" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title text-center" id="lineModalLabel">Detalle de la transacción</h3>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-lg-12" id="bodyInfoTransaction">
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<script type="text/javascript">
+    const handleDetailsTransaction = (obj) => {
+        obj = JSON.parse(decodeB64Utf8(obj));
+        let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+        $('#bodyInfoTransaction').empty();
+        let stringInfo = '<p class="text-center"> <b>Nro de transacción: </b>' + obj.transaction_id + '</p>';
+        stringInfo += '<p class="text-center"> <b>Fecha de la transacción: </b>' + obj.date_create + '</p>';
+        if (obj.type == 1) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Retiro</p>';
+        } else if (obj.type == 2) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Transferencia</p>';
+        } else if (obj.type == 3) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Comisión de referido</p>';
+        } else if (obj.type == 4) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Compra de membresia</p>';
+        } else if (obj.type == 5) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Solicitud de transferencia de saldo</p>';
+        } else if (obj.type == 6) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Reintegro de la solicitud de transferencia </p>';
+        } else if (obj.type == 7) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono binario</p>';
+        } else if (obj.type == 8) {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Bono diario</p>';
+        } else {
+            stringInfo += '<p class="text-center"><b>Tipo de transacción: </b>Pago de anuncio destacado</p>';
+        }
+        if (obj.wallet_receives == walletCliente.wallet_id) {
+            stringInfo += '<p class="text-center"><label style="color:green;font-weight:bold">Monto: + $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
+        } else {
+            stringInfo += '<p class="text-center"><label style="color:red;font-weight:bold">monto: - $ ' + parseFloat(obj.amount).toFixed(2) + '</label></p>';
+        }
+        stringInfo += '<hr>';
+        if (obj.user_receives) {
+            stringInfo += '<p class="text-center"><b>Recibe: </b>' + obj.user_receives.name + ' ' + obj.user_receives.surname + '</p>';
+            stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_receives.email + '</p>';
+        } else {
+            stringInfo += '<p class="text-center"><b>Recibe: </b>Administración de la plataforma</p>';
+        }
+        stringInfo += '<hr>';
+        if (obj.user_send) {
+            stringInfo += '<p class="text-center"><b>Envia: </b>' + obj.user_send.name + ' ' + obj.user_send.surname + '</p>';
+            stringInfo += '<p class="text-center"><b>Correo electrónico: </b>' + obj.user_send.email + '</p>';
+        } else {
+            stringInfo += '<p class="text-center"><b>Envia: </b>Administración de la plataforma</p>';
+        }
+        $('#bodyInfoTransaction').html(stringInfo);
+
+        $('#modalInfoTransaction').modal('show');
+    }
+
+    const handleRenovateMembership = () => {
+        let membresiaUserActive = '<?= json_encode($all_membresia) ?>';
+        membresiaUserActive = JSON.parse(membresiaUserActive);
+        membresiaUserActive.renovate = true;
+        localStorage.setItem('membresia', encodeB64Utf8(JSON.stringify(membresiaUserActive)));
+        $('#modalMetodoPago').modal('show');
+    }
+
+    const handleMondalSolicitud = () => {
+        let bankData = '<?= json_encode($bank_data) ?>';
+        if (bankData !== '') {
+            bankData = JSON.parse(bankData);
+        } else {
+            bankData = null;
+        }
+        let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+        if (!bankData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'Los datos bancarios son obligatorios para la solicitud de transferencia de saldo',
+                showConfirmButton: true,
+            })
+        } else if (billeteraActual <= 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'Su saldo no es suficiente para realizar esta transacción',
+                showConfirmButton: true,
+            })
+        } else {
+            $('#modalSolicitud').modal('show');
+        }
+    }
+
+    const handleMondalBitcoin = () => {
+        let billeteraActual = parseFloat('<?= $wallet ? number_format($wallet->balance, 2) : 0 ?>');
+        if (billeteraActual <= 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'Su saldo no es suficiente para realizar esta transacción',
+                showConfirmButton: true,
+            })
+        } else {
+
+            $('#modalSolicitudBitcoin').modal('show');
+        }
+    }
+
+    const handleSubmitBitcoin = () => {
+        let walletBitcoin = $('#walletBitcoin').val().trim();
+        let emailWallet = $('#emailWallet').val().trim();
+        let montoSolicitado = $('#montoSolicitadoBitcoin').val().trim();
+        let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+        let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
+
+        if (montoSolicitado == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto es un campo requerido',
+                showConfirmButton: true
+            })
+        } else if (montoSolicitado <= 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto no puede ser 0',
+                showConfirmButton: true
+            })
+        } else if (billeteraActual < montoSolicitado) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto solicitado es mayor que el disponible en la billetera',
+                showConfirmButton: true
+            })
+        } else if (walletBitcoin == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'La dirección de la wallet es obligatoria',
+                showConfirmButton: true
+            })
+        } else if (emailWallet == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El email de la wallet es obligatorio',
+                showConfirmButton: true
+            })
+        } else {
+            Swal.fire({
+                title: 'Completando operación',
+                text: 'Procesando  solicitud de transferencia de saldo...',
+                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                imageAlt: 'No realice acciones sobre la página',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                footer: '<a href>No realice acciones sobre la página</a>',
+            });
+            let data = {
+                montoSolicitado,
+                walletBitcoin,
+                emailWallet
             }
-        }
-
-        const handleSubmitSolicitud = () => {
-            let montoSolicitado = parseFloat($('#montoSolicitado').val().trim())
-            let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
-            let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
-
-            if (montoSolicitado == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto es un campo requerido',
-                    showConfirmButton: true
-                })
-            } else if (montoSolicitado <= 0) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto no puede ser 0',
-                    showConfirmButton: true
-                })
-            } else if (billeteraActual < montoSolicitado) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El monto solicitado es mayor que el disponible en la billetera',
-                    showConfirmButton: true
-                })
-            } else {
-                Swal.fire({
-                    title: 'Completando operación',
-                    text: 'Procesando  solicitud de transferencia de saldo...',
-                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-                    imageAlt: 'No realice acciones sobre la página',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    footer: '<a href>No realice acciones sobre la página</a>',
-                });
-                let data = {
-                    montoSolicitado,
-                }
-                setTimeout(function() {
-                    $.ajax({
-                        type: 'POST',
-                        url: "<?= site_url('front/request_transfer_balance') ?>",
-                        data: data,
-                        success: function(result) {
-                            Swal.close();
-                            result = JSON.parse(result);
-                            if (result.status == 200) {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Solicitud de transferencia de saldo creada correctamente',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1000);
-                            } else {
-                                Swal.close();
-                                swal({
-                                    title: '¡Error!',
-                                    text: result.msj,
-                                    padding: '2em'
-                                });
-                            }
-                        }
-                    });
-                }, 1500)
-            }
-        }
-
-        const handleSubmitBankData = () => {
-            let bankName = $('#bankName').val().trim();
-            let numberAcount = $('#numberAccount').val().trim();
-            let typeAccount = $('#typeAccount').val();
-            let nameTitular = $('#nameTitular').val().trim();
-            let emailContact = $('#emailContact').val().trim();
-            let phoneContact = $('#phoneContact').val().trim();
-            let numberId = $('#numberId').val().trim();
-
-            if (bankName == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El nombre del banco es un campo requerido',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#bankName').focus();
-            } else if (numberAcount == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El número de cuenta es un campo requerido',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#numberAcount').focus();
-            } else if (nameTitular == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El nombre del titular de la cuenta es un campo requerido',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#nameTitular').focus();
-            } else if (emailContact == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El email del titular de la cuenta es un campo requerido',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#nameTitular').focus();
-            } else if (phoneContact == '') {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'info',
-                    title: 'El teléfono es un campo requerido',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#phoneContact').focus();
-            } else {
-                Swal.fire({
-                    title: 'Completando operación',
-                    text: 'Actualizando datos...',
-                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-                    imageAlt: 'No realice acciones sobre la página',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    footer: '<a href>No realice acciones sobre la página</a>',
-                });
-                let data = {
-                    bankName,
-                    numberAcount,
-                    typeAccount,
-                    nameTitular,
-                    emailContact,
-                    phoneContact,
-                    numberId
-                }
-                setTimeout(function() {
-                    $.ajax({
-                        type: 'POST',
-                        url: "<?= site_url('front/update_bank_data') ?>",
-                        data: data,
-                        success: function(result) {
-                            Swal.close();
-                            result = JSON.parse(result);
-                            if (result.status == 200) {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Datos bancarios actualizados correctamente',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1000);
-                            } else {
-                                Swal.close();
-                                swal({
-                                    title: '¡Error!',
-                                    text: result.msj,
-                                    padding: '2em'
-                                });
-                            }
-                        }
-                    });
-                }, 1500)
-            }
-        }
-
-        const handleMondalVariebleConfig = () => {
-            $('#modalVariableConfiguracion').modal('show');
-        }
-
-        const handleModalTransferencia = () => {
-            $('#modalTransferencia').modal('show');
-            $("#emailDestinatario").val('');
-            $("#montoTransferir").val('');
-        }
-
-        const verificarDatosEmail = () => {
-            let userEmail = '<?= $this->session->userdata('email') ?>';
-            $('#modalTransferencia').modal('hide');
-            let email = $('#emailDestinatario').val();
-            let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            if (expr.test(email)) {
-                if (userEmail !== email) {
-                    Swal.fire({
-                        title: 'Completando operación',
-                        text: 'Actualizando datos...',
-                        imageUrl: '<?= base_url("assets/cargando.gif") ?>',
-                        imageAlt: 'No realice acciones sobre la página',
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        footer: '<a href>No realice acciones sobre la página</a>',
-                    });
-
-                    let url = '<?= site_url("front/validate_email") ?>';
-                    $.post(url, {
-                        email: email
-                    }, function(response) {
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?= site_url('front/request_transfer_bitboin') ?>",
+                    data: data,
+                    success: function(result) {
                         Swal.close();
-                        response = JSON.parse(response);
-                        if (response.status == 200) {
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
                             Swal.fire({
+                                position: 'top-end',
                                 icon: 'success',
-                                title: 'Usuario encontrado',
-                                text: response.data.name + ' ' + response.data.surname + ' ( ' + response.data.email +
-                                    ' )',
-                                confirmButtonText: 'Confirmado',
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                $('#modalTransferencia').modal('show');
-                            })
-
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'No se encuentra un usuario con el email especificado',
+                                title: 'Solicitud de transferencia de saldo creada correctamente',
                                 showConfirmButton: false,
-                                timer: 2500
-                            }).then((result) => {
-                                $('#modalTransferencia').modal('show');
+                                timer: 1500
+                            })
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            Swal.close();
+                            swal({
+                                title: '¡Error!',
+                                text: result.msj,
+                                padding: '2em'
                             });
                         }
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'No se puede enviar dinero a tu misma cuenta',
-                        showConfirmButton: false,
-                        timer: 2500
-                    }).then((result) => {
-                        $('#modalTransferencia').modal('show');
-                    });
-                }
-
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'El email no tiene un formato correcto',
-                    showConfirmButton: false,
-                    timer: 2500
-                }).then((result) => {
-                    $('#modalTransferencia').modal('show');
+                    }
                 });
-
-            }
-
+            }, 1500)
         }
+    }
 
-        const updateVariableConfig = () => {
-            let node = '<?= json_encode($node) ?>';
-            $('#modalVariableConfiguracion').modal('hide');
-            let variableConfig = $('#variableConfig').val();
+    const handleSubmitSolicitud = () => {
+        let montoSolicitado = parseFloat($('#montoSolicitado').val().trim())
+        let walletCliente = JSON.parse('<?= $wallet ? json_encode($wallet) : null ?>');
+        let billeteraActual = walletCliente ? parseFloat(walletCliente.balance) : 0;
+
+        if (montoSolicitado == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto es un campo requerido',
+                showConfirmButton: true
+            })
+        } else if (montoSolicitado <= 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto no puede ser 0',
+                showConfirmButton: true
+            })
+        } else if (billeteraActual < montoSolicitado) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El monto solicitado es mayor que el disponible en la billetera',
+                showConfirmButton: true
+            })
+        } else {
+            Swal.fire({
+                title: 'Completando operación',
+                text: 'Procesando  solicitud de transferencia de saldo...',
+                imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                imageAlt: 'No realice acciones sobre la página',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                footer: '<a href>No realice acciones sobre la página</a>',
+            });
+            let data = {
+                montoSolicitado,
+            }
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?= site_url('front/request_transfer_balance') ?>",
+                    data: data,
+                    success: function(result) {
+                        Swal.close();
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Solicitud de transferencia de saldo creada correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            Swal.close();
+                            swal({
+                                title: '¡Error!',
+                                text: result.msj,
+                                padding: '2em'
+                            });
+                        }
+                    }
+                });
+            }, 1500)
+        }
+    }
+
+    const handleSubmitBankData = () => {
+        let bankName = $('#bankName').val().trim();
+        let numberAcount = $('#numberAccount').val().trim();
+        let typeAccount = $('#typeAccount').val();
+        let nameTitular = $('#nameTitular').val().trim();
+        let emailContact = $('#emailContact').val().trim();
+        let phoneContact = $('#phoneContact').val().trim();
+        let numberId = $('#numberId').val().trim();
+
+        if (bankName == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El nombre del banco es un campo requerido',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            $('#bankName').focus();
+        } else if (numberAcount == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El número de cuenta es un campo requerido',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            $('#numberAcount').focus();
+        } else if (nameTitular == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El nombre del titular de la cuenta es un campo requerido',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            $('#nameTitular').focus();
+        } else if (emailContact == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El email del titular de la cuenta es un campo requerido',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            $('#nameTitular').focus();
+        } else if (phoneContact == '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'El teléfono es un campo requerido',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            $('#phoneContact').focus();
+        } else {
             Swal.fire({
                 title: 'Completando operación',
                 text: 'Actualizando datos...',
@@ -2234,43 +2122,205 @@
                 allowOutsideClick: false,
                 footer: '<a href>No realice acciones sobre la página</a>',
             });
+            let data = {
+                bankName,
+                numberAcount,
+                typeAccount,
+                nameTitular,
+                emailContact,
+                phoneContact,
+                numberId
+            }
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?= site_url('front/update_bank_data') ?>",
+                    data: data,
+                    success: function(result) {
+                        Swal.close();
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Datos bancarios actualizados correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            Swal.close();
+                            swal({
+                                title: '¡Error!',
+                                text: result.msj,
+                                padding: '2em'
+                            });
+                        }
+                    }
+                });
+            }, 1500)
+        }
+    }
 
-            let url = '<?= site_url("front/variable_config") ?>';
-            $.post(url, {
-                node: node,
-                variable: variableConfig
-            }, function(response) {
-                Swal.close();
-                response = JSON.parse(response);
-                if (response.status == 200) {
-                    variableConfig == 0 ? $('#labelConfig').text('Derecha') : $('#labelConfig').text('Izquierda');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Operación ejecutada',
-                        text: 'Variable de configuración actualizada correctamente',
-                        confirmButtonText: 'Continuar',
-                        allowOutsideClick: false
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'No se encuentra un usuario con el email especificado',
-                        showConfirmButton: false,
-                        timer: 2500
-                    }).then((result) => {
-                        $('#modalVariableConfiguracion').modal('show');
-                    });
-                }
+    const handleMondalVariebleConfig = () => {
+        $('#modalVariableConfiguracion').modal('show');
+    }
+
+    const handleModalTransferencia = () => {
+        $('#modalTransferencia').modal('show');
+        $("#emailDestinatario").val('');
+        $("#montoTransferir").val('');
+    }
+
+
+
+    const verificarDatosEmail = () => {
+        let userEmail = '<?= $this->session->userdata('email') ?>';
+        $('#modalTransferencia').modal('hide');
+        let email = $('#emailDestinatario').val();
+        let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (expr.test(email)) {
+            if (userEmail !== email) {
+                Swal.fire({
+                    title: 'Completando operación',
+                    text: 'Actualizando datos...',
+                    imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+                    imageAlt: 'No realice acciones sobre la página',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    footer: '<a href>No realice acciones sobre la página</a>',
+                });
+
+                let url = '<?= site_url("front/validate_email") ?>';
+                $.post(url, {
+                    email: email
+                }, function(response) {
+                    Swal.close();
+                    response = JSON.parse(response);
+                    if (response.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario encontrado',
+                            text: response.data.name + ' ' + response.data.surname + ' ( ' + response.data.email +
+                                ' )',
+                            confirmButtonText: 'Confirmado',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            $('#modalTransferencia').modal('show');
+                        })
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            html: `<p>No se encontró un usuario con el email: ${emailDestino} en la plataforma</p>`,
+                            showConfirmButton: true,
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            $('#modalTransferencia').modal('show');
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se puede enviar dinero a tu misma cuenta',
+                    showConfirmButton: true,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    $('#modalTransferencia').modal('show');
+                });
+            }
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'El email no tiene un formato correcto',
+                showConfirmButton: true,
+                allowOutsideClick: false
+            }).then((result) => {
+                $('#modalTransferencia').modal('show');
             });
+
         }
 
-        const completarTransferencia = () => {
-            let emailDestino = $("#emailDestinatario").val().trim();
-            let montoEnviar = $("#montoTransferir").val().trim();
-            let userEmail = '<?= $this->session->userdata('email') ?>';
-            var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            if (expr.test(emailDestino)) {
-                if (userEmail !== emailDestino) {
+    }
+
+    const updateVariableConfig = () => {
+        let node = '<?= json_encode($node) ?>';
+        $('#modalVariableConfiguracion').modal('hide');
+        let variableConfig = $('#variableConfig').val();
+        Swal.fire({
+            title: 'Completando operación',
+            text: 'Actualizando datos...',
+            imageUrl: '<?= base_url("assets/cargando.gif") ?>',
+            imageAlt: 'No realice acciones sobre la página',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            footer: '<a href>No realice acciones sobre la página</a>',
+        });
+
+        let url = '<?= site_url("front/variable_config") ?>';
+        $.post(url, {
+            node: node,
+            variable: variableConfig
+        }, function(response) {
+            Swal.close();
+            response = JSON.parse(response);
+            if (response.status == 200) {
+                variableConfig == 0 ? $('#labelConfig').text('Derecha') : $('#labelConfig').text('Izquierda');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Operación ejecutada',
+                    text: 'Variable de configuración actualizada correctamente',
+                    confirmButtonText: 'Continuar',
+                    allowOutsideClick: false
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se encuentra un usuario con el email especificado',
+                    showConfirmButton: false,
+                    timer: 2500
+                }).then((result) => {
+                    $('#modalVariableConfiguracion').modal('show');
+                });
+            }
+        });
+    }
+
+
+    const verificarEmailDestino = async () => {
+        let userEmail = '<?= $this->session->userdata('email') ?>';
+        let email = $('#emailDestinatario').val();
+        let url = '<?= site_url("front/validate_email") ?>';
+        return $.post(url, {
+            email: email
+        }, function(response) {
+            response = JSON.parse(response);
+        });
+    }
+    const verificarPassword = async (password) => {
+        let url = '<?= site_url("front/validate_password") ?>';
+        return $.post(url, {
+            password
+        }, function(response) {
+            response = JSON.parse(response);
+        });
+    }
+
+    const completarTransferencia = async () => {
+        const baseUrl = '<?= site_url() ?>';
+        let emailDestino = $("#emailDestinatario").val().trim();
+        let montoEnviar = $("#montoTransferir").val().trim();
+        let userEmail = '<?= $this->session->userdata('email') ?>';
+        var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (expr.test(emailDestino)) {
+            if (userEmail !== emailDestino) {
+                let validEmail = await verificarEmailDestino();
+                validEmail = JSON.parse(validEmail);
+                if (validEmail.status == 200) {
                     if (!isNaN(montoEnviar)) {
                         let billeteraActual = <?= $balance ?>;
                         if (parseFloat(billeteraActual) >= parseFloat(montoEnviar)) {
@@ -2278,11 +2328,56 @@
                             Swal.fire({
                                 title: 'Escribe tu contraseña',
                                 input: 'password',
+                                inputAttributes: {
+                                    autocapitalize: 'off'
+                                },
                                 showCancelButton: true,
-                                confirmButtonText: 'Confirmar'
+                                confirmButtonText: 'Confirmar',
+                                showLoaderOnConfirm: true,
+                                allowOutsideClick: false,
+                                preConfirm: (password) => {
+                                    let url = baseUrl + '/login/validate_password';
+                                    let data = {
+                                        password
+                                    };
+                                    if (password.length > 0) {
+                                        return fetch(url, {
+                                                method: 'POST',
+                                                body: JSON.stringify(data),
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            }).then(res => res.json())
+                                            .catch(error => {
+                                                if (!response.ok) {
+                                                    throw new Error(response.statusText)
+                                                }
+                                                Swal.showValidationMessage(
+                                                    `Error: ${error}`
+                                                )
+                                            })
+                                            .then(response => {
+                                                if (response.status == 200) {
+                                                    return response;
+                                                } else if (response.status == 500) {
+                                                    Swal.showValidationMessage(
+                                                        'Error: La contraseña es incorrecta'
+                                                    )
+                                                } else {
+                                                    Swal.showValidationMessage(
+                                                        'Error: Email no encontrado'
+                                                    )
+                                                }
+                                            });
+                                    } else {
+                                        Swal.showValidationMessage(
+                                            'Ingrese la contraseña para continuar'
+                                        )
+                                    }
+                                },
+                                allowOutsideClick: () => !Swal.isLoading()
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    Swal.close();
                                     Swal.fire({
                                         title: 'Completando operación',
                                         text: 'Actualizando datos...',
@@ -2314,54 +2409,52 @@
                                         } else if (response.status == 404) {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'No se encuentra un usuario con el correo especificado',
-                                                showConfirmButton: false,
-                                                timer: 2500
+                                                text: 'No se encuentra un usuario con el correo especificado',
+                                                showConfirmButton: true,
+                                                allowOutsideClick: false
                                             }).then((result) => {
                                                 $('#modalTransferencia').modal('show');
                                             });
                                         } else if (response.status == 201) {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'El saldo en la billetera no es suficiente',
-                                                showConfirmButton: false,
-                                                timer: 2500
+                                                text: 'El saldo en la billetera no es suficiente',
+                                                showConfirmButton: true,
+                                                allowOutsideClick: false
                                             }).then((result) => {
                                                 $('#modalTransferencia').modal('show');
                                             });
                                         } else if (response.status == 501) {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'La contraseña del usuario no es correcta',
-                                                showConfirmButton: false,
-                                                timer: 2500
+                                                text: 'La contraseña del usuario no es correcta',
+                                                showConfirmButton: true,
+                                                allowOutsideClick: false
                                             }).then((result) => {
                                                 $('#modalTransferencia').modal('show');
                                             });
                                         } else {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'Su sesión ha caducado o no tiene permiso para realizar esta tarea.',
-                                                showConfirmButton: false,
-                                                timer: 2500
+                                                text: 'Su sesión ha caducado o no tiene permiso para realizar esta tarea.',
+                                                showConfirmButton: true,
+                                                allowOutsideClick: false
                                             }).then((result) => {
                                                 window.location.href = '<?= site_url('entrar'); ?>';
                                             });
                                         }
                                     });
-
                                 } else {
                                     $('#modalTransferencia').modal('show');
                                 }
                             })
-
                         } else {
                             $('#modalTransferencia').modal('hide');
                             Swal.fire({
                                 icon: 'error',
-                                title: 'No tiene saldo suficiente en la billetera para hacer la transferencia',
-                                showConfirmButton: false,
-                                timer: 2500
+                                text: 'No tiene saldo suficiente en la billetera para hacer la transferencia',
+                                showConfirmButton: true,
+                                allowOutsideClick: false,
                             }).then((result) => {
                                 $('#modalTransferencia').modal('show');
                             });
@@ -2371,607 +2464,619 @@
                         $('#modalTransferencia').modal('hide');
                         Swal.fire({
                             icon: 'error',
-                            title: 'El monto a enviar debe ser un valor numérico',
-                            showConfirmButton: false,
-                            timer: 2500
+                            html: `<p>No se encontró un usuario con el email: ${emailDestino} en la plataforma</p>`,
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
                         }).then((result) => {
                             $('#modalTransferencia').modal('show');
                         });
                     }
                 } else {
+                    $('#modalTransferencia').modal('hide');
                     Swal.fire({
                         icon: 'error',
-                        title: 'No se puede enviar dinero a tu misma cuenta',
-                        showConfirmButton: false,
-                        timer: 2500
+                        html: `<p>No se encontró un usuario con el email: ${emailDestino} en la plataforma</p>`,
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
                     }).then((result) => {
                         $('#modalTransferencia').modal('show');
                     });
                 }
-
             } else {
                 $('#modalTransferencia').modal('hide');
                 Swal.fire({
                     icon: 'error',
-                    title: 'El email no tiene un formato correcto',
-                    showConfirmButton: false,
-                    timer: 2500
+                    html: '<p>No se puede enviar dinero a tu misma cuenta</p>',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
                 }).then((result) => {
                     $('#modalTransferencia').modal('show');
                 });
             }
-        }
 
-        const copyToClipboard = (text) => {
-            const elem = document.createElement('textarea');
-            elem.value = text;
-            document.body.appendChild(elem);
-            elem.select();
-            document.execCommand('copy');
-            document.body.removeChild(elem);
+        } else {
+            $('#modalTransferencia').modal('hide');
             Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Link copiado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }
-
-        const initDiagram = () => {
-
-            $("#areaDatosGeneralesEquipo").empty();
-            $("#areaDatosGeneralesEquipo").html(
-                "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando datos generales del equipo</a></div></div>"
-            );
-
-            $("#basicDiagram").empty();
-            $("#basicDiagram").html(
-                "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
-            );
-            $("#basicDiagramRight").empty();
-            $("#basicDiagramRight").html(
-                "<div id='cargandoArbolRight' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
-            );
-            setTimeout(() => {
-                $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
-                    let responseJSON = JSON.parse(response);
-                    responseJSON.lista_left.length > 0 || responseJSON.lista_right.length ? $('#bodyEstructura').show() : $('#bodyEstructura').hide();
-
-                    $("#cargandoArbol").remove();
-                    $("#cargandoArbolRight").remove();
-                    $("#cargandoDatosGeneralesEquipo").remove();
-                    let options = new primitives.OrgConfig();
-                    options.hasSelectorCheckbox = primitives.Enabled.False;
-                    options.hasButtons = primitives.Enabled.False;
-                    options.templates = [getItemTemplate1()];
-                    options.onItemRender = onTemplateRender;
-                    options.defaultTemplateName = "itemTemplate1";
-                    options.normalItemsInterval = 20;
-
-                    let optionsRight = new primitives.OrgConfig();
-                    optionsRight.hasSelectorCheckbox = primitives.Enabled.False;
-                    optionsRight.hasButtons = primitives.Enabled.False;
-                    optionsRight.templates = [getItemTemplateRight()];
-                    optionsRight.onItemRender = onTemplateRender;
-                    optionsRight.defaultTemplateName = "itemTemplateRight";
-                    optionsRight.normalItemsInterval = 20;
-
-                    $("#areaDatosGeneralesEquipo").append(
-                        "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #65438e;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #65438e;color:#fff;font-weight:bold;'>" +
-                        ((responseJSON.lista_left.length > 0 ? responseJSON.lista_left.length - 1 : 0) + (responseJSON.lista_right.length > 0 ? responseJSON.lista_right.length - 1 : 0)) + "</label></div></div>");
-
-                    let items = [];
-                    let itemsRight = [];
-                    let activos = 0;
-                    let inactivos = 0;
-                    let contador = 1;
-                    let urlImage = '<?= base_url('assets/user.png') ?>';
-
-                    responseJSON.lista_left.forEach(function(item1) {
-                        let color = "#ff5970";
-                        if (item1.is_active == 1) {
-                            color = '#45a766';
-                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                                activos++;
-                            }
-                        } else {
-                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                                inactivos++;
-                            }
-                        }
-                        if (item1.parent != 0) {
-                            idPadre = getIdPadre(item1.padre, items);
-                            items.push(new primitives.OrgItemConfig({
-                                id: contador,
-                                parent: idPadre,
-                                title: item1.name + ' ' + item1.surname,
-                                phone: item1.phone,
-                                email: item1.email,
-                                usuario_id: item1.user_id,
-                                itemTitleColor: color,
-                                imagen: urlImage
-                            }));
-                        } else {
-                            if (item1.is_active == '1') {
-                                color = '#45a766';
-                            }
-                            items.push(new primitives.OrgItemConfig({
-                                id: contador,
-                                parent: null,
-                                title: item1.name + ' ' + item1.surname,
-                                phone: item1.phone,
-                                email: item1.email,
-                                usuario_id: '<?= $this->session->userdata("user_id") ?>',
-                                itemTitleColor: color,
-                                imagen: urlImage
-                            }));
-                        }
-                        contador++;
-                    });
-                    responseJSON.lista_right.forEach(function(item1) {
-                        let color = "#ff5970";
-                        if (item1.is_active == 1) {
-                            color = '#45a766';
-                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                                activos++;
-                            }
-                        } else {
-                            if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
-                                inactivos++;
-                            }
-                        }
-                        if (item1.parent != 0) {
-                            idPadre = getIdPadre(item1.padre, itemsRight);
-                            itemsRight.push(new primitives.OrgItemConfig({
-                                id: contador,
-                                parent: idPadre,
-                                title: item1.name + ' ' + item1.surname,
-                                phone: item1.phone,
-                                email: item1.email,
-                                usuario_id: item1.user_id,
-                                itemTitleColor: color,
-                                imagen: urlImage
-                            }));
-                        } else {
-                            if (item1.is_active == '1') {
-                                color = '#45a766';
-                            }
-                            itemsRight.push(new primitives.OrgItemConfig({
-                                id: contador,
-                                parent: null,
-                                title: item1.name + ' ' + item1.surname,
-                                phone: item1.phone,
-                                email: item1.email,
-                                usuario_id: '<?= $this->session->userdata("user_id") ?>',
-                                itemTitleColor: color,
-                                imagen: urlImage
-                            }));
-                        }
-                        contador++;
-                    });
-                    options.items = items;
-                    options.cursorItem = 0;
-                    control = primitives.OrgDiagram(document.getElementById("basicDiagram"), options);
-                    optionsRight.items = itemsRight;
-                    optionsRight.cursorItem = 0;
-                    controlRight = primitives.OrgDiagram(document.getElementById("basicDiagramRight"), optionsRight);
-                    let textoAux =
-                        '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #45a766;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #45a766;color:#fff;font-weight:bold;">' +
-                        activos +
-                        '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #ff5970;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #ff5970;color:#fff;font-weight:bold;">' +
-                        inactivos +
-                        '</label></div></div>';
-                    $("#areaDatosGeneralesEquipo").append(textoAux);
-                });
-            }, 3000);
-        }
-
-        const getIdPadre = (padreId, pItems) => {
-            let idResult = -1;
-            pItems.forEach(function(item) {
-                if (item.usuario_id == padreId) {
-                    idResult = item.id;
-                    return;
-                }
-            });
-            return idResult;
-        }
-
-        const getItemTemplate1 = () => {
-            let result = new primitives.TemplateConfig();
-            result.name = "itemTemplate1";
-
-            result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
-                '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
-                '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
-                '</div>' +
-                '</div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
-                '</div>';
-
-            result.itemSize = new primitives.Size(180, 130);
-            return result;
-        }
-
-        const getItemTemplateRight = () => {
-            let result = new primitives.TemplateConfig();
-            result.name = "itemTemplateRight";
-
-            result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
-                '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
-                '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
-                '</div>' +
-                '</div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
-                '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
-                '</div>';
-
-            result.itemSize = new primitives.Size(180, 130);
-            return result;
-        }
-
-        const onTemplateRender = (event, data) => {
-
-            switch (data.renderingMode) {
-                case primitives.RenderingMode.Create:
-                    break;
-                case primitives.RenderingMode.Update:
-                    /* Update template content here */
-                    break;
-            }
-
-            let itemConfig = data.context;
-
-            if (data.templateName == "itemTemplate1") {
-
-                let titleBackground = data.element.firstChild;
-                titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
-
-                let title = data.element.firstChild.firstChild;
-                title.textContent = itemConfig.title;
-
-                let img = data.element.childNodes[1];
-                img.firstChild.firstChild.src = itemConfig.imagen;
-
-                let phone = data.element.childNodes[2];
-                phone.textContent = itemConfig.phone;
-
-                let email = data.element.childNodes[3];
-                email.textContent = itemConfig.email;
-
-            }
-            if (data.templateName == "itemTemplateRight") {
-
-                let titleBackground = data.element.firstChild;
-                titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
-
-                let title = data.element.firstChild.firstChild;
-                title.textContent = itemConfig.title;
-
-                let img = data.element.childNodes[1];
-                img.firstChild.firstChild.src = itemConfig.imagen;
-
-                let phone = data.element.childNodes[2];
-                phone.textContent = itemConfig.phone;
-
-                let email = data.element.childNodes[3];
-                email.textContent = itemConfig.email;
-
-            }
-        }
-
-        const cargar_modal_eliminar_anuncio = (params) => {
-            Swal.fire({
-                title: '¿Está seguro (a) de que desea eliminar el anuncio?',
-                text: "¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
+                icon: 'error',
+                html: '<p>El email no tiene un formato correcto</p>',
+                showConfirmButton: true,
+                allowOutsideClick: false,
             }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "<?= site_url('front/delete_ads') ?>",
-                        data: {
-                            anuncio_id: params
-                        },
-                        success: function(result) {
-                            result = JSON.parse(result);
-                            if (result.status == 200) {
-                                Swal.fire(
-                                    '¡Eliminado correctamente!',
-                                    '',
-                                    'success'
-                                );
-                                location.reload();
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Ocurrio un problema vuelva a intentarlo.',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                            }
+                $('#modalTransferencia').modal('show');
+            });
+        }
+    }
 
+    const copyToClipboard = (text) => {
+        const elem = document.createElement('textarea');
+        elem.value = text;
+        document.body.appendChild(elem);
+        elem.select();
+        document.execCommand('copy');
+        document.body.removeChild(elem);
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Link copiado correctamente',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+
+    const initDiagram = () => {
+
+        $("#areaDatosGeneralesEquipo").empty();
+        $("#areaDatosGeneralesEquipo").html(
+            "<div id='cargandoDatosGeneralesEquipo' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando datos generales del equipo</a></div></div>"
+        );
+
+        $("#basicDiagram").empty();
+        $("#basicDiagram").html(
+            "<div id='cargandoArbol' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
+        );
+        $("#basicDiagramRight").empty();
+        $("#basicDiagramRight").html(
+            "<div id='cargandoArbolRight' class='row'><div class='col-lg-12' style='text-align:center;'><a style='color:#fff;font-weight:bold;font-size:16px;'><i class='fa fa-spinner fa-spin'></i> Cargando árbol de afiliados</a></div></div>"
+        );
+        setTimeout(() => {
+            $.post('<?= site_url("front/cargar_arbol_afiliados") ?>', {}, function(response) {
+                let responseJSON = JSON.parse(response);
+                responseJSON.lista_left.length > 0 || responseJSON.lista_right.length ? $('#bodyEstructura').show() : $('#bodyEstructura').hide();
+
+                $("#cargandoArbol").remove();
+                $("#cargandoArbolRight").remove();
+                $("#cargandoDatosGeneralesEquipo").remove();
+                let options = new primitives.OrgConfig();
+                options.hasSelectorCheckbox = primitives.Enabled.False;
+                options.hasButtons = primitives.Enabled.False;
+                options.templates = [getItemTemplate1()];
+                options.onItemRender = onTemplateRender;
+                options.defaultTemplateName = "itemTemplate1";
+                options.normalItemsInterval = 20;
+
+                let optionsRight = new primitives.OrgConfig();
+                optionsRight.hasSelectorCheckbox = primitives.Enabled.False;
+                optionsRight.hasButtons = primitives.Enabled.False;
+                optionsRight.templates = [getItemTemplateRight()];
+                optionsRight.onItemRender = onTemplateRender;
+                optionsRight.defaultTemplateName = "itemTemplateRight";
+                optionsRight.normalItemsInterval = 20;
+
+                $("#areaDatosGeneralesEquipo").append(
+                    "<div style='margin-top:15px'><h5 style='text-align:center;margin-bottom:0px;'><label style='background-color: #65438e;color: white;padding: 10px 5px;width:280px;text-align:center;'>Miembros del equipo</label></h5><div style='text-align:center;font-size:18px;font-weight:bold;'><label style='margin-top:-10px;padding: 10px 5px;width:280px;text-align:center;border: 1px solid #65438e;color:#fff;font-weight:bold;'>" +
+                    ((responseJSON.lista_left.length > 0 ? responseJSON.lista_left.length - 1 : 0) + (responseJSON.lista_right.length > 0 ? responseJSON.lista_right.length - 1 : 0)) + "</label></div></div>");
+
+                let items = [];
+                let itemsRight = [];
+                let activos = 0;
+                let inactivos = 0;
+                let contador = 1;
+                let urlImage = '<?= base_url('assets/user.png') ?>';
+
+                responseJSON.lista_left.forEach(function(item1) {
+                    let color = "#ff5970";
+                    if (item1.is_active == 1) {
+                        color = '#45a766';
+                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                            activos++;
+                        }
+                    } else {
+                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                            inactivos++;
+                        }
+                    }
+                    if (item1.parent != 0) {
+                        idPadre = getIdPadre(item1.padre, items);
+                        items.push(new primitives.OrgItemConfig({
+                            id: contador,
+                            parent: idPadre,
+                            title: item1.name + ' ' + item1.surname,
+                            phone: item1.phone,
+                            email: item1.email,
+                            usuario_id: item1.user_id,
+                            itemTitleColor: color,
+                            imagen: urlImage
+                        }));
+                    } else {
+                        if (item1.is_active == '1') {
+                            color = '#45a766';
+                        }
+                        items.push(new primitives.OrgItemConfig({
+                            id: contador,
+                            parent: null,
+                            title: item1.name + ' ' + item1.surname,
+                            phone: item1.phone,
+                            email: item1.email,
+                            usuario_id: '<?= $this->session->userdata("user_id") ?>',
+                            itemTitleColor: color,
+                            imagen: urlImage
+                        }));
+                    }
+                    contador++;
+                });
+                responseJSON.lista_right.forEach(function(item1) {
+                    let color = "#ff5970";
+                    if (item1.is_active == 1) {
+                        color = '#45a766';
+                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                            activos++;
+                        }
+                    } else {
+                        if (item1.user_id != '<?= $this->session->userdata('user_id') ?>') {
+                            inactivos++;
+                        }
+                    }
+                    if (item1.parent != 0) {
+                        idPadre = getIdPadre(item1.padre, itemsRight);
+                        itemsRight.push(new primitives.OrgItemConfig({
+                            id: contador,
+                            parent: idPadre,
+                            title: item1.name + ' ' + item1.surname,
+                            phone: item1.phone,
+                            email: item1.email,
+                            usuario_id: item1.user_id,
+                            itemTitleColor: color,
+                            imagen: urlImage
+                        }));
+                    } else {
+                        if (item1.is_active == '1') {
+                            color = '#45a766';
+                        }
+                        itemsRight.push(new primitives.OrgItemConfig({
+                            id: contador,
+                            parent: null,
+                            title: item1.name + ' ' + item1.surname,
+                            phone: item1.phone,
+                            email: item1.email,
+                            usuario_id: '<?= $this->session->userdata("user_id") ?>',
+                            itemTitleColor: color,
+                            imagen: urlImage
+                        }));
+                    }
+                    contador++;
+                });
+                options.items = items;
+                options.cursorItem = 0;
+                control = primitives.OrgDiagram(document.getElementById("basicDiagram"), options);
+                optionsRight.items = itemsRight;
+                optionsRight.cursorItem = 0;
+                controlRight = primitives.OrgDiagram(document.getElementById("basicDiagramRight"), optionsRight);
+                let textoAux =
+                    '<div class="row" style="margin-top:15px"><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #45a766;color: white;padding: 10px 5px;width:100%;text-align:center;">Activos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #45a766;color:#fff;font-weight:bold;">' +
+                    activos +
+                    '</label></div></div><div class="col-lg-6 col-sm-6 col-xs-6 col-md-6"><div style="text-align:center;"><label style="background-color: #ff5970;color: white;padding: 10px 5px;width:100%;text-align:center;">Inactivos</label></div><div style="text-align:center"><label style="margin-top:-10px;padding: 10px 5px;width:100%;text-align:center;border: 1px solid #ff5970;color:#fff;font-weight:bold;">' +
+                    inactivos +
+                    '</label></div></div>';
+                $("#areaDatosGeneralesEquipo").append(textoAux);
+            });
+        }, 3000);
+    }
+
+    const getIdPadre = (padreId, pItems) => {
+        let idResult = -1;
+        pItems.forEach(function(item) {
+            if (item.usuario_id == padreId) {
+                idResult = item.id;
+                return;
+            }
+        });
+        return idResult;
+    }
+
+    const getItemTemplate1 = () => {
+        let result = new primitives.TemplateConfig();
+        result.name = "itemTemplate1";
+
+        result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
+            '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
+            '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
+            '</div>' +
+            '</div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
+            '</div>';
+
+        result.itemSize = new primitives.Size(180, 130);
+        return result;
+    }
+
+    const getItemTemplateRight = () => {
+        let result = new primitives.TemplateConfig();
+        result.name = "itemTemplateRight";
+
+        result.itemTemplate = '<div style="border: 1px solid #CCC;border-radius:10px">' +
+            '<div name="titleBackground" style="border-radius:10px 10px 0px 0px;">' +
+            '<div style="color:#FFF;text-align:center;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="title">' +
+            '</div>' +
+            '</div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;" name="image"><a><img src="" style="width:48px;height:48px" /></a></div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;" name="phone"></div>' +
+            '<div style="text-align:center;color:#fff;font-weight:bold;white-space: nowrap;width: 175px;overflow: hidden;text-overflow:ellipsis;" name="email"></div>' +
+            '</div>';
+
+        result.itemSize = new primitives.Size(180, 130);
+        return result;
+    }
+
+    const onTemplateRender = (event, data) => {
+
+        switch (data.renderingMode) {
+            case primitives.RenderingMode.Create:
+                break;
+            case primitives.RenderingMode.Update:
+                /* Update template content here */
+                break;
+        }
+
+        let itemConfig = data.context;
+
+        if (data.templateName == "itemTemplate1") {
+
+            let titleBackground = data.element.firstChild;
+            titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
+
+            let title = data.element.firstChild.firstChild;
+            title.textContent = itemConfig.title;
+
+            let img = data.element.childNodes[1];
+            img.firstChild.firstChild.src = itemConfig.imagen;
+
+            let phone = data.element.childNodes[2];
+            phone.textContent = itemConfig.phone;
+
+            let email = data.element.childNodes[3];
+            email.textContent = itemConfig.email;
+
+        }
+        if (data.templateName == "itemTemplateRight") {
+
+            let titleBackground = data.element.firstChild;
+            titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.Colors.RoyalBlue;
+
+            let title = data.element.firstChild.firstChild;
+            title.textContent = itemConfig.title;
+
+            let img = data.element.childNodes[1];
+            img.firstChild.firstChild.src = itemConfig.imagen;
+
+            let phone = data.element.childNodes[2];
+            phone.textContent = itemConfig.phone;
+
+            let email = data.element.childNodes[3];
+            email.textContent = itemConfig.email;
+
+        }
+    }
+
+    const cargar_modal_eliminar_anuncio = (params) => {
+        Swal.fire({
+            title: '¿Está seguro (a) de que desea eliminar el anuncio?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?= site_url('front/delete_ads') ?>",
+                    data: {
+                        anuncio_id: params
+                    },
+                    success: function(result) {
+                        result = JSON.parse(result);
+                        if (result.status == 200) {
+                            Swal.fire(
+                                '¡Eliminado correctamente!',
+                                '',
+                                'success'
+                            );
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ocurrio un problema vuelva a intentarlo.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         }
 
-                    });
-                }
-            })
+                    }
+
+                });
+            }
+        })
+    }
+
+    $('#update_password').click(function() {
+        $('#modal_cambiar_password').modal('show');
+    });
+
+    $('.input-number').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    $('.input-text').on('input', function() {
+        this.value = this.value.replace(/[^a-zA-ZáéíóúñüàèÑ ]/g, '');
+
+    });
+
+    $('#name').change(function() {
+        let texto = $('#name').val();
+        texto = texto.trim();
+        texto = texto.split(" ");
+        if (texto.length > 1) {
+            texto = texto[0];
+        } else {
+            texto = texto[0];
         }
+        $('#name').val(texto);
+    });
 
-        $('#update_password').click(function() {
-            $('#modal_cambiar_password').modal('show');
+    $('#surname').change(function() {
+        let texto = $('#surname').val();
+        texto = texto.trim();
+        texto = texto.split(" ");
+        if (texto.length >= 2) {
+            texto = texto[0] + " " + texto[1];
+        } else {
+            texto = texto[0];
+        }
+        $('#surname').val(texto);
+    });
+
+    $(function() {
+        $("#example").DataTable({
+            "order": [
+                [1, "desc"]
+            ]
         });
 
-        $('.input-number').on('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
+        /*    let subastas_directas_perfil = <?= json_encode($mis_subastas_directas); ?>;
 
-        $('.input-text').on('input', function() {
-            this.value = this.value.replace(/[^a-zA-ZáéíóúñüàèÑ ]/g, '');
+           for (let i = 0; i < subastas_directas_perfil.length; i++) {
 
-        });
+               let inter = setInterval(function() {
+                   let fecha = subastas_directas_perfil[i].fecha_cierre;
+                   let deadline = new Date(fecha).getTime();
+                   let currentTime = new Date().getTime();
+                   let t = deadline - currentTime;
+                   let days = Math.floor(t / (1000 * 60 * 60 * 24));
+                   let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                   let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                   let seconds = Math.floor((t % (1000 * 60)) / 1000);
+                   $('#day_perfil_' + subastas_directas_perfil[i].subasta_id).html(days);
+                   $('#hour_perfil_' + subastas_directas_perfil[i].subasta_id).html(hours);
+                   $('#minute_perfil_' + subastas_directas_perfil[i].subasta_id).html(minutes);
+                   $('#second_perfil_' + subastas_directas_perfil[i].subasta_id).html(seconds);
 
-        $('#name').change(function() {
-            let texto = $('#name').val();
-            texto = texto.trim();
-            texto = texto.split(" ");
-            if (texto.length > 1) {
-                texto = texto[0];
-            } else {
-                texto = texto[0];
-            }
-            $('#name').val(texto);
-        });
+                   if (t < 0) {
 
-        $('#surname').change(function() {
-            let texto = $('#surname').val();
-            texto = texto.trim();
-            texto = texto.split(" ");
-            if (texto.length >= 2) {
-                texto = texto[0] + " " + texto[1];
-            } else {
-                texto = texto[0];
-            }
-            $('#surname').val(texto);
-        });
+                       clearInterval(inter);
 
-        $(function() {
-            $("#example").DataTable({
-                "order": [
-                    [1, "desc"]
-                ]
-            });
+                       $('#day_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
+                       $('#hour_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
+                       $('#minute_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
+                       $('#second_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
 
-            let subastas_directas_perfil = <?= json_encode($mis_subastas_directas); ?>;
+                   }
 
-            for (let i = 0; i < subastas_directas_perfil.length; i++) {
+               }, 1000);
 
-                let inter = setInterval(function() {
-                    let fecha = subastas_directas_perfil[i].fecha_cierre;
-                    let deadline = new Date(fecha).getTime();
-                    let currentTime = new Date().getTime();
-                    let t = deadline - currentTime;
-                    let days = Math.floor(t / (1000 * 60 * 60 * 24));
-                    let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-                    let seconds = Math.floor((t % (1000 * 60)) / 1000);
-                    $('#day_perfil_' + subastas_directas_perfil[i].subasta_id).html(days);
-                    $('#hour_perfil_' + subastas_directas_perfil[i].subasta_id).html(hours);
-                    $('#minute_perfil_' + subastas_directas_perfil[i].subasta_id).html(minutes);
-                    $('#second_perfil_' + subastas_directas_perfil[i].subasta_id).html(seconds);
+           } */
 
-                    if (t < 0) {
-
-                        clearInterval(inter);
-
-                        $('#day_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
-                        $('#hour_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
-                        $('#minute_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
-                        $('#second_perfil_' + subastas_directas_perfil[i].subasta_id).html(0);
-
-                    }
-
-                }, 1000);
-
-            }
-
-            $('#listado_inversas').hide();
-            $('#listado_directas').hide();
-            $("#listado_anuncio").hide();
-            $('#panel_beneficio').show();
-            $("#panel_perfil").hide();
-            $('#panel_wallet').hide();
-            $("#listado_payments").hide();
+        $('#listado_inversas').hide();
+        $('#listado_directas').hide();
+        $("#listado_anuncio").hide();
+        $('#panel_beneficio').show();
+        $("#panel_perfil").hide();
+        $('#panel_wallet').hide();
+        $("#listado_payments").hide();
 
 
-        });
+    });
 
-        $("#perfil").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#listado_anuncio").hide();
-            $('#listado_inversas').hide();
-            $("#listado_payments").hide();
-            $("#panel_perfil").show();
-            $("#listado_directas").hide();
-            $("#ads").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#subs_inversas").removeClass('active');
-            $("#historial").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").removeClass('active');
-            $("#perfil").addClass('active');
-            $('#panel_beneficio').hide();
-            $('#panel_wallet').hide();
-        });
-        $("#ads").click(function(event) {
-            $('#bodyAdsUser').css('position', 'relative !important');
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#subs").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#subs_inversas").removeClass('active');
-            $("#historial").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").removeClass('active');
-            $("#ads").addClass('active');
-            $('#listado_inversas').hide();
-            $("#listado_directas").hide();
-            $("#listado_payments").hide();
-            $("#listado_anuncio").show();
-            $("#panel_perfil").hide();
-            $('#panel_beneficio').hide();
-            $('#panel_wallet').hide();
-        });
-        $("#subs").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#ads").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs_inversas").removeClass('active');
-            $("#historial").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").removeClass('active');
-            $("#subs").addClass('active');
-            $('#listado_inversas').hide();
-            $("#listado_payments").hide();
-            $("#listado_anuncio").hide();
-            $("#listado_directas").show();
-            $("#panel_perfil").hide();
-            $('#panel_beneficio').hide();
-            $('#panel_wallet').hide();
-        });
-        $("#subs_inversas").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#ads").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").removeClass('active');
-            $("#historial").removeClass('active');
-            $("#subs_inversas").addClass('active');
-            $('#listado_inversas').show();
-            $("#listado_anuncio").hide();
-            $("#listado_directas").hide();
-            $("#listado_payments").hide();
-            $('#panel_beneficio').hide();
-            $("#panel_perfil").hide();
-            $('#panel_wallet').hide();
-        });
-        $("#historial").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#ads").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").removeClass('active');
-            $("#historial").addClass('active');
-            $("#subs_inversas").removeClass('active');
-            $('#listado_inversas').hide();
-            $("#listado_anuncio").hide();
-            $("#listado_directas").hide();
-            $("#panel_perfil").hide();
-            $('#panel_beneficio').hide();
-            $("#listado_payments").show();
-            $('#panel_wallet').hide();
-        });
-        $("#beneficio").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#ads").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#beneficio").addClass('active');
-            $("#wallet").removeClass('active');
-            $("#subs_inversas").removeClass('active');
-            $("#historial").removeClass('active');
-            $('#listado_inversas').hide();
-            $("#listado_anuncio").hide();
-            $("#listado_directas").hide();
-            $("#panel_perfil").hide();
-            $("#listado_payments").hide();
-            $('#panel_beneficio').show();
-            $('#panel_wallet').hide();
-        });
-        $("#wallet").click(function(event) {
-            event.preventDefault();
-            $('body,html').animate({
-                scrollTop: 0,
-            }, 500);
-            $("#ads").removeClass('active');
-            $("#perfil").removeClass('active');
-            $("#subs").removeClass('active');
-            $("#beneficio").removeClass('active');
-            $("#wallet").addClass('active');
-            $("#subs_inversas").removeClass('active');
-            $("#historial").removeClass('active');
-            $('#listado_inversas').hide();
-            $("#listado_anuncio").hide();
-            $("#listado_directas").hide();
-            $("#panel_perfil").hide();
-            $("#listado_payments").hide();
-            $('#panel_beneficio').hide();
-            $('#panel_wallet').show();
-        });
+    $("#perfil").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#listado_anuncio").hide();
+        $('#listado_inversas').hide();
+        $("#listado_payments").hide();
+        $("#panel_perfil").show();
+        $("#listado_directas").hide();
+        $("#ads").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#subs_inversas").removeClass('active');
+        $("#historial").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").removeClass('active');
+        $("#perfil").addClass('active');
+        $('#panel_beneficio').hide();
+        $('#panel_wallet').hide();
+    });
+    $("#ads").click(function(event) {
+        $('#bodyAdsUser').css('position', 'relative !important');
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#subs").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#subs_inversas").removeClass('active');
+        $("#historial").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").removeClass('active');
+        $("#ads").addClass('active');
+        $('#listado_inversas').hide();
+        $("#listado_directas").hide();
+        $("#listado_payments").hide();
+        $("#listado_anuncio").show();
+        $("#panel_perfil").hide();
+        $('#panel_beneficio').hide();
+        $('#panel_wallet').hide();
+    });
+    $("#subs").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#ads").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs_inversas").removeClass('active');
+        $("#historial").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").removeClass('active');
+        $("#subs").addClass('active');
+        $('#listado_inversas').hide();
+        $("#listado_payments").hide();
+        $("#listado_anuncio").hide();
+        $("#listado_directas").show();
+        $("#panel_perfil").hide();
+        $('#panel_beneficio').hide();
+        $('#panel_wallet').hide();
+    });
+    $("#subs_inversas").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#ads").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").removeClass('active');
+        $("#historial").removeClass('active');
+        $("#subs_inversas").addClass('active');
+        $('#listado_inversas').show();
+        $("#listado_anuncio").hide();
+        $("#listado_directas").hide();
+        $("#listado_payments").hide();
+        $('#panel_beneficio').hide();
+        $("#panel_perfil").hide();
+        $('#panel_wallet').hide();
+    });
+    $("#historial").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#ads").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").removeClass('active');
+        $("#historial").addClass('active');
+        $("#subs_inversas").removeClass('active');
+        $('#listado_inversas').hide();
+        $("#listado_anuncio").hide();
+        $("#listado_directas").hide();
+        $("#panel_perfil").hide();
+        $('#panel_beneficio').hide();
+        $("#listado_payments").show();
+        $('#panel_wallet').hide();
+    });
+    $("#beneficio").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#ads").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#beneficio").addClass('active');
+        $("#wallet").removeClass('active');
+        $("#subs_inversas").removeClass('active');
+        $("#historial").removeClass('active');
+        $('#listado_inversas').hide();
+        $("#listado_anuncio").hide();
+        $("#listado_directas").hide();
+        $("#panel_perfil").hide();
+        $("#listado_payments").hide();
+        $('#panel_beneficio').show();
+        $('#panel_wallet').hide();
+    });
+    $("#wallet").click(function(event) {
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0,
+        }, 500);
+        $("#ads").removeClass('active');
+        $("#perfil").removeClass('active');
+        $("#subs").removeClass('active');
+        $("#beneficio").removeClass('active');
+        $("#wallet").addClass('active');
+        $("#subs_inversas").removeClass('active');
+        $("#historial").removeClass('active');
+        $('#listado_inversas').hide();
+        $("#listado_anuncio").hide();
+        $("#listado_directas").hide();
+        $("#panel_perfil").hide();
+        $("#listado_payments").hide();
+        $('#panel_beneficio').hide();
+        $('#panel_wallet').show();
+    });
 
-        const change_pais = () => {
+    const change_pais = () => {
 
-            let nuevo = $("select[name=pais]").val();
+        let nuevo = $("select[name=pais]").val();
 
-            $('#ciudad').empty();
-            $.ajax({
+        $('#ciudad').empty();
+        $.ajax({
 
-                type: 'POST',
-                url: "<?= site_url('front/get_ciudad') ?>",
-                data: {
+            type: 'POST',
+            url: "<?= site_url('front/get_ciudad') ?>",
+            data: {
 
-                    pais_id: nuevo
-                },
+                pais_id: nuevo
+            },
 
-                success: function(result) {
-                    result = JSON.parse(result);
+            success: function(result) {
+                result = JSON.parse(result);
 
-                    let cadena = "";
-                    cadena = "<label><?= translate('listar_city_lang'); ?></label><div  class='input-group'><span class='input-group-addon'><i class='fa fa-globe></i></span><select id='ciudad' name='ciudad class='form-control select2'>";
+                let cadena = "";
+                cadena = "<label><?= translate('listar_city_lang'); ?></label><div  class='input-group'><span class='input-group-addon'><i class='fa fa-globe></i></span><select id='ciudad' name='ciudad class='form-control select2'>";
 
-                    for (let i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
 
-                        cadena = cadena + "<option value ='" + result[i].ciudad_id + "'>" + result[i].name_ciudad + "</option>";
-
-                    }
-
-                    cadena = cadena + "</select></div>"
-
-                    $('#ciudad').html(cadena);
-
-
+                    cadena = cadena + "<option value ='" + result[i].ciudad_id + "'>" + result[i].name_ciudad + "</option>";
 
                 }
 
-            });
+                cadena = cadena + "</select></div>"
 
-        }
-    </script>
+                $('#ciudad').html(cadena);
+
+
+
+            }
+
+        });
+
+    }
+</script>
