@@ -1086,7 +1086,7 @@ class Front extends CI_Controller
         }
         $membresia = $this->membresia->get_by_user_id($user_id);
         $fecha = date('Y-m-d');
-        $fecha_fin = strtotime('+150 day', strtotime($fecha));
+        $fecha_fin = strtotime('+365 day', strtotime($fecha));
         $fecha_fin = date('Y-m-d', $fecha_fin);
         $img =  $photo->imagen;
         $img = str_replace('data:image/png;base64,', '', $img);
