@@ -173,12 +173,12 @@ if (empty($mastercat))
                                             <?php if ($categories) {
                                                 foreach ($categories as $category) {
                                                     echo '<li>';
-                                                    echo '<a id="category_' . $category->cate_anuncio_id . '"  onclick="handleShowSubcategories(this)" ><i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i>' . $category->nombre . '  <span id="iconArrow' . $category->cate_anuncio_id . '" class="text-right"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></a>';
+                                                    echo '<a class="category-main" id="category_' . $category->cate_anuncio_id . '"  onclick="handleShowSubcategories(this)" ><i><img style="width: 25px;height: 25px;" src="' . base_url($category->photo) . '" alt=""></i>' . $category->nombre . '  <span id="iconArrow' . $category->cate_anuncio_id . '" class="text-right"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></a>';
                                                     echo '</li>';
                                                     if (count($category->subCategories) > 0) {
                                                         echo '<ul id="bodySubCategories' . $category->cate_anuncio_id . '" style="display:none">';
                                                         foreach ($category->subCategories as $sub) {
-                                                            echo '<li><a id="subCategory_' . $sub->subcate_id . '_' . $category->cate_anuncio_id . '" onclick="handleSearch(this)" style="margin-left:20px;cursor:pointer">';
+                                                            echo '<li><a class="sub-category" id="subCategory_' . $sub->subcate_id . '_' . $category->cate_anuncio_id . '" onclick="handleSearch(this)" style="margin-left:20px;cursor:pointer">';
                                                             echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
                                                             echo '</a></li>';
                                                         }
@@ -311,16 +311,19 @@ if (empty($mastercat))
 </div>
 <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
 <script>
-    const countAds = parseInt('<?= $count_ads ?>');
+    let countAds = parseInt('<?= $count_ads ?>');
     const ads = <?= json_encode($all_anuncios) ?>;
     const baseUrl = '<?= base_url() ?>';
     const siteUrl = '<?= site_url('anuncio/') ?>';
     const searchParams = new URLSearchParams(window.location.search);
     const search = searchParams.get('search');
-    const category = searchParams.get('category');
-    const subcategory = searchParams.get('subCategory');
+    let category = searchParams.get('category');
+    let subcategory = searchParams.get('subCategory');
     const city = searchParams.get('city');
-    let offset = 0;
+    let offset = Number(searchParams.get('offset'));
+    let limit = Number(searchParams.get('limit'));
+    let countAdsFull = 0;
+    // let offset = 0;
 
     $(() => {
         if (category) {
@@ -341,6 +344,13 @@ if (empty($mastercat))
         if (search) {
             $('#textSearch').val(search)
         }
+        if (!offset) {
+            offset = 0;
+        }
+        if (!limit) {
+            limit = 21;
+        }
+        countAdsFull += ads.length;
     })
 
     const encodeB64Utf8Ads = (str) => {
@@ -366,6 +376,15 @@ if (empty($mastercat))
     }
 
     const handleSearch = (ev) => {
+        offset = 0;
+        limit = 21;
+        const urlString = paramsGet(ev);
+        history.pushState(null, "", urlString);
+        handleLoadFilter();
+        //  window.location = '<?= site_url('anuncios') ?>' + stringParams;
+    }
+
+    const paramsGet = (ev) => {
         let parents = [];
         let control = false;
         let notCategory = false;
@@ -386,13 +405,20 @@ if (empty($mastercat))
                 control = true;
                 parents.push('category=' + arrayParams[2]);
                 parents.push('subCategory=' + arrayParams[1]);
+                category = arrayParams[2];
+                subcategory = arrayParams[1];
+                $('.sub-category').css('color', '#232323');
+                $('#subCategory_' + subcategory + '_' + category).css('color', '#8c1822');
+                $('.category-main').css('color', '#232323');
+                $('#category_' + category).css('color', '#8c1822');
             } else {
                 if (arrayParams[0] === 'category' && arrayParams[1] === '0') {
                     notCategory = true;
+                    category = null;
+                    subcategory = null;
                 }
             }
         }
-
         if (category) {
             if (!notCategory) {
                 if (category !== '0') {
@@ -422,8 +448,33 @@ if (empty($mastercat))
                 }
             }
         }
+        if (offset) {
+            const pOffset = parents.find(p => {
+                const attr2 = p.split('=');
+                return attr2[0] === 'offset';
+            });
+            if (pOffset === undefined) {
+                parents.push('offset=' + offset);
+            }
+        }
+        if (limit) {
+            const pLimit = parents.find(p => {
+                const attr2 = p.split('=');
+                return attr2[0] === 'limit';
+            });
+            if (pLimit === undefined) {
+                parents.push('limit=' + limit);
+            }
+        }
         let params = [];
         parents.forEach((element, index) => {
+            const attrParams = element.split('=');
+            if (!category) {
+                category = attrParams[0] === 'category' ? attrParams[1] : null;
+            }
+            if (!subcategory) {
+                subcategory = attrParams[0] === 'subCategory' ? attrParams[1] : null;
+            }
             if (index == 0) {
                 params.unshift('?' + element);
             } else {
@@ -434,7 +485,7 @@ if (empty($mastercat))
         params.forEach(element => {
             stringParams += element;
         });
-        window.location = '<?= site_url('anuncios') ?>' + stringParams;
+        return '<?= site_url('anuncios') ?>' + stringParams;
     }
 
     const main = () => {
@@ -456,6 +507,9 @@ if (empty($mastercat))
         const textSearch = $('#textSearch').val();
         const cityId = $('#cityId').val();
         offset += 21;
+        limit += 21;
+        const urlString = paramsGet();
+        history.pushState(null, "", urlString);
         $.ajax({
             type: 'POST',
             url: "<?= site_url('front/load_ads') ?>",
@@ -472,7 +526,15 @@ if (empty($mastercat))
                     setTimeout(() => {
                         loadAds(result.data);
                         $('#loadindAds').hide();
-                        $('#btnLoadAds').prop('disabled', false);
+                        countAdsFull += result.data.length;
+                        const visible = result.countAds - countAdsFull;
+                        $('#loadindAds').hide();
+                        if (visible > 0) {
+                            $('#bodyBtnLoad').show();
+                            $('#btnLoadAds').prop('disabled', false);
+                        } else {
+                            $('#bodyBtnLoad').hide();
+                        }
                     }, 3000);
                 } else {
                     Swal.fire({
@@ -492,6 +554,49 @@ if (empty($mastercat))
         });
     }
 
+    const handleLoadFilter = () => {
+        countAdsFull = 0;
+        const textSearch = $('#textSearch').val();
+        const cityId = $('#cityId').val();
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/load_ads') ?>",
+            data: {
+                offset,
+                textSearch,
+                cityId,
+                category,
+                subcategory
+            },
+            success: function(result) {
+                result = JSON.parse(result);
+                if (result.status == 200) {
+                    countAdsFull += result.data.length;
+                    const visible = result.countAds - countAdsFull;
+                    $('#loadindAds').hide();
+                    if (visible > 0) {
+                        $('#bodyBtnLoad').show();
+                    } else {
+                        $('#bodyBtnLoad').hide();
+                    }
+                    loadAds(result.data, true);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un problema vuelva a intentarlo',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
     const seo_url = function($text) {
         return $text.toString() // Convert to string
             .normalize('NFD') // Change diacritics
@@ -505,7 +610,10 @@ if (empty($mastercat))
             .replace(/-*$/, '');
     }
 
-    const loadAds = (data = []) => {
+    const loadAds = (data = [], filter = false) => {
+        if (filter) {
+            $('#bodyAds').empty();
+        }
         if (data.length > 0) {
             let stringAds = '';
             data.forEach(item => {
@@ -563,8 +671,15 @@ if (empty($mastercat))
                 stringAds += ' </div>';
             });
             $('#bodyAds').append(stringAds);
+        } else {
+            filter && $('#bodyAds').append('<h3 class="text-center">No se encontraron anuncios</h3>');
         }
     }
+
+
+
+
+
     //  $('#category').val('');
 
     /*     function cargar_input_2(params) {

@@ -1941,21 +1941,17 @@ class Front extends CI_Controller
         if ($city == 0) {
             $city = null;
         }
-
+        $offset = 0;
+        $limit = (int)$this->input->get('limit') > 0 ? (int)$this->input->get('limit') : 21;
         $categories = $this->category->get_all();
-
         foreach ($categories as $item) {
             $item->subCategories = $this->category->get_by_Cate_anuncio_id($item->cate_anuncio_id);
             $item->count = count($this->anuncio->get_anuncios_by_category($item->cate_anuncio_id));
         }
-
         $data['categories'] = $categories;
-
-
         $contador = count($this->anuncio->searchFull($search, $city, $subcategory, $category, null, null));
-
         //   $all_anuncios = $this->anuncio->get_all_anuncios_with_pagination(21, 0);
-        $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, 0);
+        $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, $limit, $offset);
 
         /*      foreach ($all_anuncios as $item) {
 
@@ -1994,12 +1990,10 @@ class Front extends CI_Controller
         }
         $data['destacados'] = $destacados;
         $data['count_ads'] = $contador;
-
+        $data['limit'] = $limit;
+        $data['offset'] = $offset;
         $all_ciudad = $this->pais->get_by_pais_id_object(4);
-
         $data['all_ciudad'] = $all_ciudad;
-
-
         $this->load_view_front('front/anuncios', $data);
     }
     public function load_ads()
@@ -2011,6 +2005,7 @@ class Front extends CI_Controller
             $city = (int)$this->input->post('cityId');
             $subcategory = (int)$this->input->post('subcategory');
             $category = (int)$this->input->post('category');
+            $countAds = count($this->anuncio->searchFull($search, $city, $subcategory, $category, null, null));
             $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, 21, $offset);
 
             foreach ($all_anuncios as $item) {
@@ -2025,7 +2020,7 @@ class Front extends CI_Controller
                     $item->corto = $item->titulo;
                 } */
             }
-            echo json_encode(['status' => 200, 'msj' => 'correcto', 'data' => $all_anuncios]);
+            echo json_encode(['status' => 200, 'msj' => 'correcto', 'data' => $all_anuncios, 'countAds' => $countAds]);
             exit();
         } catch (\Throwable $th) {
             echo json_encode(['status' => 404, 'msj' => 'Ocurrió un problema']);
