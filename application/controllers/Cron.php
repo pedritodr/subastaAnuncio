@@ -666,4 +666,11 @@ class Cron  extends CI_Controller
             }
         }
     }
+    public function update_date_anuncio()
+    {
+        $all_anuncios = $this->anuncio->get_all();
+        foreach ($all_anuncios as $item) {
+            $this->anuncio->update($item->anuncio_id, ['fecha_vencimiento' => '2020-12-31']);
+        }
+    }
 }
