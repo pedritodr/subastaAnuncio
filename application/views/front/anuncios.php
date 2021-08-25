@@ -634,6 +634,7 @@ if (empty($mastercat))
                 stringAds += '</a>';
                 stringAds += ' <div class="short-description-1 clearfix">';
                 let subCategoria = item.subcategoria;
+                console.log(subCategoria);
                 if (subCategoria.length > 20) {
                     temp = subCategoria.substr(0, 20);
                     subCategoria = temp + ' ...';
