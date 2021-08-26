@@ -142,6 +142,12 @@ Designed and Development by: ScriptsBundle
         tags: false,
         width: '100%'
     });
+    $("#cityIdXs").select2({
+        placeholder: 'Todas las ciudades',
+        allowClear: true,
+        tags: false,
+        width: '100%'
+    });
 
     /* ======= Profile Image Upload ======= */
     $(document).on('change', '.btn-file :file', function() {

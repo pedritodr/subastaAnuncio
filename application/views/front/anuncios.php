@@ -25,7 +25,7 @@ if (empty($mastercat))
 <div id="search-section">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-xs-12 col-md-12">
+            <div class="col-sm-12 col-xs-12 col-md-12" id="bodyBtnFilterG">
                 <div class="col-md-3 col-xs-12 col-sm-4 no-padding">
                     <select name="cityId" id="cityId" onchange="handleSearch()" class="category form-control">
                         <option label="<?= translate("select_category_lang"); ?>"></option>
@@ -54,6 +54,11 @@ if (empty($mastercat))
                 </div>
                 <!-- end .search-form -->
             </div>
+            <div class="col-xs-12" id="bodyBtnFilter">
+                <a href="javascript:void(0)" onclick="openMenu()" class="btn btn-default btn-lg btn-block">
+                    <i class="fa fa-search" aria-hidden="true"></i> <span>Encuentra automóviles, teléfonos móviles y más...</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -75,7 +80,7 @@ if (empty($mastercat))
                             <?php if ($all_anuncios) {
                                 foreach ($all_anuncios as $item) {
 
-                                    echo ' <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">';
+                                    echo ' <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">';
                                     echo '<div class="category-grid-box-1">';
                                     echo '<a style="cursor:pointer" href="' . site_url(strtolower('anuncio/' . strtolower(seo_url($item->titulo))) . '-' . $item->anuncio_id) . '">';
                                     echo ' <div class="image">';
@@ -135,7 +140,6 @@ if (empty($mastercat))
                             }
                             ?>
                         </div>
-
                         <!-- Ads Archive End -->
                         <div class="clearfix"></div>
                         <!-- Pagination -->
@@ -148,7 +152,7 @@ if (empty($mastercat))
                 </div>
                 <!-- Middle Content Area  End -->
                 <!-- Left Sidebar -->
-                <div class="col-md-3 col-md-pull-9 col-sx-12">
+                <div class="col-md-3 col-md-pull-9 col-sx-12" id="bodyContainerSidebar">
                     <!-- Sidebar Widgets -->
                     <div class="sidebar">
                         <!-- Panel group -->
@@ -309,6 +313,78 @@ if (empty($mastercat))
     </section>
 
 </div>
+<div id="left_menu" style="position: fixed;top:0px;left:0px;height:100%;width:0px;z-index:10000;background-color:#FFF;overflow:hidden scroll;">
+    <div id="area_elementos_menu" style="display: none;">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-xs-6 text-left">
+                <span onclick="cerrarMenu()" style="cursor:pointer; margin-left:30px"><i class="fa fa-arrow-left" aria-hidden="true" style="font-size: 20px;margin-top: 7px;"></i></span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button class="btn btn-default margin-bottom-10" id="btnAplicateFilter" style="margin-right:30px" type="button">Buscar</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" id="inputSearch" style="border-left:0px solid #ccc;border-right:0px solid #ccc;border-top:1px solid #cccccccf;border-bottom:1px solid #cccccccf;font-size:18px;" placeholder="Busca los que necesites">
+                        <span class="input-group-addon" style="border-right:1px solid #ccc;"><i class="fa fa-times" aria-hidden="true" id="clearInput" style="display:none"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <div class="form-grid">
+                    <select name="cityIdXs" id="cityIdXs" class="form-control" onchange="handleSelectCityXs()">
+                        <option label="<?= translate("select_category_lang"); ?>"></option>
+                        <option value="0">TODAS LAS CIUDADES </option>
+                        <?php if ($all_ciudad) { ?>
+                            <?php foreach ($all_ciudad as $item) { ?>
+                                <?php if (isset($city)) { ?>
+                                    <option <?php if ($city == $item->ciudad_id) { ?> selected <?php } ?> value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php  } else { ?>
+                                    <option value="<?= $item->ciudad_id ?>"><?= $item->name_ciudad ?></option>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 0px 35px;" id="area_categoria">
+            <div class="row">
+                <div class="col-xs-12 margin-bottom-40 margin-top-20">
+                    <div class="heading-title">
+                        <h2>Categorias</h2>
+                    </div>
+                    <ul class="accordion" id="containerCategories">
+                        <?php if ($categories) {
+                            foreach ($categories as $category) {
+                                echo  '<li class="category-main" id="categoryXs' . $category->cate_anuncio_id . '" >';
+                                echo  '<h5  class="accordion-title"><a class="title-category" href="#" id="titleCategoryXs' . $category->cate_anuncio_id . '">' . $category->nombre . '</a></h5>';
+                                echo  '<div class="accordion-content"  id="BodySubCategoryXs' . $category->cate_anuncio_id . '"">';
+                                if (count($category->subCategories) > 0) {
+                                    echo '<ul>';
+                                    foreach ($category->subCategories as $sub) {
+                                        echo '<li><a class="sub-category-xs" id="subCategoryXs_' . $sub->subcate_id . '_' . $category->cate_anuncio_id . '" style="margin-left:20px;cursor:pointer;color:#000" onclick=handleFilterSub(this)>';
+                                        echo  '<i style="font-size:8px" class="fa fa-circle" aria-hidden="true"></i> ' . $sub->nombre;
+                                        echo '</a></li>';
+                                    }
+                                    echo '</ul>';
+                                }
+                                echo  '</div>';
+                                echo  '</li>';
+                            }
+                            echo '<li>';
+                            echo '<a id="categoryXs_0_0" class="category-main"  onclick="handleFilterSub(this)" >Todas las categorías </a>';
+                            echo '</li>';
+                        } ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="<?= base_url('assets_front/js/jquery.min.js') ?>"></script>
 <script>
     let countAds = parseInt('<?= $count_ads ?>');
@@ -316,16 +392,38 @@ if (empty($mastercat))
     const baseUrl = '<?= base_url() ?>';
     const siteUrl = '<?= site_url('anuncio/') ?>';
     const searchParams = new URLSearchParams(window.location.search);
-    const search = searchParams.get('search');
+    let search = searchParams.get('search');
     let category = searchParams.get('category');
     let subcategory = searchParams.get('subCategory');
-    const city = searchParams.get('city');
+    let city = searchParams.get('city');
     let offset = Number(searchParams.get('offset'));
     let limit = Number(searchParams.get('limit'));
     let countAdsFull = 0;
-    // let offset = 0;
+    const inputSearch = document.getElementById('inputSearch');
+    const clearInput = document.getElementById('clearInput');
+    const cityIdXs = document.getElementById('cityIdXs');
+    const btnAplicateFilter = document.getElementById('btnAplicateFilter');
+    const bodyContainerSidebar = document.getElementById('bodyContainerSidebar');
+    const bodyBtnFilter = document.getElementById('bodyBtnFilter');
+    const bodyBtnFilterG = document.getElementById('bodyBtnFilterG');
+
+
 
     $(() => {
+        if (screen.width <= 768) {
+            bodyContainerSidebar.style.display = "none";
+            bodyBtnFilter.style.display = "block"
+            bodyBtnFilterG.style.display = "none"
+        } else {
+            bodyContainerSidebar.style.display = "block";
+            bodyBtnFilter.style.display = "none"
+            bodyBtnFilterG.style.display = "block"
+        }
+        if (city) {
+            cityIdXs.value = city
+            $('#cityIdXs').trigger('change')
+        }
+
         if (category) {
             $('#collapseOne').collapse({
                 toggle: true
@@ -334,15 +432,24 @@ if (empty($mastercat))
             $('#bodySubCategories' + category).show();
             $('#iconArrow' + category).css('transform', 'rotate(90deg)');
             openBody = true;
+            $('.category-main').css('color', '#000');
+            $('#categoryXs' + category).addClass('open').css('color', '#8c1822');
+            $('#titleCategoryXs' + category).css('color', '#8c1822');
+            $('.accordion-content').hide();
+            $('#BodySubCategoryXs' + category).show();
         } else {
+            $('.accordion-content').hide();
             $('#category_0').css('color', '#8c1822');
+            $('#categoryXs0').css('color', '#8c1822');
         }
 
         if (subcategory) {
             $('#subCategory_' + subcategory + '_' + category).css('color', '#8c1822');
+            $('#subCategoryXs_' + subcategory + '_' + category).css('color', '#8c1822');
         }
         if (search) {
-            $('#textSearch').val(search)
+            $('#textSearch').val(search);
+            inputSearch.value = search;
         }
         if (!offset) {
             offset = 0;
@@ -352,6 +459,94 @@ if (empty($mastercat))
         }
         countAdsFull += ads.length;
     })
+
+    const logKey = (e) => {
+        if (inputSearch.value.length > 0) {
+            clearInput.style.display = "block";
+        } else {
+            clearInput.style.display = "none";
+        }
+    }
+    inputSearch.addEventListener('keyup', logKey);
+
+    clearInput.addEventListener('click', (e) => {
+        clearInput.style.display = "none";
+        inputSearch.value = "";
+    })
+
+    btnAplicateFilter.addEventListener('click', () => {
+        search = inputSearch.value;
+        const urlString = paramsGetFilter();
+        history.pushState(null, "", urlString);
+        handleSubmitFilter();
+        cerrarMenu();
+    })
+
+    const handleFilterSub = (ev) => {
+        let arrayParams = ev.id.split('_');
+        subcategory = Number(arrayParams[1]);
+        category = Number(arrayParams[2]);
+        $('.accordion-content').hide();
+        $('.title-category').css('color', '#000');
+        $('.category-main').removeClass('open');
+        $('#categoryXs' + category).addClass('open');
+        $('#BodySubCategoryXs' + category).show();
+        const classActive = document.getElementsByClassName('sub-category-xs');
+        const classActiveMain = document.getElementsByClassName('category-main');
+
+        for (let i = 0; i < classActive.length; i++) {
+            classActive[i].style.color = "#000";
+        }
+        for (let i = 0; i < classActiveMain.length; i++) {
+            classActiveMain[i].style.color = "#000";
+        }
+        document.getElementById(ev.id).style.color = "#8c1822";
+    }
+
+    const handleSelectCityXs = () => {
+        city = cityIdXs.value;
+    }
+
+    const openMenu = () => {
+        $("#container_menu_derecho").html(
+            '<a href="javascript:void(0)" onclick="openMenu()"><i class="fa fa-ellipsis-v" aria-hidden="true" style="font-size: 40px;color: #08374C;"></i></a>'
+        );
+        $("#area_elementos_menu").fadeIn(200);
+        $('#header').css('filter', 'blur(3px)');
+        $('#wrapper').css('filter', 'blur(3px)');
+        $('#footer').css('filter', 'blur(3px)');
+        $('body').css("overflow", "hidden");
+        is_closed = 1;
+        if (screen.width > 426 && screen.width <= 768) {
+            $('#left_menu').animate({
+                width: '96%'
+            }, 200);
+        } else {
+            $('#left_menu').animate({
+                width: '100%'
+            }, 200);
+        }
+
+    }
+    let is_closed = 0;
+
+    const cerrarMenu = () => {
+        $('#header').css('filter', 'blur(0px)');
+        $('#wrapper').css('filter', 'blur(0px)');
+        $('#footer').css('filter', 'blur(0px)');
+        $('body').css("overflow", "scroll");
+        $("#area_elementos_menu").fadeOut(200);
+        $("#container_menu_derecho").html(
+            '<a href="javascript:void(0)" onclick="openMenu()"><i class="fa fa-ellipsis-v" aria-hidden="true" style="font-size: 40px;color: #08374C;"></i></a>'
+        );
+        is_closed = 1;
+        $('#left_menu').animate({
+            width: '0px'
+        }, 200);
+        $("#container_menu_izquierdo").html(
+            '<a href="javascript:void(0)" onclick="openMenu()"><i class="fa fa-bars" aria-hidden="true" style="font-size: 41px;color: #08374C;"></i></a>'
+        );
+    }
 
     const encodeB64Utf8Ads = (str) => {
         return btoa(unescape(encodeURIComponent(str)));
@@ -487,7 +682,87 @@ if (empty($mastercat))
         });
         return '<?= site_url('anuncios') ?>' + stringParams;
     }
+    const paramsGetFilter = () => {
+        let parents = [];
+        let control = false;
+        let notCategory = false;
 
+        if (search !== '') {
+            parents.push('search=' + search);
+        }
+
+        if (city > 0) {
+            parents.push('city=' + city);
+        }
+
+        if (category) {
+            if (!notCategory) {
+                if (category !== '0') {
+                    const pCategory = parents.find(p => {
+                        const attr = p.split('=');
+                        return attr[0] === 'category';
+                    });
+                    if (pCategory === undefined) {
+                        parents.push('category=' + category);
+                    }
+                }
+            }
+        }
+
+        if (!control) {
+            if (!notCategory) {
+                if (subcategory) {
+                    if (category !== '0') {
+                        const pSubcategory = parents.find(p => {
+                            const attr2 = p.split('=');
+                            return attr2[0] === 'subCategory';
+                        });
+                        if (pSubcategory === undefined) {
+                            parents.push('subCategory=' + subcategory);
+                        }
+                    }
+                }
+            }
+        }
+        if (offset) {
+            const pOffset = parents.find(p => {
+                const attr2 = p.split('=');
+                return attr2[0] === 'offset';
+            });
+            if (pOffset === undefined) {
+                parents.push('offset=' + offset);
+            }
+        }
+        if (limit) {
+            const pLimit = parents.find(p => {
+                const attr2 = p.split('=');
+                return attr2[0] === 'limit';
+            });
+            if (pLimit === undefined) {
+                parents.push('limit=' + limit);
+            }
+        }
+        let params = [];
+        parents.forEach((element, index) => {
+            const attrParams = element.split('=');
+            if (!category) {
+                category = attrParams[0] === 'category' ? attrParams[1] : null;
+            }
+            if (!subcategory) {
+                subcategory = attrParams[0] === 'subCategory' ? attrParams[1] : null;
+            }
+            if (index == 0) {
+                params.unshift('?' + element);
+            } else {
+                params.push('&' + element);
+            }
+        });
+        let stringParams = '';
+        params.forEach(element => {
+            stringParams += element;
+        });
+        return '<?= site_url('anuncios') ?>' + stringParams;
+    }
     const main = () => {
         const visible = countAds - ads.length;
         $('#loadindAds').hide();
@@ -597,6 +872,50 @@ if (empty($mastercat))
             }
         });
     }
+    const handleSubmitFilter = () => {
+        countAdsFull = 0;
+        const textSearch = inputSearch.value;;
+        const cityId = cityIdXs.value;
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/load_ads') ?>",
+            data: {
+                offset,
+                textSearch,
+                cityId,
+                category,
+                subcategory
+            },
+            success: function(result) {
+                result = JSON.parse(result);
+                console.log(result);
+                if (result.status == 200) {
+                    countAdsFull += result.data.length;
+                    const visible = result.countAds - countAdsFull;
+                    $('#loadindAds').hide();
+                    if (visible > 0) {
+                        $('#bodyBtnLoad').show();
+                    } else {
+                        $('#bodyBtnLoad').hide();
+                    }
+                    loadAds(result.data, true);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un problema vuelva a intentarlo',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
     const seo_url = function($text) {
         return $text.toString() // Convert to string
             .normalize('NFD') // Change diacritics
@@ -618,7 +937,7 @@ if (empty($mastercat))
             let stringAds = '';
             data.forEach(item => {
                 const linkPage = siteUrl + seo_url(item.titulo).toLowerCase() + '-' + item.anuncio_id;
-                stringAds += ' <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">';
+                stringAds += ' <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">';
                 stringAds += '<div class="category-grid-box-1">';
                 stringAds += '<a style="cursor:pointer" href="' + linkPage + '">';
                 stringAds += ' <div class="image">';
@@ -690,6 +1009,63 @@ if (empty($mastercat))
         } */
 </script>
 <style>
+    .select2-dropdown {
+        z-index: 999999;
+    }
+
+    .select2-dropdown.increasedzindexclass {
+        z-index: 999999;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        text-align: left !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 55px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #999;
+        font-size: 18px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1279px) {
+        .form-grid {
+            margin-bottom: -40px;
+            padding: 30px 20px;
+        }
+    }
+
+    .form-grid {
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #ccc !important;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .input-group-addon {
+        padding: 6px 12px;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #fff;
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-right: 0px solid #ccc;
+        border-radius: 4px;
+    }
+
     .banner2 {
         padding-top: 107px !important
     }

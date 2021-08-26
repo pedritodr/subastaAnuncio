@@ -26,9 +26,6 @@
                      <div class="col-xs-12 col-md-12 col-sm-12">
                         <h3 class="main-title text-center">Destacados</h3>
                      </div>
-                     <!--      <a href="javascript:void(0)" onclick="openMenu()">
-                        <i class="fa fa-bars" aria-hidden="true" style="font-size: 41px;color: #08374C;"></i>
-                     </a> -->
                   </div>
                   <div class="row">
                      <div class="home-category-slider">
