@@ -925,7 +925,7 @@ if (isset($all_cate_anuncio)) {
 <script type="text/javascript">
    let wallet = <?= json_encode($wallet) ?>;
 
-   const adsCategory = <?= json_encode($all_cate_anuncio) ?>;
+   //   const adsCategory = <?= json_encode($all_cate_anuncio) ?>;
 
    const encodeB64Utf8 = (str) => {
       return btoa(unescape(encodeURIComponent(str)));
