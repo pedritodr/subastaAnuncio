@@ -55,13 +55,14 @@ if (empty($mastercat))
                 <!-- end .search-form -->
             </div>
             <div class="col-xs-12" id="bodyBtnFilter">
-                <a href="javascript:void(0)" onclick="openMenu()" class="btn btn-default btn-lg btn-block">
-                    <i class="fa fa-search" aria-hidden="true"></i> <span>Encuentra automóviles, teléfonos móviles y más...</span>
+                <a href="javascript:void(0)" onclick="openMenu()" class="btn btn-default btn-lg btn-block" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                    <i class="fa fa-search" aria-hidden="true"></i> <span id="textBtnSearch">Encuentra automóviles, teléfonos móviles y más...</span>
                 </a>
             </div>
         </div>
     </div>
 </div>
+<span class="ir-arriba icon-arrow-up2"></span>
 <!-- =-=-=-=-=-=-= Transparent Breadcrumb End =-=-=-=-=-=-= -->
 <!-- =-=-=-=-=-=-= Main Content Area =-=-=-=-=-=-= -->
 <div class="main-content-area clearfix">
@@ -76,7 +77,7 @@ if (empty($mastercat))
                     <!-- Row -->
                     <div class="row">
                         <div class="clearfix"></div>
-                        <div class="row" id="bodyAds">
+                        <div class="row" id="bodyAds" style=" display: flex; flex-wrap: wrap;">
                             <?php if ($all_anuncios) {
                                 foreach ($all_anuncios as $item) {
 
@@ -136,7 +137,7 @@ if (empty($mastercat))
                                     echo ' </div>';
                                 }
                             } else {
-                                echo '<h1 class="text-center">No hay resultados</h1>';
+                                echo '<div class="col-xs-12"><h1 class="text-center">No hay resultados</h1></div>';
                             }
                             ?>
                         </div>
@@ -399,6 +400,7 @@ if (empty($mastercat))
     let offset = Number(searchParams.get('offset'));
     let limit = Number(searchParams.get('limit'));
     let countAdsFull = 0;
+    let widthMenu = '96%';
     const inputSearch = document.getElementById('inputSearch');
     const clearInput = document.getElementById('clearInput');
     const cityIdXs = document.getElementById('cityIdXs');
@@ -406,10 +408,18 @@ if (empty($mastercat))
     const bodyContainerSidebar = document.getElementById('bodyContainerSidebar');
     const bodyBtnFilter = document.getElementById('bodyBtnFilter');
     const bodyBtnFilterG = document.getElementById('bodyBtnFilterG');
+    const textBtnSearch = document.getElementById('textBtnSearch');
 
+    window.addEventListener('resize', () => {
+        changeScreem();
+    });
 
-
-    $(() => {
+    const changeScreem = () => {
+        if (screen.width > 426 && screen.width <= 768) {
+            widthMenu = '96%';
+        } else {
+            widthMenu = '100%';
+        }
         if (screen.width <= 768) {
             bodyContainerSidebar.style.display = "none";
             bodyBtnFilter.style.display = "block"
@@ -419,6 +429,10 @@ if (empty($mastercat))
             bodyBtnFilter.style.display = "none"
             bodyBtnFilterG.style.display = "block"
         }
+    }
+    $(() => {
+        changeScreem();
+
         if (city) {
             cityIdXs.value = city
             $('#cityIdXs').trigger('change')
@@ -517,16 +531,9 @@ if (empty($mastercat))
         $('#footer').css('filter', 'blur(3px)');
         $('body').css("overflow", "hidden");
         is_closed = 1;
-        if (screen.width > 426 && screen.width <= 768) {
-            $('#left_menu').animate({
-                width: '96%'
-            }, 200);
-        } else {
-            $('#left_menu').animate({
-                width: '100%'
-            }, 200);
-        }
-
+        $('#left_menu').animate({
+            width: widthMenu
+        }, 200);
     }
     let is_closed = 0;
 
@@ -576,7 +583,6 @@ if (empty($mastercat))
         const urlString = paramsGet(ev);
         history.pushState(null, "", urlString);
         handleLoadFilter();
-        //  window.location = '<?= site_url('anuncios') ?>' + stringParams;
     }
 
     const paramsGet = (ev) => {
@@ -724,24 +730,6 @@ if (empty($mastercat))
                 }
             }
         }
-        if (offset) {
-            const pOffset = parents.find(p => {
-                const attr2 = p.split('=');
-                return attr2[0] === 'offset';
-            });
-            if (pOffset === undefined) {
-                parents.push('offset=' + offset);
-            }
-        }
-        if (limit) {
-            const pLimit = parents.find(p => {
-                const attr2 = p.split('=');
-                return attr2[0] === 'limit';
-            });
-            if (pLimit === undefined) {
-                parents.push('limit=' + limit);
-            }
-        }
         let params = [];
         parents.forEach((element, index) => {
             const attrParams = element.split('=');
@@ -876,6 +864,8 @@ if (empty($mastercat))
         countAdsFull = 0;
         const textSearch = inputSearch.value;;
         const cityId = cityIdXs.value;
+        offset = 0;
+        limit = 21;
         $.ajax({
             type: 'POST',
             url: "<?= site_url('front/load_ads') ?>",
@@ -888,7 +878,6 @@ if (empty($mastercat))
             },
             success: function(result) {
                 result = JSON.parse(result);
-                console.log(result);
                 if (result.status == 200) {
                     countAdsFull += result.data.length;
                     const visible = result.countAds - countAdsFull;
@@ -1009,6 +998,18 @@ if (empty($mastercat))
         } */
 </script>
 <style>
+    .ir-arriba {
+        display: none;
+        padding: 20px;
+        background: #024959;
+        font-size: 20px;
+        color: #fff;
+        cursor: pointer;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+    }
+
     .select2-dropdown {
         z-index: 999999;
     }
@@ -1037,6 +1038,14 @@ if (empty($mastercat))
         .form-grid {
             margin-bottom: -40px;
             padding: 30px 20px;
+        }
+    }
+
+    @media (min-width: 320px) and (max-width: 767px) {
+
+        .form-grid,
+        .content-info {
+            margin-bottom: -41px;
         }
     }
 
