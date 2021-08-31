@@ -3053,9 +3053,12 @@ if (isset($all_cate_anuncio)) {
    }
 
    .ribbon.popular {
-      background: none;
+      background: #fff;
       color: #e5124c;
       font-size: 18px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50px;
    }
 </style>
 
