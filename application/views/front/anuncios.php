@@ -414,6 +414,24 @@ if (empty($mastercat))
         changeScreem();
     });
 
+    window.onpopstate = function(event) {
+        const searchParams = new URLSearchParams(window.location.search);
+        textSearch = searchParams.get('search');
+        category = searchParams.get('category');
+        subcategory = searchParams.get('subCategory');
+        cityId = searchParams.get('city');
+        limit = Number(searchParams.get('limit'));
+        let data = {
+            textSearch,
+            category,
+            subcategory,
+            cityId,
+            limit
+        }
+        console.log(data);
+        handleSubmitFilterBack(data);
+    };
+
     const changeScreem = () => {
         if (screen.width > 426 && screen.width <= 768) {
             widthMenu = '96%';
@@ -876,6 +894,41 @@ if (empty($mastercat))
                 category,
                 subcategory
             },
+            success: function(result) {
+                result = JSON.parse(result);
+                if (result.status == 200) {
+                    countAdsFull += result.data.length;
+                    const visible = result.countAds - countAdsFull;
+                    $('#loadindAds').hide();
+                    if (visible > 0) {
+                        $('#bodyBtnLoad').show();
+                    } else {
+                        $('#bodyBtnLoad').hide();
+                    }
+                    loadAds(result.data, true);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ocurrio un problema vuelva a intentarlo',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrio un error en el servidor vuelva a intentarlo',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
+    const handleSubmitFilterBack = (params = {}) => {
+        countAdsFull = 0;
+        $.ajax({
+            type: 'POST',
+            url: "<?= site_url('front/load_ads_back') ?>",
+            data: params,
             success: function(result) {
                 result = JSON.parse(result);
                 if (result.status == 200) {

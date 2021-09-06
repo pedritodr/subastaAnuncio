@@ -2027,6 +2027,38 @@ class Front extends CI_Controller
             exit();
         }
     }
+    public function load_ads_back()
+    {
+        try {
+            $this->load->model('Anuncio_model', 'anuncio');
+            $offset = 0;
+            $search = $this->input->post('textSearch');
+            $city = (int)$this->input->post('cityId');
+            $subcategory = (int)$this->input->post('subcategory');
+            $category = (int)$this->input->post('category');
+            $limit = (int)$this->input->post('limit') > 0 ? (int)$this->input->post('limit') : 21;
+            $countAds = count($this->anuncio->searchFull($search, $city, $subcategory, $category, null, null));
+            $all_anuncios = $this->anuncio->searchFull($search, $city, $subcategory, $category, $limit, $offset);
+
+            foreach ($all_anuncios as $item) {
+                if (!file_exists($item->anuncio_photo)) {
+                    $item->anuncio_photo = null;
+                }
+                /*  $nombre = strlen($item->titulo);
+                if ($nombre > 54) {
+                    $item->corto = substr($item->titulo, 0, 54) . "...";
+                } else {
+
+                    $item->corto = $item->titulo;
+                } */
+            }
+            echo json_encode(['status' => 200, 'msj' => 'correcto', 'data' => $all_anuncios, 'countAds' => $countAds]);
+            exit();
+        } catch (\Throwable $th) {
+            echo json_encode(['status' => 404, 'msj' => 'Ocurrió un problema']);
+            exit();
+        }
+    }
     public function buscar_anuncio()
     {
         header('Cache-Control: no cache');

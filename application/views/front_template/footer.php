@@ -1757,7 +1757,6 @@ if (isset($all_cate_anuncio)) {
          },
          success: function(result) {
             result = JSON.parse(result);
-            console.log(result);
             if (result.status == 500) {
                if (result.data.length > 0) {
 
@@ -1852,7 +1851,6 @@ if (isset($all_cate_anuncio)) {
             },
             success: function(result) {
                result = JSON.parse(result);
-               console.log(result)
                if (result) {
                   cadena_1 = "<div class='item active'><img  src='<?= base_url() ?>" + result.all_detalle.photo + "'></div>"
                   // $('#imagen_main').attr("src", "<?= base_url() ?>" + result.all_detalle.photo)
@@ -2030,11 +2028,9 @@ if (isset($all_cate_anuncio)) {
                         $("#btn_entrar_subasta").attr('onclick', 'cargarmodal_entrar("' + result.all_detalle.subasta_id + '","' + result.all_detalle.nombre_espa + '","' + result.all_detalle.valor_pago + '")');
                      } else {
                         if (result.puja_user.valor == null) {
-                           console.log('aqui2');
                            $("#body_pujar").show();
                            $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
                         } else {
-                           console.log('aqui3');
                            if (parseFloat(result.puja_user.valor) < parseFloat(result.puja.valor)) {
                               $("#body_pujar").show();
                               $("#btn_pujar").attr('onclick', 'cargarmodal_pujar("' + result.subasta_user.subasta_user_id + '","' + result.all_detalle.nombre_espa + '","' + result.puja.valor + '","' + result.all_detalle.valor_inicial + '")');
@@ -2564,7 +2560,7 @@ if (isset($all_cate_anuncio)) {
    }
 
    function validFileType(file) {
-      console.log(FILETYPES);
+
       for (let i = 0; i < FILETYPES.length; i++) {
          if (file.type === FILETYPES[i]) {
             return true;
