@@ -1,3 +1,6 @@
+<div id="fixedbutton">
+   <a title="Contáctenos vía Whatsapp" target="_blank" href="https://api.whatsapp.com/send?phone=+593969004134"><img style="max-height: 80px;max-width: 80px" src="<?= base_url("assets/iconwhatsapp.png") ?>"></a>
+</div>
 <!-- =-=-=-=-=-=-= FOOTER =-=-=-=-=-=-= -->
 <footer class="footer-area">
    <!--Footer Upper-->
@@ -2968,6 +2971,15 @@ if (isset($all_cate_anuncio)) {
 <!-- Main Content Area End -->
 <!-- Post Ad Sticky -->
 <style>
+   #fixedbutton {
+      position: fixed;
+      z-index: 33;
+      bottom: 44%;
+      right: 84px;
+      border-radius: 20px 0 0 20px;
+      padding: 10px;
+   }
+
    .category-grid-box-1 .category-title {
       color: #a0a0a0;
       font-size: 12px;
