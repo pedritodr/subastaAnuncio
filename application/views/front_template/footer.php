@@ -1,5 +1,5 @@
 <div id="fixedbutton">
-   <a title="Contáctenos vía Whatsapp" target="_blank" href="https://api.whatsapp.com/send?phone=+593969004134"><img style="max-height: 80px;max-width: 80px" src="<?= base_url("assets/iconwhatsapp.png") ?>"></a>
+   <a title="Contáctenos vía Whatsapp" target="_blank" href="https://api.whatsapp.com/send?phone=+593967133720"><img style="max-height: 80px;max-width: 80px" src="<?= base_url("assets/iconwhatsapp.png") ?>"></a>
 </div>
 <!-- =-=-=-=-=-=-= FOOTER =-=-=-=-=-=-= -->
 <footer class="footer-area">
